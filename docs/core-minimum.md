@@ -36,7 +36,7 @@ er kvalifisert. Ikke installer tredjepartsapper eller importer evalueringsdata.
 | Norsk skjermspråk | Evalueringen viste engelske felt og ufullstendig bokmål | Målrettede CSV-rettelser og faktisk Desk med vanlig eier prøves etter [språkkravene](language.md). Nye språkfunn følger senere MVA-/års-/EHF-flyt. |
 | Nummer på kunde/leverandør | Native navngiving er førstevalg | Prøv fem siffer og valgfritt prefiks uten å blande kode og visningsnavn. |
 | Rettigheter | Begrenset REST-leser og foretaksfiltrering besto | Vanlig eier uten System Manager besto salg/kjøp/bank med foretaksavgrensning og avvisning av System Settings. Dokumentbevaring og øvrige negative rettighetsprøver gjenstår. |
-| Valgfrie moduler | Native modulprofiler styrer navigasjon | Lager vises; Produksjon, Prosjekter og Kvalitet skjules som standard, med senere visning gjennom native valg. Følg [moduloppsettet](module-defaults.md); funksjoner og senere brukervalg skal bevares. |
+| Valgfrie moduler | Native modulprofiler styrer navigasjon | Behold standardoppsettet for alle moduler og tilbakefør tidligere norsk skjuling. Følg [moduloppsettet](module-defaults.md); funksjoner og senere brukervalg skal bevares. |
 
 ## Rekkefølge og bevis
 

@@ -66,6 +66,8 @@ def update(runtime, root, image, name):
             runtime.compose("run", "--rm", "--no-deps", "-T", "--pull", "never", "backend", "bash", "-euc",
                 "ls -1 apps > sites/apps.txt; bench --site accounting install-app erpnext_norway; bench --site accounting migrate")
             runtime.compose("run", "--rm", "--no-deps", "-T", "--pull", "never", "backend", "bench", "--site", "accounting", "list-apps")
+            runtime.compose("run", "--rm", "--no-deps", "-T", "--pull", "never", "create-site",
+                            "env/bin/python", "/opt/runtime/module-visibility.py")
             runtime.restore_maintenance(name)
             runtime.compose("up", "-d", "--force-recreate", "--no-deps", "--pull", "never", "--no-build",
                             "--wait", "--wait-timeout", "300", *metadata["running_app_services"])

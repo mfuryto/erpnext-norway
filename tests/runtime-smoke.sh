@@ -105,6 +105,7 @@ fi
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - probe < "$root/tests/runtime-app.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-language.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-ui-language.py"
 else
   "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
     < "$root/tests/runtime-native-controls.py"

@@ -1,70 +1,23 @@
-# Modulvisning som standard
+# Standard modulvisning
 
-Brukeren har presisert at det primært er menyene som skal skjules. Systemblokkering
-inngår ikke. Vi bruker derfor kjernens Module Profile og User-innstillinger.
+Brukeren har trukket tilbake tidligere modulskjuling. Lager, Produksjon,
+Prosjekter og Kvalitet skal følge ERPNext sitt ordinære moduloppsett.
+Prosjektet oppretter eller tildeler ikke lenger en skjulende modulprofil.
+Vanlige roller og tilgangsrettigheter avgjør fortsatt hva hver bruker får se.
 
-| Modul i kjernen | Norsk navn | Norsk standardprofil |
-| --- | --- | --- |
-| Stock | Lager / artikkelregister | Synlig |
-| Manufacturing | Produksjon | Skjult |
-| Projects | Prosjekter | Skjult |
-| Quality Management | Kvalitet | Skjult |
+`deploy/module-visibility.py` tilbakefører den tidligere profilen **Norsk standard**
+én gang. De fire modulene fjernes fra profilens blokkliste. Brukere med denne
+profilen frikobles fra den, og de fire modulene fjernes fra deres kopierte
+blokkliste. De fire fjernes også fra personlige blokklister uten annen modulprofil
+ved denne overgangen. Den tilhørende standardverdien for nye brukere fjernes. Andre profiler
+og eventuelle andre blokkerte moduler bevares. Senere personlige valg overtas ikke
+ved neste oppdatering.
 
-## Oppsett og senere valg
+Tilbakeføringen inngår nå i `scripts/update-runtime.py`, etter backup og migrering,
+før tjenestene åpnes. Bare kjøring ved klargjøring var ikke tilstrekkelig for en
+allerede startet server. Ingen ny installasjon eller endring av roller inngår.
+Etter serveroppdateringen må åpne nettleserfaner lastes inn på nytt.
 
-`deploy/module-visibility.py` oppretter den native modulprofilen **Norsk standard**
-og bruker en native Property Setter som standardverdi for User.module_profile.
-Nye brukere får dermed profilen gjennom kjernens ordinære dokumentoppretting.
-Eksisterende systembrukere uten egne modulvalg får profilen første gang skriptet
-kjøres. Eksisterende profiler og egne modulvalg bevares.
-
-Lager er nå synlig fordi artikkelregisteret også brukes for tjenester og lisenser.
-Den eksakte tidligere standardprofilen som skjulte alle fire moduler, oppdateres
-én gang til å vise Lager. Tilpassede profiler og personlige valg endres ikke.
-Etter denne overgangen kan brukeren også skjule Lager igjen uten at neste kjøring
-tilbakestiller valget. Kjernen oppdaterer brukerne av den delte profilen gjennom
-sin ordinære kø; last inn menyen på nytt når oppdateringen er ferdig.
-
-Oppsettet kjøres ved klargjøring av nye installasjoner. På eksisterende installasjon
-kan det kjøres inne i den kjørende backend-containeren, uten reinstallasjon,
-image-bytte eller restart. Skriptet lagrer at standarden er vurdert per bruker og
-for nye brukere; gjentatt kjøring skal bevare senere valg. En eksisterende profil
-med navnet Norsk standard overskrives ikke.
-
-En bruker med nødvendige administrasjonsrettigheter kan senere:
-
-- Endre **Module Profile / Norsk standard** for å vise moduler for profilens brukere.
-- Velge en annen modulprofil under **User**, eller tømme profilvalget og velge
-  brukerens tillatte moduler individuelt.
-- Endre standardverdien på User.module_profile gjennom native Customize Form.
-
-Etter endring må berørte brukere laste inn skrivebordet på nytt, eventuelt logge
-ut og inn for å fornye økten. Modulvisning gir ingen nye dokumentrettigheter;
-relevante roller må fortsatt være på plass for faktisk bruk.
-
-## Avgrensning
-
-Dette endrer navigasjon. Lager, produksjon, prosjekter og kvalitet avinstalleres
-ikke. Roller, dokumentrettigheter, transaksjoner, kontoplan og driftsinnstillinger
-endres ikke. Funksjoner kan fortsatt nås via tillatte lenker, relaterte dokumenter
-eller API. Felles grunndata for salg, kjøp og regnskap beholdes.
-
-Det er bevisst ikke en sikkerhetsgrense. Se kjernens
-[modulnavigasjon i Frappe 16.52.0](https://github.com/frappe/frappe/blob/v16.52.0/frappe/utils/modules.py)
-og [native modulprofil](https://github.com/frappe/frappe/blob/v16.52.0/frappe/core/doctype/module_profile/module_profile.py).
-
-## Aksept
-
-Den isolerte driftstesten skal kontrollere at:
-
-1. De tre valgfrie modulene er skjult for Administrator gjennom den native synlighetsfunksjonen,
-   mens regnskap fortsatt vises og eksisterende dokumentrettigheter er bevart.
-2. En ny systembruker opprettet gjennom native dokument-API arver standardprofilen
-   og har samme tre moduler skjult.
-3. Brukeren kan vise en modul gjennom egne modulvalg, og endringen bevares etter
-   gjentatt kjøring av oppsettet.
-4. Endring av den delte profilen virker og ikke overskrives av oppsettet.
-5. Eksisterende prøver for bokføring, PDF, backup/gjenoppretting og tilgang til private
-   vedlegg fortsatt består. Native modulvalg bevares ved gjenoppretting.
-
-Faktisk menyvisning på serveren kontrolleres etter at serverblokken er kjørt.
+`tests/runtime-module-visibility.py` prøver synlige native moduler, overgang fra
+profilen som skjulte alle fire, standardverdier for nye brukere og bevaring av
+senere valg. Eksportert backup/restore kontrollerer modulvalgene videre.

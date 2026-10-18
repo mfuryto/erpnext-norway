@@ -57,7 +57,8 @@ HTTP-kontroll beviser ikke at den separate proxyen er korrekt konfigurert.
 ### Modulvisning på eksisterende installasjon
 
 `deploy/module-visibility.py` kan kjøres med backend-containerens Python og skriptet
-på standard input. Det bruker det eksisterende sitet og native Module Profile /
+på standard input. Vanlig appoppdatering kjører nå tilbakeføringen automatisk.
+Det bruker det eksisterende sitet og native Module Profile /
 User-innstillinger; ingen ny site-oppretting, image-oppdatering eller restart inngår.
 Finn det eksisterende Compose-prosjektnavnet før kjøring. Se
 [modulvisning](module-defaults.md) for hvilke brukere som endres og hvordan moduler

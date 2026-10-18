@@ -75,7 +75,7 @@ try:
         from frappe.utils.modules import get_blocked_modules, is_module_visible
 
         assert frappe.db.get_default("runtime_ci_recovery") == "before-backup"
-        assert {"Manufacturing", "Projects", "Quality Management"} <= set(
+        assert not {"Manufacturing", "Projects", "Quality Management", "Stock"}.intersection(
             get_blocked_modules("Administrator")
         )
         assert is_module_visible("Stock", "Administrator")

@@ -45,6 +45,12 @@ try:
         assert frappe._('Posting Date', lang='nb', context='Sales Invoice') == 'Bokføringsdato'
         print('PASS NB catalog precedence and six protected PDF originals after exported restore/migrate')
     else:
+        from frappe.utils.password import update_password
+        manager = frappe.get_doc({'doctype': 'User', 'email': 'runtime-ui-manager@example.invalid',
+            'first_name': 'UI', 'user_type': 'System User', 'language': 'nb', 'send_welcome_email': 0,
+            'roles': [{'role': role} for role in ['System Manager', 'Accounts Manager',
+                'Stock Manager', 'Item Manager', 'Sales Master Manager', 'Purchase Master Manager']]}).insert()
+        update_password(manager.name, 'Synthetic-ui-manager-only-2026!')
         # CSS/assets use the synthetic Compose frontend, never a public hostname.
         frappe.conf.host_name = 'http://frontend:8080'
         company = frappe.get_doc('Company', 'Runtime Norwegian Example')
