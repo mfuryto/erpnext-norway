@@ -13,7 +13,7 @@ concurrency:
 jobs:
   source:
     name: ERPNext source and policy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0
@@ -27,7 +27,7 @@ jobs:
           git diff --check
   runtime:
     name: ERPNext runtime integration
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0
