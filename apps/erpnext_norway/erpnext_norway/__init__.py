@@ -1,2 +1,2 @@
 """Norwegian safeguards using native ERPNext documents, files and naming rules."""
-__version__ = "0.3.0"
+__version__ = "0.3.1"
