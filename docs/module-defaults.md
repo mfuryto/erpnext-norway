@@ -5,7 +5,7 @@ inngår ikke. Vi bruker derfor kjernens Module Profile og User-innstillinger.
 
 | Modul i kjernen | Norsk navn | Norsk standardprofil |
 | --- | --- | --- |
-| Stock | Lager | Skjult |
+| Stock | Lager / artikkelregister | Synlig |
 | Manufacturing | Produksjon | Skjult |
 | Projects | Prosjekter | Skjult |
 | Quality Management | Kvalitet | Skjult |
@@ -17,6 +17,13 @@ og bruker en native Property Setter som standardverdi for User.module_profile.
 Nye brukere får dermed profilen gjennom kjernens ordinære dokumentoppretting.
 Eksisterende systembrukere uten egne modulvalg får profilen første gang skriptet
 kjøres. Eksisterende profiler og egne modulvalg bevares.
+
+Lager er nå synlig fordi artikkelregisteret også brukes for tjenester og lisenser.
+Den eksakte tidligere standardprofilen som skjulte alle fire moduler, oppdateres
+én gang til å vise Lager. Tilpassede profiler og personlige valg endres ikke.
+Etter denne overgangen kan brukeren også skjule Lager igjen uten at neste kjøring
+tilbakestiller valget. Kjernen oppdaterer brukerne av den delte profilen gjennom
+sin ordinære kø; last inn menyen på nytt når oppdateringen er ferdig.
 
 Oppsettet kjøres ved klargjøring av nye installasjoner. På eksisterende installasjon
 kan det kjøres inne i den kjørende backend-containeren, uten reinstallasjon,
@@ -50,10 +57,10 @@ og [native modulprofil](https://github.com/frappe/frappe/blob/v16.52.0/frappe/co
 
 Den isolerte driftstesten skal kontrollere at:
 
-1. De fire modulene er skjult for Administrator gjennom den native synlighetsfunksjonen,
+1. De tre valgfrie modulene er skjult for Administrator gjennom den native synlighetsfunksjonen,
    mens regnskap fortsatt vises og eksisterende dokumentrettigheter er bevart.
 2. En ny systembruker opprettet gjennom native dokument-API arver standardprofilen
-   og har samme fire moduler skjult.
+   og har samme tre moduler skjult.
 3. Brukeren kan vise en modul gjennom egne modulvalg, og endringen bevares etter
    gjentatt kjøring av oppsettet.
 4. Endring av den delte profilen virker og ikke overskrives av oppsettet.

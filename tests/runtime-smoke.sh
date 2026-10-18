@@ -6,6 +6,12 @@ project="erpnext-runtime-ci-$$"
 export ERP_RUNTIME_PROJECT="$project"
 compose=(docker compose --env-file "$fixture/deploy/.env" -p "$project" -f "$fixture/compose.yaml")
 cleanup() {
+  test_exit=$?
+  if [[ "$test_exit" != 0 && -f "$fixture/backups/runtime-ci/runtime.log" ]]; then
+    failure_log=$(mktemp /tmp/erpnext-runtime-failure.XXXXXX)
+    cp "$fixture/backups/runtime-ci/runtime.log" "$failure_log"
+    printf 'Private runtime failure log retained at %s\n' "$failure_log"
+  fi
   if [[ -f "$fixture/deploy/.env" ]]; then
     # Only this script's newly created, synthetic project is removed.
     "${compose[@]}" down --timeout 15 -v --remove-orphans >/dev/null 2>&1 || true
@@ -79,21 +85,29 @@ runtime_python() {
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-module-visibility.py"
 runtime_python seed
-"${compose[@]}" run --rm --no-deps -T backend bench --site accounting backup \
-  --with-files --ignore-backup-conf \
-  --backup-path-db /home/frappe/frappe-bench/sites/accounting/private/backups/runtime-ci.sql.gz \
-  --backup-path-files /home/frappe/frappe-bench/sites/accounting/private/backups/runtime-ci-public.tar \
-  --backup-path-private-files /home/frappe/frappe-bench/sites/accounting/private/backups/runtime-ci-private.tar \
-  --backup-path-conf /home/frappe/frappe-bench/sites/accounting/private/backups/runtime-ci-config.json
+"${compose[@]}" up -d --wait --wait-timeout 300
+python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
+(cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
+[[ "$(stat -c %a "$fixture/backups/runtime-ci/runtime.env")" == 600 ]]
+cmp "$fixture/deploy/.env" "$fixture/backups/runtime-ci/runtime.env"
+"${compose[@]}" stop --timeout 15 frontend backend websocket scheduler queue-long queue-short
 runtime_python damage
+# Recover from the exported private bundle, not the surviving source backup.
+"${compose[@]}" run --rm --no-deps -T backend env/bin/python -c \
+  "import shutil; shutil.rmtree('sites/accounting/private/runtime-backups/runtime-ci')"
+backend_container=$("${compose[@]}" ps --all --quiet backend)
+docker cp "$fixture/backups/runtime-ci/native/." \
+  "$backend_container:/home/frappe/frappe-bench/sites/accounting/private/runtime-backups/restored-ci"
+"${compose[@]}" run --rm --no-deps -T --user 0 backend chown -R 1000:1000 \
+  /home/frappe/frappe-bench/sites/accounting/private/runtime-backups/restored-ci
 "${compose[@]}" run --rm --no-deps -T create-site bash -euc '
   cd /home/frappe/frappe-bench
-  backup_dir="$PWD/sites/accounting/private/backups"
-  cp "$backup_dir/runtime-ci-config.json" sites/accounting/site_config.json
-  bench --site accounting restore "$backup_dir/runtime-ci.sql.gz" \
+  backup_dir="$PWD/sites/accounting/private/runtime-backups/restored-ci"
+  cp "$backup_dir/site_config.before.json" sites/accounting/site_config.json
+  bench --site accounting restore "$backup_dir/database.sql.gz" \
     --db-root-username root --db-root-password "$DB_ROOT_PASSWORD" \
-    --with-public-files "$backup_dir/runtime-ci-public.tar" \
-    --with-private-files "$backup_dir/runtime-ci-private.tar"
+    --with-public-files "$backup_dir/public.tar" \
+    --with-private-files "$backup_dir/private.tar"
   bench --site accounting migrate
 '
 runtime_python verify

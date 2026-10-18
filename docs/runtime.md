@@ -65,6 +65,10 @@ vises igjen. Endringer i menyer krever at brukeren laster inn skrivebordet på n
 
 ### Oppdateringer og sikkerhetskopi
 
+Ta [full native backup](backup.md) med `python3 scripts/backup-runtime.py` før
+runtime-konfigurasjon/images oppdateres. Verktøyet inkluderer privat Compose-
+konfigurasjon og starter de samme tjenestene igjen etter native backup.
+
 Ikke bytt images automatisk. Videre oppdateringsrutine skal stoppe skriv, ta
 full backup av database/site-filer/config, migrere, kontrollere og bevare gammel
 versjon for tilbakeføring. En testet restore-rutine for den norske appen er et

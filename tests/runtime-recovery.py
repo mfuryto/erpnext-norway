@@ -1,5 +1,6 @@
 """Synthetic recovery assertions, executed only inside runtime-smoke.sh's site."""
 import json
+import base64
 import os
 import sys
 from pathlib import Path
@@ -63,6 +64,10 @@ try:
         frappe.db.commit()
         public.unlink()
         private.unlink()
+        config_path = Path(frappe.get_site_path("site_config.json"))
+        config = json.loads(config_path.read_text())
+        config["encryption_key"] = base64.urlsafe_b64encode(os.urandom(32)).decode()
+        config_path.write_text(json.dumps(config))
         assert not public.exists() and not private.exists()
         assert frappe.db.get_default("runtime_ci_recovery") == "after-backup"
         print("PASS synthetic database and file changes made after backup")
@@ -70,9 +75,11 @@ try:
         from frappe.utils.modules import get_blocked_modules, is_module_visible
 
         assert frappe.db.get_default("runtime_ci_recovery") == "before-backup"
-        assert {"Stock", "Manufacturing", "Projects", "Quality Management"} <= set(
+        assert {"Manufacturing", "Projects", "Quality Management"} <= set(
             get_blocked_modules("Administrator")
         )
+        assert is_module_visible("Stock", "Administrator")
+        assert is_module_visible("Projects", "runtime-modules@example.invalid")
         assert is_module_visible("Stock", "runtime-modules@example.invalid")
         assert not is_module_visible("Manufacturing", "runtime-modules@example.invalid")
         assert get_decrypted_password("User", "Administrator", "api_secret") == "synthetic-secret"
@@ -92,7 +99,7 @@ try:
             "attached_to_doctype": "Journal Entry", "attached_to_name": journal_name,
         }) == 2
         live = json.loads(Path(frappe.get_site_path("site_config.json")).read_text())
-        saved = json.loads(Path(frappe.get_site_path("private", "backups", "runtime-ci-config.json")).read_text())
+        saved = json.loads(Path(frappe.get_site_path("private", "runtime-backups", "restored-ci", "site_config.json")).read_text())
         assert live["encryption_key"] == saved["encryption_key"]
         assert live["db_password"] == saved["db_password"]
         print("PASS restored journal/ledger, database, attached public/private files and encrypted secret")

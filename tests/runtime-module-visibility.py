@@ -18,6 +18,7 @@ def verify():
     assert all(not is_module_visible(module, "Administrator") for module in modules)
     assert not modules.intersection(get_navigable_modules())
     assert is_module_visible("Accounts", "Administrator")
+    assert is_module_visible("Stock", "Administrator")
     assert frappe.has_permission("Stock Entry", "create", user="Administrator")
 
     # New users get the native default, including when created through get_doc.
@@ -31,15 +32,15 @@ def verify():
 
     # A user can choose a personal module selection instead of the shared profile.
     user.module_profile = None
-    user.set("block_modules", [{"module": name} for name in sorted(modules - {"Stock"})])
+    user.set("block_modules", [{"module": name} for name in sorted(modules - {"Projects"})])
     user.save()
-    assert is_module_visible("Stock", user.name)
+    assert is_module_visible("Projects", user.name)
     assert not is_module_visible("Manufacturing", user.name)
     apply_defaults()
     apply_defaults()
     user.reload()
     assert not user.module_profile
-    assert is_module_visible("Stock", user.name)
+    assert is_module_visible("Projects", user.name)
     assert not is_module_visible("Manufacturing", user.name)
 
     # Editing the shared profile is also retained by later setup runs.
@@ -50,6 +51,26 @@ def verify():
     profile.update_all_users()
     apply_defaults()
     assert is_module_visible("Projects", "Administrator")
+    # The exact old standard is migrated once; customised profiles are retained.
+    profile.set("block_modules", [{"module": name} for name in [*original, "Stock"]])
+    profile.save()
+    frappe.db.set_default(namespace["STOCK_VISIBLE_MARKER"], None)
+    apply_defaults()
+    assert is_module_visible("Stock", "Administrator")
+    profile.reload()
+    profile.set("block_modules", [{"module": name} for name in [*original, "Stock"]])
+    profile.save()
+    apply_defaults()
+    assert not is_module_visible("Stock", "Administrator")
+    profile.set("block_modules", [{"module": name} for name in [*original, "Stock", "Buying"]])
+    profile.save()
+    frappe.db.set_default(namespace["STOCK_VISIBLE_MARKER"], None)
+    apply_defaults()
+    profile.reload()
+    assert {row.module for row in profile.block_modules} == {*original, "Stock", "Buying"}
+    profile.set("block_modules", [{"module": name} for name in original])
+    profile.save()
+    apply_defaults()
     # Return the synthetic default to its original state for recovery assertions.
     profile.set("block_modules", [{"module": name} for name in original])
     profile.save()
@@ -62,7 +83,7 @@ def verify():
     make_property_setter("User", "module_profile", "default", profile_name, "Data")
     frappe.clear_cache(doctype="User")
     frappe.db.commit()
-    print("PASS native module hiding, new-user default, opt-in and preserved later choices")
+    print("PASS native module hiding, Stock migration, new-user default and preserved later choices")
 
 
 os.chdir("/home/frappe/frappe-bench/sites")

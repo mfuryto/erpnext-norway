@@ -10,9 +10,10 @@ from frappe.custom.doctype.property_setter.property_setter import make_property_
 
 
 PROFILE = "Norsk standard"
-MODULES = ("Stock", "Manufacturing", "Projects", "Quality Management")
+MODULES = ("Manufacturing", "Projects", "Quality Management")
 MARKER = "erpnext_norway_module_visibility_initialized"
 DEFAULT_MARKER = "erpnext_norway_module_default_initialized"
+STOCK_VISIBLE_MARKER = "erpnext_norway_stock_visible_default_v1"
 
 
 def apply_defaults():
@@ -26,6 +27,14 @@ def apply_defaults():
             "doctype": "Module Profile", "module_profile_name": PROFILE,
             "block_modules": [{"module": name} for name in MODULES],
         }).insert()
+
+    # Migrate only the exact former seed. Personal and customised profiles stay intact.
+    if not frappe.db.get_default(STOCK_VISIBLE_MARKER):
+        profile = frappe.get_doc("Module Profile", PROFILE)
+        if {row.module for row in profile.block_modules} == {*MODULES, "Stock"}:
+            profile.set("block_modules", [{"module": name} for name in MODULES])
+            profile.save()
+        frappe.db.set_default(STOCK_VISIBLE_MARKER, "1")
 
     # Respect an administrator's existing non-empty default for new users.
     if not frappe.db.get_default(DEFAULT_MARKER):

@@ -1,6 +1,7 @@
 # Arbeidsregler for ERPNext Norway
 
 - ERPNext-kjernen er førstevalget. Undersøk og prøv standardfunksjonen før tilleggskode.
+  Ikke erstatt eller bygg en parallell variant av funksjoner som finnes og er gode nok.
 - Dolibarr Norway og åpne tillegg er referanser for krav, regler, testeksempler og mønstre.
   Ikke importer dem som standardløsning eller overta egne arbeidsflater og kontrollag.
 - Ny kode skal lukke et dokumentert norsk krav eller et uttrykkelig bestilt gap.
@@ -11,8 +12,8 @@
   betaling, hovedbok og rapportering. Manuell etterbehandling er ikke ferdig normalflyt.
 - Ikke lag nye bekreftelsessider, historikkregistre eller parallelle hovedbøker for trygghets skyld.
 - Oppstartsveileder skal være kort status, forklaring og lenker til naturlige arbeidssteder.
-- Norsk standardoppsett skal primært skjule Lager, Produksjon, Prosjekter og Kvalitet
-  med native modulvalg. Brukeren kan vise dem senere. Systemblokkering er ikke
+- Norsk standardoppsett skal vise Lager/Stock for artikkelregisteret og skjule
+  Produksjon, Prosjekter og Kvalitet med native modulvalg. Brukeren kan vise dem senere. Systemblokkering er ikke
   bestilt etter presiseringen. Bevar funksjoner, felles grunndata og senere brukervalg.
 - Bare grenene main og staging. Ingen feature-grener. Utvikle på staging; test før push.
 - Main krever PR fra staging og beståtte aktuelle CI-resultater. Ingen direkte push,
