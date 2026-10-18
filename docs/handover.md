@@ -82,6 +82,10 @@ referanse, ikke valgt produktavhengighet. Den bygger mye egen flate og har avgre
 - Uttrykkelig språkkrav: oversett engelske elementer og rett feil norske fagbegreper
   i støttet arbeidsflyt og dokumenter. Følg [språkkrav og arbeidsordliste](language.md).
   Norsk språkvalg alene lukker ikke dette gapet; rettelser leveres i ekstern app.
+- Lager, Produksjon, Prosjekter og Kvalitet skal være deaktivert for systemet og
+  skjult fra menyen som standard. Brukeren skal kunne aktivere dem senere uten
+  ny installasjon. Modulprofiler alene er ikke systemdeaktivering; følg
+  [modulkrav og aksept](module-defaults.md).
 
 Bruk faktisk registreringsstatus, virkningsdato og gjeldende regelverk. Ikke anta
 MVA-registrering bare fordi det skal faktureres. Foretaksform og kontoer er konfigurasjon.
