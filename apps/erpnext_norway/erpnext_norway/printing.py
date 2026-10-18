@@ -31,12 +31,27 @@ def configure():
             frappe.get_doc({"doctype": "Print Format", "name": name, "doc_type": doctype,
                 "standard": "No", "custom_format": 1, "print_format_type": "Jinja",
                 "pdf_generator": "wkhtmltopdf", "html": html}).insert(ignore_permissions=True)
+        if not installing:
+            format_doc = frappe.get_doc('Print Format', name)
+            legacy = html.replace('translated_taxes(doc.taxes)', 'doc.taxes')
+            if format_doc.html == legacy:
+                format_doc.html = html
+                format_doc.save(ignore_permissions=True)
         current = frappe.get_meta(doctype).default_print_format
         chosen = frappe.db.exists("Property Setter", {"doc_type": doctype, "property": "default_print_format"})
         native_empty_register = (installing and current == f"{doctype} Classic"
             and not frappe.db.exists(doctype, {}))
         if (not chosen and not current) or native_empty_register:
             make_property_setter(doctype, None, "default_print_format", name, "Data", for_doctype=True)
+
+
+def translated_taxes(rows):
+    """Localize our seeded label for printing; keep native tax rows/formatting and stored data."""
+    copied = deepcopy(rows)
+    for row in copied:
+        if row.description == 'MVA 25 %':
+            row.description = f"{frappe._('VAT')} 25 %"
+    return copied
 
 
 def bank_details(company, customer=None):

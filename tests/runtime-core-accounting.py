@@ -48,6 +48,9 @@ def run():
         "default_currency": "NOK", "create_chart_of_accounts_based_on": "Standard Template",
         "chart_of_accounts": "Standard", "enable_perpetual_inventory": 0,
     }).insert()
+    if 'erpnext_norway' in frappe.get_installed_apps():
+        company.custom_norway_vat_status = 'Not registered'
+        company.save()
     contents = Path("/opt/runtime/norway.csv").read_text()
     source = {row["Account Number"]: row for row in csv.DictReader(io.StringIO(contents)) if row["Account Number"]}
     upload = save_file("norway.csv", contents.encode(), "Company", COMPANY, is_private=1)
@@ -66,7 +69,8 @@ def run():
     print("PASS native import: 745 preserved Norwegian codes/names; correct 1500/2400 defaults")
 
     # The core wizard knows country, not registration status. Configure its own templates.
-    assert frappe.db.exists("Sales Taxes and Charges Template", {"company": COMPANY, "is_default": 1})
+    if 'erpnext_norway' not in frappe.get_installed_apps():
+        assert frappe.db.exists("Sales Taxes and Charges Template", {"company": COMPANY, "is_default": 1})
     for doctype in ("Sales Taxes and Charges Template", "Purchase Taxes and Charges Template"):
         for name in frappe.get_all(doctype, filters={"company": COMPANY}, pluck="name"):
             template = frappe.get_doc(doctype, name)

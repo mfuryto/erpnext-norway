@@ -7,5 +7,5 @@ RUN uv pip install --python env/bin/python --no-deps --no-build-isolation -e app
     && ln -s /home/frappe/frappe-bench/apps/erpnext_norway/erpnext_norway/chart_data/norway.json \
     apps/erpnext/erpnext/accounts/doctype/account/chart_of_accounts/verified/no_erpnext_norway.json
 LABEL org.opencontainers.image.title="ERPNext Norway" \
-      org.opencontainers.image.version="0.2.1" \
+      org.opencontainers.image.version="0.3.0" \
       no.erpnext-norway.base="v16.51.1"

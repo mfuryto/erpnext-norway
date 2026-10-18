@@ -4596,3 +4596,18 @@ Netherlands,Nederland
 France,Frankrike
 Financial Report Template,Mal for regnskapsrapport
 Tax Rule,Avgiftsregel
+Norwegian VAT registration,MVA-registrering (Norge),Company
+VAT registration effective from,MVA-registrert fra,Company
+Not configured,Ikke konfigurert,Company
+Not registered,Ikke registrert,Company
+Registered,Registrert,Company
+Select Registered only after registration is approved. Planned registration is not approval.,Velg Registrert først når registreringen er godkjent. Planlagt registrering er ikke en godkjenning.
+Use the effective date in the approved registration. Existing invoices are not recalculated.,Bruk virkningsdatoen i den godkjente registreringen. Eksisterende fakturaer beregnes ikke på nytt.
+Enter the effective date of the approved VAT registration.,Angi virkningsdatoen for den godkjente MVA-registreringen.
+Enter the nine-digit organisation number before confirming VAT registration.,Angi det nisifrede organisasjonsnummeret før MVA-registreringen bekreftes.
+An effective VAT registration date requires approved registration.,En virkningsdato for MVA krever godkjent registrering.
+Set Norwegian VAT registration on the Company before submitting the invoice.,Angi MVA-registrering i foretaksinnstillingene før fakturaen bokføres.
+Keep the original invoice VAT treatment on its credit note.,Behold originalfakturaens MVA-behandling på kreditnotaen.
+VAT on sales or input VAT deduction requires approved registration effective for this invoice.,Utgående MVA på salg eller fradrag for inngående MVA krever godkjent registrering som gjelder for denne fakturaen.
+Select the applicable native tax category or tax template before submitting the invoice.,Velg riktig avgiftskategori eller avgiftsmal før fakturaen bokføres.
+No active VAT template was applied. Check the native tax rule and apply the correct template.,Ingen gyldig MVA-mal er brukt. Kontroller avgiftsregelen og bruk riktig mal.

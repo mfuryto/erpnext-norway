@@ -224,3 +224,21 @@ Produksjon/Prosjekter/Kvalitet er trukket tilbake. module-visibility.py tilbakef
 vår tidligere profil én gang, inkludert Lager, og oppdateringen kjører dette etter
 migrering. Ingen ny profil tildeles. Senere egne valg og andre profiler beholdes.
 Se module-defaults.md. Serveren oppdateres fortsatt bare av brukerens kommandoblokk.
+
+
+## MVA-del 1: registrering nå og senere overgang
+
+Brukeren er ikke registrert nå, men planlegger senere registrering. Ikke bygg et
+oppsett som permanent fjerner MVA eller aktiverer den på grunn av planen alene.
+App 0.3.0 legger registreringsstatus og bekreftet virkningsdato i native Company.
+Eksisterende status gjettes ikke. Native Tax Rule fra-dato, avgiftsmaler og kategori
+brukes til ordinær innenlandsk 25 %-behandling med 2700/2710 i norsk kontoplan.
+Ingen egen avgiftsberegning, hovedbok eller historikktabell. Company har allerede
+native Version-sporing. Sales Invoice sitt company_tax_id lagrer riktig MVA-merke.
+Bokførte dokumenter etterbehandles ikke når foretaksinnstillingen endres.
+
+Se vat-registration.md og runtime-vat.py/browserprøven for før-/etterdato,
+framtidig godkjent dato, sperret tidlig fradrag, originaltro kreditnota og bevarte
+PDF-er. MVA er ikke samlet ferdig med dette: linjefordelt fradrag, reduserte satser,
+fritak/unntak, utland, portalgrunnlag, oppgjør/avstemming og kvittering gjenstår.
+Tilbakegående avgiftsoppgjør vurderes særskilt; ikke endre gamle kjøp automatisk.
