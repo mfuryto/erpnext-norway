@@ -1,0 +1,7 @@
+/deploy/.env
+/data/
+/backups/
+/local-handover/
+*.log
+__pycache__/
+/.cutover.lock
