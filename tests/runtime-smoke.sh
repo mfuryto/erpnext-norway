@@ -76,6 +76,8 @@ runtime_python() {
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - "$1" \
     < "$root/tests/runtime-recovery.py"
 }
+"${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
+  < "$root/tests/runtime-module-visibility.py"
 runtime_python seed
 "${compose[@]}" run --rm --no-deps -T backend bench --site accounting backup \
   --with-files --ignore-backup-conf \

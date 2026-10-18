@@ -36,7 +36,7 @@ er kvalifisert. Ikke installer tredjepartsapper eller importer evalueringsdata.
 | Norsk skjermspråk | Evalueringen viste engelske felt og ufullstendig bokmål | Oversett og rett fagbegreper i den støttede flyten etter [språkkravene](language.md). Prøv menyer, handlinger, statuser, hjelpetekster og feil, også med vanlig eierbruker. |
 | Nummer på kunde/leverandør | Native navngiving er førstevalg | Prøv fem siffer og valgfritt prefiks uten å blande kode og visningsnavn. |
 | Rettigheter | Begrenset REST-leser og foretaksfiltrering besto | Bokføring ble tidligere prøvd som Administrator. Eierbruker må kunne fullføre normalflyt og være avskåret fra uønsket endring/sletting. |
-| Valgfrie moduler | Native modulprofiler styrer navigasjon, ikke systemdeaktivering | Lager, Produksjon, Prosjekter og Kvalitet skal være deaktivert og skjult som standard, med senere aktivering. Følg [modulkravene](module-defaults.md); prøv serverhåndheving og faktureringens felles grunndata. |
+| Valgfrie moduler | Native modulprofiler styrer navigasjon | Lager, Produksjon, Prosjekter og Kvalitet skjules som standard, med senere visning gjennom native valg. Følg [moduloppsettet](module-defaults.md); funksjoner og senere brukervalg skal bevares. |
 
 ## Rekkefølge og bevis
 

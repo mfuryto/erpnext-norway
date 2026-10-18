@@ -54,6 +54,17 @@ HTTP-kontroll beviser ikke at den separate proxyen er korrekt konfigurert.
 
 ## Videre drift
 
+### Modulvisning på eksisterende installasjon
+
+`deploy/module-visibility.py` kan kjøres med backend-containerens Python og skriptet
+på standard input. Det bruker det eksisterende sitet og native Module Profile /
+User-innstillinger; ingen ny site-oppretting, image-oppdatering eller restart inngår.
+Finn det eksisterende Compose-prosjektnavnet før kjøring. Se
+[modulvisning](module-defaults.md) for hvilke brukere som endres og hvordan moduler
+vises igjen. Endringer i menyer krever at brukeren laster inn skrivebordet på nytt.
+
+### Oppdateringer og sikkerhetskopi
+
 Ikke bytt images automatisk. Videre oppdateringsrutine skal stoppe skriv, ta
 full backup av database/site-filer/config, migrere, kontrollere og bevare gammel
 versjon for tilbakeføring. En testet restore-rutine for den norske appen er et

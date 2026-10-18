@@ -1,72 +1,63 @@
-# Valgfrie moduler
+# Modulvisning som standard
 
-Bestilt standard for det norske oppsettet:
+Brukeren har presisert at det primært er menyene som skal skjules. Systemblokkering
+inngår ikke. Vi bruker derfor kjernens Module Profile og User-innstillinger.
 
-| Modul i kjernen | Norsk navn | Systemstandard | Meny ved standardoppsett |
-| --- | --- | --- | --- |
-| Stock | Lager | Deaktivert | Skjult |
-| Manufacturing | Produksjon | Deaktivert | Skjult |
-| Projects | Prosjekter | Deaktivert | Skjult |
-| Quality Management | Kvalitet | Deaktivert | Skjult |
+| Modul i kjernen | Norsk navn | Norsk standardprofil |
+| --- | --- | --- |
+| Stock | Lager | Skjult |
+| Manufacturing | Produksjon | Skjult |
+| Projects | Prosjekter | Skjult |
+| Quality Management | Kvalitet | Skjult |
 
-Brukeren skal senere kunne aktivere hver modul gjennom ordinære innstillinger,
-med nødvendige administrasjonsrettigheter. Det skal ikke kreve ny installasjon
-eller endringer i kildekode. Vanlige brukere skal ikke kunne omgå systemvalget
-ved å redigere sin egen modulprofil.
+## Oppsett og senere valg
 
-Dette er et produktkrav som skal implementeres og prøves i den norske appen.
-Det eksisterende Compose-grunnlaget har fortsatt standard ERPNext; dokumentet
-endrer ingen innstillinger på en kjørende server.
+`deploy/module-visibility.py` oppretter den native modulprofilen **Norsk standard**
+og bruker en native Property Setter som standardverdi for User.module_profile.
+Nye brukere får dermed profilen gjennom kjernens ordinære dokumentoppretting.
+Eksisterende systembrukere uten egne modulvalg får profilen første gang skriptet
+kjøres. Eksisterende profiler og egne modulvalg bevares.
 
-## Native grunnlag og dokumentert gap
+Oppsettet kjøres ved klargjøring av nye installasjoner. På eksisterende installasjon
+kan det kjøres inne i den kjørende backend-containeren, uten reinstallasjon,
+image-bytte eller restart. Skriptet lagrer at standarden er vurdert per bruker og
+for nye brukere; gjentatt kjøring skal bevare senere valg. En eksisterende profil
+med navnet Norsk standard overskrives ikke.
 
-Frappe 16.52.0 har Module Profile og User.block_modules. Disse styrer navigasjon;
-de deaktiverer ikke dokumenttilgang eller funksjoner. Kildens `is_module_visible`
-beskriver dette uttrykkelig. Dokumenttilgang håndteres separat av DocPerm, og
-Administrator har særskilt tilgang i permission-systemet.
+En bruker med nødvendige administrasjonsrettigheter kan senere:
 
-Det er derfor ikke tilstrekkelig å skjule fire arbeidsflater eller fjerne roller
-fra den første brukeren. Undersøk native innstillinger og rettigheter først,
-og legg bare det manglende reversible systemvalget i ekstern app. Ikke presenter
-funksjonen som ferdig før både systembruk og navigasjon er prøvd.
+- Endre **Module Profile / Norsk standard** for å vise moduler for profilens brukere.
+- Velge en annen modulprofil under **User**, eller tømme profilvalget og velge
+  brukerens tillatte moduler individuelt.
+- Endre standardverdien på User.module_profile gjennom native Customize Form.
 
-## Avgrensning og bevaring
+Etter endring må berørte brukere laste inn skrivebordet på nytt, eventuelt logge
+ut og inn for å fornye økten. Modulvisning gir ingen nye dokumentrettigheter;
+relevante roller må fortsatt være på plass for faktisk bruk.
 
-- Deaktivering skal stoppe bruk av modulfunksjonene, også når de forsøkes gjennom
-  direkte lenke, REST eller en vanlig integrasjon. Menyskjuling alene består ikke.
-- Bevar regnskap, salg, kjøp, betaling og bank. Grunndata kan tilhøre en teknisk
-  modul uten at den valgfrie funksjonen brukes: blant annet må vanlige tjenesteartikler,
-  enheter og fakturalinjer fungere selv om Lager er deaktivert. Prøv koblingene før
-  hele modulens DocTypes sperres. Ingen nye parallelle registre.
-- Lagerbevegelser gjennom faktura og andre dokumenter utenfor lagermenyen må inngå
-  i prøven. Et skjult Stock Entry-skjermbilde alene deaktiverer ikke lagerfunksjonen.
-- Ingen avinstallasjon, sletting av dokumenter eller nullstilling av innstillinger.
-  Aktivering og senere deaktivering skal bevare eksisterende data og brukerens valg.
-- Standardene gjelder første oppsett. Oppdateringer skal ikke slå av en modul
-  brukeren uttrykkelig har aktivert. Behandle avhengigheter ved aktivering og
-  forklar dem; ikke aktiver andre moduler uten at dette fremgår.
-- Innstillingen for å aktivere en modul må være tilgjengelig selv om modulens meny
-  er skjult. Bruk ordinært innstillingssted, uten ny oppstarts- eller kontrollflate.
+## Avgrensning
 
-## Aksept før levering
+Dette endrer navigasjon. Lager, produksjon, prosjekter og kvalitet avinstalleres
+ikke. Roller, dokumentrettigheter, transaksjoner, kontoplan og driftsinnstillinger
+endres ikke. Funksjoner kan fortsatt nås via tillatte lenker, relaterte dokumenter
+eller API. Felles grunndata for salg, kjøp og regnskap beholdes.
 
-1. Nytt syntetisk oppsett: alle fire er deaktivert i systemet og skjult i relevante
-   menyer, arbeidsflater og snarveier for både eierbruker og Administrator.
-2. Prøv direkte lenke, native REST og relevante dokumenthandlinger. Deaktiverte
-   funksjoner skal avvises på serveren med forståelig forklaring. Ta også med en
-   bruker som ellers har nødvendige roller, slik at rollefravær ikke skjuler et gap.
-3. Opprett og bokfør vanlig tjenestesalg og -kjøp uten lageroppdatering. Prøv tilbud,
-   kreditnota, betaling, bankavstemming og standardrapportene.
-4. Aktiver én modul om gangen fra innstillingene. Kontroller funksjoner, nødvendig
-   tilgang og meny, uten å gi tilgang til andre moduler eller andre foretak.
-5. Deaktiver igjen og kontroller at systembruken stoppes og menyen skjules uten
-   datatap. Prøv eksplisitt eventuelle koblinger til dokumenter som allerede finnes.
-6. Gjenta etter omstart og migrering. Både standardvalg og brukerens senere
-   aktiveringer skal bestå. Dokumenter faktisk støttet omfang og åpne avhengigheter.
+Det er bevisst ikke en sikkerhetsgrense. Se kjernens
+[modulnavigasjon i Frappe 16.52.0](https://github.com/frappe/frappe/blob/v16.52.0/frappe/utils/modules.py)
+og [native modulprofil](https://github.com/frappe/frappe/blob/v16.52.0/frappe/core/doctype/module_profile/module_profile.py).
 
-## Kildegrunnlag
+## Aksept
 
-- [Frappe 16.52.0: modulnavigasjon](https://github.com/frappe/frappe/blob/v16.52.0/frappe/utils/modules.py),
-  særlig `get_blocked_modules` og `is_module_visible`.
-- [Frappe 16.52.0: dokumentrettigheter](https://github.com/frappe/frappe/blob/v16.52.0/frappe/permissions.py),
-  særlig `has_permission`.
+Den isolerte driftstesten skal kontrollere at:
+
+1. De fire modulene er skjult for Administrator gjennom den native synlighetsfunksjonen,
+   mens regnskap fortsatt vises og eksisterende dokumentrettigheter er bevart.
+2. En ny systembruker opprettet gjennom native dokument-API arver standardprofilen
+   og har samme fire moduler skjult.
+3. Brukeren kan vise en modul gjennom egne modulvalg, og endringen bevares etter
+   gjentatt kjøring av oppsettet.
+4. Endring av den delte profilen virker og ikke overskrives av oppsettet.
+5. Eksisterende prøver for bokføring, PDF, backup/gjenoppretting og tilgang til private
+   vedlegg fortsatt består. Native modulvalg bevares ved gjenoppretting.
+
+Faktisk menyvisning på serveren kontrolleres etter at serverblokken er kjørt.
