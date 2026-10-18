@@ -27,15 +27,15 @@ er kvalifisert. Ikke installer tredjepartsapper eller importer evalueringsdata.
 | Område | Prøvd kjernefunksjon | Gjenstående gap / neste prøve |
 | --- | --- | --- |
 | Foretak, valuta og år | Native Company og setup wizard i syntetisk foretak | ENK, faktisk MVA-status/virkningsdato og åpning må kvalifiseres uten private data i kode. |
-| Norsk kontoplan | Chart of Accounts Importer tok imot 745 kontonumre | Gjennomgå kilde/lisens, kontogrupper og kontotyper. Angi bl.a. 1500 og 2400 uttrykkelig som reskontro-defaults; 2740 skal ikke velges som leverandørkonto. Prøv en ny normal salgs-/kjøpskjede etter import. |
-| Salg, kjøp og bank | Faktura, kreditnota, Payment Entry, Bank Transaction og avstemming besto | Gjenta med norsk oppsett og vanlig eierbruker, inkludert avviste handlinger. Ikke bygg egen hovedbok. |
+| Norsk kontoplan | Native import av 745 norske kontoer med låst LGPL-kilde, 1500/2400-defaults og norske grupper besto | Se [kontoplan og oppsett](norwegian-chart.md). Native import etter postering avvises. Faktisk åpning og øvrige virksomhetsspesifikke defaults gjenstår. |
+| Salg, kjøp og bank | Faktura, kreditnota, Payment Entry, Bank Transaction og avstemming besto med norsk plan og vanlig eierbruker | Syntetisk ikke-registrert innenlandsflyt gir resultat 475 og bank 275 etter eiertransaksjon. Full norsk MVA-behandling og utenlandsflyt gjenstår. |
 | MVA per linje | Native Item Tax Templates og avgiftsrader besto med ulik fradragsrett | Forståelig behandlingsvalg, lagret grunnlag, virkningsdato og norsk rapportering mangler. Ikke krev manuell konstruksjon av beregnede motrader i normal bruk. |
 | Dokumentnummer | Native F/K/T-masker med seks løpesifre besto | Nummer kom ved kladdlagring, og kladd kunne slettes. Prøv native nummer ved innsending før valg av ekstern app-hook. Test samtidighet, avbrutt innsending, separate serier, valgfritt startnummer og kreditnota. |
 | Bilagsbevaring | Private File-vedlegg avviste gjest | Administrator kunne slette vedlegg fra bokført kjøpsfaktura. Undersøk alle native slette-/erstatningsveier før et lite bevaringsvern gjennom dokumenthendelser. Prøv også kansellert dokument og direkte File-API. |
 | Norsk/engelsk dokument | PDF ble generert på begge språk | Kvalifiser ordvalg, organisasjonsopplysninger, avgiftsstatus, datoer, nummer og originalreferanse på faktura/kreditnota. Teknisk PDF-rendering er ikke malaksept. |
 | Norsk skjermspråk | Evalueringen viste engelske felt og ufullstendig bokmål | Oversett og rett fagbegreper i den støttede flyten etter [språkkravene](language.md). Prøv menyer, handlinger, statuser, hjelpetekster og feil, også med vanlig eierbruker. |
 | Nummer på kunde/leverandør | Native navngiving er førstevalg | Prøv fem siffer og valgfritt prefiks uten å blande kode og visningsnavn. |
-| Rettigheter | Begrenset REST-leser og foretaksfiltrering besto | Bokføring ble tidligere prøvd som Administrator. Eierbruker må kunne fullføre normalflyt og være avskåret fra uønsket endring/sletting. |
+| Rettigheter | Begrenset REST-leser og foretaksfiltrering besto | Vanlig eier uten System Manager besto salg/kjøp/bank med foretaksavgrensning og avvisning av System Settings. Dokumentbevaring og øvrige negative rettighetsprøver gjenstår. |
 | Valgfrie moduler | Native modulprofiler styrer navigasjon | Lager vises; Produksjon, Prosjekter og Kvalitet skjules som standard, med senere visning gjennom native valg. Følg [moduloppsettet](module-defaults.md); funksjoner og senere brukervalg skal bevares. |
 
 ## Rekkefølge og bevis
@@ -61,3 +61,10 @@ og eventuelle begrensninger. Ingen reelle foretak eller bilag i testfiksturer.
   [Chart of Accounts](https://docs.frappe.io/erpnext/chart-of-accounts): native oppsett.
 - [Document Naming Settings](https://docs.frappe.io/erpnext/document-naming-settings):
   native nummerserier; testene i prosjektets låste versjon avgjør faktisk oppførsel.
+
+## Ny kjerneprøve
+
+`tests/runtime-core-accounting.py` kjører mot det låste runtime-imaget.
+Kontoplan, native hovedbok, reskontro, bank, MVA-standardvalg og resultat
+kontrolleres igjen etter eksportert backup, gjenoppretting og migrering.
+Ingen tilleggsapp eller kjerneendring er nødvendig for disse prøvde funksjonene.
