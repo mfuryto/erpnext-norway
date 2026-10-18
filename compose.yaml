@@ -1,0 +1,125 @@
+name: erpnext-norway
+x-app: &app
+  image: frappe/erpnext:v16.51.1@sha256:a856e7f65c7bfc9cfa2e74f95b62e11d37190c380d958cbf3bea5d05e2ec9268
+  restart: unless-stopped
+  volumes:
+    - ./data/sites:/home/frappe/frappe-bench/sites
+    - ./data/logs:/home/frappe/frappe-bench/logs
+  logging:
+    driver: local
+    options: {max-size: 10m, max-file: '3'}
+services:
+  db:
+    image: mariadb:11.8@sha256:f16d7a344413e519dff518f27bdb221388f84b0d274c97c4fb5f2cb0dc1b34fa
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run init-runtime.py}
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    volumes: [./data/database:/var/lib/mysql]
+    networks: [database]
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  redis-cache:
+    image: redis:6.2-alpine@sha256:b362b5dff9d14d961dc3352db4776aba6a8c53ca2661d7c74ad2c121f82cdaea
+    restart: unless-stopped
+    networks: [database]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 20
+  redis-queue:
+    image: redis:6.2-alpine@sha256:b362b5dff9d14d961dc3352db4776aba6a8c53ca2661d7c74ad2c121f82cdaea
+    restart: unless-stopped
+    volumes: [./data/redis-queue:/data]
+    networks: [database]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 20
+  configurator:
+    <<: *app
+    profiles: [setup]
+    restart: 'no'
+    command: [bash, /opt/runtime/configure.sh]
+    volumes:
+      - ./data/sites:/home/frappe/frappe-bench/sites
+      - ./data/logs:/home/frappe/frappe-bench/logs
+      - ./deploy:/opt/runtime:ro
+    networks: [database]
+  create-site:
+    <<: *app
+    profiles: [setup]
+    restart: 'no'
+    environment:
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run init-runtime.py}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Run init-runtime.py}
+      PUBLIC_URL: ${PUBLIC_URL:?Run init-runtime.py}
+    command: [bash, /opt/runtime/create-site.sh]
+    volumes:
+      - ./data/sites:/home/frappe/frappe-bench/sites
+      - ./data/logs:/home/frappe/frappe-bench/logs
+      - ./deploy:/opt/runtime:ro
+    networks: [database, frontend]
+  backend:
+    <<: *app
+    depends_on:
+      db: {condition: service_healthy}
+      redis-cache: {condition: service_healthy}
+      redis-queue: {condition: service_healthy}
+    networks: [database, frontend]
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --max-time, '5', --header, 'X-Frappe-Site-Name: accounting', 'http://127.0.0.1:8000/api/method/ping']
+      interval: 10s
+      timeout: 8s
+      retries: 30
+  frontend:
+    <<: *app
+    command: [nginx-entrypoint.sh]
+    depends_on:
+      backend: {condition: service_healthy}
+      websocket: {condition: service_started}
+    environment:
+      BACKEND: backend:8000
+      FRAPPE_SITE_NAME_HEADER: accounting
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: 'off'
+      PROXY_READ_TIMEOUT: '120'
+      CLIENT_MAX_BODY_SIZE: 24m
+    ports: ['${BIND_IP:-127.0.0.1}:${HTTP_PORT:-8088}:8080']
+    networks: [frontend]
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --max-time, '5', 'http://127.0.0.1:8080/api/method/ping']
+      interval: 10s
+      timeout: 8s
+      retries: 30
+  queue-long:
+    <<: *app
+    command: [bench, worker, --queue, 'long,default,short']
+    depends_on: {backend: {condition: service_healthy}}
+    networks: [database, frontend]
+  queue-short:
+    <<: *app
+    command: [bench, worker, --queue, 'short,default']
+    depends_on: {backend: {condition: service_healthy}}
+    networks: [database, frontend]
+  scheduler:
+    <<: *app
+    command: [bench, schedule]
+    depends_on: {backend: {condition: service_healthy}}
+    networks: [database, frontend]
+  websocket:
+    <<: *app
+    command: [node, /home/frappe/frappe-bench/apps/frappe/socketio.js]
+    depends_on: {backend: {condition: service_healthy}}
+    environment:
+      FRAPPE_REDIS_CACHE: redis://redis-cache:6379
+      FRAPPE_REDIS_QUEUE: redis://redis-queue:6379
+    networks: [database, frontend]
+networks:
+  database: {internal: true}
+  frontend: {}

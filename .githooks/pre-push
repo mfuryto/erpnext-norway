@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main) echo 'Main accepts reviewed pull requests only.' >&2; exit 1 ;;
+    refs/heads/staging) [[ "$local_sha" != 0000000000000000000000000000000000000000 ]] || exit 1 ;;
+    refs/heads/*) echo 'Only main and staging are allowed.' >&2; exit 1 ;;
+  esac
+done
