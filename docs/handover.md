@@ -82,10 +82,9 @@ referanse, ikke valgt produktavhengighet. Den bygger mye egen flate og har avgre
 - Uttrykkelig språkkrav: oversett engelske elementer og rett feil norske fagbegreper
   i støttet arbeidsflyt og dokumenter. Følg [språkkrav og arbeidsordliste](language.md).
   Norsk språkvalg alene lukker ikke dette gapet; rettelser leveres i ekstern app.
-- Presisert modulvalg: Lager/Stock skal være synlig for artikkelregisteret.
-  Produksjon, Prosjekter og Kvalitet skjules som standard med native modulprofil. Brukeren kan vise dem senere; det er ikke
-  bestilt systemblokkering. Bevar funksjoner og senere brukervalg. Følg
-  [moduloppsett og aksept](module-defaults.md).
+- Oppdatert modulvalg: Behold ERPNext sitt standardoppsett for alle moduler.
+  Tidligere skjuling av Lager, Produksjon, Prosjekter og Kvalitet tilbakeføres.
+  Bevar senere brukervalg. Se [moduloppsett og aksept](module-defaults.md).
 
 Bruk faktisk registreringsstatus, virkningsdato og gjeldende regelverk. Ikke anta
 MVA-registrering bare fordi det skal faktureres. Foretaksform og kontoer er konfigurasjon.
@@ -211,3 +210,17 @@ backup-/migreringsoppdateringen. Brukeren kjører blokken; ingen servertilgang e
 Neste arbeidspakke er korrekt registreringsstatus/defaults og native MVA-behandling
 ved vanlig registrering. Brukerens foretak er ikke MVA-registrert. SAF-T og øvrige
 planpunkter gjenstår før samlet regnskapsmessig produksjonsaksept.
+
+
+## Korrigert bestilling: bredt skjermspråk og native modulvisning
+
+App 0.2.1 utvider norsk skjermspråk utenfor dokumentene til grunndata, innstillinger,
+felt/valg/hjelpetekster i 173 dokumenttyper, felles Desk og regnskapsrapportfiltre.
+VAT = MVA. Se language.md og runtime-ui-language.py; ikke påstå at hele ERPNext er
+manuelt språkgodkjent basert på katalogtelling.
+
+Brukeren vil nå beholde ALT standard moduloppsett. Tidligere instruks om å skjule
+Produksjon/Prosjekter/Kvalitet er trukket tilbake. module-visibility.py tilbakefører
+vår tidligere profil én gang, inkludert Lager, og oppdateringen kjører dette etter
+migrering. Ingen ny profil tildeles. Senere egne valg og andre profiler beholdes.
+Se module-defaults.md. Serveren oppdateres fortsatt bare av brukerens kommandoblokk.

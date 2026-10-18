@@ -12,9 +12,9 @@
   betaling, hovedbok og rapportering. Manuell etterbehandling er ikke ferdig normalflyt.
 - Ikke lag nye bekreftelsessider, historikkregistre eller parallelle hovedbøker for trygghets skyld.
 - Oppstartsveileder skal være kort status, forklaring og lenker til naturlige arbeidssteder.
-- Norsk standardoppsett skal vise Lager/Stock for artikkelregisteret og skjule
-  Produksjon, Prosjekter og Kvalitet med native modulvalg. Brukeren kan vise dem senere. Systemblokkering er ikke
-  bestilt etter presiseringen. Bevar funksjoner, felles grunndata og senere brukervalg.
+- Behold ERPNext sitt standard moduloppsett. Tidligere skjuling av Lager, Produksjon,
+  Prosjekter og Kvalitet er trukket tilbake. Gjenopprett modulene ved oppdatering;
+  ikke legg inn ny automatisk modulskjuling. Bevar senere uttrykkelige brukervalg.
 - Bare grenene main og staging. Ingen feature-grener. Utvikle på staging; test før push.
 - Main krever PR fra staging og beståtte aktuelle CI-resultater. Ingen direkte push,
   force-push eller sletting. Synkroniser staging etter promotering uten force-push.

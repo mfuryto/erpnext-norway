@@ -71,7 +71,7 @@ implementasjon, særlig for bokføring, kansellering og retting.
 Ingen påstand om full norsk dekning baseres bare på antall oversatte strenger.
 Faktiske skjermbilder, feilflyt og dokumenter er akseptgrunnlaget.
 
-## Levert arbeidspakke
+## Første arbeidspakke (0.2.0)
 
 App 0.2.0 retter de sentrale regnskapsbegrepene og feltene i salgs-, kjøps-,
 betalings- og bankflyten, med egne kontekstnøkler for de aktuelle DocType-feltene.
@@ -87,5 +87,38 @@ en oversettbar tittel. Brukertilpassede brevark overtas ikke.
 
 Akseptsporet er `tests/runtime-language.py` og `tests/runtime-language-browser.cjs`,
 sammen med eksisterende vanlig-eier-prøver. Browserprøven krever Playwright 1.58.2
-og kjøres bare mot den syntetiske localhost-instansen. Bredere språkfunn i senere
-MVA-/års-/EHF-flyt skal behandles sammen med den aktuelle funksjonstesten.
+og kjøres bare mot den syntetiske localhost-instansen. Denne første pakken var
+for smal til å oppfylle bestillingen om norsk skjermspråk; utvidelsen nedenfor
+lukker kartlagte hull også utenfor dokumentflyten.
+
+
+## Utvidet skjermspråk (0.2.1)
+
+Kartlegging av det låste ERPNext-imaget fant manglende feltnavn, hjelpetekster og
+valg også i foretak, kunder, leverandører, artikler, priser, lager, konti, bank,
+eiendeler, abonnementer, brukeroppsett og systeminnstillinger. Appens native CSV
+supplerer disse tekstene, inkludert tilhørende undertabeller. Kontrollen omfatter
+173 dokumenttyper; den bruker kjernens eksisterende korrekte oversettelser først.
+
+Felles Desk-tekster for navigasjon, søk, lister, filter, oppretting, påkrevde felt,
+vedlegg, varsler, utskrift, tilgang, arbeidsområder og innstillinger er også utvidet.
+Regnskapsrapportenes manglende filtertekster og standardmenyenes manglende titler
+er oversatt, også for de gjenåpnede modulene. Warehouse rettes fra «Varehus» til
+«Lager», Serial & Batch til «Serienumre og partier». Native oversettbare landnavn
+viser blant annet Norge uten å endre den lagrede nøkkelen Norway. VAT vises som **MVA**,
+Value Added Tax som **merverdiavgift**. Generell Tax oversettes etter sammenhengen,
+uten å kalle alle skatter og avgifter for MVA. Enhetspris og avgiftssats bruker
+kontekst; verken Rate, Tax eller interne statusverdier byttes globalt.
+
+`tests/runtime-ui-language.py` kontrollerer den installerte native katalogen mot
+feltnavn, hjelpetekster og valg i de 173 dokumenttypene. Tekniske nummermønstre,
+strekkodestandarder og PDF-motornavn har en uttrykkelig liste med unntak.
+Browserprøven åpner dessuten kunde-, leverandør- og artikkelskjemaer, foretaksoppsett,
+system-, regnskaps- og lagerinnstillinger. Den kontrollerer faktiske etiketter,
+valgtekst, hjelpetekst og feildialog for manglende kundenavn, i tillegg til tidligere
+salgs-/kjøps-/betalingsprøver og norske/engelske dokumenter.
+
+Dekningskontrollen er en regresjonskontroll for dette omfanget, ikke bevis for at
+hver eneste skjerm i alle ERPNext-moduler er gjennomgått manuelt. Brukerlagde navn,
+fritekst, tredjepartsinnhold og tekniske identifikatorer maskinoversettes ikke.
+Videre funksjonsaksept skal også kontrollere faktisk skjermspråk.

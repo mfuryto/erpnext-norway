@@ -10,9 +10,9 @@ Kontrolleres før promotering til main:
 - Socket.IO WebSocket Upgrade gir HTTP 101 og korrekt handshake gjennom Compose-
   frontend. Dette gjelder ikke den eksterne reverse proxyen.
 - Restart bevarer site-lagring og Frappe-krypteringsnøkkel.
-- Native norsk modulprofil viser Lager og skjuler Produksjon, Prosjekter og Kvalitet som
-  standard. Ny bruker arver profilen, senere personlige/delte valg bevares, og
-  dokumentrettigheter endres ikke. Se [modulvisning](module-defaults.md).
+- Native moduloppsett beholdes. Tidligere norsk skjuleprofil/default tilbakeføres
+  for Lager, Produksjon, Prosjekter og Kvalitet; nye brukere får ingen slik profil.
+  Senere personlige valg bevares. Se [modulvisning](module-defaults.md).
 - Native PDF-renderer lager en PDF fra syntetisk HTML. Dette kvalifiserer ikke
   fakturamal, språk, CSS, brevark eller dokumentkrav.
 - Full native backup med database, offentlige/private filer og site-konfigurasjon

@@ -93,6 +93,91 @@ const assert = require('node:assert/strict');
         }
       }
     }
+    const managerContext = await browser.newContext({baseURL: base, viewport: {width: 1440, height: 1080}});
+    const managerLogin = await managerContext.request.post('/api/method/login', {form: {
+      usr: 'runtime-ui-manager@example.invalid', pwd: 'Synthetic-ui-manager-only-2026!'
+    }});
+    assert.equal(managerLogin.status(), 200);
+    const managerPage = await managerContext.newPage();
+    // Native master-data forms, settings, selectors and required-field validation.
+    for (const [doctype, route, expected] of [
+      ['Customer', 'customer', {customer_name: 'Kundenavn', customer_type: 'Kundetype', payment_terms: 'Mal for betalingsvilkår'}],
+      ['Supplier', 'supplier', {supplier_name: 'Leverandørnavn', supplier_type: 'Leverandørtype', payment_terms: 'Mal for betalingsvilkår'}],
+      ['Item', 'item', {item_name: 'Artikkelnavn', is_stock_item: 'Lagerfør artikkelen', has_batch_no: 'Har partinummer', is_sales_item: 'Tillat salg'}]
+    ]) {
+      await managerPage.goto(`/app/${route}/new-${route}-ui-audit`);
+      await managerPage.waitForFunction(dt => window.cur_frm?.doctype === dt && cur_frm.doc.__islocal, doctype);
+      const actual = await managerPage.evaluate(fields => Object.fromEntries(fields.map(name => {
+        const field = cur_frm.fields_dict[name];
+        const label = field.$wrapper.find('label').first();
+        const area = label.find('.label-area').first();
+        const text = (area.length ? area : label).contents().filter(function () { return this.nodeType === 3; }).text().trim();
+        return [name, text];
+      })), Object.keys(expected));
+      assert.deepEqual(actual, expected, doctype);
+      if (doctype === 'Item') {
+        const help = await managerPage.evaluate(() => cur_frm.fields_dict.is_stock_item.$wrapper.find('.help-box').text());
+        assert(help.includes('Lagerfør') || help.includes('lagerpostering'), help);
+        await managerPage.getByText('Serienumre og partier', {exact: true}).waitFor();
+        assert.equal(await managerPage.getByText('Varehus', {exact: true}).count(), 0);
+      }
+      if (doctype === 'Customer') {
+        const options = await managerPage.evaluate(() => [...cur_frm.fields_dict.customer_type.$input[0].options].map(o => ({value: o.value, text: o.text})));
+        assert(options.some(o => o.value === 'Individual' && o.text === 'Privatperson'), JSON.stringify(options));
+        await managerPage.getByRole('button', {name: 'Lagre', exact: true}).click();
+        await managerPage.locator('.modal.show').last().waitFor();
+        const message = await managerPage.locator('.modal.show').last().innerText();
+        assert(message.includes('Kundenavn'), message);
+        assert(!message.includes('Customer Name'), message);
+        await managerPage.screenshot({path: `${output}/customer-required-nb.png`, fullPage: true});
+        await managerPage.locator('.modal.show').last().locator('.btn-modal-close').click();
+      }
+      await managerPage.screenshot({path: `${output}/${route}-new-nb.png`, fullPage: true});
+    }
+    for (const [doctype, route, name, expected] of [
+      ['Company', 'company', 'new-company-ui-audit', {default_currency: 'Standardvaluta', country: 'Land', chart_of_accounts: 'Kontoplanmal'}],
+      ['System Settings', 'system-settings', 'System Settings', {language: 'Språk', date_format: 'Datoformat', number_format: 'Tallformat'}],
+      ['Accounts Settings', 'accounts-settings', 'Accounts Settings', {check_supplier_invoice_uniqueness: 'Kontroller at leverandørens fakturanummer er unikt'}],
+      ['Stock Settings', 'stock-settings', 'Stock Settings', {allow_negative_stock: 'Tillat negativ lagerbeholdning', auto_insert_price_list_rate_if_missing: 'Opprett manglende artikkelpris automatisk'}]
+    ]) {
+      await managerPage.goto(`/app/${route}/${name}`);
+      await managerPage.waitForFunction(dt => window.cur_frm?.doctype === dt, doctype);
+      if (doctype === 'Company') {
+        await managerPage.evaluate(async () => {
+          await cur_frm.set_value('country', 'Norway');
+          await cur_frm.set_value('default_currency', 'NOK');
+          await cur_frm.set_value('create_chart_of_accounts_based_on', 'Standard Template');
+        });
+        await managerPage.waitForFunction(() => cur_frm.fields_dict.chart_of_accounts.$wrapper.find('label').text().trim());
+        const country = await managerPage.evaluate(() => ({stored: cur_frm.doc.country, shown: cur_frm.fields_dict.country.$input.val()}));
+        assert.deepEqual(country, {stored: 'Norway', shown: 'Norge'});
+      }
+      const actual = await managerPage.evaluate(fields => Object.fromEntries(fields.map(name => {
+        const field = cur_frm.fields_dict[name];
+        const label = field.$wrapper.find('label').first();
+        const area = label.find('.label-area').first();
+        const text = (area.length ? area : label).contents().filter(function () { return this.nodeType === 3; }).text().trim();
+        return [name, text];
+      })), Object.keys(expected));
+      assert.deepEqual(actual, expected, doctype);
+      await managerPage.screenshot({path: `${output}/${route}-nb.png`, fullPage: true});
+    }
+    await managerPage.goto('/app');
+    await managerPage.waitForFunction(() => window.frappe?.boot?.lang === 'nb');
+    const common = await managerPage.evaluate(() => Object.fromEntries([
+      'VAT', 'Value Added Tax', 'Change Language', 'More actions', 'Please fill the following mandatory fields before saving:',
+      'Stock', 'Manufacturing', 'Projects', 'Quality Management', 'Global Search', 'Showing {0} of {1}'
+    ].map(source => [source, __(source)])));
+    assert.equal(common.VAT, 'MVA');
+    assert.equal(common['Value Added Tax'], 'Merverdiavgift');
+    assert.equal(common.Stock, 'Lager');
+    assert.equal(common['More actions'], 'Flere handlinger');
+    assert.equal(common['Change Language'], 'Endre språk');
+    assert.equal(common['Global Search'], 'Globalt søk');
+    await managerPage.screenshot({path: `${output}/desk-native-modules-nb.png`, fullPage: true});
+    await managerContext.close();
+    console.log('PASS actual NB master forms, native selectors/help/required-field dialog, company/settings and common Desk catalog, VAT=MVA');
+
     assert.deepEqual(errors, []);
     console.log('PASS actual owner sales/purchase/journal/payment/quotation Desk NB labels and independent NB/EN document previews; native statuses unchanged');
   } finally {

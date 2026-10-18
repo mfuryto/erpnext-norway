@@ -12,8 +12,9 @@ fortsatt kjernen; appen aktiveres gjennom den særskilte oppdateringsrutinen.
   og oppdatering gjennom full backup, native installasjon og migrering.
 - [Norsk kontoplan](docs/norwegian-chart.md) som standardmal for nye Norway/NOK-selskaper,
   med kilde/lisens og native kontooppretting. CSV beholdes for eksplisitt valgt overgang.
-- Native norsk modulprofil som viser Lager og skjuler Produksjon, Prosjekter og Kvalitet
-  som standard, med mulighet for senere visning gjennom brukerinnstillingene.
+- ERPNexts standard modulvisning, med tilbakeføring av tidligere modulskjuling.
+- Norsk skjermspråk i grunndata, innstillinger og regnskapsflyt, samt norske/engelske
+  salgsdokumenter. Se [språkomfang og aksept](docs/language.md).
 - Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.
 - Plan for norsk kontoplan, MVA, dokumentkrav, SAF-T, EHF og årsgrunnlag.
 - ERPNext-kjernen først; tillegg brukes som referanser, ikke som automatisk produktgrunnlag.
