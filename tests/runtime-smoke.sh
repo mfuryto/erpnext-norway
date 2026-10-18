@@ -30,25 +30,20 @@ PY
 )
 python3 "$fixture/scripts/init-runtime.py" --url http://accounting.invalid --port "$port"
 bash "$fixture/scripts/prepare-runtime.sh"
-python3 - "$port" "$fixture" <<'PY'
+python3 - "$port" <<'PY'
 import json,sys,urllib.request
-from pathlib import Path
-port=sys.argv[1];root=Path(sys.argv[2])
+port=sys.argv[1]
 with urllib.request.urlopen(f'http://127.0.0.1:{port}/api/method/ping') as r:
     assert json.load(r)['message']=='pong'
 with urllib.request.urlopen(f'http://127.0.0.1:{port}/socket.io/?EIO=4&transport=polling') as r:
     assert r.read().startswith(b'0{')
-config=json.loads((root/'data/sites/accounting/site_config.json').read_text())
-assert config['encryption_key']
-(root/'site-key-hash').write_text(__import__('hashlib').sha256(config['encryption_key'].encode()).hexdigest())
 print('PASS native site, HTTP endpoint and Socket.IO polling')
 PY
+key_hash() {
+  "${compose[@]}" exec -T backend env/bin/python -c 'import hashlib,json; key=json.load(open("sites/accounting/site_config.json"))["encryption_key"]; assert key; print(hashlib.sha256(key.encode()).hexdigest())'
+}
+initial_key_hash=$(key_hash)
 "${compose[@]}" restart backend frontend
 "${compose[@]}" up -d --wait --wait-timeout 300
-python3 - "$fixture" <<'PY'
-from pathlib import Path
-import json,hashlib,sys
-root=Path(sys.argv[1]);config=json.loads((root/'data/sites/accounting/site_config.json').read_text())
-assert hashlib.sha256(config['encryption_key'].encode()).hexdigest()==(root/'site-key-hash').read_text()
-print('PASS restart preserves site encryption key and storage')
-PY
+[[ "$(key_hash)" == "$initial_key_hash" ]]
+printf 'PASS restart preserves site encryption key and storage\n'
