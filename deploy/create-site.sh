@@ -11,4 +11,5 @@ fi
 bench --site accounting set-config host_name "$PUBLIC_URL"
 bench --site accounting execute frappe.utils.password.get_encryption_key >/dev/null
 bench --site accounting enable-scheduler
+env/bin/python /opt/runtime/module-visibility.py
 bench --site accounting list-apps

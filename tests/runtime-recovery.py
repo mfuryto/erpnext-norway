@@ -67,7 +67,14 @@ try:
         assert frappe.db.get_default("runtime_ci_recovery") == "after-backup"
         print("PASS synthetic database and file changes made after backup")
     else:
+        from frappe.utils.modules import get_blocked_modules, is_module_visible
+
         assert frappe.db.get_default("runtime_ci_recovery") == "before-backup"
+        assert {"Stock", "Manufacturing", "Projects", "Quality Management"} <= set(
+            get_blocked_modules("Administrator")
+        )
+        assert is_module_visible("Stock", "runtime-modules@example.invalid")
+        assert not is_module_visible("Manufacturing", "runtime-modules@example.invalid")
         assert get_decrypted_password("User", "Administrator", "api_secret") == "synthetic-secret"
         for path in (public, private):
             assert path.read_text() == "synthetic recovery evidence"

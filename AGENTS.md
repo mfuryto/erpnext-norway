@@ -11,6 +11,9 @@
   betaling, hovedbok og rapportering. Manuell etterbehandling er ikke ferdig normalflyt.
 - Ikke lag nye bekreftelsessider, historikkregistre eller parallelle hovedbøker for trygghets skyld.
 - Oppstartsveileder skal være kort status, forklaring og lenker til naturlige arbeidssteder.
+- Norsk standardoppsett skal primært skjule Lager, Produksjon, Prosjekter og Kvalitet
+  med native modulvalg. Brukeren kan vise dem senere. Systemblokkering er ikke
+  bestilt etter presiseringen. Bevar funksjoner, felles grunndata og senere brukervalg.
 - Bare grenene main og staging. Ingen feature-grener. Utvikle på staging; test før push.
 - Main krever PR fra staging og beståtte aktuelle CI-resultater. Ingen direkte push,
   force-push eller sletting. Synkroniser staging etter promotering uten force-push.
