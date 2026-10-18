@@ -142,18 +142,21 @@ temporary.replace(path)
                      "--wait", "--wait-timeout", "300", *services)
 
 
-def take_backup(runtime, name, destination):
+def take_backup(runtime, name, destination, resume=True):
     services, metadata = runtime.inspect()
     runtime.prepare(name)
     # Once maintenance is attempted, always restore the original state, even on failure.
+    complete = False
     try:
         runtime.maintenance()
         runtime.stop(services)
         runtime.backup(name)
         runtime.export(name, destination)
+        complete = True
     finally:
-        runtime.restore_maintenance(name)
-        runtime.start(services)
+        if resume or not complete:
+            runtime.restore_maintenance(name)
+            runtime.start(services)
     return metadata
 
 
@@ -166,6 +169,46 @@ def runtime_lock(root):
         except BlockingIOError:
             raise RuntimeError("Another runtime operation is active.") from None
         yield
+
+
+def write_backup(root, name, runtime=None, resume=True):
+    backups = root / "backups"
+    if backups.is_symlink():
+        raise RuntimeError("The private backups directory must not be a symbolic link.")
+    backups.mkdir(mode=0o700, exist_ok=True)
+    backups.chmod(0o700)
+    destination = backups / name
+    destination.mkdir(mode=0o700)
+    with (destination / "runtime.log").open("w") as log:
+        (destination / "runtime.log").chmod(0o600)
+        shutil.copyfile(root / "deploy/.env", destination / "runtime.env")
+        (destination / "runtime.env").chmod(0o600)
+        shutil.copyfile(root / "compose.yaml", destination / "compose.yaml")
+        runtime = runtime or Runtime(root, log)
+        runtime.log = log
+        metadata = take_backup(runtime, name, destination, resume=resume)
+    try:
+        metadata.update({"complete": True, "runtime_resumed": resume, "site_backup_path": f"{SITE}/private/runtime-backups/{name}"})
+        (destination / "manifest.json").write_text(json.dumps(metadata, indent=2) + "\n")
+        hashes = []
+        for path in sorted(destination.rglob("*")):
+            path.chmod(0o700 if path.is_dir() else 0o600)
+            if path.is_file():
+                with path.open("rb") as stream:
+                    digest = hashlib.file_digest(stream, "sha256").hexdigest()
+                hashes.append(f"{digest}  {path.relative_to(destination)}\n")
+        (destination / "SHA256SUMS").write_text("".join(hashes))
+        (destination / "SHA256SUMS").chmod(0o600)
+    except BaseException:
+        if not resume:
+            # Sealing can fail after the native snapshot succeeded. Reopen the
+            # log before restoring the original runtime; it was closed above.
+            with (destination / "runtime.log").open("a") as log:
+                runtime.log = log
+                runtime.restore_maintenance(name)
+                runtime.start(metadata["running_app_services"])
+        raise
+    return destination, metadata
 
 
 def main():
@@ -181,30 +224,7 @@ def main():
         raise KeyboardInterrupt("Runtime operation interrupted")
     signal.signal(signal.SIGTERM, interrupted)
     with runtime_lock(root):
-        backups = root / "backups"
-        if backups.is_symlink():
-            raise RuntimeError("The private backups directory must not be a symbolic link.")
-        backups.mkdir(mode=0o700, exist_ok=True)
-        backups.chmod(0o700)
-        destination = backups / args.name
-        destination.mkdir(mode=0o700)
-        with (destination / "runtime.log").open("w") as log:
-            (destination / "runtime.log").chmod(0o600)
-            shutil.copyfile(root / "deploy/.env", destination / "runtime.env")
-            (destination / "runtime.env").chmod(0o600)
-            shutil.copyfile(root / "compose.yaml", destination / "compose.yaml")
-            metadata = take_backup(Runtime(root, log), args.name, destination)
-        metadata.update({"complete": True, "site_backup_path": f"{SITE}/private/runtime-backups/{args.name}"})
-        (destination / "manifest.json").write_text(json.dumps(metadata, indent=2) + "\n")
-        hashes = []
-        for path in sorted(destination.rglob("*")):
-            path.chmod(0o700 if path.is_dir() else 0o600)
-            if path.is_file():
-                with path.open("rb") as stream:
-                    digest = hashlib.file_digest(stream, "sha256").hexdigest()
-                hashes.append(f"{digest}  {path.relative_to(destination)}\n")
-        (destination / "SHA256SUMS").write_text("".join(hashes))
-        (destination / "SHA256SUMS").chmod(0o600)
+        destination, metadata = write_backup(root, args.name)
         print(f"Native backup complete; original services and maintenance state restored: backups/{args.name}")
 
 

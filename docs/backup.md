@@ -63,8 +63,8 @@ kjøres med `bench restore` fra den **eksporterte** kopien, fulgt av native migr
 Bilag, balansert hovedbok, modulvalg, private/offentlige vedlegg og dekryptering av
 en syntetisk hemmelighet kontrolleres før HTTP åpnes igjen.
 
-Dette gjelder den låste standardkjernen. Det kvalifiserer ikke en image-oppgradering,
-den fremtidige norske appen eller full servergjenoppretting med ekstern proxy.
-Oppgraderingsprøve skal bygge på dette og bruke samme native migreringsfunksjoner.
+Baselineprøven gjelder den låste standardkjernen. Den separate
+[appprøven](norwegian-app.md) bruker samme backup og native restore/migrate med appen.
+Dette kvalifiserer ikke andre kjerneversjoner eller full servergjenoppretting med ekstern proxy.
 Kopi utenfor serveren og faktisk gjenopprettingsprøve for driftsdata må inngå før
 produksjonsaksept. Dette verktøyet endrer ikke eksisterende proxy eller TLS.

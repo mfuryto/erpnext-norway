@@ -69,3 +69,10 @@ kartleggingen er et dokumentert gap, ikke en godkjent norsk arbeidsflyt.
 
 Ingen generell norsk regnskapsaksept eller ferdig dokumentbevaring følger av disse
 enkeltfunksjonene.
+
+## Tillegg basert på denne kartleggingen
+
+Den [minimale norske appen](norwegian-app.md) gjenbruker de prøvde native funksjonene
+og lukker de beskrevne slette-/frakoblingshullene i støttet dokumentflyt. Baselineprøven
+ovenfor beholdes mot uendret kjerne; en separat appprøve verifiserer avvisning,
+tillatte rettelser, native kansellering, samtidighet og eksportert restore.

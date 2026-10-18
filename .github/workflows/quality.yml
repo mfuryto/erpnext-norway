@@ -23,7 +23,7 @@ jobs:
         run: |
           python3 scripts/check-policy.py
           python3 -m unittest discover -s tests -v
-          bash -n scripts/prepare-runtime.sh deploy/configure.sh deploy/create-site.sh tests/runtime-smoke.sh
+          bash -n scripts/prepare-runtime.sh deploy/configure.sh deploy/create-site.sh scripts/build-app-image.sh tests/runtime-smoke.sh
           git diff --check
   runtime:
     name: ERPNext runtime integration
@@ -35,3 +35,13 @@ jobs:
           persist-credentials: false
       - name: Verify synthetic runtime, PDF and backup recovery
         run: bash tests/runtime-smoke.sh
+  app:
+    name: Norwegian app integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0
+        with:
+          persist-credentials: false
+      - name: Install app, qualify preservation and restore exported backup
+        run: ERP_TEST_APP=1 bash tests/runtime-smoke.sh

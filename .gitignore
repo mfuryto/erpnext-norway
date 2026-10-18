@@ -6,3 +6,5 @@
 __pycache__/
 /.cutover.lock
 /.runtime.lock
+
+/deploy/.runtime-update-*

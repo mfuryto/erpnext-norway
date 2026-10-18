@@ -1,6 +1,6 @@
 name: erpnext-norway
 x-app: &app
-  image: frappe/erpnext:v16.51.1@sha256:a856e7f65c7bfc9cfa2e74f95b62e11d37190c380d958cbf3bea5d05e2ec9268
+  image: ${ERP_APP_IMAGE:-frappe/erpnext:v16.51.1@sha256:a856e7f65c7bfc9cfa2e74f95b62e11d37190c380d958cbf3bea5d05e2ec9268}
   restart: unless-stopped
   volumes:
     - ./data/sites:/home/frappe/frappe-bench/sites
