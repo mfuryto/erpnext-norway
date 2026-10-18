@@ -112,7 +112,39 @@ def render(resource=RESOURCE):
     return output.getvalue()
 
 
+TEMPLATE = ROOT / "apps/erpnext_norway/erpnext_norway/chart_data/norway.json"
+
+
+def render_template(resource=RESOURCE):
+    """Represent the same licensed accounts as native create_charts custom_chart data."""
+    tree, groups = {}, {}
+    for row in csv.DictReader(io.StringIO(render(resource))):
+        number, name = row["Account Number"], row["Account Name"]
+        node = {"account_name": name, "is_group": int(row["Is Group"]),
+                "account_currency": row["Account Currency"]}
+        if number:
+            node["account_number"] = number
+        if row["Account Type"]:
+            node["account_type"] = row["Account Type"]
+        if not row["Parent Account"]:
+            node["root_type"] = row["Root Type"]
+            tree[name] = node
+        else:
+            # Account names repeat in the source. Keys must be unique, while
+            # native from_coa_importer preserves the original account_name.
+            key = f"{number} {name}" if number else name
+            parent = groups[row["Parent Account"]]
+            if key in parent:
+                raise ValueError("Duplicate native template key")
+            parent[key] = node
+        if row["Is Group"] == "1":
+            groups[name] = node
+    return json.dumps({"name": "Norsk kontoplan", "country": "Norway", "tree": tree},
+                      ensure_ascii=False, indent=2) + "\n"
+
+
 if __name__ == "__main__":
     target = RESOURCE / "norway.csv"
     target.write_text(render())
-    print("Native ERPNext chart CSV generated from the pinned licensed source. No company changed.")
+    TEMPLATE.write_text(render_template())
+    print("Native ERPNext chart CSV and template generated from the pinned licensed source. No company changed.")

@@ -3,7 +3,9 @@ USER frappe
 COPY --chown=frappe:frappe deploy/app-build-requirements.txt /tmp/app-build-requirements.txt
 RUN uv pip install --python env/bin/python --require-hashes --no-deps -r /tmp/app-build-requirements.txt
 COPY --chown=frappe:frappe apps/erpnext_norway /home/frappe/frappe-bench/apps/erpnext_norway
-RUN uv pip install --python env/bin/python --no-deps --no-build-isolation -e apps/erpnext_norway
+RUN uv pip install --python env/bin/python --no-deps --no-build-isolation -e apps/erpnext_norway \
+    && ln -s /home/frappe/frappe-bench/apps/erpnext_norway/erpnext_norway/chart_data/norway.json \
+    apps/erpnext/erpnext/accounts/doctype/account/chart_of_accounts/verified/no_erpnext_norway.json
 LABEL org.opencontainers.image.title="ERPNext Norway" \
       org.opencontainers.image.version="0.1.0" \
       no.erpnext-norway.base="v16.51.1"

@@ -96,6 +96,9 @@ runtime_python() {
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-module-visibility.py"
 runtime_python seed
+if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - < "$root/tests/runtime-company-chart.py"
+fi
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-core-accounting.py"
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then

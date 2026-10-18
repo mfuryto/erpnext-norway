@@ -1,0 +1,19 @@
+{
+  "upstream": "https://github.com/odoo/odoo",
+  "commit": "2ff84495182bc2d6e87b616731f865677a12b213",
+  "path": "addons/l10n_no/data/template/account.account-no.csv",
+  "license": "LGPL-3 (upstream manifest)",
+  "authors": [
+    "Odoo contributors",
+    "Rolv Råen",
+    "Bringsvor Consulting AS"
+  ],
+  "accounts": 745,
+  "upstream_sha256": {
+    "COPYRIGHT": "86e49232d2162708d05405ed5ff6dc5594b73ef4b0f25d2749cfae13493b620c",
+    "LICENSE": "abc09dad5f84a76e1b0279237053cae16c03228ab27d8d467677054c2bd17eeb",
+    "__manifest__.py": "35c825a395a0270b12091f126228886e27c787bfcfaa41af39a348473a4e4f1c",
+    "account.account-no.csv": "32cc49b9aa195622a83367f867564fff0819bed608cffa398dfe0ddd9875161b"
+  },
+  "transformation": "Preserve all four-digit codes and nb_NO labels; map to native ERPNext Chart of Accounts Importer fields. Native account types and financial-income grouping are explicit adapter configuration, not imported Odoo behavior."
+}

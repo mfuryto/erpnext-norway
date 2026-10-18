@@ -26,7 +26,7 @@ try:
         company = "Runtime Recovery Example"
         setup_complete(frappe._dict(
             country="Norway", language="en", company_name=company, company_abbr="RRE",
-            currency="NOK", chart_of_accounts="Standard", fy_start_date="2026-01-01",
+            currency="NOK", chart_of_accounts=("Norsk kontoplan" if "erpnext_norway" in frappe.get_installed_apps() else "Standard"), fy_start_date="2026-01-01",
             fy_end_date="2026-12-31", timezone="Europe/Oslo",
         ))
         cash = frappe.db.get_value("Account", {
