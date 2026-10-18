@@ -1,21 +1,37 @@
 # Norsk kontoplan gjennom ERPNext-kjernen
 
-`resources/norway-chart/norway.csv` er en fil for den eksisterende **Chart of Accounts
-Importer**. Den beholder alle 745 kontonumre og norske navn fra den låste,
-LGPL-lisensierte Odoo-kilden. Ingen Odoo-app eller egen importmotor installeres.
-Se [proveniens og lisens](../resources/norway-chart/NOTICE.md).
+Med den norske appen installert finnes **Norsk kontoplan** i ERPNexts ordinære
+malvalg. Den er første valg i oppstartsveiviseren for Norway, og nye selskaper med
+Norway/NOK får den som standard når ingen annen mal er valgt. Eksplisitte malvalg,
+kopiering fra eksisterende selskap og eksisterende selskaper beholdes.
 
-## Native oppsett
+De 745 norske kontonumrene/navnene opprettes direkte med kjernens `create_charts`.
+Den generiske Standard-planen opprettes ikke først. Ingen manuell sletting eller
+CSV-import skal inngå ved ny selskapsoppretting. Forhåndsvisning bruker også den
+native trebyggeren. Se [proveniens og lisens](../resources/norway-chart/NOTICE.md).
 
-Dette er teknisk kjerneoppsett, ikke samlet norsk produksjonsaksept. Fullfør den
-ordinære oppstartsveiviseren med faktisk foretak, Norway, NOK, Europe/Oslo og riktig
-regnskapsår. Ikke bruk syntetiske selskaper eller bilag på driftsserveren.
+ERPNext 16.51.1 søker bare etter malfiler i sitt eget kodeområde, og Company sin
+hjelpemetode har ingen parameter for eksternt malinnhold. Appen leverer derfor
+en referanse til appens datafil i den eksisterende malkatalogen ved imagebygging.
+Ingen eksisterende ERPNext-filer endres. En smal Frappe-utvidelse sender maldata
+til kjernens kontooppretting, slik at gjentatte kontonavn beholdes uendret.
+Standardkontoer, lagersteder og øvrig selskapsoppsett håndteres av kjernen. Andre
+maler bruker uendret native funksjon.
 
-Ta [backup](backup.md) før kontoplan byttes. Åpne **Chart of Accounts Importer**, velg
-det aktuelle tomme foretaket og last opp CSV-filen. Kjernen validerer og erstatter
-kontoplanen; den avviser import når foretaket allerede har hovedboksposter. Ikke
-omgå denne kontrollen eller bruk import som løpende oppdatering av en brukt plan.
-Senere kontotilpasning gjøres i den native kontoplanen.
+## Nytt selskap
+
+Oppdater/installer den norske appen før selskapet opprettes. Velg Norway, NOK og
+**Norsk kontoplan** i den ordinære oppstartsveiviseren eller Company. Bruk faktisk
+foretak og regnskapsår på serveren; ingen syntetiske eksempler i drift. Malen er
+foreløpig kvalifisert for NOK. Den endrer ikke registreringsstatus for MVA.
+
+## Allerede opprettet selskap
+
+Appen erstatter ikke kontoplanen i eksisterende selskaper. Den tidligere CSV-filen
+`resources/norway-chart/norway.csv` beholdes for native Chart of Accounts Importer
+ved en uttrykkelig valgt overgang på et foretak uten hovedboksposter. Kjernen
+avviser erstatning når hovedbok finnes. Ikke omgå den kontrollen eller slett kontoer
+enkeltvis for å fremtvinge et bytte. Senere tilpasning skjer i den native kontoplanen.
 
 Kontroller deretter standardkontoene i **Company**:
 

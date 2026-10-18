@@ -96,3 +96,13 @@ Tilgangsstyring og kopi utenfor serveren må fortsatt ivaretas.
 Appens egne vernmeldinger har bokmålsoversettelser via native CSV. Full oversettelse
 av regnskapsflyten og norske/engelske dokumentmaler er neste separate punkt.
 Ingen generell påstand om norsk etterlevelse følger av denne leveransen.
+
+## Norsk kontoplanmal
+
+[Norsk kontoplan](norwegian-chart.md) inngår som vanlig mal ved selskapsoppretting.
+Nye Norway/NOK-selskaper får den som standard når ingen annen mal er valgt; eksisterende
+selskaper og eksplisitte valg beholdes. Alle 745 kontonumre og navn kommer fra samme
+lisensierte kilde som CSV-eksporten. Native create_charts og trevisning brukes direkte.
+Den smale Company-utvidelsen er nødvendig fordi kjernen bare søker maler i egen
+pakke og ikke tilbyr et provider-hook. Imagebyggingen legger derfor en referanse
+til appens datafil i den native malkatalogen. Ingen eksisterende kjernefiler endres.

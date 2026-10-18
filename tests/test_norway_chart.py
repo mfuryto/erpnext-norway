@@ -6,7 +6,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from build_norway_chart import RESOURCE, render, source_accounts
+from build_norway_chart import RESOURCE, TEMPLATE, render, render_template, source_accounts
 
 
 class NativeChartData(unittest.TestCase):
@@ -24,6 +24,21 @@ class NativeChartData(unittest.TestCase):
         self.assertEqual({code: row["Account Name"] for code, row in self.accounts.items()},
                          {row["code"]: row["name@nb_NO"] for row in self.source})
         self.assertEqual((RESOURCE / "norway.csv").read_text(), self.csv)
+
+    def test_packaged_native_template_preserves_all_source_accounts(self):
+        import json
+        self.assertEqual(TEMPLATE.read_text(), render_template())
+        accounts = {}
+        def visit(node):
+            for value in node.values():
+                if not isinstance(value, dict):
+                    continue
+                if value.get('account_number'):
+                    accounts[value['account_number']] = value['account_name']
+                visit(value)
+        visit(json.loads(TEMPLATE.read_text())['tree'])
+        self.assertEqual(accounts, {row['code']: row['name@nb_NO'] for row in self.source})
+        self.assertEqual(len(accounts), 745)
 
     def test_groups_resolve_and_all_native_root_types_are_present(self):
         groups = {row["Account Name"] for row in self.rows if row["Is Group"] == "1"}

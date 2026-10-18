@@ -183,3 +183,13 @@ Appen og bevaringsvern inngår i separat Compose-prøve og eksportert restore.
 Faktisk oppdatering av brukerens server er fortsatt ikke verifisert her.
 Neste produktpunkt er norsk skjermspråk og norsk/engelsk dokument/PDF med bevaring
 av utstedt dokument, fulgt av faktisk foretaksoppsett og normal avgiftsflyt.
+
+## Presisering: norsk mal ved selskapsoppretting
+
+Brukeren har ingen data i selskapet og vil opprette det på nytt. Norsk kontoplan
+skal være en ordinær standardmal, ikke en etterfølgende manuell slette-/importoppgave.
+Appen leverer nå Norsk kontoplan via native malvalg/trevisning og create_charts,
+med standardvalg for nye Norway/NOK-selskaper. Eksisterende selskaper, eksplisitte
+malvalg og kopiering fra selskap overtas ikke automatisk. Se norwegian-chart.md.
+Endringen prøves med ekte Company-oppretting, alle 745 navn/koder, standardkontoer,
+native forhåndsvisning og uendrede eksplisitte valg før push/PR.

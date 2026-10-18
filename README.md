@@ -10,8 +10,8 @@ fortsatt kjernen; appen aktiveres gjennom den særskilte oppdateringsrutinen.
 - Native ERPNext-backup med privat driftskonfigurasjon og prøvd gjenoppretting.
 - [Minimal norsk app](docs/norwegian-app.md) med native nummerserier, dokument-/vedleggsvern
   og oppdatering gjennom full backup, native installasjon og migrering.
-- [Norsk kontoplan](docs/norwegian-chart.md) for den native importeren, med kilde/lisens
-  og prøvd salgs-, kjøps- og bankflyt uten en egen hovedbok.
+- [Norsk kontoplan](docs/norwegian-chart.md) som standardmal for nye Norway/NOK-selskaper,
+  med kilde/lisens og native kontooppretting. CSV beholdes for eksplisitt valgt overgang.
 - Native norsk modulprofil som viser Lager og skjuler Produksjon, Prosjekter og Kvalitet
   som standard, med mulighet for senere visning gjennom brukerinnstillingene.
 - Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.

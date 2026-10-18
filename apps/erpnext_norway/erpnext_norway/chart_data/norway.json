@@ -1,0 +1,4694 @@
+{
+  "name": "Norsk kontoplan",
+  "country": "Norway",
+  "tree": {
+    "Eiendeler": {
+      "account_name": "Eiendeler",
+      "is_group": 1,
+      "account_currency": "NOK",
+      "root_type": "Asset",
+      "Bankkontoer": {
+        "account_name": "Bankkontoer",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "account_type": "Bank",
+        "1920 Bankinnskudd": {
+          "account_name": "Bankinnskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1920",
+          "account_type": "Bank"
+        }
+      },
+      "Kontantkontoer": {
+        "account_name": "Kontantkontoer",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "account_type": "Cash",
+        "1900 Kontanter, NOK": {
+          "account_name": "Kontanter, NOK",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1900",
+          "account_type": "Cash"
+        }
+      },
+      "Varelager": {
+        "account_name": "Varelager",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "account_type": "Stock",
+        "1400 Direkte materialer/råvarer": {
+          "account_name": "Direkte materialer/råvarer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1400",
+          "account_type": "Stock"
+        },
+        "1405 Hjelpematerialer": {
+          "account_name": "Hjelpematerialer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1405",
+          "account_type": "Stock"
+        },
+        "1408 Driftsmaterialer og reservedeler": {
+          "account_name": "Driftsmaterialer og reservedeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1408",
+          "account_type": "Stock"
+        },
+        "1420 Varer under tilvirkning": {
+          "account_name": "Varer under tilvirkning",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1420",
+          "account_type": "Stock"
+        },
+        "1440 Ferdige egentilvirkede varer": {
+          "account_name": "Ferdige egentilvirkede varer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1440",
+          "account_type": "Stock"
+        },
+        "1460 Innkjøpte varer for videresalg": {
+          "account_name": "Innkjøpte varer for videresalg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1460",
+          "account_type": "Stock"
+        },
+        "1465 Demonstrasjonsvarer": {
+          "account_name": "Demonstrasjonsvarer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1465",
+          "account_type": "Stock"
+        },
+        "1499 Andre beholdninger": {
+          "account_name": "Andre beholdninger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1499",
+          "account_type": "Stock"
+        }
+      },
+      "Anleggsmidler": {
+        "account_name": "Anleggsmidler",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "1100 Bygninger": {
+          "account_name": "Bygninger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1100",
+          "account_type": "Fixed Asset"
+        },
+        "1110 Fast teknisk installasjon i bygning": {
+          "account_name": "Fast teknisk installasjon i bygning",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1110",
+          "account_type": "Fixed Asset"
+        },
+        "1117 Elektronisk utrustning i kraftforetak": {
+          "account_name": "Elektronisk utrustning i kraftforetak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1117",
+          "account_type": "Fixed Asset"
+        },
+        "1120 Bygningsmessige anlegg": {
+          "account_name": "Bygningsmessige anlegg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1120",
+          "account_type": "Fixed Asset"
+        },
+        "1130 Anlegg under utførelse": {
+          "account_name": "Anlegg under utførelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1130",
+          "account_type": "Fixed Asset"
+        },
+        "1140 Jordbrukseiendommer": {
+          "account_name": "Jordbrukseiendommer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1140",
+          "account_type": "Fixed Asset"
+        },
+        "1145 Skogbrukseiendommer": {
+          "account_name": "Skogbrukseiendommer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1145",
+          "account_type": "Fixed Asset"
+        },
+        "1150 Tomter": {
+          "account_name": "Tomter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1150",
+          "account_type": "Fixed Asset"
+        },
+        "1155 Andre grunnarealer": {
+          "account_name": "Andre grunnarealer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1155",
+          "account_type": "Fixed Asset"
+        },
+        "1160 Boliger inklusive tomter": {
+          "account_name": "Boliger inklusive tomter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1160",
+          "account_type": "Fixed Asset"
+        },
+        "1179 Annen fast eiendom": {
+          "account_name": "Annen fast eiendom",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1179",
+          "account_type": "Fixed Asset"
+        },
+        "1180 Investeringseiendommer": {
+          "account_name": "Investeringseiendommer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1180",
+          "account_type": "Fixed Asset"
+        },
+        "1190 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1190",
+          "account_type": "Fixed Asset"
+        },
+        "1191 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1191",
+          "account_type": "Fixed Asset"
+        },
+        "1192 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1192",
+          "account_type": "Fixed Asset"
+        },
+        "1193 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1193",
+          "account_type": "Fixed Asset"
+        },
+        "1194 Grunnlag innførsel av varer med null sats": {
+          "account_name": "Grunnlag innførsel av varer med null sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1194",
+          "account_type": "Fixed Asset"
+        },
+        "1195 Grunnlag innførsel av varer med null sats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med null sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1195",
+          "account_type": "Fixed Asset"
+        },
+        "1196 Grunnlag utgående MVA kjøp tjenester fra utlandet": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1196",
+          "account_type": "Fixed Asset"
+        },
+        "1197 Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1197",
+          "account_type": "Fixed Asset"
+        },
+        "1200 Maskiner og anlegg": {
+          "account_name": "Maskiner og anlegg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1200",
+          "account_type": "Fixed Asset"
+        },
+        "1210 Maskiner og anlegg under utførelse": {
+          "account_name": "Maskiner og anlegg under utførelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1210",
+          "account_type": "Fixed Asset"
+        },
+        "1220 Skip": {
+          "account_name": "Skip",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1220",
+          "account_type": "Fixed Asset"
+        },
+        "1224 Rigger": {
+          "account_name": "Rigger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1224",
+          "account_type": "Fixed Asset"
+        },
+        "1225 Fly": {
+          "account_name": "Fly",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1225",
+          "account_type": "Fixed Asset"
+        },
+        "1230 Personbiler/stasjonsvogner": {
+          "account_name": "Personbiler/stasjonsvogner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1230",
+          "account_type": "Fixed Asset"
+        },
+        "1235 Varebiler, klasse 1": {
+          "account_name": "Varebiler, klasse 1",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1235",
+          "account_type": "Fixed Asset"
+        },
+        "1236 Varebiler, klasse 2": {
+          "account_name": "Varebiler, klasse 2",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1236",
+          "account_type": "Fixed Asset"
+        },
+        "1237 Lastebiler": {
+          "account_name": "Lastebiler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1237",
+          "account_type": "Fixed Asset"
+        },
+        "1238 Busser": {
+          "account_name": "Busser",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1238",
+          "account_type": "Fixed Asset"
+        },
+        "1239 Varebiler med nullutslipp": {
+          "account_name": "Varebiler med nullutslipp",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1239",
+          "account_type": "Fixed Asset"
+        },
+        "1240 Traktorer": {
+          "account_name": "Traktorer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1240",
+          "account_type": "Fixed Asset"
+        },
+        "1242 Trucker": {
+          "account_name": "Trucker",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1242",
+          "account_type": "Fixed Asset"
+        },
+        "1249 Andre transportmidler": {
+          "account_name": "Andre transportmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1249",
+          "account_type": "Fixed Asset"
+        },
+        "1250 Inventar": {
+          "account_name": "Inventar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1250",
+          "account_type": "Fixed Asset"
+        },
+        "1260 Fast bygningsinventar, eget bygg": {
+          "account_name": "Fast bygningsinventar, eget bygg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1260",
+          "account_type": "Fixed Asset"
+        },
+        "1265 Fast bygningsinventar, leide lokaler": {
+          "account_name": "Fast bygningsinventar, leide lokaler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1265",
+          "account_type": "Fixed Asset"
+        },
+        "1270 Verktøy o.l.": {
+          "account_name": "Verktøy o.l.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1270",
+          "account_type": "Fixed Asset"
+        },
+        "1280 Kontormaskiner": {
+          "account_name": "Kontormaskiner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1280",
+          "account_type": "Fixed Asset"
+        },
+        "1289 Andre varige driftsmidler": {
+          "account_name": "Andre varige driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1289",
+          "account_type": "Fixed Asset"
+        },
+        "1290 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1290",
+          "account_type": "Fixed Asset"
+        },
+        "1291 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1291",
+          "account_type": "Fixed Asset"
+        },
+        "1292 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1292",
+          "account_type": "Fixed Asset"
+        },
+        "1293 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1293",
+          "account_type": "Fixed Asset"
+        },
+        "1294 Grunnlag innførsel av varer med null sats": {
+          "account_name": "Grunnlag innførsel av varer med null sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1294",
+          "account_type": "Fixed Asset"
+        },
+        "1295 Grunnlag innførsel av varer med null sats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med null sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1295",
+          "account_type": "Fixed Asset"
+        },
+        "1296 Grunnlag utgående MVA kjøp tjenester fra utlandet": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1296",
+          "account_type": "Fixed Asset"
+        },
+        "1297 Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1297",
+          "account_type": "Fixed Asset"
+        }
+      },
+      "Omløpsmidler": {
+        "account_name": "Omløpsmidler",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "1000 Utvikling, ervervet": {
+          "account_name": "Utvikling, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1000"
+        },
+        "1005 Utvikling, egenutviklet": {
+          "account_name": "Utvikling, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1005"
+        },
+        "1020 Konsesjoner, ervervet": {
+          "account_name": "Konsesjoner, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1020"
+        },
+        "1025 Konsesjoner, egenutviklet": {
+          "account_name": "Konsesjoner, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1025"
+        },
+        "1030 Patenter, ervervet": {
+          "account_name": "Patenter, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1030"
+        },
+        "1035 Patenter, egenutviklet": {
+          "account_name": "Patenter, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1035"
+        },
+        "1040 Lisenser, ervervet": {
+          "account_name": "Lisenser, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1040"
+        },
+        "1045 Lisenser, egenutviklet": {
+          "account_name": "Lisenser, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1045"
+        },
+        "1050 Varemerker, ervervet": {
+          "account_name": "Varemerker, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1050"
+        },
+        "1055 Varemerker, egenutviklet": {
+          "account_name": "Varemerker, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1055"
+        },
+        "1060 Andre rettigheter, ervervet": {
+          "account_name": "Andre rettigheter, ervervet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1060"
+        },
+        "1065 Andre rettigheter, egenutviklet": {
+          "account_name": "Andre rettigheter, egenutviklet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1065"
+        },
+        "1068 Innenlands kjøp av rettigheter, omvendt avgiftsplikt": {
+          "account_name": "Innenlands kjøp av rettigheter, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1068"
+        },
+        "1069 Innenlands kjøp av rettigheter, omvendt avgiftsplikt, motkonto": {
+          "account_name": "Innenlands kjøp av rettigheter, omvendt avgiftsplikt, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1069"
+        },
+        "1070 Utsatt skattefordel, brutto": {
+          "account_name": "Utsatt skattefordel, brutto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1070"
+        },
+        "1075 Reduksjon utsatt skattefordel pga manglende realiserbarhet": {
+          "account_name": "Reduksjon utsatt skattefordel pga manglende realiserbarhet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1075"
+        },
+        "1079 Utlignbar utsatt skattefordel": {
+          "account_name": "Utlignbar utsatt skattefordel",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1079"
+        },
+        "1080 Goodwill": {
+          "account_name": "Goodwill",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1080"
+        },
+        "1099 Andre immaterielle eiendeler": {
+          "account_name": "Andre immaterielle eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1099"
+        },
+        "1300 Aksjer i datterselskap": {
+          "account_name": "Aksjer i datterselskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1300"
+        },
+        "1305 Andeler i datterselskap": {
+          "account_name": "Andeler i datterselskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1305"
+        },
+        "1306 Aksjer/andeler i datterselskap, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i datterselskap, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1306"
+        },
+        "1308 Aksjer/andeler i datterselskap, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i datterselskap, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1308"
+        },
+        "1310 Aksjer i foretak i samme konsern": {
+          "account_name": "Aksjer i foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1310"
+        },
+        "1315 Andeler i foretak i samme konsern": {
+          "account_name": "Andeler i foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1315"
+        },
+        "1316 Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1316"
+        },
+        "1318 Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1318"
+        },
+        "1320 Lån til datterselskaper": {
+          "account_name": "Lån til datterselskaper",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1320"
+        },
+        "1325 Lån til andre foretak i samme konsern": {
+          "account_name": "Lån til andre foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1325"
+        },
+        "1330 Investeringer i tilknyttet selskap": {
+          "account_name": "Investeringer i tilknyttet selskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1330"
+        },
+        "1340 Lån til tilknyttet selskap": {
+          "account_name": "Lån til tilknyttet selskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1340"
+        },
+        "1345 Lån til felles kontrollert virksomhet": {
+          "account_name": "Lån til felles kontrollert virksomhet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1345"
+        },
+        "1350 Andre aksjer, norske": {
+          "account_name": "Andre aksjer, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1350"
+        },
+        "1355 Andre andeler, norske": {
+          "account_name": "Andre andeler, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1355"
+        },
+        "1356 Andre aksjer/andeler, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Andre aksjer/andeler, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1356"
+        },
+        "1357 Andre aksjer/andeler, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Andre aksjer/andeler, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1357"
+        },
+        "1358 Verdipapirfondsandeler": {
+          "account_name": "Verdipapirfondsandeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1358"
+        },
+        "1360 Obligasjoner": {
+          "account_name": "Obligasjoner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1360"
+        },
+        "1369 Andre finansielle anleggsmidler": {
+          "account_name": "Andre finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1369"
+        },
+        "1370 Fordringer på eiere": {
+          "account_name": "Fordringer på eiere",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1370"
+        },
+        "1375 Fordringer på styremedlemmer": {
+          "account_name": "Fordringer på styremedlemmer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1375"
+        },
+        "1380 Fordringer på ansatte": {
+          "account_name": "Fordringer på ansatte",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1380"
+        },
+        "1384 Fordringer på daglig leder": {
+          "account_name": "Fordringer på daglig leder",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1384"
+        },
+        "1385 Fordringer på ansatte eiere": {
+          "account_name": "Fordringer på ansatte eiere",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1385"
+        },
+        "1393 Innskuddsfond": {
+          "account_name": "Innskuddsfond",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1393"
+        },
+        "1394 Overfinansiering av pensjonsforpliktelser (pensjonspremiefond)": {
+          "account_name": "Overfinansiering av pensjonsforpliktelser (pensjonspremiefond)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1394"
+        },
+        "1395 Leietakerinnskudd": {
+          "account_name": "Leietakerinnskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1395"
+        },
+        "1396 Depositum": {
+          "account_name": "Depositum",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1396"
+        },
+        "1397 Forskuddsleasing": {
+          "account_name": "Forskuddsleasing",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1397"
+        },
+        "1398 Til gode merverdiavgift": {
+          "account_name": "Til gode merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1398"
+        },
+        "1399 Andre fordringer": {
+          "account_name": "Andre fordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1399"
+        },
+        "1409 Beholdningsendring råvarer og innkjøpte halvfabrikater": {
+          "account_name": "Beholdningsendring råvarer og innkjøpte halvfabrikater",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1409"
+        },
+        "1429 Beholdningsendring varer under tilvirkning": {
+          "account_name": "Beholdningsendring varer under tilvirkning",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1429"
+        },
+        "1449 Beholdningsendring ferdige egentilvirkede varer": {
+          "account_name": "Beholdningsendring ferdige egentilvirkede varer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1449"
+        },
+        "1469 Beholdningsendring innkjøpte varer for videresalg": {
+          "account_name": "Beholdningsendring innkjøpte varer for videresalg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1469"
+        },
+        "1470 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1470"
+        },
+        "1471 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1471"
+        },
+        "1472 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1472"
+        },
+        "1473 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1473"
+        },
+        "1474 Grunnlag innførsel av varer med null sats": {
+          "account_name": "Grunnlag innførsel av varer med null sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1474"
+        },
+        "1475 Grunnlag innførsel av varer med null sats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med null sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1475"
+        },
+        "1476 Grunnlag utgående MVA kjøp tjenester fra utlandet": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1476"
+        },
+        "1477 Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1477"
+        },
+        "1478 Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt": {
+          "account_name": "Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1478"
+        },
+        "1479 Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto": {
+          "account_name": "Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1479"
+        },
+        "1480 Forskuddsbetaling til leverandører (varekontrakter/prosjekter)": {
+          "account_name": "Forskuddsbetaling til leverandører (varekontrakter/prosjekter)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1480"
+        },
+        "1490 Biologiske eiendeler": {
+          "account_name": "Biologiske eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1490"
+        },
+        "1500 Kundefordringer": {
+          "account_name": "Kundefordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1500",
+          "account_type": "Receivable"
+        },
+        "1530 Opptjent, ikke fakturert driftsinntekt": {
+          "account_name": "Opptjent, ikke fakturert driftsinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1530"
+        },
+        "1550 Kundefordringer på selskap i samme konsern": {
+          "account_name": "Kundefordringer på selskap i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1550"
+        },
+        "1560 Andre fordringer på selskap i samme konsern": {
+          "account_name": "Andre fordringer på selskap i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1560"
+        },
+        "1570 Reiseforskudd": {
+          "account_name": "Reiseforskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1570"
+        },
+        "1572 Lønnsforskudd (som trekkes i lønn senere)": {
+          "account_name": "Lønnsforskudd (som trekkes i lønn senere)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1572"
+        },
+        "1573 Andre kortsiktige lån til ansatte (ikke forskudd lønn)": {
+          "account_name": "Andre kortsiktige lån til ansatte (ikke forskudd lønn)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1573"
+        },
+        "1574 Kortsiktig lån aksjonær/deltaker": {
+          "account_name": "Kortsiktig lån aksjonær/deltaker",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1574"
+        },
+        "1575 Mellomregning aksjonær/deltaker": {
+          "account_name": "Mellomregning aksjonær/deltaker",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1575"
+        },
+        "1576 Kortsiktig lån daglig leder": {
+          "account_name": "Kortsiktig lån daglig leder",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1576"
+        },
+        "1579 Andre kortsiktige fordringer": {
+          "account_name": "Andre kortsiktige fordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1579"
+        },
+        "1580 Avsetning tap på kundefordringer": {
+          "account_name": "Avsetning tap på kundefordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1580"
+        },
+        "1585 Avsetning tap på andre fordringer": {
+          "account_name": "Avsetning tap på andre fordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1585"
+        },
+        "1590 Andre omløpsmidler": {
+          "account_name": "Andre omløpsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1590"
+        },
+        "1650 Merverdiavgiftskompensasjon, høy sats": {
+          "account_name": "Merverdiavgiftskompensasjon, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1650"
+        },
+        "1651 Merverdiavgiftskompensasjon, middels sats": {
+          "account_name": "Merverdiavgiftskompensasjon, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1651"
+        },
+        "1652 Merverdiavgiftskompensasjon, lav sats": {
+          "account_name": "Merverdiavgiftskompensasjon, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1652"
+        },
+        "1654 Oppgjørskonto kompensert merverdiavgift": {
+          "account_name": "Oppgjørskonto kompensert merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1654"
+        },
+        "1655 Grunnlag merverdiavgiftskompensasjon, høy sats": {
+          "account_name": "Grunnlag merverdiavgiftskompensasjon, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1655"
+        },
+        "1656 Grunnlag merverdiavgiftskompensasjon, middels sats": {
+          "account_name": "Grunnlag merverdiavgiftskompensasjon, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1656"
+        },
+        "1657 Grunnlag merverdiavgiftskompensasjon, lav sats": {
+          "account_name": "Grunnlag merverdiavgiftskompensasjon, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1657"
+        },
+        "1659 Motkonto grunnlag merverdiavgiftskompensasjon": {
+          "account_name": "Motkonto grunnlag merverdiavgiftskompensasjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1659"
+        },
+        "1660 Krav på refusjon av utenlandsk merverdiavgift": {
+          "account_name": "Krav på refusjon av utenlandsk merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1660"
+        },
+        "1670 Krav på offentlige tilskudd": {
+          "account_name": "Krav på offentlige tilskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1670"
+        },
+        "1675 Skattefunn til gode, ikke fastsatt": {
+          "account_name": "Skattefunn til gode, ikke fastsatt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1675"
+        },
+        "1700 Forskuddsbetalt leiekostnad": {
+          "account_name": "Forskuddsbetalt leiekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1700"
+        },
+        "1710 Forskuddsbetalt rentekostnad": {
+          "account_name": "Forskuddsbetalt rentekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1710"
+        },
+        "1740 Forskuddsbetalt, ikke påløpt lønn": {
+          "account_name": "Forskuddsbetalt, ikke påløpt lønn",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1740"
+        },
+        "1742 Forskuddsbetalt strøm, varme mv.": {
+          "account_name": "Forskuddsbetalt strøm, varme mv.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1742"
+        },
+        "1743 Forskuddsbetalt forsikring": {
+          "account_name": "Forskuddsbetalt forsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1743"
+        },
+        "1744 Forskuddsbetalt leasingleie": {
+          "account_name": "Forskuddsbetalt leasingleie",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1744"
+        },
+        "1749 Andre forskuddsbetalte driftskostnader": {
+          "account_name": "Andre forskuddsbetalte driftskostnader",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1749"
+        },
+        "1750 Påløpt leieinntekt": {
+          "account_name": "Påløpt leieinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1750"
+        },
+        "1760 Påløpt renteinntekt": {
+          "account_name": "Påløpt renteinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1760"
+        },
+        "1780 Krav på innbetaling av selskapskapital": {
+          "account_name": "Krav på innbetaling av selskapskapital",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1780"
+        },
+        "1800 Aksjer i foretak i samme konsern, norske": {
+          "account_name": "Aksjer i foretak i samme konsern, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1800"
+        },
+        "1805 Andeler i foretak i samme konsern, norske": {
+          "account_name": "Andeler i foretak i samme konsern, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1805"
+        },
+        "1806 Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1806"
+        },
+        "1808 Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1808"
+        },
+        "1810 Børsnoterte aksjer, norske": {
+          "account_name": "Børsnoterte aksjer, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1810"
+        },
+        "1815 Børsnoterte aksjer, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Børsnoterte aksjer, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1815"
+        },
+        "1816 Børsnoterte aksjer, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Børsnoterte aksjer, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1816"
+        },
+        "1820 Andre ikke børsnoterte aksjer, norske": {
+          "account_name": "Andre ikke børsnoterte aksjer, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1820"
+        },
+        "1825 Andre ikke børsnoterte aksjer, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Andre ikke børsnoterte aksjer, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1825"
+        },
+        "1830 Markedsbaserte obligasjoner, norske": {
+          "account_name": "Markedsbaserte obligasjoner, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1830"
+        },
+        "1835 Markedsbaserte obligasjoner, utenlandske": {
+          "account_name": "Markedsbaserte obligasjoner, utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1835"
+        },
+        "1840 Ikke markedsbaserte obligasjoner, norske": {
+          "account_name": "Ikke markedsbaserte obligasjoner, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1840"
+        },
+        "1845 Ikke markedsbaserte obligasjoner, utenlandske": {
+          "account_name": "Ikke markedsbaserte obligasjoner, utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1845"
+        },
+        "1850 Markedsbaserte obligasjoner med kort løpetid (sertifikater), norske": {
+          "account_name": "Markedsbaserte obligasjoner med kort løpetid (sertifikater), norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1850"
+        },
+        "1855 Markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske": {
+          "account_name": "Markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1855"
+        },
+        "1860 Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), norske": {
+          "account_name": "Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1860"
+        },
+        "1865 Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske": {
+          "account_name": "Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1865"
+        },
+        "1870 Markedsbaserte opsjoner, norske": {
+          "account_name": "Markedsbaserte opsjoner, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1870"
+        },
+        "1875 Markedsbaserte opsjoner, utenlandske": {
+          "account_name": "Markedsbaserte opsjoner, utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1875"
+        },
+        "1880 Ikke markedsbaserte opsjoner, norske": {
+          "account_name": "Ikke markedsbaserte opsjoner, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1880"
+        },
+        "1882 Ikke markedsbaserte opsjoner, utenlandske": {
+          "account_name": "Ikke markedsbaserte opsjoner, utenlandske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1882"
+        },
+        "1889 Andre finansielle instrumenter": {
+          "account_name": "Andre finansielle instrumenter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1889"
+        },
+        "1890 Andeler utenfor konsern, norske": {
+          "account_name": "Andeler utenfor konsern, norske",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1890"
+        },
+        "1892 Andeler utenfor konsern, utenlandske, innenfor fritaksmetoden": {
+          "account_name": "Andeler utenfor konsern, utenlandske, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1892"
+        },
+        "1893 Andeler utenfor konsern, utenlandske, utenfor fritaksmetoden": {
+          "account_name": "Andeler utenfor konsern, utenlandske, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1893"
+        },
+        "1905 Kontanter, EUR": {
+          "account_name": "Kontanter, EUR",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1905"
+        },
+        "1908 Kontanter, annen valuta": {
+          "account_name": "Kontanter, annen valuta",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1908"
+        },
+        "1909 Kassedifferanse": {
+          "account_name": "Kassedifferanse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1909"
+        },
+        "1950 Bankinnskudd for skattetrekk": {
+          "account_name": "Bankinnskudd for skattetrekk",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1950"
+        },
+        "1960 Bankinnskudd utland": {
+          "account_name": "Bankinnskudd utland",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1960"
+        }
+      },
+      "Avgifter til gode": {
+        "account_name": "Avgifter til gode",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "account_type": "Tax",
+        "1600 Utgående merverdiavgift, høy sats": {
+          "account_name": "Utgående merverdiavgift, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1600",
+          "account_type": "Tax"
+        },
+        "1601 Utgående merverdiavgift, middels sats": {
+          "account_name": "Utgående merverdiavgift, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1601",
+          "account_type": "Tax"
+        },
+        "1602 Utgående merverdiavgift, råfisk mv, middels sats": {
+          "account_name": "Utgående merverdiavgift, råfisk mv, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1602",
+          "account_type": "Tax"
+        },
+        "1603 Utgående merverdiavgift, lav sats": {
+          "account_name": "Utgående merverdiavgift, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1603",
+          "account_type": "Tax"
+        },
+        "1604 Utgående merverdiavgift kjøp tjenester fra utlandet": {
+          "account_name": "Utgående merverdiavgift kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1604",
+          "account_type": "Tax"
+        },
+        "1605 Utgående merverdiavgift - innførsel av varer, høy sats": {
+          "account_name": "Utgående merverdiavgift - innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1605",
+          "account_type": "Tax"
+        },
+        "1606 Utgående merverdiavgift - innførsel av varer, middels sats": {
+          "account_name": "Utgående merverdiavgift - innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1606",
+          "account_type": "Tax"
+        },
+        "1607 Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats": {
+          "account_name": "Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1607",
+          "account_type": "Tax"
+        },
+        "1610 Inngående merverdiavgift, høy sats": {
+          "account_name": "Inngående merverdiavgift, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1610",
+          "account_type": "Tax"
+        },
+        "1611 Inngående merverdiavgift, middels sats": {
+          "account_name": "Inngående merverdiavgift, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1611",
+          "account_type": "Tax"
+        },
+        "1612 Inngående merverdiavgift, middels sats, råfisk mv": {
+          "account_name": "Inngående merverdiavgift, middels sats, råfisk mv",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1612",
+          "account_type": "Tax"
+        },
+        "1613 Inngående merverdiavgift, lav sats": {
+          "account_name": "Inngående merverdiavgift, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1613",
+          "account_type": "Tax"
+        },
+        "1614 Inngående merverdiavgift kjøp tjenester fra utlandet": {
+          "account_name": "Inngående merverdiavgift kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1614",
+          "account_type": "Tax"
+        },
+        "1615 Inngående merverdiavgift - innførsel av varer, høy sats": {
+          "account_name": "Inngående merverdiavgift - innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1615",
+          "account_type": "Tax"
+        },
+        "1616 Inngående merverdiavgift - innførsel av varer, middels sats": {
+          "account_name": "Inngående merverdiavgift - innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1616",
+          "account_type": "Tax"
+        },
+        "1617 Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats": {
+          "account_name": "Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1617",
+          "account_type": "Tax"
+        },
+        "1640 Oppgjørskonto merverdiavgift": {
+          "account_name": "Oppgjørskonto merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "1640",
+          "account_type": "Tax"
+        }
+      }
+    },
+    "Gjeld": {
+      "account_name": "Gjeld",
+      "is_group": 1,
+      "account_currency": "NOK",
+      "root_type": "Liability",
+      "Merverdiavgift": {
+        "account_name": "Merverdiavgift",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "account_type": "Tax",
+        "2700 Utgående merverdiavgift, høy sats": {
+          "account_name": "Utgående merverdiavgift, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2700",
+          "account_type": "Tax"
+        },
+        "2701 Utgående merverdiavgift, middels sats": {
+          "account_name": "Utgående merverdiavgift, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2701",
+          "account_type": "Tax"
+        },
+        "2702 Utgående merverdiavgift, middels sats, råfisk mv": {
+          "account_name": "Utgående merverdiavgift, middels sats, råfisk mv",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2702",
+          "account_type": "Tax"
+        },
+        "2703 Utgående merverdiavgift, lav sats": {
+          "account_name": "Utgående merverdiavgift, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2703",
+          "account_type": "Tax"
+        },
+        "2704 Utgående merverdiavgift ved kjøp av tjenester fra utlandet, høy sats": {
+          "account_name": "Utgående merverdiavgift ved kjøp av tjenester fra utlandet, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2704",
+          "account_type": "Tax"
+        },
+        "2705 Utgående merverdiavgift - innførsel av varer, høy sats": {
+          "account_name": "Utgående merverdiavgift - innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2705",
+          "account_type": "Tax"
+        },
+        "2706 Utgående merverdiavgift - innførsel av varer, middels sats": {
+          "account_name": "Utgående merverdiavgift - innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2706",
+          "account_type": "Tax"
+        },
+        "2707 Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats": {
+          "account_name": "Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2707",
+          "account_type": "Tax"
+        },
+        "2709 Utgående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats": {
+          "account_name": "Utgående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2709",
+          "account_type": "Tax"
+        },
+        "2710 Inngående merverdiavgift, høy sats": {
+          "account_name": "Inngående merverdiavgift, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2710",
+          "account_type": "Tax"
+        },
+        "2711 Inngående merverdiavgift, middels sats": {
+          "account_name": "Inngående merverdiavgift, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2711",
+          "account_type": "Tax"
+        },
+        "2712 Inngående merverdiavgift, middels sats, råfisk mv": {
+          "account_name": "Inngående merverdiavgift, middels sats, råfisk mv",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2712",
+          "account_type": "Tax"
+        },
+        "2713 Inngående merverdiavgift, lav sats": {
+          "account_name": "Inngående merverdiavgift, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2713",
+          "account_type": "Tax"
+        },
+        "2714 Inngående merverdiavgift ved kjøp tjenester fra utlandet, høy sats": {
+          "account_name": "Inngående merverdiavgift ved kjøp tjenester fra utlandet, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2714",
+          "account_type": "Tax"
+        },
+        "2715 Inngående merverdiavgift - innførsel av varer, høy sats": {
+          "account_name": "Inngående merverdiavgift - innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2715",
+          "account_type": "Tax"
+        },
+        "2716 Inngående merverdiavgift - innførsel av varer, middels sats": {
+          "account_name": "Inngående merverdiavgift - innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2716",
+          "account_type": "Tax"
+        },
+        "2717 Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats": {
+          "account_name": "Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2717",
+          "account_type": "Tax"
+        },
+        "2718 Inngående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats": {
+          "account_name": "Inngående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2718",
+          "account_type": "Tax"
+        },
+        "2740 Oppgjørskonto merverdiavgift": {
+          "account_name": "Oppgjørskonto merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "2740",
+          "account_type": "Tax"
+        }
+      },
+      "2100 Pensjonsforpliktelser": {
+        "account_name": "Pensjonsforpliktelser",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2100"
+      },
+      "2120 Utsatt skatt, brutto": {
+        "account_name": "Utsatt skatt, brutto",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2120"
+      },
+      "2129 Utlignbar utsatt skatt": {
+        "account_name": "Utlignbar utsatt skatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2129"
+      },
+      "2160 Uopptjent inntekt": {
+        "account_name": "Uopptjent inntekt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2160"
+      },
+      "2180 Andre avsetninger for forpliktelser": {
+        "account_name": "Andre avsetninger for forpliktelser",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2180"
+      },
+      "2188 Avsetning for skyldig merverdiavgift": {
+        "account_name": "Avsetning for skyldig merverdiavgift",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2188"
+      },
+      "2200 Konvertible lån": {
+        "account_name": "Konvertible lån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2200"
+      },
+      "2210 Obligasjonslån": {
+        "account_name": "Obligasjonslån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2210"
+      },
+      "2220 Gjeld til kredittinstitusjoner": {
+        "account_name": "Gjeld til kredittinstitusjoner",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2220"
+      },
+      "2250 Gjeld til ansatte": {
+        "account_name": "Gjeld til ansatte",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2250"
+      },
+      "2255 Gjeld til eiere": {
+        "account_name": "Gjeld til eiere",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2255"
+      },
+      "2260 Gjeld til selskap i samme konsern": {
+        "account_name": "Gjeld til selskap i samme konsern",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2260"
+      },
+      "2280 Stille interessentinnskudd": {
+        "account_name": "Stille interessentinnskudd",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2280"
+      },
+      "2285 Ansvarlig lånekapital": {
+        "account_name": "Ansvarlig lånekapital",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2285"
+      },
+      "2290 Gjeld til andre personer enn ansatte og eiere": {
+        "account_name": "Gjeld til andre personer enn ansatte og eiere",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2290"
+      },
+      "2299 Annen langsiktig gjeld": {
+        "account_name": "Annen langsiktig gjeld",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2299"
+      },
+      "2300 Konvertible lån": {
+        "account_name": "Konvertible lån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2300"
+      },
+      "2320 Obligasjonslån": {
+        "account_name": "Obligasjonslån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2320"
+      },
+      "2330 Derivater": {
+        "account_name": "Derivater",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2330"
+      },
+      "2340 Andre valutalån": {
+        "account_name": "Andre valutalån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2340"
+      },
+      "2360 Byggelån": {
+        "account_name": "Byggelån",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2360"
+      },
+      "2380 Kassakreditt": {
+        "account_name": "Kassakreditt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2380"
+      },
+      "2390 Annen gjeld til kredittinstitusjon": {
+        "account_name": "Annen gjeld til kredittinstitusjon",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2390"
+      },
+      "2400 Leverandørgjeld": {
+        "account_name": "Leverandørgjeld",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2400",
+        "account_type": "Payable"
+      },
+      "2460 Leverandørgjeld til selskap i samme konsern": {
+        "account_name": "Leverandørgjeld til selskap i samme konsern",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2460"
+      },
+      "2500 Betalbar skatt, ikke fastsatt": {
+        "account_name": "Betalbar skatt, ikke fastsatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2500"
+      },
+      "2510 Betalbar skatt, fastsatt": {
+        "account_name": "Betalbar skatt, fastsatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2510"
+      },
+      "2540 Forskuddsskatt upersonlig skattyter": {
+        "account_name": "Forskuddsskatt upersonlig skattyter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2540"
+      },
+      "2599 Annen skyldig skatt": {
+        "account_name": "Annen skyldig skatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2599"
+      },
+      "2600 Forskuddstrekk": {
+        "account_name": "Forskuddstrekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2600"
+      },
+      "2610 Utleggstrekk": {
+        "account_name": "Utleggstrekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2610"
+      },
+      "2620 Bidragstrekk": {
+        "account_name": "Bidragstrekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2620"
+      },
+      "2630 Trygdetrekk": {
+        "account_name": "Trygdetrekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2630"
+      },
+      "2640 Forsikringstrekk": {
+        "account_name": "Forsikringstrekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2640"
+      },
+      "2650 Trukket fagforeningskontingent": {
+        "account_name": "Trukket fagforeningskontingent",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2650"
+      },
+      "2690 Andre trekk": {
+        "account_name": "Andre trekk",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2690"
+      },
+      "2770 Skyldig arbeidsgiveravgift": {
+        "account_name": "Skyldig arbeidsgiveravgift",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2770"
+      },
+      "2771 Betalt arbeidsgiveravgift": {
+        "account_name": "Betalt arbeidsgiveravgift",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2771"
+      },
+      "2772 Skyldig finansskatt av lønn": {
+        "account_name": "Skyldig finansskatt av lønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2772"
+      },
+      "2773 Betalt finansskatt av lønn": {
+        "account_name": "Betalt finansskatt av lønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2773"
+      },
+      "2780 Påløpt arbeidsgiveravgift påløpt lønn": {
+        "account_name": "Påløpt arbeidsgiveravgift påløpt lønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2780"
+      },
+      "2781 Påløpt arbeidsgiveravgift ferielønn": {
+        "account_name": "Påløpt arbeidsgiveravgift ferielønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2781"
+      },
+      "2782 Påløpt arbeidsgiveravgift andre honorarer": {
+        "account_name": "Påløpt arbeidsgiveravgift andre honorarer",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2782"
+      },
+      "2783 Påløpt finansskatt påløpt lønn": {
+        "account_name": "Påløpt finansskatt påløpt lønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2783"
+      },
+      "2784 Påløpt finansskatt ferielønn": {
+        "account_name": "Påløpt finansskatt ferielønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2784"
+      },
+      "2785 Påløpt finansskatt andre honorarer": {
+        "account_name": "Påløpt finansskatt andre honorarer",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2785"
+      },
+      "2790 Andre offentlige avgifter": {
+        "account_name": "Andre offentlige avgifter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2790"
+      },
+      "2800 Avsatt utbytte": {
+        "account_name": "Avsatt utbytte",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2800"
+      },
+      "2900 Forskudd fra kunder": {
+        "account_name": "Forskudd fra kunder",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2900"
+      },
+      "2910 Gjeld til ansatte": {
+        "account_name": "Gjeld til ansatte",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2910"
+      },
+      "2915 Gjeld til eiere": {
+        "account_name": "Gjeld til eiere",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2915"
+      },
+      "2920 Gjeld til selskap i samme konsern": {
+        "account_name": "Gjeld til selskap i samme konsern",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2920"
+      },
+      "2930 Skyldig lønn": {
+        "account_name": "Skyldig lønn",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2930"
+      },
+      "2940 Skyldige feriepenger": {
+        "account_name": "Skyldige feriepenger",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2940"
+      },
+      "2945 Utbetalte feriepenger": {
+        "account_name": "Utbetalte feriepenger",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2945"
+      },
+      "2950 Påløpt rente": {
+        "account_name": "Påløpt rente",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2950"
+      },
+      "2960 Annen påløpt kostnad": {
+        "account_name": "Annen påløpt kostnad",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2960"
+      },
+      "2965 Forskuddsbetalt inntekt": {
+        "account_name": "Forskuddsbetalt inntekt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2965"
+      },
+      "2970 Fremtidig garantiytelse": {
+        "account_name": "Fremtidig garantiytelse",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2970"
+      },
+      "2975 Fremtidig serviceytelse": {
+        "account_name": "Fremtidig serviceytelse",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2975"
+      },
+      "2980 Avsetning styrehonorar": {
+        "account_name": "Avsetning styrehonorar",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2980"
+      },
+      "2982 Avsetning revisjonshonorar": {
+        "account_name": "Avsetning revisjonshonorar",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2982"
+      },
+      "2983 Avsetning regnskapshonorar": {
+        "account_name": "Avsetning regnskapshonorar",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2983"
+      },
+      "2989 Avsetning for andre forpliktelser": {
+        "account_name": "Avsetning for andre forpliktelser",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2989"
+      },
+      "2990 Gjeld til andre personer enn ansatte og eiere": {
+        "account_name": "Gjeld til andre personer enn ansatte og eiere",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2990"
+      },
+      "2999 Annen kortsiktig gjeld": {
+        "account_name": "Annen kortsiktig gjeld",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2999"
+      }
+    },
+    "Egenkapital": {
+      "account_name": "Egenkapital",
+      "is_group": 1,
+      "account_currency": "NOK",
+      "root_type": "Equity",
+      "2000 Aksjekapital / Egenkapital, bundet": {
+        "account_name": "Aksjekapital / Egenkapital, bundet",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2000"
+      },
+      "2010 Egne aksjer / Felleseid andelskapital": {
+        "account_name": "Egne aksjer / Felleseid andelskapital",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2010"
+      },
+      "2020 Overkurs": {
+        "account_name": "Overkurs",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2020"
+      },
+      "2030 Ikke registrert kapitalforhøyelse": {
+        "account_name": "Ikke registrert kapitalforhøyelse",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2030"
+      },
+      "2032 Ikke registrert fondsemisjon": {
+        "account_name": "Ikke registrert fondsemisjon",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2032"
+      },
+      "2033 Ikke registrert kapitalnedsettelse": {
+        "account_name": "Ikke registrert kapitalnedsettelse",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2033"
+      },
+      "2035 Annen innskutt egenkapital": {
+        "account_name": "Annen innskutt egenkapital",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2035"
+      },
+      "2036 Stiftelsesutgifter": {
+        "account_name": "Stiftelsesutgifter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2036"
+      },
+      "2040 Fond / Fond for vurderingsforskjeller i DLS": {
+        "account_name": "Fond / Fond for vurderingsforskjeller i DLS",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2040"
+      },
+      "2042 Fond for vurderingsforskjeller i andre selskaper": {
+        "account_name": "Fond for vurderingsforskjeller i andre selskaper",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2042"
+      },
+      "2045 Fond for urealiserte gevinster": {
+        "account_name": "Fond for urealiserte gevinster",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2045"
+      },
+      "2050 Annen egenkapital": {
+        "account_name": "Annen egenkapital",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2050"
+      },
+      "2055 Avsatt utbytte": {
+        "account_name": "Avsatt utbytte",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2055"
+      },
+      "2060 Uttak kontanter": {
+        "account_name": "Uttak kontanter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2060"
+      },
+      "2062 Innskudd kontanter": {
+        "account_name": "Innskudd kontanter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2062"
+      },
+      "2063 Uttak av anleggsmidler/driftsmidler": {
+        "account_name": "Uttak av anleggsmidler/driftsmidler",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2063"
+      },
+      "2064 Uttak varer og tjenester": {
+        "account_name": "Uttak varer og tjenester",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2064"
+      },
+      "2065 Egen bolig i næringsbygg": {
+        "account_name": "Egen bolig i næringsbygg",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2065"
+      },
+      "2066 Motkonto egen bolig i næringsbygg": {
+        "account_name": "Motkonto egen bolig i næringsbygg",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2066"
+      },
+      "2067 Lys og varme privat": {
+        "account_name": "Lys og varme privat",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2067"
+      },
+      "2068 Private kostnader til elektronisk kommunikasjon": {
+        "account_name": "Private kostnader til elektronisk kommunikasjon",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2068"
+      },
+      "2069 Diverse andre privatutgifter": {
+        "account_name": "Diverse andre privatutgifter",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2069"
+      },
+      "2070 Forskuddsskatt": {
+        "account_name": "Forskuddsskatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2070"
+      },
+      "2072 Tilleggsforskudd/restskatt": {
+        "account_name": "Tilleggsforskudd/restskatt",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2072"
+      },
+      "2075 Privat bruk av næringsbil": {
+        "account_name": "Privat bruk av næringsbil",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2075"
+      },
+      "2077 Premie til egen syke- og ulykkesforsikring": {
+        "account_name": "Premie til egen syke- og ulykkesforsikring",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2077"
+      },
+      "2078 Premie til tilleggstrygd for sykepenger": {
+        "account_name": "Premie til tilleggstrygd for sykepenger",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2078"
+      },
+      "2080 Udekket tap": {
+        "account_name": "Udekket tap",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2080"
+      },
+      "2099 Udisponert resultat": {
+        "account_name": "Udisponert resultat",
+        "is_group": 0,
+        "account_currency": "NOK",
+        "account_number": "2099"
+      }
+    },
+    "Inntekter": {
+      "account_name": "Inntekter",
+      "is_group": 1,
+      "account_currency": "NOK",
+      "root_type": "Income",
+      "Salgsinntekter": {
+        "account_name": "Salgsinntekter",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "3000 Salgsinntekt handelsvarer, avgiftspliktig, høy sats": {
+          "account_name": "Salgsinntekt handelsvarer, avgiftspliktig, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3000",
+          "account_type": "Income Account"
+        },
+        "3005 Salgsinntekt handelsvarer, omvendt avgiftsplikt": {
+          "account_name": "Salgsinntekt handelsvarer, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3005"
+        },
+        "3009 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3009"
+        },
+        "3010 Salgsinntekt egentilvirkede varer, avgiftspliktig, høy sats": {
+          "account_name": "Salgsinntekt egentilvirkede varer, avgiftspliktig, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3010"
+        },
+        "3015 Salgsinntekt egentilvirkede varer, omvendt avgiftsplikt": {
+          "account_name": "Salgsinntekt egentilvirkede varer, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3015"
+        },
+        "3019 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3019"
+        },
+        "3020 Salgsinntekt tjenester, avgiftspliktig, høy sats": {
+          "account_name": "Salgsinntekt tjenester, avgiftspliktig, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3020"
+        },
+        "3025 Salgsinntekt tjenester, omvendt avgiftsplikt": {
+          "account_name": "Salgsinntekt tjenester, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3025"
+        },
+        "3029 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3029"
+        },
+        "3030 Salgsinntekt handelsvarer, avgiftspliktig, middels sats": {
+          "account_name": "Salgsinntekt handelsvarer, avgiftspliktig, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3030"
+        },
+        "3035 Salgsinntekt råfisk og andre marine viltlevende ressurser, avgiftspliktig, middels sats": {
+          "account_name": "Salgsinntekt råfisk og andre marine viltlevende ressurser, avgiftspliktig, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3035"
+        },
+        "3039 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3039"
+        },
+        "3040 Salgsinntekt egentilvirkede varer, avgiftspliktig, middels sats": {
+          "account_name": "Salgsinntekt egentilvirkede varer, avgiftspliktig, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3040"
+        },
+        "3049 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3049"
+        },
+        "3050 Salgsinntekt tjenester, avgiftspliktig, lav sats": {
+          "account_name": "Salgsinntekt tjenester, avgiftspliktig, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3050"
+        },
+        "3059 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3059"
+        },
+        "3060 Uttak av varer, avgiftspliktig, høy sats": {
+          "account_name": "Uttak av varer, avgiftspliktig, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3060"
+        },
+        "3063 Uttak av varer, avgiftspliktig, middels sats": {
+          "account_name": "Uttak av varer, avgiftspliktig, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3063"
+        },
+        "3070 Uttak av tjenester, avgiftspliktig, høy sats": {
+          "account_name": "Uttak av tjenester, avgiftspliktig, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3070"
+        },
+        "3074 Uttak av tjenester, avgiftspliktig, lav sats": {
+          "account_name": "Uttak av tjenester, avgiftspliktig, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3074"
+        },
+        "3081 Kontantrabatt, avgiftspliktig salg, høy sats": {
+          "account_name": "Kontantrabatt, avgiftspliktig salg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3081"
+        },
+        "3082 Kontantrabatt, avgiftspliktig salg, middel sats": {
+          "account_name": "Kontantrabatt, avgiftspliktig salg, middel sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3082"
+        },
+        "3083 Kontantrabatt, avgiftspliktig salg, lav sats": {
+          "account_name": "Kontantrabatt, avgiftspliktig salg, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3083"
+        },
+        "3084 Kvantumsrabatt, avgiftspliktig salg, høy sats": {
+          "account_name": "Kvantumsrabatt, avgiftspliktig salg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3084"
+        },
+        "3085 Kvantumsrabatt, avgiftspliktig salg, middels sats": {
+          "account_name": "Kvantumsrabatt, avgiftspliktig salg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3085"
+        },
+        "3086 Kvantumsrabatt, avgiftspliktig salg, lav sats": {
+          "account_name": "Kvantumsrabatt, avgiftspliktig salg, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3086"
+        },
+        "3087 Annen salgsinntektsreduksjon, avgiftspliktig salg, høy sats": {
+          "account_name": "Annen salgsinntektsreduksjon, avgiftspliktig salg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3087"
+        },
+        "3088 Annen salgsinntektsreduksjon, avgiftspliktig salg, middels sats": {
+          "account_name": "Annen salgsinntektsreduksjon, avgiftspliktig salg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3088"
+        },
+        "3089 Annen salgsinntektsreduksjon, avgiftspliktig salg, lav sats": {
+          "account_name": "Annen salgsinntektsreduksjon, avgiftspliktig salg, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3089"
+        },
+        "3090 Viderefakturering av omkostninger ved salg, høy sats": {
+          "account_name": "Viderefakturering av omkostninger ved salg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3090"
+        },
+        "3091 Viderefakturering av omkostninger ved salg, middels sats": {
+          "account_name": "Viderefakturering av omkostninger ved salg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3091"
+        },
+        "3092 Viderefakturering av omkostninger ved salg, lav sats": {
+          "account_name": "Viderefakturering av omkostninger ved salg, lav sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3092"
+        },
+        "3100 Salgsinntekt handelsvarer, innenlands, avgiftsfri": {
+          "account_name": "Salgsinntekt handelsvarer, innenlands, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3100"
+        },
+        "3105 Salgsinntekt handelsvarer, utførsel, avgiftsfri": {
+          "account_name": "Salgsinntekt handelsvarer, utførsel, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3105"
+        },
+        "3109 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3109"
+        },
+        "3110 Salgsinntekt egentilvirkede varer, innenlands, avgiftsfri": {
+          "account_name": "Salgsinntekt egentilvirkede varer, innenlands, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3110"
+        },
+        "3115 Salgsinntekt egentilvirkede varer, utførsel, avgiftsfri": {
+          "account_name": "Salgsinntekt egentilvirkede varer, utførsel, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3115"
+        },
+        "3119 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3119"
+        },
+        "3120 Salgsinntekt tjenester, innenlands, avgiftsfri": {
+          "account_name": "Salgsinntekt tjenester, innenlands, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3120"
+        },
+        "3125 Salgsinntekt tjenester, utførsel, avgiftsfri": {
+          "account_name": "Salgsinntekt tjenester, utførsel, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3125"
+        },
+        "3129 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3129"
+        },
+        "3160 Uttak av varer, avgiftsfritt": {
+          "account_name": "Uttak av varer, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3160"
+        },
+        "3170 Uttak av tjenester, avgiftsfritt": {
+          "account_name": "Uttak av tjenester, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3170"
+        },
+        "3181 Kontantrabatt, innenlands, avgiftsfritt": {
+          "account_name": "Kontantrabatt, innenlands, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3181"
+        },
+        "3182 Kontantrabatt, utførsel, avgiftsfritt": {
+          "account_name": "Kontantrabatt, utførsel, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3182"
+        },
+        "3185 Kvantumsrabatt, innenlands, avgiftsfritt": {
+          "account_name": "Kvantumsrabatt, innenlands, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3185"
+        },
+        "3186 Kvantumsrabatt, utførsel, avgiftsfritt": {
+          "account_name": "Kvantumsrabatt, utførsel, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3186"
+        },
+        "3188 Annen salgsinntektsreduksjon, innenlands, avgiftsfritt": {
+          "account_name": "Annen salgsinntektsreduksjon, innenlands, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3188"
+        },
+        "3189 Annen salgsinntektsreduksjon, utførsel, avgiftsfritt": {
+          "account_name": "Annen salgsinntektsreduksjon, utførsel, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3189"
+        },
+        "3190 Viderefakturering av omkostninger ved salg, innenlands, avgiftsfritt": {
+          "account_name": "Viderefakturering av omkostninger ved salg, innenlands, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3190"
+        },
+        "3191 Viderefakturering av omkostninger ved salg, utførsel, avgiftsfritt": {
+          "account_name": "Viderefakturering av omkostninger ved salg, utførsel, avgiftsfritt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3191"
+        },
+        "3200 Salgsinntekt handelsvarer, unntatt avgiftsplikt": {
+          "account_name": "Salgsinntekt handelsvarer, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3200"
+        },
+        "3209 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3209"
+        },
+        "3210 Salgsinntekt egentilvirkede varer, unntatt avgiftsplikt": {
+          "account_name": "Salgsinntekt egentilvirkede varer, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3210"
+        },
+        "3219 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3219"
+        },
+        "3220 Salgsinntekt tjenester, unntatt avgiftsplikt": {
+          "account_name": "Salgsinntekt tjenester, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3220"
+        },
+        "3229 Opptjent, ikke fakturert inntekt": {
+          "account_name": "Opptjent, ikke fakturert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3229"
+        },
+        "3260 Uttak av varer, unntatt avgiftsplikt": {
+          "account_name": "Uttak av varer, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3260"
+        },
+        "3281 Kontantrabatt, unntatt avgiftsplikt": {
+          "account_name": "Kontantrabatt, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3281"
+        },
+        "3285 Kvantumsrabatt, unntatt avgiftsplikt": {
+          "account_name": "Kvantumsrabatt, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3285"
+        },
+        "3289 Annen salgsinntektsreduksjon, unntatt avgiftsplikt": {
+          "account_name": "Annen salgsinntektsreduksjon, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3289"
+        },
+        "3290 Viderefakturering av omkostninger ved salg, unntatt avgiftsplikt": {
+          "account_name": "Viderefakturering av omkostninger ved salg, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3290"
+        },
+        "3300 Spesiell offentlig avgift for tilvirkede/solgte varer": {
+          "account_name": "Spesiell offentlig avgift for tilvirkede/solgte varer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3300"
+        },
+        "3400 Spesielt offentlig tilskudd for tilvirkede/solgte varer": {
+          "account_name": "Spesielt offentlig tilskudd for tilvirkede/solgte varer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3400"
+        },
+        "3440 Spesielt offentlig tilskudd for tjeneste": {
+          "account_name": "Spesielt offentlig tilskudd for tjeneste",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3440"
+        },
+        "3500 Garanti": {
+          "account_name": "Garanti",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3500"
+        },
+        "3510 Service": {
+          "account_name": "Service",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3510"
+        },
+        "3600 Leieinntekt fast eiendom, unntatt avgiftsplikt": {
+          "account_name": "Leieinntekt fast eiendom, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3600"
+        },
+        "3605 Leieinntekt fast eiendom, avgiftspliktig": {
+          "account_name": "Leieinntekt fast eiendom, avgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3605"
+        },
+        "3609 Opptjent, ikke fakturert leieinntekt": {
+          "account_name": "Opptjent, ikke fakturert leieinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3609"
+        },
+        "3610 Leieinntekt andre varige driftsmidler, avgiftspliktig": {
+          "account_name": "Leieinntekt andre varige driftsmidler, avgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3610"
+        },
+        "3615 Leieinntekt andre varige driftsmidler, avgiftsfri": {
+          "account_name": "Leieinntekt andre varige driftsmidler, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3615"
+        },
+        "3619 Opptjent, ikke fakturert leieinntekt": {
+          "account_name": "Opptjent, ikke fakturert leieinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3619"
+        },
+        "3620 Annen leieinntekt": {
+          "account_name": "Annen leieinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3620"
+        },
+        "3700 Provisjonsinntekt, avgiftspliktig": {
+          "account_name": "Provisjonsinntekt, avgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3700"
+        },
+        "3705 Provisjonsinntekt, avgiftsfri": {
+          "account_name": "Provisjonsinntekt, avgiftsfri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3705"
+        },
+        "3709 Opptjent, ikke fakturert provisjonsinntekt": {
+          "account_name": "Opptjent, ikke fakturert provisjonsinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3709"
+        },
+        "3710 Provisjonsinntekt, unntatt avgiftsplikt": {
+          "account_name": "Provisjonsinntekt, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3710"
+        },
+        "3850 Verdiendringer investeringseiendommer": {
+          "account_name": "Verdiendringer investeringseiendommer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3850"
+        },
+        "3870 Verdiendringer biologiske eiendeler": {
+          "account_name": "Verdiendringer biologiske eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3870"
+        },
+        "3880 Gevinst ved avgang av immaterielle eiendeler og varige driftsmidler": {
+          "account_name": "Gevinst ved avgang av immaterielle eiendeler og varige driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3880"
+        },
+        "3881 Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3881"
+        },
+        "3882 Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3882"
+        },
+        "3883 Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3883"
+        },
+        "3889 Motkonto balanseverdi solgte immatr. eiendeler og varige driftsmidler": {
+          "account_name": "Motkonto balanseverdi solgte immatr. eiendeler og varige driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3889"
+        },
+        "3891 Salgssum finansielle anleggsmidler": {
+          "account_name": "Salgssum finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3891"
+        },
+        "3899 Motkonto balanseverdi finansielle anleggsmidler": {
+          "account_name": "Motkonto balanseverdi finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3899"
+        },
+        "3900 Annen driftsrelatert inntekt": {
+          "account_name": "Annen driftsrelatert inntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3900"
+        },
+        "3971 Justering merverdiavgift fast eiendom": {
+          "account_name": "Justering merverdiavgift fast eiendom",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3971"
+        },
+        "3972 Justering merverdiavgift maskiner": {
+          "account_name": "Justering merverdiavgift maskiner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "3972"
+        }
+      },
+      "Finansinntekter": {
+        "account_name": "Finansinntekter",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "8000 Aksjeutbytte fra norsk datterselskap": {
+          "account_name": "Aksjeutbytte fra norsk datterselskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8000"
+        },
+        "8003 Aksjeutbytte fra utenlandsk datterselskap, innenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk datterselskap, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8003"
+        },
+        "8004 Aksjeutbytte fra utenlandsk datterselskap, utenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk datterselskap, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8004"
+        },
+        "8005 Resultatandel fra datterselskap etter egenkapitalmetoden": {
+          "account_name": "Resultatandel fra datterselskap etter egenkapitalmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8005"
+        },
+        "8007 Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, innenfor fritaksmetoden": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8007"
+        },
+        "8008 Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, utenfor fritaksmetoden": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8008"
+        },
+        "8010 Aksjeutbytte fra norsk foretak i samme konsern": {
+          "account_name": "Aksjeutbytte fra norsk foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8010"
+        },
+        "8013 Aksjeutbytte fra utenlandsk foretak i samme konsern, innenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk foretak i samme konsern, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8013"
+        },
+        "8014 Aksjeutbytte fra utenlandsk foretak i samme konsern, utenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk foretak i samme konsern, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8014"
+        },
+        "8017 Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, innenfor fritaksmodellen": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, innenfor fritaksmodellen",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8017"
+        },
+        "8018 Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, utenfor fritaksmetoden": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8018"
+        },
+        "8020 Aksjeutbytte fra norsk tilknyttet selskap": {
+          "account_name": "Aksjeutbytte fra norsk tilknyttet selskap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8020"
+        },
+        "8023 Aksjeutbytte fra utenlandsk tilknyttet selskap, innenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk tilknyttet selskap, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8023"
+        },
+        "8024 Aksjeutbytte fra utenlandsk tilknyttet selskap, utenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk tilknyttet selskap, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8024"
+        },
+        "8025 Resultatandel fra tilknyttet selskap etter egenkapitalmetoden": {
+          "account_name": "Resultatandel fra tilknyttet selskap etter egenkapitalmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8025"
+        },
+        "8027 Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, innenfor fritaksmetoden": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8027"
+        },
+        "8028 Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, utenfor fritaksmetoden": {
+          "account_name": "Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8028"
+        },
+        "8030 Renteinntekt fra foretak i samme konsern": {
+          "account_name": "Renteinntekt fra foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8030"
+        },
+        "8040 Renteinntekt, skattefri": {
+          "account_name": "Renteinntekt, skattefri",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8040"
+        },
+        "8050 Renteinntekt bankinnskudd": {
+          "account_name": "Renteinntekt bankinnskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8050"
+        },
+        "8055 Renteinntekt kundefordringer": {
+          "account_name": "Renteinntekt kundefordringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8055"
+        },
+        "8059 Annen renteinntekt": {
+          "account_name": "Annen renteinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8059"
+        },
+        "8060 Valutagevinst (agio)": {
+          "account_name": "Valutagevinst (agio)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8060"
+        },
+        "8070 Aksjeutbytte fra norsk foretak": {
+          "account_name": "Aksjeutbytte fra norsk foretak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8070"
+        },
+        "8073 Aksjeutbytte fra utenlandsk foretak, innenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk foretak, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8073"
+        },
+        "8074 Aksjeutbytte fra utenlandsk foretak, utenfor fritaksmetoden": {
+          "account_name": "Aksjeutbytte fra utenlandsk foretak, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8074"
+        },
+        "8077 Gevinst ved realisasjon av andre aksjer/andeler, innenfor fritaksmetoden": {
+          "account_name": "Gevinst ved realisasjon av andre aksjer/andeler, innenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8077"
+        },
+        "8078 Gevinst ved realisasjon av andre aksjer/andeler, utenfor fritaksmetoden": {
+          "account_name": "Gevinst ved realisasjon av andre aksjer/andeler, utenfor fritaksmetoden",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8078"
+        },
+        "8079 Annen finansinntekt": {
+          "account_name": "Annen finansinntekt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8079"
+        },
+        "8080 Verdiøkning av finansielle instrumenter vurdert til virkelig verdi, urealisert": {
+          "account_name": "Verdiøkning av finansielle instrumenter vurdert til virkelig verdi, urealisert",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8080"
+        },
+        "8082 Verdiøkning av finansielle instrumenter vurdert til virkelig verdi realisert": {
+          "account_name": "Verdiøkning av finansielle instrumenter vurdert til virkelig verdi realisert",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8082"
+        },
+        "8090 Inntekt på andre investeringer": {
+          "account_name": "Inntekt på andre investeringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8090"
+        }
+      }
+    },
+    "Kostnader": {
+      "account_name": "Kostnader",
+      "is_group": 1,
+      "account_currency": "NOK",
+      "root_type": "Expense",
+      "Varekostnader": {
+        "account_name": "Varekostnader",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "4000 Innkjøp av råvarer og halvfabrikata, høy sats": {
+          "account_name": "Innkjøp av råvarer og halvfabrikata, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4000"
+        },
+        "4030 Innkjøp av råvarer og halvfabrikata, middels sats": {
+          "account_name": "Innkjøp av råvarer og halvfabrikata, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4030"
+        },
+        "4035 Innkjøp av råvarer og halvfabrikata, uten MVA": {
+          "account_name": "Innkjøp av råvarer og halvfabrikata, uten MVA",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4035"
+        },
+        "4040 Utenlandsk innkjøp av råvarer og halvfabrikata, høy sats": {
+          "account_name": "Utenlandsk innkjøp av råvarer og halvfabrikata, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4040"
+        },
+        "4041 Utenlandsk innkjøp av råvarer og halvfabrikata, middels sats": {
+          "account_name": "Utenlandsk innkjøp av råvarer og halvfabrikata, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4041"
+        },
+        "4042 Utenlandsk innkjøp av råvarer og halvfabrikata, fritatt for avgift": {
+          "account_name": "Utenlandsk innkjøp av råvarer og halvfabrikata, fritatt for avgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4042"
+        },
+        "4060 Frakt, toll og spedisjon": {
+          "account_name": "Frakt, toll og spedisjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4060"
+        },
+        "4071 Kontantrabatt, råvarer og halvfabrikata, høy sats": {
+          "account_name": "Kontantrabatt, råvarer og halvfabrikata, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4071"
+        },
+        "4072 Kontantrabatt, råvarer og halvfabrikata, middels sats": {
+          "account_name": "Kontantrabatt, råvarer og halvfabrikata, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4072"
+        },
+        "4075 Kvantumsrabatt, råvarer og halvfabrikata, høy sats": {
+          "account_name": "Kvantumsrabatt, råvarer og halvfabrikata, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4075"
+        },
+        "4076 Kvantumsrabatt, råvarer og halvfabrikata, middels sats": {
+          "account_name": "Kvantumsrabatt, råvarer og halvfabrikata, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4076"
+        },
+        "4078 Annen innkjøpsprisreduksjon, høy sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4078"
+        },
+        "4079 Annen innkjøpsprisreduksjon, middels sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4079"
+        },
+        "4080 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4080"
+        },
+        "4081 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4081"
+        },
+        "4082 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4082"
+        },
+        "4083 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4083"
+        },
+        "4084 Grunnlag innførsel av varer med null sats": {
+          "account_name": "Grunnlag innførsel av varer med null sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4084"
+        },
+        "4085 Grunnlag innførsel av varer med null sats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med null sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4085"
+        },
+        "4086 Innenlands kjøp av varer, omvendt avgiftsplikt": {
+          "account_name": "Innenlands kjøp av varer, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4086"
+        },
+        "4087 Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto": {
+          "account_name": "Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4087"
+        },
+        "4090 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4090"
+        },
+        "4100 Innkjøp varer under tilvirkning, høy sats": {
+          "account_name": "Innkjøp varer under tilvirkning, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4100"
+        },
+        "4130 Innkjøp varer under tilvirkning, middels sats": {
+          "account_name": "Innkjøp varer under tilvirkning, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4130"
+        },
+        "4140 Innkjøp av råvarer under tilvirkning, uten MVA": {
+          "account_name": "Innkjøp av råvarer under tilvirkning, uten MVA",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4140"
+        },
+        "4160 Frakt, toll og spedisjon": {
+          "account_name": "Frakt, toll og spedisjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4160"
+        },
+        "4171 Kontantrabatt, varer under tilvirkning, høy sats": {
+          "account_name": "Kontantrabatt, varer under tilvirkning, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4171"
+        },
+        "4172 Kontantrabatt, varer under tilvirkning, middels sats": {
+          "account_name": "Kontantrabatt, varer under tilvirkning, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4172"
+        },
+        "4175 Kvantumsrabatt, varer under tilvirkning, høy sats": {
+          "account_name": "Kvantumsrabatt, varer under tilvirkning, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4175"
+        },
+        "4176 Kvantumsrabatt, varer under tilvirkning, middels sats": {
+          "account_name": "Kvantumsrabatt, varer under tilvirkning, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4176"
+        },
+        "4178 Annen innkjøpsprisreduksjon, varer under tilvirkning, høy sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, varer under tilvirkning, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4178"
+        },
+        "4179 Annen innkjøpsprisreduksjon, varer under tilvirkning, middels sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, varer under tilvirkning, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4179"
+        },
+        "4190 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4190"
+        },
+        "4200 Innkjøp ferdig egentilvirkede varer, høy sats": {
+          "account_name": "Innkjøp ferdig egentilvirkede varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4200"
+        },
+        "4230 Innkjøp ferdig egentilvirkede varer, middels sats": {
+          "account_name": "Innkjøp ferdig egentilvirkede varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4230"
+        },
+        "4240 Innkjøp ferdig egentilvirkede varer, uten MVA": {
+          "account_name": "Innkjøp ferdig egentilvirkede varer, uten MVA",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4240"
+        },
+        "4260 Frakt, toll og spedisjon": {
+          "account_name": "Frakt, toll og spedisjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4260"
+        },
+        "4270 Innkjøpsprisreduksjon, egentilvirkede varer, høy sats": {
+          "account_name": "Innkjøpsprisreduksjon, egentilvirkede varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4270"
+        },
+        "4271 Innkjøpsprisreduksjon, egentilvirkede varer, middels sats": {
+          "account_name": "Innkjøpsprisreduksjon, egentilvirkede varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4271"
+        },
+        "4290 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4290"
+        },
+        "4300 Innkjøp av varer for videresalg, høy sats": {
+          "account_name": "Innkjøp av varer for videresalg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4300",
+          "account_type": "Cost of Goods Sold"
+        },
+        "4330 Innkjøp av varer for videresalg, middels sats": {
+          "account_name": "Innkjøp av varer for videresalg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4330"
+        },
+        "4335 Innkjøp av varer for videresalg, uten MVA": {
+          "account_name": "Innkjøp av varer for videresalg, uten MVA",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4335"
+        },
+        "4340 Utenlands innkjøp av varer for videresalg, høy sats": {
+          "account_name": "Utenlands innkjøp av varer for videresalg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4340"
+        },
+        "4341 Utenlands innkjøp av varer for videresalg, middels sats": {
+          "account_name": "Utenlands innkjøp av varer for videresalg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4341"
+        },
+        "4342 Utenlands innkjøp av varer for videresalg, fritatt for avgift": {
+          "account_name": "Utenlands innkjøp av varer for videresalg, fritatt for avgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4342"
+        },
+        "4350 Svinn og tap": {
+          "account_name": "Svinn og tap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4350"
+        },
+        "4360 Frakt, toll og spedisjon": {
+          "account_name": "Frakt, toll og spedisjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4360"
+        },
+        "4371 Kontantrabatt, varer for videresalg, høy sats": {
+          "account_name": "Kontantrabatt, varer for videresalg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4371"
+        },
+        "4372 Kontantrabatt, varer for videresalg, middels sats": {
+          "account_name": "Kontantrabatt, varer for videresalg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4372"
+        },
+        "4375 Kvantumsrabatt, varer for videresalg, høy sats": {
+          "account_name": "Kvantumsrabatt, varer for videresalg, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4375"
+        },
+        "4376 Kvantumsrabatt, varer for videresalg, middels sats": {
+          "account_name": "Kvantumsrabatt, varer for videresalg, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4376"
+        },
+        "4378 Annen innkjøpsprisreduksjon, høy sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4378"
+        },
+        "4379 Annen innkjøpsprisreduksjon, middels sats": {
+          "account_name": "Annen innkjøpsprisreduksjon, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4379"
+        },
+        "4380 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4380"
+        },
+        "4381 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4381"
+        },
+        "4382 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4382"
+        },
+        "4383 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4383"
+        },
+        "4384 Grunnlag innførsel av varer med nullsats": {
+          "account_name": "Grunnlag innførsel av varer med nullsats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4384"
+        },
+        "4385 Grunnlag innførsel av varer med nullsats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med nullsats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4385"
+        },
+        "4386 Innenlands kjøp av varer, omvendt avgiftsplikt": {
+          "account_name": "Innenlands kjøp av varer, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4386"
+        },
+        "4387 Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto": {
+          "account_name": "Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4387"
+        },
+        "4390 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4390",
+          "account_type": "Stock Adjustment"
+        },
+        "4500 Fremmedytelse og underentreprise": {
+          "account_name": "Fremmedytelse og underentreprise",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4500"
+        },
+        "4550 Fremmedytelse og underentreprise, opplysningspliktig": {
+          "account_name": "Fremmedytelse og underentreprise, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4550"
+        },
+        "4590 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4590"
+        },
+        "4600 Emballasjematerialer": {
+          "account_name": "Emballasjematerialer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4600"
+        },
+        "4690 Beholdningsendring": {
+          "account_name": "Beholdningsendring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4690"
+        },
+        "4900 Annen periodisering": {
+          "account_name": "Annen periodisering",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4900"
+        },
+        "4990 Beholdningsendring, egentilvirkede anleggsmidler": {
+          "account_name": "Beholdningsendring, egentilvirkede anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "4990"
+        }
+      },
+      "Lønnskostnader": {
+        "account_name": "Lønnskostnader",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "5000 Lønn til ansatte": {
+          "account_name": "Lønn til ansatte",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5000"
+        },
+        "5005 Avtalte tariffgodtgjørelser": {
+          "account_name": "Avtalte tariffgodtgjørelser",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5005"
+        },
+        "5090 Påløpt, ikke utbetalt lønn": {
+          "account_name": "Påløpt, ikke utbetalt lønn",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5090"
+        },
+        "5092 Feriepenger": {
+          "account_name": "Feriepenger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5092"
+        },
+        "5099 Andre lønnsposteringer": {
+          "account_name": "Andre lønnsposteringer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5099"
+        },
+        "5200 Fri bil": {
+          "account_name": "Fri bil",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5200"
+        },
+        "5210 Fri telefon": {
+          "account_name": "Fri telefon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5210"
+        },
+        "5220 Fri avis": {
+          "account_name": "Fri avis",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5220"
+        },
+        "5230 Fri kost": {
+          "account_name": "Fri kost",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5230"
+        },
+        "5235 Fri losji": {
+          "account_name": "Fri losji",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5235"
+        },
+        "5236 Fri bolig": {
+          "account_name": "Fri bolig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5236"
+        },
+        "5240 Rentefordel": {
+          "account_name": "Rentefordel",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5240"
+        },
+        "5250 Gruppelivsforsikring": {
+          "account_name": "Gruppelivsforsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5250"
+        },
+        "5252 Ulykkesforsikring": {
+          "account_name": "Ulykkesforsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5252"
+        },
+        "5253 Personavbruddsforsikring": {
+          "account_name": "Personavbruddsforsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5253"
+        },
+        "5254 Yrkesskadeforsikring, skattepliktig del": {
+          "account_name": "Yrkesskadeforsikring, skattepliktig del",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5254"
+        },
+        "5255 Tilskudd og premie til pensjonsordning, arbeidsgiveravgiftspliktig": {
+          "account_name": "Tilskudd og premie til pensjonsordning, arbeidsgiveravgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5255"
+        },
+        "5280 Annen fordel i arbeidsforhold": {
+          "account_name": "Annen fordel i arbeidsforhold",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5280"
+        },
+        "5290 Motkonto for gruppe 52": {
+          "account_name": "Motkonto for gruppe 52",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5290"
+        },
+        "5330 Godtgjørelse til styremedlemmer": {
+          "account_name": "Godtgjørelse til styremedlemmer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5330"
+        },
+        "5335 Godtgjørelse til medlemmer av bedriftsforsamlingen": {
+          "account_name": "Godtgjørelse til medlemmer av bedriftsforsamlingen",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5335"
+        },
+        "5390 Annen opplysningspliktig godtgjørelse": {
+          "account_name": "Annen opplysningspliktig godtgjørelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5390"
+        },
+        "5400 Arbeidsgiveravgift": {
+          "account_name": "Arbeidsgiveravgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5400"
+        },
+        "5404 Påløpt arbeidsgiveravgift påløpt lønn": {
+          "account_name": "Påløpt arbeidsgiveravgift påløpt lønn",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5404"
+        },
+        "5405 Arbeidsgiveravgift av påløpte feriepenger": {
+          "account_name": "Arbeidsgiveravgift av påløpte feriepenger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5405"
+        },
+        "5406 Påløpt arbeidsgiveravgift av påløpte andre honorarer": {
+          "account_name": "Påløpt arbeidsgiveravgift av påløpte andre honorarer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5406"
+        },
+        "5420 Innberetningspliktig pensjonskostnad utbetalt over drift": {
+          "account_name": "Innberetningspliktig pensjonskostnad utbetalt over drift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5420"
+        },
+        "5430 Finansskatt av lønn": {
+          "account_name": "Finansskatt av lønn",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5430"
+        },
+        "5431 Finansskatt av påløpte feriepenger": {
+          "account_name": "Finansskatt av påløpte feriepenger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5431"
+        },
+        "5434 Påløpt finansskatt påløpt lønn": {
+          "account_name": "Påløpt finansskatt påløpt lønn",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5434"
+        },
+        "5435 Påløpt finansskatt påløpte feriepenger": {
+          "account_name": "Påløpt finansskatt påløpte feriepenger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5435"
+        },
+        "5436 Påløpt finansskatt påløpte andre honorarer": {
+          "account_name": "Påløpt finansskatt påløpte andre honorarer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5436"
+        },
+        "5500 Annen kostnadsgodtgjørelse": {
+          "account_name": "Annen kostnadsgodtgjørelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5500"
+        },
+        "5600 Arbeidsgodtgjørelse til eiere i DLS": {
+          "account_name": "Arbeidsgodtgjørelse til eiere i DLS",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5600"
+        },
+        "5700 Lærlingtilskudd": {
+          "account_name": "Lærlingtilskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5700"
+        },
+        "5750 Annet lønnstilskudd": {
+          "account_name": "Annet lønnstilskudd",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5750"
+        },
+        "5800 Refusjon av sykepenger": {
+          "account_name": "Refusjon av sykepenger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5800"
+        },
+        "5820 Refusjon av arbeidsgiveravgift": {
+          "account_name": "Refusjon av arbeidsgiveravgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5820"
+        },
+        "5830 Refusjon arbeidsmarkedstiltak": {
+          "account_name": "Refusjon arbeidsmarkedstiltak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5830"
+        },
+        "5890 Annen refusjon": {
+          "account_name": "Annen refusjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5890"
+        },
+        "5899 Motkonto for gruppe 58": {
+          "account_name": "Motkonto for gruppe 58",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5899"
+        },
+        "5900 Gaver til ansatte, fradragsberettiget": {
+          "account_name": "Gaver til ansatte, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5900"
+        },
+        "5905 Gaver til ansatte, ikke fradragsberettiget": {
+          "account_name": "Gaver til ansatte, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5905"
+        },
+        "5910 Kantinekostnad": {
+          "account_name": "Kantinekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5910"
+        },
+        "5915 Overtidsmat": {
+          "account_name": "Overtidsmat",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5915"
+        },
+        "5919 Trekk kantinekostnader ansatte": {
+          "account_name": "Trekk kantinekostnader ansatte",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5919"
+        },
+        "5920 Yrkesskadeforsikring": {
+          "account_name": "Yrkesskadeforsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5920"
+        },
+        "5930 Annen ikke arbeidsgiveravgiftspliktig forsikring": {
+          "account_name": "Annen ikke arbeidsgiveravgiftspliktig forsikring",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5930"
+        },
+        "5941 LO/NHO-ordningen (O&U + sluttvederlag)": {
+          "account_name": "LO/NHO-ordningen (O&U + sluttvederlag)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5941"
+        },
+        "5942 LO/NHO-ordningen (AFP)": {
+          "account_name": "LO/NHO-ordningen (AFP)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5942"
+        },
+        "5943 Pensjonsforsikring, arbeidsgiveravgiftspliktig": {
+          "account_name": "Pensjonsforsikring, arbeidsgiveravgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5943"
+        },
+        "5944 Pensjonsforsikring, ikke arbeidsgiveravgiftspliktig": {
+          "account_name": "Pensjonsforsikring, ikke arbeidsgiveravgiftspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5944"
+        },
+        "5950 Obligatorisk tjenestepensjon (OTP)": {
+          "account_name": "Obligatorisk tjenestepensjon (OTP)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5950"
+        },
+        "5990 Annen personalkostnad": {
+          "account_name": "Annen personalkostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5990"
+        },
+        "5999 Motkonto for gruppe 59": {
+          "account_name": "Motkonto for gruppe 59",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "5999"
+        }
+      },
+      "Avskrivninger": {
+        "account_name": "Avskrivninger",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "6000 Avskrivning på bygninger og annen fast eiendom": {
+          "account_name": "Avskrivning på bygninger og annen fast eiendom",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6000",
+          "account_type": "Depreciation"
+        },
+        "6005 Avskrivning på påkostninger, leid driftsmiddel": {
+          "account_name": "Avskrivning på påkostninger, leid driftsmiddel",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6005",
+          "account_type": "Depreciation"
+        },
+        "6010 Avskrivning på transportmidler": {
+          "account_name": "Avskrivning på transportmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6010",
+          "account_type": "Depreciation"
+        },
+        "6015 Avskrivning på maskiner": {
+          "account_name": "Avskrivning på maskiner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6015",
+          "account_type": "Depreciation"
+        },
+        "6017 Avskrivning på inventar": {
+          "account_name": "Avskrivning på inventar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6017",
+          "account_type": "Depreciation"
+        },
+        "6020 Avskrivning på ervervet goodwill": {
+          "account_name": "Avskrivning på ervervet goodwill",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6020",
+          "account_type": "Depreciation"
+        },
+        "6029 Avskrivning på andre immaterielle eiendeler": {
+          "account_name": "Avskrivning på andre immaterielle eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6029",
+          "account_type": "Depreciation"
+        },
+        "6030 Avskrivning annet": {
+          "account_name": "Avskrivning annet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6030",
+          "account_type": "Depreciation"
+        }
+      },
+      "Andre driftskostnader": {
+        "account_name": "Andre driftskostnader",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "6050 Nedskrivning av varige driftsmidler": {
+          "account_name": "Nedskrivning av varige driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6050"
+        },
+        "6055 Nedskrivning av immaterielle eiendeler": {
+          "account_name": "Nedskrivning av immaterielle eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6055"
+        },
+        "6059 Reversering av nedskrivning varige driftsmidler og immaterielle eiendeler": {
+          "account_name": "Reversering av nedskrivning varige driftsmidler og immaterielle eiendeler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6059"
+        },
+        "6060 Nedskrivning annet": {
+          "account_name": "Nedskrivning annet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6060"
+        },
+        "6061 Reversering nedskrivning annet": {
+          "account_name": "Reversering nedskrivning annet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6061"
+        },
+        "6100 Frakt, transportkostnad og forsikring ved vareforsendelse": {
+          "account_name": "Frakt, transportkostnad og forsikring ved vareforsendelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6100"
+        },
+        "6110 Toll og spedisjonskostnad ved vareforsendelse": {
+          "account_name": "Toll og spedisjonskostnad ved vareforsendelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6110"
+        },
+        "6190 Annen frakt- og transportkostnad ved salg": {
+          "account_name": "Annen frakt- og transportkostnad ved salg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6190"
+        },
+        "6200 Elektrisitet": {
+          "account_name": "Elektrisitet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6200"
+        },
+        "6210 Gass": {
+          "account_name": "Gass",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6210"
+        },
+        "6220 Fyringsolje": {
+          "account_name": "Fyringsolje",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6220"
+        },
+        "6230 Kull, koks": {
+          "account_name": "Kull, koks",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6230"
+        },
+        "6240 Ved": {
+          "account_name": "Ved",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6240"
+        },
+        "6250 Bensin, dieselolje": {
+          "account_name": "Bensin, dieselolje",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6250"
+        },
+        "6260 Vann": {
+          "account_name": "Vann",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6260"
+        },
+        "6290 Annet brensel": {
+          "account_name": "Annet brensel",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6290"
+        },
+        "6300 Leie lokale": {
+          "account_name": "Leie lokale",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6300"
+        },
+        "6320 Renovasjon, vann, avløp o.l.": {
+          "account_name": "Renovasjon, vann, avløp o.l.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6320"
+        },
+        "6340 Lys": {
+          "account_name": "Lys",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6340"
+        },
+        "6345 Varme": {
+          "account_name": "Varme",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6345"
+        },
+        "6360 Renhold": {
+          "account_name": "Renhold",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6360"
+        },
+        "6391 Felles-/administrasjonskostnad senterforening": {
+          "account_name": "Felles-/administrasjonskostnad senterforening",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6391"
+        },
+        "6399 Annen kostnad lokaler": {
+          "account_name": "Annen kostnad lokaler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6399"
+        },
+        "6400 Leie maskiner": {
+          "account_name": "Leie maskiner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6400"
+        },
+        "6410 Leie inventar": {
+          "account_name": "Leie inventar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6410"
+        },
+        "6420 Leie datasystemer": {
+          "account_name": "Leie datasystemer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6420"
+        },
+        "6430 Leie andre kontormaskiner": {
+          "account_name": "Leie andre kontormaskiner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6430"
+        },
+        "6440 Leie transportmidler": {
+          "account_name": "Leie transportmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6440"
+        },
+        "6490 Annen leiekostnad": {
+          "account_name": "Annen leiekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6490"
+        },
+        "6500 Motordrevet verktøy": {
+          "account_name": "Motordrevet verktøy",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6500"
+        },
+        "6510 Håndverktøy": {
+          "account_name": "Håndverktøy",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6510"
+        },
+        "6520 Hjelpeverktøy": {
+          "account_name": "Hjelpeverktøy",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6520"
+        },
+        "6530 Spesialverktøy": {
+          "account_name": "Spesialverktøy",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6530"
+        },
+        "6540 Inventar": {
+          "account_name": "Inventar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6540"
+        },
+        "6551 Datautstyr": {
+          "account_name": "Datautstyr",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6551"
+        },
+        "6552 Programvare anskaffelse": {
+          "account_name": "Programvare anskaffelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6552"
+        },
+        "6553 Programvare årlig vedlikehold": {
+          "account_name": "Programvare årlig vedlikehold",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6553"
+        },
+        "6560 Rekvisita": {
+          "account_name": "Rekvisita",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6560"
+        },
+        "6570 Arbeidsklær, opplysningspliktig": {
+          "account_name": "Arbeidsklær, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6570"
+        },
+        "6571 Arbeidsklær, ikke opplysningspliktig": {
+          "account_name": "Arbeidsklær, ikke opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6571"
+        },
+        "6575 Verneutstyr": {
+          "account_name": "Verneutstyr",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6575"
+        },
+        "6590 Annet driftsmateriale": {
+          "account_name": "Annet driftsmateriale",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6590"
+        },
+        "6600 Reparasjon og vedlikehold bygninger": {
+          "account_name": "Reparasjon og vedlikehold bygninger",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6600"
+        },
+        "6620 Reparasjon og vedlikehold utstyr": {
+          "account_name": "Reparasjon og vedlikehold utstyr",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6620"
+        },
+        "6690 Reparasjon og vedlikehold annet": {
+          "account_name": "Reparasjon og vedlikehold annet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6690"
+        },
+        "6700 Revisjonshonorar": {
+          "account_name": "Revisjonshonorar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6700"
+        },
+        "6702 Honorar annen bistand fra revisor": {
+          "account_name": "Honorar annen bistand fra revisor",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6702"
+        },
+        "6705 Regnskapshonorar": {
+          "account_name": "Regnskapshonorar",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6705"
+        },
+        "6706 Honorarer annen bistand fra regnskapsfører": {
+          "account_name": "Honorarer annen bistand fra regnskapsfører",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6706"
+        },
+        "6720 Honorar for annen økonomisk rådgivning": {
+          "account_name": "Honorar for annen økonomisk rådgivning",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6720"
+        },
+        "6725 Honorar for juridisk bistand, fradragsberettiget": {
+          "account_name": "Honorar for juridisk bistand, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6725"
+        },
+        "6726 Honorar for juridisk bistand, ikke fradragsberettiget": {
+          "account_name": "Honorar for juridisk bistand, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6726"
+        },
+        "6750 Honorar for databistand": {
+          "account_name": "Honorar for databistand",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6750"
+        },
+        "6790 Annen fremmed tjeneste, opplysningspliktig": {
+          "account_name": "Annen fremmed tjeneste, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6790"
+        },
+        "6795 Annen fremmed tjeneste, ikke opplysningspliktig": {
+          "account_name": "Annen fremmed tjeneste, ikke opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6795"
+        },
+        "6800 Kontorrekvisita": {
+          "account_name": "Kontorrekvisita",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6800"
+        },
+        "6820 Trykksak": {
+          "account_name": "Trykksak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6820"
+        },
+        "6840 Aviser, tidsskrifter, bøker o.l.": {
+          "account_name": "Aviser, tidsskrifter, bøker o.l.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6840"
+        },
+        "6860 Møte, kurs, oppdatering o.l.": {
+          "account_name": "Møte, kurs, oppdatering o.l.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6860"
+        },
+        "6890 Annen kontorkostnad": {
+          "account_name": "Annen kontorkostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6890"
+        },
+        "6900 Telefon": {
+          "account_name": "Telefon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6900"
+        },
+        "6903 Mobiltelefon": {
+          "account_name": "Mobiltelefon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6903"
+        },
+        "6907 Datakommunikasjon": {
+          "account_name": "Datakommunikasjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6907"
+        },
+        "6909 Annen telekommunikasjon": {
+          "account_name": "Annen telekommunikasjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6909"
+        },
+        "6940 Porto": {
+          "account_name": "Porto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "6940"
+        },
+        "7000 Drivstoff transportmiddel 1": {
+          "account_name": "Drivstoff transportmiddel 1",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7000"
+        },
+        "7020 Vedlikehold transportmiddel 1": {
+          "account_name": "Vedlikehold transportmiddel 1",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7020"
+        },
+        "7040 Forsikring transportmiddel 1": {
+          "account_name": "Forsikring transportmiddel 1",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7040"
+        },
+        "7090 Annen kostnad transportmiddel 1": {
+          "account_name": "Annen kostnad transportmiddel 1",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7090"
+        },
+        "7100 Bilgodtgjørelse, opplysningspliktig": {
+          "account_name": "Bilgodtgjørelse, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7100"
+        },
+        "7130 Reisekostnad, opplysningspliktig": {
+          "account_name": "Reisekostnad, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7130"
+        },
+        "7140 Reisekostnad, ikke opplysningspliktig": {
+          "account_name": "Reisekostnad, ikke opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7140"
+        },
+        "7150 Diettkostnad, opplysningspliktig": {
+          "account_name": "Diettkostnad, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7150"
+        },
+        "7160 Diettkostnad, ikke opplysningspliktig": {
+          "account_name": "Diettkostnad, ikke opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7160"
+        },
+        "7190 Verktøygodtgjørelse": {
+          "account_name": "Verktøygodtgjørelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7190"
+        },
+        "7195 Arbeidstøygodtgjørelse": {
+          "account_name": "Arbeidstøygodtgjørelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7195"
+        },
+        "7199 Annen kostnadsgodtgjørelse": {
+          "account_name": "Annen kostnadsgodtgjørelse",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7199"
+        },
+        "7200 Provisjonskostnad, opplysningspliktig": {
+          "account_name": "Provisjonskostnad, opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7200"
+        },
+        "7210 Provisjonskostnad, ikke opplysningspliktig": {
+          "account_name": "Provisjonskostnad, ikke opplysningspliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7210"
+        },
+        "7300 Salgskostnad": {
+          "account_name": "Salgskostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7300"
+        },
+        "7320 Reklameannonser": {
+          "account_name": "Reklameannonser",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7320"
+        },
+        "7322 Reklameavis/-katalog mv.": {
+          "account_name": "Reklameavis/-katalog mv.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7322"
+        },
+        "7323 Reklameartikler": {
+          "account_name": "Reklameartikler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7323"
+        },
+        "7329 Annen reklamekostnad": {
+          "account_name": "Annen reklamekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7329"
+        },
+        "7350 Representasjon, fradragsberettiget": {
+          "account_name": "Representasjon, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7350"
+        },
+        "7360 Representasjon, ikke fradragsberettiget": {
+          "account_name": "Representasjon, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7360"
+        },
+        "7390 Annen salgskostnad, fradragsberettiget": {
+          "account_name": "Annen salgskostnad, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7390"
+        },
+        "7395 Annen salgskostnad, ikke fradragsberettiget": {
+          "account_name": "Annen salgskostnad, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7395"
+        },
+        "7400 Kontingent, fradragsberettiget": {
+          "account_name": "Kontingent, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7400"
+        },
+        "7410 Kontingent, ikke fradragsberettiget": {
+          "account_name": "Kontingent, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7410"
+        },
+        "7420 Gave, fradragsberettiget": {
+          "account_name": "Gave, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7420"
+        },
+        "7430 Gave, ikke fradragsberettiget": {
+          "account_name": "Gave, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7430"
+        },
+        "7500 Forsikringspremie": {
+          "account_name": "Forsikringspremie",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7500"
+        },
+        "7530 Frivillig tilleggstrygd for næringsdrivende": {
+          "account_name": "Frivillig tilleggstrygd for næringsdrivende",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7530"
+        },
+        "7550 Garantikostnad": {
+          "account_name": "Garantikostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7550"
+        },
+        "7560 Servicekostnad": {
+          "account_name": "Servicekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7560"
+        },
+        "7600 Lisensavgift": {
+          "account_name": "Lisensavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7600"
+        },
+        "7605 Royalties": {
+          "account_name": "Royalties",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7605"
+        },
+        "7610 Patentkostnad ved egen patent": {
+          "account_name": "Patentkostnad ved egen patent",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7610"
+        },
+        "7620 Kostnad ved varemerke o.l.": {
+          "account_name": "Kostnad ved varemerke o.l.",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7620"
+        },
+        "7630 Kontroll-, prøve- og stempelavgifter": {
+          "account_name": "Kontroll-, prøve- og stempelavgifter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7630"
+        },
+        "7710 Styremøter": {
+          "account_name": "Styremøter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7710"
+        },
+        "7715 Bedriftsforsamlingsmøter": {
+          "account_name": "Bedriftsforsamlingsmøter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7715"
+        },
+        "7720 Generalforsamling": {
+          "account_name": "Generalforsamling",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7720"
+        },
+        "7730 Kostnad ved egne aksjer": {
+          "account_name": "Kostnad ved egne aksjer",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7730"
+        },
+        "7740 Øresavrunding": {
+          "account_name": "Øresavrunding",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7740",
+          "account_type": "Round Off"
+        },
+        "7750 Eiendoms- og festeavgift": {
+          "account_name": "Eiendoms- og festeavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7750"
+        },
+        "7770 Bank- og kortgebyr": {
+          "account_name": "Bank- og kortgebyr",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7770"
+        },
+        "7775 Kredittkortprovisjoner": {
+          "account_name": "Kredittkortprovisjoner",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7775"
+        },
+        "7780 Grunnlag MVA innførsel av varer, høy sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7780"
+        },
+        "7781 Grunnlag MVA innførsel av varer, høy sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, høy sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7781"
+        },
+        "7782 Grunnlag MVA innførsel av varer, middels sats": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7782"
+        },
+        "7783 Grunnlag MVA innførsel av varer, middels sats, motkonto": {
+          "account_name": "Grunnlag MVA innførsel av varer, middels sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7783"
+        },
+        "7784 Grunnlag innførsel av varer med null sats": {
+          "account_name": "Grunnlag innførsel av varer med null sats",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7784"
+        },
+        "7785 Grunnlag innførsel av varer med null sats, motkonto": {
+          "account_name": "Grunnlag innførsel av varer med null sats, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7785"
+        },
+        "7786 Grunnlag utgående MVA kjøp tjenester fra utlandet": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7786"
+        },
+        "7787 Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto": {
+          "account_name": "Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7787"
+        },
+        "7788 Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt": {
+          "account_name": "Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7788"
+        },
+        "7789 Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto": {
+          "account_name": "Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7789"
+        },
+        "7798 Annen kostnad, fradragsberettiget": {
+          "account_name": "Annen kostnad, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7798"
+        },
+        "7799 Annen kostnad, ikke fradragsberettiget": {
+          "account_name": "Annen kostnad, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7799"
+        },
+        "7820 Innkommet på tidligere nedskrevne fordringer, skattepliktig": {
+          "account_name": "Innkommet på tidligere nedskrevne fordringer, skattepliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7820"
+        },
+        "7825 Innkommet på tidligere nedskrevne fordringer, ikke skattepliktig": {
+          "account_name": "Innkommet på tidligere nedskrevne fordringer, ikke skattepliktig",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7825"
+        },
+        "7830 Tap på fordringer, fradragsberettiget": {
+          "account_name": "Tap på fordringer, fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7830"
+        },
+        "7835 Tap på fordringer, ikke fradragsberettiget": {
+          "account_name": "Tap på fordringer, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7835"
+        },
+        "7839 Endring i avsetning for forventet tap": {
+          "account_name": "Endring i avsetning for forventet tap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7839"
+        },
+        "7860 Tap på kontrakter": {
+          "account_name": "Tap på kontrakter",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7860"
+        },
+        "7880 Tap ved avgang anleggsmidler": {
+          "account_name": "Tap ved avgang anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7880"
+        },
+        "7881 Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7881"
+        },
+        "7882 Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7882"
+        },
+        "7883 Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt": {
+          "account_name": "Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7883"
+        },
+        "7889 Motkonto, balanseverdi solgte immatr. eiendeler og varige driftsmidler": {
+          "account_name": "Motkonto, balanseverdi solgte immatr. eiendeler og varige driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7889"
+        },
+        "7891 Salgssum finansielle anleggsmidler": {
+          "account_name": "Salgssum finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7891"
+        },
+        "7899 Motkonto balanseført verdi solgte finansielle driftsmidler": {
+          "account_name": "Motkonto balanseført verdi solgte finansielle driftsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7899"
+        },
+        "7971 Justering inngående merverdiavgift fast eiendom": {
+          "account_name": "Justering inngående merverdiavgift fast eiendom",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7971"
+        },
+        "7972 Justering inngående merverdiavgift maskiner, inventar mv": {
+          "account_name": "Justering inngående merverdiavgift maskiner, inventar mv",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7972"
+        },
+        "7980 Tilbakeføring av inngående merverdiavgift": {
+          "account_name": "Tilbakeføring av inngående merverdiavgift",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "7980"
+        }
+      },
+      "Finanskostnader": {
+        "account_name": "Finanskostnader",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "8100 Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, urealisert": {
+          "account_name": "Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, urealisert",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8100"
+        },
+        "8105 Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, realisert": {
+          "account_name": "Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, realisert",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8105"
+        },
+        "8110 Nedskrivning av andre finansielle omløpsmidler": {
+          "account_name": "Nedskrivning av andre finansielle omløpsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8110"
+        },
+        "8120 Nedskrivning av finansielle anleggsmidler": {
+          "account_name": "Nedskrivning av finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8120"
+        },
+        "8129 Reversering av nedskrivning finansielle anleggsmidler": {
+          "account_name": "Reversering av nedskrivning finansielle anleggsmidler",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8129"
+        },
+        "8130 Rentekostnad til foretak i samme konsern": {
+          "account_name": "Rentekostnad til foretak i samme konsern",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8130"
+        },
+        "8140 Rentekostnad, ikke fradragsberettiget": {
+          "account_name": "Rentekostnad, ikke fradragsberettiget",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8140"
+        },
+        "8150 Rentekostnad banklån": {
+          "account_name": "Rentekostnad banklån",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8150"
+        },
+        "8154 Renter/provisjon kassekreditt": {
+          "account_name": "Renter/provisjon kassekreditt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8154"
+        },
+        "8155 Rentekostnad leverandørgjeld": {
+          "account_name": "Rentekostnad leverandørgjeld",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8155"
+        },
+        "8159 Annen rentekostnad": {
+          "account_name": "Annen rentekostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8159"
+        },
+        "8160 Valutatap (disagio)": {
+          "account_name": "Valutatap (disagio)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8160"
+        },
+        "8177 Tap ved realisasjon av aksjer/andeler, innenfor fritaksmetoden (jf. konto 8007, 8017 og 8027)": {
+          "account_name": "Tap ved realisasjon av aksjer/andeler, innenfor fritaksmetoden (jf. konto 8007, 8017 og 8027)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8177"
+        },
+        "8178 Tap ved realisasjon av aksjer/andeler, utenfor fritaksmetoden (jf. konto 8008, 8018 og 8028)": {
+          "account_name": "Tap ved realisasjon av aksjer/andeler, utenfor fritaksmetoden (jf. konto 8008, 8018 og 8028)",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8178"
+        },
+        "8179 Annen finanskostnad": {
+          "account_name": "Annen finanskostnad",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8179"
+        }
+      },
+      "Skatt og resultatdisponering": {
+        "account_name": "Skatt og resultatdisponering",
+        "is_group": 1,
+        "account_currency": "NOK",
+        "8300 Betalbar skatt": {
+          "account_name": "Betalbar skatt",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8300"
+        },
+        "8309 Betalbar skatt, for mye/lite avsatt tidligere år": {
+          "account_name": "Betalbar skatt, for mye/lite avsatt tidligere år",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8309"
+        },
+        "8320 Endring i utsatt skatt/skattefordel": {
+          "account_name": "Endring i utsatt skatt/skattefordel",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8320"
+        },
+        "8800 Årsresultat": {
+          "account_name": "Årsresultat",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8800"
+        },
+        "8900 Overføringer fond": {
+          "account_name": "Overføringer fond",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8900"
+        },
+        "8910 Overføringer felleseid andelskapital for samvirkeforetak": {
+          "account_name": "Overføringer felleseid andelskapital for samvirkeforetak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8910"
+        },
+        "8920 Avsatt utbytte/ renter på egenkapitalbevis / etterbetaling for samvirkeforetak": {
+          "account_name": "Avsatt utbytte/ renter på egenkapitalbevis / etterbetaling for samvirkeforetak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8920"
+        },
+        "8921 Avsatt tilleggsutbytte": {
+          "account_name": "Avsatt tilleggsutbytte",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8921"
+        },
+        "8922 Avsatt ekstraordinær utbytte": {
+          "account_name": "Avsatt ekstraordinær utbytte",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8922"
+        },
+        "8930 Mottatt konsernbidrag": {
+          "account_name": "Mottatt konsernbidrag",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8930"
+        },
+        "8935 Avsatt konsernbidrag": {
+          "account_name": "Avsatt konsernbidrag",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8935"
+        },
+        "8950 Fondsemisjon": {
+          "account_name": "Fondsemisjon",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8950"
+        },
+        "8960 Overføringer annen egenkapital": {
+          "account_name": "Overføringer annen egenkapital",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8960"
+        },
+        "8968 Overføringer udisponert vinning": {
+          "account_name": "Overføringer udisponert vinning",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8968"
+        },
+        "8969 Overføringer udisponert tap": {
+          "account_name": "Overføringer udisponert tap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8969"
+        },
+        "8980 Privatuttak": {
+          "account_name": "Privatuttak",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8980"
+        },
+        "8990 Udekket tap": {
+          "account_name": "Udekket tap",
+          "is_group": 0,
+          "account_currency": "NOK",
+          "account_number": "8990"
+        }
+      }
+    }
+  }
+}
