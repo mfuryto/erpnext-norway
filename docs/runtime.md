@@ -1,7 +1,7 @@
 # Compose og overgang
 
-Dette er et vedvarende, standard ERPNext-miljø. Norsk modul er ikke implementert i
-første driftsleveranse. Bruk ikke evalueringsmiljøets syntetiske data, passord eller
+Dette er et vedvarende, standard ERPNext-miljø. Den [minimale norske appen](norwegian-app.md)
+installeres separat gjennom den kvalifiserte oppdateringsrutinen. Bruk ikke evalueringsmiljøets syntetiske data, passord eller
 site-filer. Det leveres ingen automatisk flytting av Dolibarr-databasen til ERPNext.
 
 ## Ny installasjon ved siden av eksisterende
@@ -22,7 +22,7 @@ Data ligger i `data/database`, `data/sites`, `data/logs` og `data/redis-queue`.
 Site-navnet er internt `accounting`, uavhengig av offentlig vertsnavn. Frappe sitt
 databasepassord og krypteringsnøkkel opprettes i site-konfigurasjonen og må bevares
 sammen med databasen og dokumentene ved restore. Git inneholder ikke disse filene.
-Den norske modulen tilføyes senere gjennom et låst app-image og migrering.
+Den norske appen tilføyes gjennom et låst app-image og native migrering.
 
 Første innlogging er `Administrator`. Passordet ligger i den lokale private
 `deploy/.env` som `ADMIN_PASSWORD`. Ikke send filen eller passordet i chatten.
@@ -69,9 +69,9 @@ Ta [full native backup](backup.md) med `python3 scripts/backup-runtime.py` før
 runtime-konfigurasjon/images oppdateres. Verktøyet inkluderer privat Compose-
 konfigurasjon og starter de samme tjenestene igjen etter native backup.
 
-Ikke bytt images automatisk. Videre oppdateringsrutine skal stoppe skriv, ta
-full backup av database/site-filer/config, migrere, kontrollere og bevare gammel
-versjon for tilbakeføring. En testet restore-rutine for den norske appen er et
+Bruk [appens oppdateringsrutine](norwegian-app.md) for det særskilt bygde, låste
+app-imaget. Den stopper skriv, tar full backup av database/site-filer/config,
+installerer/migrerer med kjernen og kontrollerer helse. Ikke bytt øvrige images automatisk. En testet restore-rutine for den norske appen er et
 ferdigkriterium før regnskapsmessig produksjonsaksept. Redis-kødata erstatter ikke
 bilagsarkiv eller hovedbok. Den isolerte driftstesten prøver standardinstallasjon,
 WebSocket Upgrade, PDF-rendering og native backup/gjenoppretting med etterfølgende

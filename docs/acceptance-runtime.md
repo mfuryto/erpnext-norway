@@ -1,6 +1,7 @@
 # Aksept for driftsgrunnlaget
 
-Dette gjelder standard ERPNext 16.51.1 / Frappe 16.52.0, ikke en ferdig norsk app.
+Baseline gjelder standard ERPNext 16.51.1 / Frappe 16.52.0. Den separate
+appprøven nedenfor kvalifiserer bare den minimale appen, ikke hele norsk regnskap.
 Kontrolleres før promotering til main:
 
 - Ny installasjon med tilfeldige private passord og separate mapper for database,
@@ -33,9 +34,39 @@ Kontraktstestene er ikke en faktisk prøve mot en bestemt servers gamle installa
 Porten oppdages der skriptet kjøres. Ekstern proxy, WebSocket Upgrade, PDF-ressursvei,
 foretaksoppsett og vanlig eierbruker skal kontrolleres etter oppstart på faktisk server.
 Gjenopprettingsprøven kjøres bare i en ny, isolert syntetisk fikstur gjennom
-`tests/runtime-smoke.sh`. Den er ikke en gjenoppretting av serverens data, prøve av
-en ny image-versjon eller kvalifisering av den fremtidige norske appen. Backup av
+`tests/runtime-smoke.sh`. Den er ikke en gjenoppretting av serverens data eller kvalifisering av andre
+kjerneversjoner. Den norske appen prøves særskilt som beskrevet nedenfor. Backup av
 privat driftskonfigurasjon, separat lagring, full servergjenoppretting,
 oppdateringsflyt og norsk regnskapsaksept skal fullføres videre i dette prosjektet.
 Ingen automatisk skatteinnsending, SAF-T eller EHF hevdes
 levert av dette driftsgrunnlaget. EHF og samlet sluttkontroll følger planen.
+
+## Minimal norsk app
+
+`ERP_TEST_APP=1 bash tests/runtime-smoke.sh` bygger et låst app-image og bruker
+produksjonsverktøyet til backup før image-/konfigurasjonsendring, installasjon
+og native migrering av den tomme testinstansen. Samme modul-, kontoplan-,
+regnskaps- og eierprøver gjentas med appen aktiv.
+
+Appprøven kontrollerer native F/K, partskoder og startnummer, avvisning av sletting,
+omdøping, endret returtype og nullstilling/overstyring av brukt serie. Manuelle
+importnumre skal ikke omgå appens serie. Eksisterende brukt register uten appregel
+skal ikke få en ny erstatningsserie ved migrering.
+
+Vanlig eier og Administrator prøver File-API for sletting, frakobling, URL-/navn-
+og privatstatusendring. Originalbyte kontrolleres etter avvisning. Overskriving
+via delt fil-URL og ny File uten opprinnelig ID prøves også. Nye vedlegg og retting
+av kladdvedlegg tillates. Native kansellering fungerer; sletting av kansellert
+bilag/vedlegg og faktura-amendment med suffiks avvises.
+
+To samtidige uavhengige native sesjoner prøves med seks fakturakladder. En native
+konflikt kan kreve et nytt lagringsforsøk etter rollback. Resultatet må være seks
+unike, fortløpende, bevarte numre og riktig native teller; ingen egen retry eller
+teller er produktkode. Etter eksportert backup, skade på syntetiske data/filer,
+sletting av kildebackup, restore og native migrering prøves app, originalvedlegg,
+vern, teller, hovedbok, krypteringsnøkkel, HTTP og privat gjesteavvisning igjen.
+
+Kontraktstester prøver feil før/etter migreringsgrensen, feil ved backupforsegling,
+bevaring av privat konfigurasjon og opprinnelig tjenesteutvalg. En mislykket
+migrering skal aldri automatisk åpne gammel kode mot muligens endret database.
+Disse feilmodellene erstatter ikke en faktisk servergjenoppretting.

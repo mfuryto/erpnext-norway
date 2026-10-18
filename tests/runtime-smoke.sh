@@ -80,6 +80,12 @@ initial_key_hash=$(key_hash)
 [[ "$(key_hash)" == "$initial_key_hash" ]]
 printf 'PASS restart preserves site encryption key and storage\n'
 
+if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  app_image=$(bash "$root/scripts/build-app-image.sh")
+  python3 "$root/scripts/update-runtime.py" --root "$fixture" --image "$app_image" --name before-app
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - fresh < "$root/tests/runtime-app.py"
+fi
+
 # Destructive recovery is confined to the fresh synthetic fixture above.
 # Stop all writers and HTTP access; use one-off commands for backup and restore.
 "${compose[@]}" stop --timeout 15 frontend backend websocket scheduler queue-long queue-short
@@ -92,8 +98,12 @@ runtime_python() {
 runtime_python seed
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-core-accounting.py"
-"${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
-  < "$root/tests/runtime-native-controls.py"
+if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - probe < "$root/tests/runtime-app.py"
+else
+  "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
+    < "$root/tests/runtime-native-controls.py"
+fi
 "${compose[@]}" up -d --wait --wait-timeout 300
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
@@ -120,6 +130,9 @@ docker cp "$fixture/backups/runtime-ci/native/." \
   bench --site accounting migrate
 '
 runtime_python verify
+if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-app.py"
+fi
 "${compose[@]}" up -d --wait --wait-timeout 300
 [[ "$(key_hash)" == "$initial_key_hash" ]]
 "${compose[@]}" exec -T frontend curl --fail --silent --show-error --max-time 10 \

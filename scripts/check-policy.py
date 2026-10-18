@@ -10,9 +10,11 @@ if os.environ.get('GITHUB_EVENT_NAME') == 'pull_request':
     assert event['pull_request']['head']['ref'] == 'staging', 'Main accepts staging only'
     assert event['pull_request']['head']['repo']['full_name'] == event['repository']['full_name'], 'Promotion must use this repository staging'
 files = subprocess.check_output(['git', 'ls-files'], cwd=root, text=True).splitlines()
-assert not any(x.startswith(('data/', 'backups/', 'local-handover/')) or x == 'deploy/.env' or x.startswith('.cutover.') for x in files)
+assert not any(x.startswith(('data/', 'backups/', 'local-handover/')) or x == 'deploy/.env' or x.startswith('deploy/.runtime-update-') or x.startswith('.cutover.') for x in files)
 for line in (root/'compose.yaml').read_text().splitlines():
     if line.strip().startswith('image:'):
         assert '@sha256:' in line, 'Pin every runtime image'
+assert '@sha256:' in (root/'deploy/Dockerfile.app').read_text().splitlines()[0], 'Pin app base image'
+assert '--require-hashes' in (root/'deploy/Dockerfile.app').read_text(), 'Lock app build dependencies'
 assert 'contents: read' in (root/'.github/workflows/quality.yml').read_text()
 print('PASS source and promotion policy')

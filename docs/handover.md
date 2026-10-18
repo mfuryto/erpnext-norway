@@ -161,3 +161,25 @@ Native resultat er 475, bank 275 etter separat eiertransaksjon. Alle 745 koder/n
 reskontro og avgiftsstandarder kontrolleres etter eksportert backup/restore og
 migrering. Dette er ikke utført på brukerens server. Nummerering, dokumentvern,
 språk, norsk avgiftsvalg og rapportering gjenstår som beskrevet i planen.
+
+## Videreføring: minimal ekstern app
+
+`apps/erpnext_norway/` inneholder minste tillegg for de påviste hullene i
+[native kontroller](native-controls.md). [Appbeskrivelsen](norwegian-app.md)
+angir oppsett, avgrensninger, bygging og native oppdatering. Ingen kjernefiler,
+nummermotor eller filoppbevaring erstattes. Native egenskap protect_attached_files,
+Document Naming Rule og standard kansellering/kreditnota brukes.
+
+Appen bevarer nummererte fakturakladder og bokførte/kansellerte regnskapsbilag,
+beskytter vedlegg mot de prøvde endringene og lar ny dokumentasjon legges til.
+Nye native regler seedes bare på tomme registre uten eksisterende regler.
+Brukte tellere og eksisterende valgmuligheter tilbakestilles ikke av migrering.
+Ved native samtidighetskonflikt rulles transaksjonen tilbake; et nytt lagringsforsøk
+må bevare sekvensen. Det tilføyes ingen egen produkt-retry eller utstedelsesteller.
+
+Oppdateringen tar full backup før imagevalget endres og bruker install-app/migrate.
+Feil etter migreringsstart åpner ikke gammel kode mot muligens endret database.
+Appen og bevaringsvern inngår i separat Compose-prøve og eksportert restore.
+Faktisk oppdatering av brukerens server er fortsatt ikke verifisert her.
+Neste produktpunkt er norsk skjermspråk og norsk/engelsk dokument/PDF med bevaring
+av utstedt dokument, fulgt av faktisk foretaksoppsett og normal avgiftsflyt.

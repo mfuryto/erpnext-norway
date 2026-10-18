@@ -1,0 +1,10 @@
+*
+!deploy/
+deploy/*
+!deploy/Dockerfile.app
+!deploy/app-build-requirements.txt
+!apps/
+!apps/erpnext_norway/
+!apps/erpnext_norway/**
+**/__pycache__
+**/*.pyc
