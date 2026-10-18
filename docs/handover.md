@@ -6,6 +6,11 @@ oppgitt ikke tatt i ordinær bruk, så ingen produksjonshistorikk skal migreres 
 
 ## Førende prinsipp
 
+Brukeren har gitt varig godkjenning til promotering: ferdige endringer skal alltid
+fra staging til main gjennom PR og beståtte aktuelle CI-kontroller, uten ny
+godkjenningsrunde. Synkroniser staging etter sammenslåing uten force-push. Dette
+gir ikke servertilgang; brukeren kjører fortsatt serverblokkene selv.
+
 ERPNext-kjernen er primær. Dolibarr Norway, ENK Norge og Peppol-tilleggene brukes
 som referanser. Ikke installer dem automatisk, kopier tidligere kontrollag eller
 bygg en ny brukerflate rundt hele ERPNext. For hvert område registreres bare:

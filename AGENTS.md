@@ -14,6 +14,10 @@
 - Bare grenene main og staging. Ingen feature-grener. Utvikle på staging; test før push.
 - Main krever PR fra staging og beståtte aktuelle CI-resultater. Ingen direkte push,
   force-push eller sletting. Synkroniser staging etter promotering uten force-push.
+- Brukeren har gitt varig godkjenning til å overføre ferdige endringer fra staging
+  til main. Fullfør PR, aktuelle kontroller og sammenslåing uten ny godkjenningsrunde.
+  Ikke la ferdige endringer bli liggende bare på staging. Serveroppdateringer kjøres
+  fortsatt av brukeren fra leverte kommandoblokker.
 - Installer lokal hook med `git config core.hooksPath .githooks`. Ikke omgå serververn.
 - Bruk nøytral commit-identitet og generisk dokumentasjon. Ikke publiser private domener,
   servernavn, selskapsnavn, installasjonsstier, bilag eller hemmeligheter.
