@@ -92,6 +92,8 @@ runtime_python() {
 runtime_python seed
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-core-accounting.py"
+"${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
+  < "$root/tests/runtime-native-controls.py"
 "${compose[@]}" up -d --wait --wait-timeout 300
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
