@@ -16,9 +16,11 @@ Norsk regnskapsmessig produksjonsaksept er fortsatt avgrenset av de øvrige gape
 | Native sletting tillates på kansellert dokument | En kooperativ Frappe-utvidelse avviser før den native metoden kan fjerne filen. |
 | Native filskriving kan skje før validering | Kontroller før native save_file, også ved delt fil-URL. Selve lagringen delegeres til kjernen. |
 | Kansellert regnskapsbilag kan slettes | Bevar kansellerte salgs-/kjøpsfakturaer, bokføringsbilag og betalingsregistreringer. |
+| Bokmålskatalogen mangler eller bruker misvisende regnskapsbegreper | Målrettede nb.csv-rettelser med native oversettelseskontekst; API-felt og statusverdier beholdes. |
+| En senere utskrift er en ny rendering, ikke bevart PDF ved innsending | Lagre privat native File fra native get_print i on_submit; ingen egen arkivtabell eller utskrifts-API. |
 
 Standardegenskapen `protect_attached_files` slås på for Sales Invoice,
-Purchase Invoice, Journal Entry og Payment Entry med native Property Setter.
+Purchase Invoice, Journal Entry, Payment Entry og innsendte tilbud med native Property Setter.
 Den brukes direkte for vern av vedlegg på bokførte dokumenter. Nye vedlegg kan
 fortsatt legges til, og feil vedlegg på en kladd kan korrigeres med native File.
 
@@ -60,6 +62,9 @@ avhengigheter oppgraderes ikke. Byggekonteksten utelukker driftsdata og hemmelig
 Fra eksisterende Compose-mappe:
 
 ```sh
+git fetch origin main
+git switch main
+git merge --ff-only origin/main
 app_image=$(bash scripts/build-app-image.sh)
 python3 scripts/update-runtime.py --image "$app_image"
 ```
@@ -89,12 +94,13 @@ allerede forseglede filoversikten.
 Dette er vern gjennom støttede dokument-/filgrensesnitt. Direkte database- eller
 filsystemskriving, endring av appkode eller avinstallasjon utført av en teknisk
 administrator ligger utenfor grensen. Historiske manglende eller allerede endrede
-vedlegg gjenskapes ikke. Eksterne URL-er er ikke en bevart kopi av et originalbilag. Automatisk bevaring
-av en utstedt PDF og kvalifisering av utskriftsmalene hører til neste dokumentpunkt.
+vedlegg gjenskapes ikke. Eksterne URL-er er ikke en bevart kopi av et originalbilag. App 0.2.0 bevarer også PDF ved innsending som et vanlig privat vedlegg;
+se [dokumentmaler og avgrensninger](sales-documents.md).
 Tilgangsstyring og kopi utenfor serveren må fortsatt ivaretas.
 
-Appens egne vernmeldinger har bokmålsoversettelser via native CSV. Full oversettelse
-av regnskapsflyten og norske/engelske dokumentmaler er neste separate punkt.
+Appens vernmeldinger og målrettede rettelser i regnskapsflyten bruker native CSV.
+Norske/engelske dokumentmaler og faktisk skjermprøve er beskrevet i språk- og
+dokumentaksepten. Videre språkfunn følger de senere funksjonsområdene.
 Ingen generell påstand om norsk etterlevelse følger av denne leveransen.
 
 ## Norsk kontoplanmal

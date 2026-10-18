@@ -181,8 +181,8 @@ Oppdateringen tar full backup før imagevalget endres og bruker install-app/migr
 Feil etter migreringsstart åpner ikke gammel kode mot muligens endret database.
 Appen og bevaringsvern inngår i separat Compose-prøve og eksportert restore.
 Faktisk oppdatering av brukerens server er fortsatt ikke verifisert her.
-Neste produktpunkt er norsk skjermspråk og norsk/engelsk dokument/PDF med bevaring
-av utstedt dokument, fulgt av faktisk foretaksoppsett og normal avgiftsflyt.
+Språk- og dokumentpunktet videreføres i app 0.2.0, se nedenfor. Neste produktpunkt
+er korrekt foretaks-/MVA-oppsett og normal avgiftsflyt.
 
 ## Presisering: norsk mal ved selskapsoppretting
 
@@ -193,3 +193,21 @@ med standardvalg for nye Norway/NOK-selskaper. Eksisterende selskaper, eksplisit
 malvalg og kopiering fra selskap overtas ikke automatisk. Se norwegian-chart.md.
 Endringen prøves med ekte Company-oppretting, alle 745 navn/koder, standardkontoer,
 native forhåndsvisning og uendrede eksplisitte valg før push/PR.
+
+## Videreføring: bokmål og salgsdokumenter
+
+App 0.2.0 leverer målrettede native CSV-rettelser og Jinja Print Formats for tilbud,
+faktura og kreditnota på bokmål/engelsk. Den bruker eksisterende beregning,
+formatteringsfunksjoner, avgiftsmaler, språkvalg og File. Vanlig on_submit lagrer en
+privat PDF ved innsending/bokføring; det er ikke en utsendelseskvittering. PDF-feil
+stopper innsending. Ingen etterlagring av historiske originaler ved migrering.
+Innsendte/kansellerte tilbud og vedlegg får samme bevaringsprinsipp som bilag.
+Egne maler og senere standardvalg bevares. Se [salgsdokumenter](sales-documents.md)
+og [språkaksept](language.md) for faktisk omfang og avgrensninger.
+
+Oppdateringsblokker skal heretter hente gjeldende origin/main med fetch, switch og
+fast-forward, uten target/revisjonslås. Bygg deretter appimage og bruk den eksisterende
+backup-/migreringsoppdateringen. Brukeren kjører blokken; ingen servertilgang er gitt.
+Neste arbeidspakke er korrekt registreringsstatus/defaults og native MVA-behandling
+ved vanlig registrering. Brukerens foretak er ikke MVA-registrert. SAF-T og øvrige
+planpunkter gjenstår før samlet regnskapsmessig produksjonsaksept.

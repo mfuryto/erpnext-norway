@@ -70,3 +70,17 @@ Kontraktstester prøver feil før/etter migreringsgrensen, feil ved backupforseg
 bevaring av privat konfigurasjon og opprinnelig tjenesteutvalg. En mislykket
 migrering skal aldri automatisk åpne gammel kode mot muligens endret database.
 Disse feilmodellene erstatter ikke en faktisk servergjenoppretting.
+
+## Norsk språk og PDF ved innsending
+
+Appprøven utvider den generiske PDF-prøven med seks faktiske PDF-er: tilbud,
+faktura med rabatt og kreditnota på bokmål/engelsk. Native get_print og File brukes.
+Privat original bevares ved senere mal-/foretaksendringer og eksportert restore.
+PDF-feil hindrer bokføring, og kansellert tilbud beholder filen. Se
+[salgsdokumenter](sales-documents.md) for det begrensede dokumentomfanget.
+
+Med `ERP_TEST_BROWSER=1` prøves vanlig eiers faktiske Desk og forhåndsvisninger,
+inkludert private PDF-er som eieren får lese og gjesten nektes. CI bruker Playwright
+1.58.2 fra `tests/browser/package-lock.json`, bare i testmiljøet. Dette tilføyer
+ingen nettleseravhengighet til ERPNext-imaget. Ekstern proxy/ressurstilgang på
+brukerens server er fortsatt ikke verifisert av Codex.

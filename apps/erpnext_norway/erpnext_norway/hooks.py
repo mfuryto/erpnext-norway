@@ -15,16 +15,20 @@ _accounting = ["Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment En
 extend_doctype_class = {
     "File": ["erpnext_norway.preservation.RetainedFileMixin"],
     "Company": ["erpnext_norway.chart.NorwegianCompanyMixin"],
+    "Quotation": ["erpnext_norway.preservation.RetainedDocumentMixin"],
     **{name: ["erpnext_norway.preservation.RetainedDocumentMixin"] for name in _accounting},
 }
 doc_events = {
     "Company": {"before_validate": "erpnext_norway.chart.select_default"},
     "File": {"before_validate": "erpnext_norway.preservation.guard_file_change"},
     "Sales Invoice": {
+        "on_submit": "erpnext_norway.printing.preserve_submission",
         "before_naming": "erpnext_norway.numbering.guard_import_name",
         "before_validate": "erpnext_norway.numbering.guard_invoice_identity",
         "before_rename": "erpnext_norway.numbering.prevent_rename",
     },
+    "Quotation": {"on_submit": "erpnext_norway.printing.preserve_submission",
+        "before_rename": "erpnext_norway.printing.guard_quotation_rename"},
     "Document Naming Rule": {
         "validate": "erpnext_norway.numbering.guard_rule_change",
         "on_trash": "erpnext_norway.numbering.guard_rule_delete",
@@ -39,3 +43,5 @@ override_whitelisted_methods = {
     for name in ("build_tree_from_json", "validate_bank_account")
 }
 doctype_js = {"Company": "public/js/company.js"}
+
+jinja = {"methods": ["erpnext_norway.printing.bank_details"]}

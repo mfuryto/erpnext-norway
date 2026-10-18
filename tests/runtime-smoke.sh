@@ -97,17 +97,22 @@ runtime_python() {
   < "$root/tests/runtime-module-visibility.py"
 runtime_python seed
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  "${compose[@]}" up -d --no-deps --wait --wait-timeout 300 backend websocket frontend
   "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - < "$root/tests/runtime-company-chart.py"
 fi
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-core-accounting.py"
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - probe < "$root/tests/runtime-app.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-language.py"
 else
   "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
     < "$root/tests/runtime-native-controls.py"
 fi
 "${compose[@]}" up -d --wait --wait-timeout 300
+if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-language-browser.cjs"
+fi
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
 [[ "$(stat -c %a "$fixture/backups/runtime-ci/runtime.env")" == 600 ]]
@@ -135,6 +140,7 @@ docker cp "$fixture/backups/runtime-ci/native/." \
 runtime_python verify
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-app.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-language.py"
 fi
 "${compose[@]}" up -d --wait --wait-timeout 300
 [[ "$(key_hash)" == "$initial_key_hash" ]]

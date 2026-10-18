@@ -20,12 +20,12 @@ public = Path(frappe.get_site_path("public", "files", "runtime-ci.txt"))
 private = Path(frappe.get_site_path("private", "files", "runtime-ci.txt"))
 try:
     if phase == "seed":
-        from erpnext.setup.setup_wizard.setup_wizard import setup_complete
+        from frappe.desk.page.setup_wizard.setup_wizard import setup_complete
         from frappe.utils.pdf import get_pdf
 
         company = "Runtime Recovery Example"
         setup_complete(frappe._dict(
-            country="Norway", language="en", company_name=company, company_abbr="RRE",
+            country="Norway", language="English", lang="en", company_name=company, company_abbr="RRE",
             currency="NOK", chart_of_accounts=("Norsk kontoplan" if "erpnext_norway" in frappe.get_installed_apps() else "Standard"), fy_start_date="2026-01-01",
             fy_end_date="2026-12-31", timezone="Europe/Oslo",
         ))
