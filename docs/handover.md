@@ -147,3 +147,17 @@ Les AGENTS.md og denne filen. Kontroller staging/main, lokale endringer og tidli
 aksept før arbeid. Fullfør først driftsgrunnlaget og trygg portovergang. Deretter
 prøv ERPNext-kjernen områdevis og implementer bare de dokumenterte norske gapene.
 Ikke gjenoppta utvikling i Dolibarr Norway uten ny uttrykkelig instruks.
+
+## Videreføring: norsk kontoplan og vanlig eier
+
+Den lisensierte kilden, konverteringen og native import er nå versjonert i
+`resources/norway-chart/`. [Kontoplanoppsettet](norwegian-chart.md) beskriver
+standardkontoer og at norsk kjerneoppsett setter en MVA-mal som standard uten
+registreringsstatus. Det valget må fjernes for et ikke-registrert foretak.
+
+En vanlig eierbruker uten System Manager har bestått syntetisk salg, kjøp,
+kreditnotaer, betalinger og bankavstemming med den importerte norske planen.
+Native resultat er 475, bank 275 etter separat eiertransaksjon. Alle 745 koder/navn,
+reskontro og avgiftsstandarder kontrolleres etter eksportert backup/restore og
+migrering. Dette er ikke utført på brukerens server. Nummerering, dokumentvern,
+språk, norsk avgiftsvalg og rapportering gjenstår som beskrevet i planen.

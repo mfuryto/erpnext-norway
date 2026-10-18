@@ -7,6 +7,10 @@ export ERP_RUNTIME_PROJECT="$project"
 compose=(docker compose --env-file "$fixture/deploy/.env" -p "$project" -f "$fixture/compose.yaml")
 cleanup() {
   test_exit=$?
+  if [[ "$test_exit" != 0 && "${ERP_RUNTIME_KEEP_ON_FAILURE:-0}" == 1 ]]; then
+    printf 'Synthetic fixture retained for debugging: %s (project %s)\n' "$fixture" "$project"
+    return
+  fi
   if [[ "$test_exit" != 0 && -f "$fixture/backups/runtime-ci/runtime.log" ]]; then
     failure_log=$(mktemp /tmp/erpnext-runtime-failure.XXXXXX)
     cp "$fixture/backups/runtime-ci/runtime.log" "$failure_log"
@@ -26,6 +30,7 @@ cleanup() {
 trap cleanup EXIT
 cp "$root/compose.yaml" "$fixture/compose.yaml"
 cp -a "$root/scripts" "$root/deploy" "$fixture/"
+cp "$root/resources/norway-chart/norway.csv" "$fixture/deploy/norway.csv"
 rm -f "$fixture/deploy/.env"
 port=$(python3 - <<'PY'
 import socket
@@ -85,6 +90,8 @@ runtime_python() {
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-module-visibility.py"
 runtime_python seed
+"${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
+  < "$root/tests/runtime-core-accounting.py"
 "${compose[@]}" up -d --wait --wait-timeout 300
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)

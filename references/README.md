@@ -17,6 +17,12 @@ utforme testfasiter; de installeres ikke automatisk.
   testpassord og midlertidige data brukes ikke.
 
 Norske krav verifiseres mot Skatteetaten, Lovdata og relevante primærkilder.
+
+Kontoplandata fra Odoo `l10n_no` ved den opprinnelige låste revisjonen er bevart under
+`resources/norway-chart/`, med uendrede kildefiler, LGPL-lisens, opphavsrett og
+SHA-256. Bare kontoenes data konverteres til ERPNext sin native importfil;
+ingen Odoo-kode kjøres. Se [proveniens](../resources/norway-chart/NOTICE.md) og
+[native kontoplanoppsett](../docs/norwegian-chart.md).
 Arbeidsflyt sammenlignes med leverandørdokumentasjon fra etablerte norske programmer.
 Bevar original lisens og datakilde ved kopiering. Ingen kontoplan kalles NS 4102-
 sertifisert bare fordi kontonumrene ligner. Les docs/handover.md for prøver og begrensninger.

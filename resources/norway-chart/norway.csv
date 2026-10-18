@@ -1,0 +1,766 @@
+Account Name,Parent Account,Account Number,Parent Account Number,Is Group,Account Type,Root Type,Account Currency
+Eiendeler,,,,1,,Asset,NOK
+Gjeld,,,,1,,Liability,NOK
+Egenkapital,,,,1,,Equity,NOK
+Inntekter,,,,1,,Income,NOK
+Kostnader,,,,1,,Expense,NOK
+Bankkontoer,Eiendeler,,,1,Bank,Asset,NOK
+Kontantkontoer,Eiendeler,,,1,Cash,Asset,NOK
+Varelager,Eiendeler,,,1,Stock,Asset,NOK
+Anleggsmidler,Eiendeler,,,1,,Asset,NOK
+Omløpsmidler,Eiendeler,,,1,,Asset,NOK
+Salgsinntekter,Inntekter,,,1,,Income,NOK
+Avgifter til gode,Eiendeler,,,1,Tax,Asset,NOK
+Merverdiavgift,Gjeld,,,1,Tax,Liability,NOK
+Finansinntekter,Inntekter,,,1,,Income,NOK
+Varekostnader,Kostnader,,,1,,Expense,NOK
+Lønnskostnader,Kostnader,,,1,,Expense,NOK
+Avskrivninger,Kostnader,,,1,,Expense,NOK
+Andre driftskostnader,Kostnader,,,1,,Expense,NOK
+Finanskostnader,Kostnader,,,1,,Expense,NOK
+Skatt og resultatdisponering,Kostnader,,,1,,Expense,NOK
+"Utvikling, ervervet",Omløpsmidler,1000,,0,,Asset,NOK
+"Utvikling, egenutviklet",Omløpsmidler,1005,,0,,Asset,NOK
+"Konsesjoner, ervervet",Omløpsmidler,1020,,0,,Asset,NOK
+"Konsesjoner, egenutviklet",Omløpsmidler,1025,,0,,Asset,NOK
+"Patenter, ervervet",Omløpsmidler,1030,,0,,Asset,NOK
+"Patenter, egenutviklet",Omløpsmidler,1035,,0,,Asset,NOK
+"Lisenser, ervervet",Omløpsmidler,1040,,0,,Asset,NOK
+"Lisenser, egenutviklet",Omløpsmidler,1045,,0,,Asset,NOK
+"Varemerker, ervervet",Omløpsmidler,1050,,0,,Asset,NOK
+"Varemerker, egenutviklet",Omløpsmidler,1055,,0,,Asset,NOK
+"Andre rettigheter, ervervet",Omløpsmidler,1060,,0,,Asset,NOK
+"Andre rettigheter, egenutviklet",Omløpsmidler,1065,,0,,Asset,NOK
+"Innenlands kjøp av rettigheter, omvendt avgiftsplikt",Omløpsmidler,1068,,0,,Asset,NOK
+"Innenlands kjøp av rettigheter, omvendt avgiftsplikt, motkonto",Omløpsmidler,1069,,0,,Asset,NOK
+"Utsatt skattefordel, brutto",Omløpsmidler,1070,,0,,Asset,NOK
+Reduksjon utsatt skattefordel pga manglende realiserbarhet,Omløpsmidler,1075,,0,,Asset,NOK
+Utlignbar utsatt skattefordel,Omløpsmidler,1079,,0,,Asset,NOK
+Goodwill,Omløpsmidler,1080,,0,,Asset,NOK
+Andre immaterielle eiendeler,Omløpsmidler,1099,,0,,Asset,NOK
+Bygninger,Anleggsmidler,1100,,0,Fixed Asset,Asset,NOK
+Fast teknisk installasjon i bygning,Anleggsmidler,1110,,0,Fixed Asset,Asset,NOK
+Elektronisk utrustning i kraftforetak,Anleggsmidler,1117,,0,Fixed Asset,Asset,NOK
+Bygningsmessige anlegg,Anleggsmidler,1120,,0,Fixed Asset,Asset,NOK
+Anlegg under utførelse,Anleggsmidler,1130,,0,Fixed Asset,Asset,NOK
+Jordbrukseiendommer,Anleggsmidler,1140,,0,Fixed Asset,Asset,NOK
+Skogbrukseiendommer,Anleggsmidler,1145,,0,Fixed Asset,Asset,NOK
+Tomter,Anleggsmidler,1150,,0,Fixed Asset,Asset,NOK
+Andre grunnarealer,Anleggsmidler,1155,,0,Fixed Asset,Asset,NOK
+Boliger inklusive tomter,Anleggsmidler,1160,,0,Fixed Asset,Asset,NOK
+Annen fast eiendom,Anleggsmidler,1179,,0,Fixed Asset,Asset,NOK
+Investeringseiendommer,Anleggsmidler,1180,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Anleggsmidler,1190,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Anleggsmidler,1191,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Anleggsmidler,1192,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Anleggsmidler,1193,,0,Fixed Asset,Asset,NOK
+Grunnlag innførsel av varer med null sats,Anleggsmidler,1194,,0,Fixed Asset,Asset,NOK
+"Grunnlag innførsel av varer med null sats, motkonto",Anleggsmidler,1195,,0,Fixed Asset,Asset,NOK
+Grunnlag utgående MVA kjøp tjenester fra utlandet,Anleggsmidler,1196,,0,Fixed Asset,Asset,NOK
+"Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",Anleggsmidler,1197,,0,Fixed Asset,Asset,NOK
+Maskiner og anlegg,Anleggsmidler,1200,,0,Fixed Asset,Asset,NOK
+Maskiner og anlegg under utførelse,Anleggsmidler,1210,,0,Fixed Asset,Asset,NOK
+Skip,Anleggsmidler,1220,,0,Fixed Asset,Asset,NOK
+Rigger,Anleggsmidler,1224,,0,Fixed Asset,Asset,NOK
+Fly,Anleggsmidler,1225,,0,Fixed Asset,Asset,NOK
+Personbiler/stasjonsvogner,Anleggsmidler,1230,,0,Fixed Asset,Asset,NOK
+"Varebiler, klasse 1",Anleggsmidler,1235,,0,Fixed Asset,Asset,NOK
+"Varebiler, klasse 2",Anleggsmidler,1236,,0,Fixed Asset,Asset,NOK
+Lastebiler,Anleggsmidler,1237,,0,Fixed Asset,Asset,NOK
+Busser,Anleggsmidler,1238,,0,Fixed Asset,Asset,NOK
+Varebiler med nullutslipp,Anleggsmidler,1239,,0,Fixed Asset,Asset,NOK
+Traktorer,Anleggsmidler,1240,,0,Fixed Asset,Asset,NOK
+Trucker,Anleggsmidler,1242,,0,Fixed Asset,Asset,NOK
+Andre transportmidler,Anleggsmidler,1249,,0,Fixed Asset,Asset,NOK
+Inventar,Anleggsmidler,1250,,0,Fixed Asset,Asset,NOK
+"Fast bygningsinventar, eget bygg",Anleggsmidler,1260,,0,Fixed Asset,Asset,NOK
+"Fast bygningsinventar, leide lokaler",Anleggsmidler,1265,,0,Fixed Asset,Asset,NOK
+Verktøy o.l.,Anleggsmidler,1270,,0,Fixed Asset,Asset,NOK
+Kontormaskiner,Anleggsmidler,1280,,0,Fixed Asset,Asset,NOK
+Andre varige driftsmidler,Anleggsmidler,1289,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Anleggsmidler,1290,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Anleggsmidler,1291,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Anleggsmidler,1292,,0,Fixed Asset,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Anleggsmidler,1293,,0,Fixed Asset,Asset,NOK
+Grunnlag innførsel av varer med null sats,Anleggsmidler,1294,,0,Fixed Asset,Asset,NOK
+"Grunnlag innførsel av varer med null sats, motkonto",Anleggsmidler,1295,,0,Fixed Asset,Asset,NOK
+Grunnlag utgående MVA kjøp tjenester fra utlandet,Anleggsmidler,1296,,0,Fixed Asset,Asset,NOK
+"Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",Anleggsmidler,1297,,0,Fixed Asset,Asset,NOK
+Aksjer i datterselskap,Omløpsmidler,1300,,0,,Asset,NOK
+Andeler i datterselskap,Omløpsmidler,1305,,0,,Asset,NOK
+"Aksjer/andeler i datterselskap, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1306,,0,,Asset,NOK
+"Aksjer/andeler i datterselskap, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1308,,0,,Asset,NOK
+Aksjer i foretak i samme konsern,Omløpsmidler,1310,,0,,Asset,NOK
+Andeler i foretak i samme konsern,Omløpsmidler,1315,,0,,Asset,NOK
+"Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1316,,0,,Asset,NOK
+"Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1318,,0,,Asset,NOK
+Lån til datterselskaper,Omløpsmidler,1320,,0,,Asset,NOK
+Lån til andre foretak i samme konsern,Omløpsmidler,1325,,0,,Asset,NOK
+Investeringer i tilknyttet selskap,Omløpsmidler,1330,,0,,Asset,NOK
+Lån til tilknyttet selskap,Omløpsmidler,1340,,0,,Asset,NOK
+Lån til felles kontrollert virksomhet,Omløpsmidler,1345,,0,,Asset,NOK
+"Andre aksjer, norske",Omløpsmidler,1350,,0,,Asset,NOK
+"Andre andeler, norske",Omløpsmidler,1355,,0,,Asset,NOK
+"Andre aksjer/andeler, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1356,,0,,Asset,NOK
+"Andre aksjer/andeler, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1357,,0,,Asset,NOK
+Verdipapirfondsandeler,Omløpsmidler,1358,,0,,Asset,NOK
+Obligasjoner,Omløpsmidler,1360,,0,,Asset,NOK
+Andre finansielle anleggsmidler,Omløpsmidler,1369,,0,,Asset,NOK
+Fordringer på eiere,Omløpsmidler,1370,,0,,Asset,NOK
+Fordringer på styremedlemmer,Omløpsmidler,1375,,0,,Asset,NOK
+Fordringer på ansatte,Omløpsmidler,1380,,0,,Asset,NOK
+Fordringer på daglig leder,Omløpsmidler,1384,,0,,Asset,NOK
+Fordringer på ansatte eiere,Omløpsmidler,1385,,0,,Asset,NOK
+Innskuddsfond,Omløpsmidler,1393,,0,,Asset,NOK
+Overfinansiering av pensjonsforpliktelser (pensjonspremiefond),Omløpsmidler,1394,,0,,Asset,NOK
+Leietakerinnskudd,Omløpsmidler,1395,,0,,Asset,NOK
+Depositum,Omløpsmidler,1396,,0,,Asset,NOK
+Forskuddsleasing,Omløpsmidler,1397,,0,,Asset,NOK
+Til gode merverdiavgift,Omløpsmidler,1398,,0,,Asset,NOK
+Andre fordringer,Omløpsmidler,1399,,0,,Asset,NOK
+Direkte materialer/råvarer,Varelager,1400,,0,Stock,Asset,NOK
+Hjelpematerialer,Varelager,1405,,0,Stock,Asset,NOK
+Driftsmaterialer og reservedeler,Varelager,1408,,0,Stock,Asset,NOK
+Beholdningsendring råvarer og innkjøpte halvfabrikater,Omløpsmidler,1409,,0,,Asset,NOK
+Varer under tilvirkning,Varelager,1420,,0,Stock,Asset,NOK
+Beholdningsendring varer under tilvirkning,Omløpsmidler,1429,,0,,Asset,NOK
+Ferdige egentilvirkede varer,Varelager,1440,,0,Stock,Asset,NOK
+Beholdningsendring ferdige egentilvirkede varer,Omløpsmidler,1449,,0,,Asset,NOK
+Innkjøpte varer for videresalg,Varelager,1460,,0,Stock,Asset,NOK
+Demonstrasjonsvarer,Varelager,1465,,0,Stock,Asset,NOK
+Beholdningsendring innkjøpte varer for videresalg,Omløpsmidler,1469,,0,,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Omløpsmidler,1470,,0,,Asset,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Omløpsmidler,1471,,0,,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Omløpsmidler,1472,,0,,Asset,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Omløpsmidler,1473,,0,,Asset,NOK
+Grunnlag innførsel av varer med null sats,Omløpsmidler,1474,,0,,Asset,NOK
+"Grunnlag innførsel av varer med null sats, motkonto",Omløpsmidler,1475,,0,,Asset,NOK
+Grunnlag utgående MVA kjøp tjenester fra utlandet,Omløpsmidler,1476,,0,,Asset,NOK
+"Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",Omløpsmidler,1477,,0,,Asset,NOK
+"Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt",Omløpsmidler,1478,,0,,Asset,NOK
+"Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto",Omløpsmidler,1479,,0,,Asset,NOK
+Forskuddsbetaling til leverandører (varekontrakter/prosjekter),Omløpsmidler,1480,,0,,Asset,NOK
+Biologiske eiendeler,Omløpsmidler,1490,,0,,Asset,NOK
+Andre beholdninger,Varelager,1499,,0,Stock,Asset,NOK
+Kundefordringer,Omløpsmidler,1500,,0,Receivable,Asset,NOK
+"Opptjent, ikke fakturert driftsinntekt",Omløpsmidler,1530,,0,,Asset,NOK
+Kundefordringer på selskap i samme konsern,Omløpsmidler,1550,,0,,Asset,NOK
+Andre fordringer på selskap i samme konsern,Omløpsmidler,1560,,0,,Asset,NOK
+Reiseforskudd,Omløpsmidler,1570,,0,,Asset,NOK
+Lønnsforskudd (som trekkes i lønn senere),Omløpsmidler,1572,,0,,Asset,NOK
+Andre kortsiktige lån til ansatte (ikke forskudd lønn),Omløpsmidler,1573,,0,,Asset,NOK
+Kortsiktig lån aksjonær/deltaker,Omløpsmidler,1574,,0,,Asset,NOK
+Mellomregning aksjonær/deltaker,Omløpsmidler,1575,,0,,Asset,NOK
+Kortsiktig lån daglig leder,Omløpsmidler,1576,,0,,Asset,NOK
+Andre kortsiktige fordringer,Omløpsmidler,1579,,0,,Asset,NOK
+Avsetning tap på kundefordringer,Omløpsmidler,1580,,0,,Asset,NOK
+Avsetning tap på andre fordringer,Omløpsmidler,1585,,0,,Asset,NOK
+Andre omløpsmidler,Omløpsmidler,1590,,0,,Asset,NOK
+"Utgående merverdiavgift, høy sats",Avgifter til gode,1600,,0,Tax,Asset,NOK
+"Utgående merverdiavgift, middels sats",Avgifter til gode,1601,,0,Tax,Asset,NOK
+"Utgående merverdiavgift, råfisk mv, middels sats",Avgifter til gode,1602,,0,Tax,Asset,NOK
+"Utgående merverdiavgift, lav sats",Avgifter til gode,1603,,0,Tax,Asset,NOK
+Utgående merverdiavgift kjøp tjenester fra utlandet,Avgifter til gode,1604,,0,Tax,Asset,NOK
+"Utgående merverdiavgift - innførsel av varer, høy sats",Avgifter til gode,1605,,0,Tax,Asset,NOK
+"Utgående merverdiavgift - innførsel av varer, middels sats",Avgifter til gode,1606,,0,Tax,Asset,NOK
+"Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",Avgifter til gode,1607,,0,Tax,Asset,NOK
+"Inngående merverdiavgift, høy sats",Avgifter til gode,1610,,0,Tax,Asset,NOK
+"Inngående merverdiavgift, middels sats",Avgifter til gode,1611,,0,Tax,Asset,NOK
+"Inngående merverdiavgift, middels sats, råfisk mv",Avgifter til gode,1612,,0,Tax,Asset,NOK
+"Inngående merverdiavgift, lav sats",Avgifter til gode,1613,,0,Tax,Asset,NOK
+Inngående merverdiavgift kjøp tjenester fra utlandet,Avgifter til gode,1614,,0,Tax,Asset,NOK
+"Inngående merverdiavgift - innførsel av varer, høy sats",Avgifter til gode,1615,,0,Tax,Asset,NOK
+"Inngående merverdiavgift - innførsel av varer, middels sats",Avgifter til gode,1616,,0,Tax,Asset,NOK
+"Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",Avgifter til gode,1617,,0,Tax,Asset,NOK
+Oppgjørskonto merverdiavgift,Avgifter til gode,1640,,0,Tax,Asset,NOK
+"Merverdiavgiftskompensasjon, høy sats",Omløpsmidler,1650,,0,,Asset,NOK
+"Merverdiavgiftskompensasjon, middels sats",Omløpsmidler,1651,,0,,Asset,NOK
+"Merverdiavgiftskompensasjon, lav sats",Omløpsmidler,1652,,0,,Asset,NOK
+Oppgjørskonto kompensert merverdiavgift,Omløpsmidler,1654,,0,,Asset,NOK
+"Grunnlag merverdiavgiftskompensasjon, høy sats",Omløpsmidler,1655,,0,,Asset,NOK
+"Grunnlag merverdiavgiftskompensasjon, middels sats",Omløpsmidler,1656,,0,,Asset,NOK
+"Grunnlag merverdiavgiftskompensasjon, lav sats",Omløpsmidler,1657,,0,,Asset,NOK
+Motkonto grunnlag merverdiavgiftskompensasjon,Omløpsmidler,1659,,0,,Asset,NOK
+Krav på refusjon av utenlandsk merverdiavgift,Omløpsmidler,1660,,0,,Asset,NOK
+Krav på offentlige tilskudd,Omløpsmidler,1670,,0,,Asset,NOK
+"Skattefunn til gode, ikke fastsatt",Omløpsmidler,1675,,0,,Asset,NOK
+Forskuddsbetalt leiekostnad,Omløpsmidler,1700,,0,,Asset,NOK
+Forskuddsbetalt rentekostnad,Omløpsmidler,1710,,0,,Asset,NOK
+"Forskuddsbetalt, ikke påløpt lønn",Omløpsmidler,1740,,0,,Asset,NOK
+"Forskuddsbetalt strøm, varme mv.",Omløpsmidler,1742,,0,,Asset,NOK
+Forskuddsbetalt forsikring,Omløpsmidler,1743,,0,,Asset,NOK
+Forskuddsbetalt leasingleie,Omløpsmidler,1744,,0,,Asset,NOK
+Andre forskuddsbetalte driftskostnader,Omløpsmidler,1749,,0,,Asset,NOK
+Påløpt leieinntekt,Omløpsmidler,1750,,0,,Asset,NOK
+Påløpt renteinntekt,Omløpsmidler,1760,,0,,Asset,NOK
+Krav på innbetaling av selskapskapital,Omløpsmidler,1780,,0,,Asset,NOK
+"Aksjer i foretak i samme konsern, norske",Omløpsmidler,1800,,0,,Asset,NOK
+"Andeler i foretak i samme konsern, norske",Omløpsmidler,1805,,0,,Asset,NOK
+"Aksjer/andeler i foretak i samme konsern, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1806,,0,,Asset,NOK
+"Aksjer/andeler i foretak i samme konsern, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1808,,0,,Asset,NOK
+"Børsnoterte aksjer, norske",Omløpsmidler,1810,,0,,Asset,NOK
+"Børsnoterte aksjer, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1815,,0,,Asset,NOK
+"Børsnoterte aksjer, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1816,,0,,Asset,NOK
+"Andre ikke børsnoterte aksjer, norske",Omløpsmidler,1820,,0,,Asset,NOK
+"Andre ikke børsnoterte aksjer, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1825,,0,,Asset,NOK
+"Markedsbaserte obligasjoner, norske",Omløpsmidler,1830,,0,,Asset,NOK
+"Markedsbaserte obligasjoner, utenlandske",Omløpsmidler,1835,,0,,Asset,NOK
+"Ikke markedsbaserte obligasjoner, norske",Omløpsmidler,1840,,0,,Asset,NOK
+"Ikke markedsbaserte obligasjoner, utenlandske",Omløpsmidler,1845,,0,,Asset,NOK
+"Markedsbaserte obligasjoner med kort løpetid (sertifikater), norske",Omløpsmidler,1850,,0,,Asset,NOK
+"Markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske",Omløpsmidler,1855,,0,,Asset,NOK
+"Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), norske",Omløpsmidler,1860,,0,,Asset,NOK
+"Ikke markedsbaserte obligasjoner med kort løpetid (sertifikater), utenlandske",Omløpsmidler,1865,,0,,Asset,NOK
+"Markedsbaserte opsjoner, norske",Omløpsmidler,1870,,0,,Asset,NOK
+"Markedsbaserte opsjoner, utenlandske",Omløpsmidler,1875,,0,,Asset,NOK
+"Ikke markedsbaserte opsjoner, norske",Omløpsmidler,1880,,0,,Asset,NOK
+"Ikke markedsbaserte opsjoner, utenlandske",Omløpsmidler,1882,,0,,Asset,NOK
+Andre finansielle instrumenter,Omløpsmidler,1889,,0,,Asset,NOK
+"Andeler utenfor konsern, norske",Omløpsmidler,1890,,0,,Asset,NOK
+"Andeler utenfor konsern, utenlandske, innenfor fritaksmetoden",Omløpsmidler,1892,,0,,Asset,NOK
+"Andeler utenfor konsern, utenlandske, utenfor fritaksmetoden",Omløpsmidler,1893,,0,,Asset,NOK
+"Kontanter, NOK",Kontantkontoer,1900,,0,Cash,Asset,NOK
+"Kontanter, EUR",Omløpsmidler,1905,,0,,Asset,NOK
+"Kontanter, annen valuta",Omløpsmidler,1908,,0,,Asset,NOK
+Kassedifferanse,Omløpsmidler,1909,,0,,Asset,NOK
+Bankinnskudd,Bankkontoer,1920,,0,Bank,Asset,NOK
+Bankinnskudd for skattetrekk,Omløpsmidler,1950,,0,,Asset,NOK
+Bankinnskudd utland,Omløpsmidler,1960,,0,,Asset,NOK
+"Aksjekapital / Egenkapital, bundet",Egenkapital,2000,,0,,Equity,NOK
+Egne aksjer / Felleseid andelskapital,Egenkapital,2010,,0,,Equity,NOK
+Overkurs,Egenkapital,2020,,0,,Equity,NOK
+Ikke registrert kapitalforhøyelse,Egenkapital,2030,,0,,Equity,NOK
+Ikke registrert fondsemisjon,Egenkapital,2032,,0,,Equity,NOK
+Ikke registrert kapitalnedsettelse,Egenkapital,2033,,0,,Equity,NOK
+Annen innskutt egenkapital,Egenkapital,2035,,0,,Equity,NOK
+Stiftelsesutgifter,Egenkapital,2036,,0,,Equity,NOK
+Fond / Fond for vurderingsforskjeller i DLS,Egenkapital,2040,,0,,Equity,NOK
+Fond for vurderingsforskjeller i andre selskaper,Egenkapital,2042,,0,,Equity,NOK
+Fond for urealiserte gevinster,Egenkapital,2045,,0,,Equity,NOK
+Annen egenkapital,Egenkapital,2050,,0,,Equity,NOK
+Avsatt utbytte,Egenkapital,2055,,0,,Equity,NOK
+Uttak kontanter,Egenkapital,2060,,0,,Equity,NOK
+Innskudd kontanter,Egenkapital,2062,,0,,Equity,NOK
+Uttak av anleggsmidler/driftsmidler,Egenkapital,2063,,0,,Equity,NOK
+Uttak varer og tjenester,Egenkapital,2064,,0,,Equity,NOK
+Egen bolig i næringsbygg,Egenkapital,2065,,0,,Equity,NOK
+Motkonto egen bolig i næringsbygg,Egenkapital,2066,,0,,Equity,NOK
+Lys og varme privat,Egenkapital,2067,,0,,Equity,NOK
+Private kostnader til elektronisk kommunikasjon,Egenkapital,2068,,0,,Equity,NOK
+Diverse andre privatutgifter,Egenkapital,2069,,0,,Equity,NOK
+Forskuddsskatt,Egenkapital,2070,,0,,Equity,NOK
+Tilleggsforskudd/restskatt,Egenkapital,2072,,0,,Equity,NOK
+Privat bruk av næringsbil,Egenkapital,2075,,0,,Equity,NOK
+Premie til egen syke- og ulykkesforsikring,Egenkapital,2077,,0,,Equity,NOK
+Premie til tilleggstrygd for sykepenger,Egenkapital,2078,,0,,Equity,NOK
+Udekket tap,Egenkapital,2080,,0,,Equity,NOK
+Udisponert resultat,Egenkapital,2099,,0,,Equity,NOK
+Pensjonsforpliktelser,Gjeld,2100,,0,,Liability,NOK
+"Utsatt skatt, brutto",Gjeld,2120,,0,,Liability,NOK
+Utlignbar utsatt skatt,Gjeld,2129,,0,,Liability,NOK
+Uopptjent inntekt,Gjeld,2160,,0,,Liability,NOK
+Andre avsetninger for forpliktelser,Gjeld,2180,,0,,Liability,NOK
+Avsetning for skyldig merverdiavgift,Gjeld,2188,,0,,Liability,NOK
+Konvertible lån,Gjeld,2200,,0,,Liability,NOK
+Obligasjonslån,Gjeld,2210,,0,,Liability,NOK
+Gjeld til kredittinstitusjoner,Gjeld,2220,,0,,Liability,NOK
+Gjeld til ansatte,Gjeld,2250,,0,,Liability,NOK
+Gjeld til eiere,Gjeld,2255,,0,,Liability,NOK
+Gjeld til selskap i samme konsern,Gjeld,2260,,0,,Liability,NOK
+Stille interessentinnskudd,Gjeld,2280,,0,,Liability,NOK
+Ansvarlig lånekapital,Gjeld,2285,,0,,Liability,NOK
+Gjeld til andre personer enn ansatte og eiere,Gjeld,2290,,0,,Liability,NOK
+Annen langsiktig gjeld,Gjeld,2299,,0,,Liability,NOK
+Konvertible lån,Gjeld,2300,,0,,Liability,NOK
+Obligasjonslån,Gjeld,2320,,0,,Liability,NOK
+Derivater,Gjeld,2330,,0,,Liability,NOK
+Andre valutalån,Gjeld,2340,,0,,Liability,NOK
+Byggelån,Gjeld,2360,,0,,Liability,NOK
+Kassakreditt,Gjeld,2380,,0,,Liability,NOK
+Annen gjeld til kredittinstitusjon,Gjeld,2390,,0,,Liability,NOK
+Leverandørgjeld,Gjeld,2400,,0,Payable,Liability,NOK
+Leverandørgjeld til selskap i samme konsern,Gjeld,2460,,0,,Liability,NOK
+"Betalbar skatt, ikke fastsatt",Gjeld,2500,,0,,Liability,NOK
+"Betalbar skatt, fastsatt",Gjeld,2510,,0,,Liability,NOK
+Forskuddsskatt upersonlig skattyter,Gjeld,2540,,0,,Liability,NOK
+Annen skyldig skatt,Gjeld,2599,,0,,Liability,NOK
+Forskuddstrekk,Gjeld,2600,,0,,Liability,NOK
+Utleggstrekk,Gjeld,2610,,0,,Liability,NOK
+Bidragstrekk,Gjeld,2620,,0,,Liability,NOK
+Trygdetrekk,Gjeld,2630,,0,,Liability,NOK
+Forsikringstrekk,Gjeld,2640,,0,,Liability,NOK
+Trukket fagforeningskontingent,Gjeld,2650,,0,,Liability,NOK
+Andre trekk,Gjeld,2690,,0,,Liability,NOK
+"Utgående merverdiavgift, høy sats",Merverdiavgift,2700,,0,Tax,Liability,NOK
+"Utgående merverdiavgift, middels sats",Merverdiavgift,2701,,0,Tax,Liability,NOK
+"Utgående merverdiavgift, middels sats, råfisk mv",Merverdiavgift,2702,,0,Tax,Liability,NOK
+"Utgående merverdiavgift, lav sats",Merverdiavgift,2703,,0,Tax,Liability,NOK
+"Utgående merverdiavgift ved kjøp av tjenester fra utlandet, høy sats",Merverdiavgift,2704,,0,Tax,Liability,NOK
+"Utgående merverdiavgift - innførsel av varer, høy sats",Merverdiavgift,2705,,0,Tax,Liability,NOK
+"Utgående merverdiavgift - innførsel av varer, middels sats",Merverdiavgift,2706,,0,Tax,Liability,NOK
+"Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",Merverdiavgift,2707,,0,Tax,Liability,NOK
+"Utgående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats",Merverdiavgift,2709,,0,Tax,Liability,NOK
+"Inngående merverdiavgift, høy sats",Merverdiavgift,2710,,0,Tax,Liability,NOK
+"Inngående merverdiavgift, middels sats",Merverdiavgift,2711,,0,Tax,Liability,NOK
+"Inngående merverdiavgift, middels sats, råfisk mv",Merverdiavgift,2712,,0,Tax,Liability,NOK
+"Inngående merverdiavgift, lav sats",Merverdiavgift,2713,,0,Tax,Liability,NOK
+"Inngående merverdiavgift ved kjøp tjenester fra utlandet, høy sats",Merverdiavgift,2714,,0,Tax,Liability,NOK
+"Inngående merverdiavgift - innførsel av varer, høy sats",Merverdiavgift,2715,,0,Tax,Liability,NOK
+"Inngående merverdiavgift - innførsel av varer, middels sats",Merverdiavgift,2716,,0,Tax,Liability,NOK
+"Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats",Merverdiavgift,2717,,0,Tax,Liability,NOK
+"Inngående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats",Merverdiavgift,2718,,0,Tax,Liability,NOK
+Oppgjørskonto merverdiavgift,Merverdiavgift,2740,,0,Tax,Liability,NOK
+Skyldig arbeidsgiveravgift,Gjeld,2770,,0,,Liability,NOK
+Betalt arbeidsgiveravgift,Gjeld,2771,,0,,Liability,NOK
+Skyldig finansskatt av lønn,Gjeld,2772,,0,,Liability,NOK
+Betalt finansskatt av lønn,Gjeld,2773,,0,,Liability,NOK
+Påløpt arbeidsgiveravgift påløpt lønn,Gjeld,2780,,0,,Liability,NOK
+Påløpt arbeidsgiveravgift ferielønn,Gjeld,2781,,0,,Liability,NOK
+Påløpt arbeidsgiveravgift andre honorarer,Gjeld,2782,,0,,Liability,NOK
+Påløpt finansskatt påløpt lønn,Gjeld,2783,,0,,Liability,NOK
+Påløpt finansskatt ferielønn,Gjeld,2784,,0,,Liability,NOK
+Påløpt finansskatt andre honorarer,Gjeld,2785,,0,,Liability,NOK
+Andre offentlige avgifter,Gjeld,2790,,0,,Liability,NOK
+Avsatt utbytte,Gjeld,2800,,0,,Liability,NOK
+Forskudd fra kunder,Gjeld,2900,,0,,Liability,NOK
+Gjeld til ansatte,Gjeld,2910,,0,,Liability,NOK
+Gjeld til eiere,Gjeld,2915,,0,,Liability,NOK
+Gjeld til selskap i samme konsern,Gjeld,2920,,0,,Liability,NOK
+Skyldig lønn,Gjeld,2930,,0,,Liability,NOK
+Skyldige feriepenger,Gjeld,2940,,0,,Liability,NOK
+Utbetalte feriepenger,Gjeld,2945,,0,,Liability,NOK
+Påløpt rente,Gjeld,2950,,0,,Liability,NOK
+Annen påløpt kostnad,Gjeld,2960,,0,,Liability,NOK
+Forskuddsbetalt inntekt,Gjeld,2965,,0,,Liability,NOK
+Fremtidig garantiytelse,Gjeld,2970,,0,,Liability,NOK
+Fremtidig serviceytelse,Gjeld,2975,,0,,Liability,NOK
+Avsetning styrehonorar,Gjeld,2980,,0,,Liability,NOK
+Avsetning revisjonshonorar,Gjeld,2982,,0,,Liability,NOK
+Avsetning regnskapshonorar,Gjeld,2983,,0,,Liability,NOK
+Avsetning for andre forpliktelser,Gjeld,2989,,0,,Liability,NOK
+Gjeld til andre personer enn ansatte og eiere,Gjeld,2990,,0,,Liability,NOK
+Annen kortsiktig gjeld,Gjeld,2999,,0,,Liability,NOK
+"Salgsinntekt handelsvarer, avgiftspliktig, høy sats",Salgsinntekter,3000,,0,Income Account,Income,NOK
+"Salgsinntekt handelsvarer, omvendt avgiftsplikt",Salgsinntekter,3005,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3009,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, avgiftspliktig, høy sats",Salgsinntekter,3010,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, omvendt avgiftsplikt",Salgsinntekter,3015,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3019,,0,,Income,NOK
+"Salgsinntekt tjenester, avgiftspliktig, høy sats",Salgsinntekter,3020,,0,,Income,NOK
+"Salgsinntekt tjenester, omvendt avgiftsplikt",Salgsinntekter,3025,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3029,,0,,Income,NOK
+"Salgsinntekt handelsvarer, avgiftspliktig, middels sats",Salgsinntekter,3030,,0,,Income,NOK
+"Salgsinntekt råfisk og andre marine viltlevende ressurser, avgiftspliktig, middels sats",Salgsinntekter,3035,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3039,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, avgiftspliktig, middels sats",Salgsinntekter,3040,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3049,,0,,Income,NOK
+"Salgsinntekt tjenester, avgiftspliktig, lav sats",Salgsinntekter,3050,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3059,,0,,Income,NOK
+"Uttak av varer, avgiftspliktig, høy sats",Salgsinntekter,3060,,0,,Income,NOK
+"Uttak av varer, avgiftspliktig, middels sats",Salgsinntekter,3063,,0,,Income,NOK
+"Uttak av tjenester, avgiftspliktig, høy sats",Salgsinntekter,3070,,0,,Income,NOK
+"Uttak av tjenester, avgiftspliktig, lav sats",Salgsinntekter,3074,,0,,Income,NOK
+"Kontantrabatt, avgiftspliktig salg, høy sats",Salgsinntekter,3081,,0,,Income,NOK
+"Kontantrabatt, avgiftspliktig salg, middel sats",Salgsinntekter,3082,,0,,Income,NOK
+"Kontantrabatt, avgiftspliktig salg, lav sats",Salgsinntekter,3083,,0,,Income,NOK
+"Kvantumsrabatt, avgiftspliktig salg, høy sats",Salgsinntekter,3084,,0,,Income,NOK
+"Kvantumsrabatt, avgiftspliktig salg, middels sats",Salgsinntekter,3085,,0,,Income,NOK
+"Kvantumsrabatt, avgiftspliktig salg, lav sats",Salgsinntekter,3086,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, avgiftspliktig salg, høy sats",Salgsinntekter,3087,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, avgiftspliktig salg, middels sats",Salgsinntekter,3088,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, avgiftspliktig salg, lav sats",Salgsinntekter,3089,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, høy sats",Salgsinntekter,3090,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, middels sats",Salgsinntekter,3091,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, lav sats",Salgsinntekter,3092,,0,,Income,NOK
+"Salgsinntekt handelsvarer, innenlands, avgiftsfri",Salgsinntekter,3100,,0,,Income,NOK
+"Salgsinntekt handelsvarer, utførsel, avgiftsfri",Salgsinntekter,3105,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3109,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, innenlands, avgiftsfri",Salgsinntekter,3110,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, utførsel, avgiftsfri",Salgsinntekter,3115,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3119,,0,,Income,NOK
+"Salgsinntekt tjenester, innenlands, avgiftsfri",Salgsinntekter,3120,,0,,Income,NOK
+"Salgsinntekt tjenester, utførsel, avgiftsfri",Salgsinntekter,3125,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3129,,0,,Income,NOK
+"Uttak av varer, avgiftsfritt",Salgsinntekter,3160,,0,,Income,NOK
+"Uttak av tjenester, avgiftsfritt",Salgsinntekter,3170,,0,,Income,NOK
+"Kontantrabatt, innenlands, avgiftsfritt",Salgsinntekter,3181,,0,,Income,NOK
+"Kontantrabatt, utførsel, avgiftsfritt",Salgsinntekter,3182,,0,,Income,NOK
+"Kvantumsrabatt, innenlands, avgiftsfritt",Salgsinntekter,3185,,0,,Income,NOK
+"Kvantumsrabatt, utførsel, avgiftsfritt",Salgsinntekter,3186,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, innenlands, avgiftsfritt",Salgsinntekter,3188,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, utførsel, avgiftsfritt",Salgsinntekter,3189,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, innenlands, avgiftsfritt",Salgsinntekter,3190,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, utførsel, avgiftsfritt",Salgsinntekter,3191,,0,,Income,NOK
+"Salgsinntekt handelsvarer, unntatt avgiftsplikt",Salgsinntekter,3200,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3209,,0,,Income,NOK
+"Salgsinntekt egentilvirkede varer, unntatt avgiftsplikt",Salgsinntekter,3210,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3219,,0,,Income,NOK
+"Salgsinntekt tjenester, unntatt avgiftsplikt",Salgsinntekter,3220,,0,,Income,NOK
+"Opptjent, ikke fakturert inntekt",Salgsinntekter,3229,,0,,Income,NOK
+"Uttak av varer, unntatt avgiftsplikt",Salgsinntekter,3260,,0,,Income,NOK
+"Kontantrabatt, unntatt avgiftsplikt",Salgsinntekter,3281,,0,,Income,NOK
+"Kvantumsrabatt, unntatt avgiftsplikt",Salgsinntekter,3285,,0,,Income,NOK
+"Annen salgsinntektsreduksjon, unntatt avgiftsplikt",Salgsinntekter,3289,,0,,Income,NOK
+"Viderefakturering av omkostninger ved salg, unntatt avgiftsplikt",Salgsinntekter,3290,,0,,Income,NOK
+Spesiell offentlig avgift for tilvirkede/solgte varer,Salgsinntekter,3300,,0,,Income,NOK
+Spesielt offentlig tilskudd for tilvirkede/solgte varer,Salgsinntekter,3400,,0,,Income,NOK
+Spesielt offentlig tilskudd for tjeneste,Salgsinntekter,3440,,0,,Income,NOK
+Garanti,Salgsinntekter,3500,,0,,Income,NOK
+Service,Salgsinntekter,3510,,0,,Income,NOK
+"Leieinntekt fast eiendom, unntatt avgiftsplikt",Salgsinntekter,3600,,0,,Income,NOK
+"Leieinntekt fast eiendom, avgiftspliktig",Salgsinntekter,3605,,0,,Income,NOK
+"Opptjent, ikke fakturert leieinntekt",Salgsinntekter,3609,,0,,Income,NOK
+"Leieinntekt andre varige driftsmidler, avgiftspliktig",Salgsinntekter,3610,,0,,Income,NOK
+"Leieinntekt andre varige driftsmidler, avgiftsfri",Salgsinntekter,3615,,0,,Income,NOK
+"Opptjent, ikke fakturert leieinntekt",Salgsinntekter,3619,,0,,Income,NOK
+Annen leieinntekt,Salgsinntekter,3620,,0,,Income,NOK
+"Provisjonsinntekt, avgiftspliktig",Salgsinntekter,3700,,0,,Income,NOK
+"Provisjonsinntekt, avgiftsfri",Salgsinntekter,3705,,0,,Income,NOK
+"Opptjent, ikke fakturert provisjonsinntekt",Salgsinntekter,3709,,0,,Income,NOK
+"Provisjonsinntekt, unntatt avgiftsplikt",Salgsinntekter,3710,,0,,Income,NOK
+Verdiendringer investeringseiendommer,Salgsinntekter,3850,,0,,Income,NOK
+Verdiendringer biologiske eiendeler,Salgsinntekter,3870,,0,,Income,NOK
+Gevinst ved avgang av immaterielle eiendeler og varige driftsmidler,Salgsinntekter,3880,,0,,Income,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg",Salgsinntekter,3881,,0,,Income,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg",Salgsinntekter,3882,,0,,Income,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt",Salgsinntekter,3883,,0,,Income,NOK
+Motkonto balanseverdi solgte immatr. eiendeler og varige driftsmidler,Salgsinntekter,3889,,0,,Income,NOK
+Salgssum finansielle anleggsmidler,Salgsinntekter,3891,,0,,Income,NOK
+Motkonto balanseverdi finansielle anleggsmidler,Salgsinntekter,3899,,0,,Income,NOK
+Annen driftsrelatert inntekt,Salgsinntekter,3900,,0,,Income,NOK
+Justering merverdiavgift fast eiendom,Salgsinntekter,3971,,0,,Income,NOK
+Justering merverdiavgift maskiner,Salgsinntekter,3972,,0,,Income,NOK
+"Innkjøp av råvarer og halvfabrikata, høy sats",Varekostnader,4000,,0,,Expense,NOK
+"Innkjøp av råvarer og halvfabrikata, middels sats",Varekostnader,4030,,0,,Expense,NOK
+"Innkjøp av råvarer og halvfabrikata, uten MVA",Varekostnader,4035,,0,,Expense,NOK
+"Utenlandsk innkjøp av råvarer og halvfabrikata, høy sats",Varekostnader,4040,,0,,Expense,NOK
+"Utenlandsk innkjøp av råvarer og halvfabrikata, middels sats",Varekostnader,4041,,0,,Expense,NOK
+"Utenlandsk innkjøp av råvarer og halvfabrikata, fritatt for avgift",Varekostnader,4042,,0,,Expense,NOK
+"Frakt, toll og spedisjon",Varekostnader,4060,,0,,Expense,NOK
+"Kontantrabatt, råvarer og halvfabrikata, høy sats",Varekostnader,4071,,0,,Expense,NOK
+"Kontantrabatt, råvarer og halvfabrikata, middels sats",Varekostnader,4072,,0,,Expense,NOK
+"Kvantumsrabatt, råvarer og halvfabrikata, høy sats",Varekostnader,4075,,0,,Expense,NOK
+"Kvantumsrabatt, råvarer og halvfabrikata, middels sats",Varekostnader,4076,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, høy sats",Varekostnader,4078,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, middels sats",Varekostnader,4079,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Varekostnader,4080,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Varekostnader,4081,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Varekostnader,4082,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Varekostnader,4083,,0,,Expense,NOK
+Grunnlag innførsel av varer med null sats,Varekostnader,4084,,0,,Expense,NOK
+"Grunnlag innførsel av varer med null sats, motkonto",Varekostnader,4085,,0,,Expense,NOK
+"Innenlands kjøp av varer, omvendt avgiftsplikt",Varekostnader,4086,,0,,Expense,NOK
+"Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto",Varekostnader,4087,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4090,,0,,Expense,NOK
+"Innkjøp varer under tilvirkning, høy sats",Varekostnader,4100,,0,,Expense,NOK
+"Innkjøp varer under tilvirkning, middels sats",Varekostnader,4130,,0,,Expense,NOK
+"Innkjøp av råvarer under tilvirkning, uten MVA",Varekostnader,4140,,0,,Expense,NOK
+"Frakt, toll og spedisjon",Varekostnader,4160,,0,,Expense,NOK
+"Kontantrabatt, varer under tilvirkning, høy sats",Varekostnader,4171,,0,,Expense,NOK
+"Kontantrabatt, varer under tilvirkning, middels sats",Varekostnader,4172,,0,,Expense,NOK
+"Kvantumsrabatt, varer under tilvirkning, høy sats",Varekostnader,4175,,0,,Expense,NOK
+"Kvantumsrabatt, varer under tilvirkning, middels sats",Varekostnader,4176,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, varer under tilvirkning, høy sats",Varekostnader,4178,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, varer under tilvirkning, middels sats",Varekostnader,4179,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4190,,0,,Expense,NOK
+"Innkjøp ferdig egentilvirkede varer, høy sats",Varekostnader,4200,,0,,Expense,NOK
+"Innkjøp ferdig egentilvirkede varer, middels sats",Varekostnader,4230,,0,,Expense,NOK
+"Innkjøp ferdig egentilvirkede varer, uten MVA",Varekostnader,4240,,0,,Expense,NOK
+"Frakt, toll og spedisjon",Varekostnader,4260,,0,,Expense,NOK
+"Innkjøpsprisreduksjon, egentilvirkede varer, høy sats",Varekostnader,4270,,0,,Expense,NOK
+"Innkjøpsprisreduksjon, egentilvirkede varer, middels sats",Varekostnader,4271,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4290,,0,,Expense,NOK
+"Innkjøp av varer for videresalg, høy sats",Varekostnader,4300,,0,Cost of Goods Sold,Expense,NOK
+"Innkjøp av varer for videresalg, middels sats",Varekostnader,4330,,0,,Expense,NOK
+"Innkjøp av varer for videresalg, uten MVA",Varekostnader,4335,,0,,Expense,NOK
+"Utenlands innkjøp av varer for videresalg, høy sats",Varekostnader,4340,,0,,Expense,NOK
+"Utenlands innkjøp av varer for videresalg, middels sats",Varekostnader,4341,,0,,Expense,NOK
+"Utenlands innkjøp av varer for videresalg, fritatt for avgift",Varekostnader,4342,,0,,Expense,NOK
+Svinn og tap,Varekostnader,4350,,0,,Expense,NOK
+"Frakt, toll og spedisjon",Varekostnader,4360,,0,,Expense,NOK
+"Kontantrabatt, varer for videresalg, høy sats",Varekostnader,4371,,0,,Expense,NOK
+"Kontantrabatt, varer for videresalg, middels sats",Varekostnader,4372,,0,,Expense,NOK
+"Kvantumsrabatt, varer for videresalg, høy sats",Varekostnader,4375,,0,,Expense,NOK
+"Kvantumsrabatt, varer for videresalg, middels sats",Varekostnader,4376,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, høy sats",Varekostnader,4378,,0,,Expense,NOK
+"Annen innkjøpsprisreduksjon, middels sats",Varekostnader,4379,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Varekostnader,4380,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Varekostnader,4381,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Varekostnader,4382,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Varekostnader,4383,,0,,Expense,NOK
+Grunnlag innførsel av varer med nullsats,Varekostnader,4384,,0,,Expense,NOK
+"Grunnlag innførsel av varer med nullsats, motkonto",Varekostnader,4385,,0,,Expense,NOK
+"Innenlands kjøp av varer, omvendt avgiftsplikt",Varekostnader,4386,,0,,Expense,NOK
+"Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto",Varekostnader,4387,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4390,,0,Stock Adjustment,Expense,NOK
+Fremmedytelse og underentreprise,Varekostnader,4500,,0,,Expense,NOK
+"Fremmedytelse og underentreprise, opplysningspliktig",Varekostnader,4550,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4590,,0,,Expense,NOK
+Emballasjematerialer,Varekostnader,4600,,0,,Expense,NOK
+Beholdningsendring,Varekostnader,4690,,0,,Expense,NOK
+Annen periodisering,Varekostnader,4900,,0,,Expense,NOK
+"Beholdningsendring, egentilvirkede anleggsmidler",Varekostnader,4990,,0,,Expense,NOK
+Lønn til ansatte,Lønnskostnader,5000,,0,,Expense,NOK
+Avtalte tariffgodtgjørelser,Lønnskostnader,5005,,0,,Expense,NOK
+"Påløpt, ikke utbetalt lønn",Lønnskostnader,5090,,0,,Expense,NOK
+Feriepenger,Lønnskostnader,5092,,0,,Expense,NOK
+Andre lønnsposteringer,Lønnskostnader,5099,,0,,Expense,NOK
+Fri bil,Lønnskostnader,5200,,0,,Expense,NOK
+Fri telefon,Lønnskostnader,5210,,0,,Expense,NOK
+Fri avis,Lønnskostnader,5220,,0,,Expense,NOK
+Fri kost,Lønnskostnader,5230,,0,,Expense,NOK
+Fri losji,Lønnskostnader,5235,,0,,Expense,NOK
+Fri bolig,Lønnskostnader,5236,,0,,Expense,NOK
+Rentefordel,Lønnskostnader,5240,,0,,Expense,NOK
+Gruppelivsforsikring,Lønnskostnader,5250,,0,,Expense,NOK
+Ulykkesforsikring,Lønnskostnader,5252,,0,,Expense,NOK
+Personavbruddsforsikring,Lønnskostnader,5253,,0,,Expense,NOK
+"Yrkesskadeforsikring, skattepliktig del",Lønnskostnader,5254,,0,,Expense,NOK
+"Tilskudd og premie til pensjonsordning, arbeidsgiveravgiftspliktig",Lønnskostnader,5255,,0,,Expense,NOK
+Annen fordel i arbeidsforhold,Lønnskostnader,5280,,0,,Expense,NOK
+Motkonto for gruppe 52,Lønnskostnader,5290,,0,,Expense,NOK
+Godtgjørelse til styremedlemmer,Lønnskostnader,5330,,0,,Expense,NOK
+Godtgjørelse til medlemmer av bedriftsforsamlingen,Lønnskostnader,5335,,0,,Expense,NOK
+Annen opplysningspliktig godtgjørelse,Lønnskostnader,5390,,0,,Expense,NOK
+Arbeidsgiveravgift,Lønnskostnader,5400,,0,,Expense,NOK
+Påløpt arbeidsgiveravgift påløpt lønn,Lønnskostnader,5404,,0,,Expense,NOK
+Arbeidsgiveravgift av påløpte feriepenger,Lønnskostnader,5405,,0,,Expense,NOK
+Påløpt arbeidsgiveravgift av påløpte andre honorarer,Lønnskostnader,5406,,0,,Expense,NOK
+Innberetningspliktig pensjonskostnad utbetalt over drift,Lønnskostnader,5420,,0,,Expense,NOK
+Finansskatt av lønn,Lønnskostnader,5430,,0,,Expense,NOK
+Finansskatt av påløpte feriepenger,Lønnskostnader,5431,,0,,Expense,NOK
+Påløpt finansskatt påløpt lønn,Lønnskostnader,5434,,0,,Expense,NOK
+Påløpt finansskatt påløpte feriepenger,Lønnskostnader,5435,,0,,Expense,NOK
+Påløpt finansskatt påløpte andre honorarer,Lønnskostnader,5436,,0,,Expense,NOK
+Annen kostnadsgodtgjørelse,Lønnskostnader,5500,,0,,Expense,NOK
+Arbeidsgodtgjørelse til eiere i DLS,Lønnskostnader,5600,,0,,Expense,NOK
+Lærlingtilskudd,Lønnskostnader,5700,,0,,Expense,NOK
+Annet lønnstilskudd,Lønnskostnader,5750,,0,,Expense,NOK
+Refusjon av sykepenger,Lønnskostnader,5800,,0,,Expense,NOK
+Refusjon av arbeidsgiveravgift,Lønnskostnader,5820,,0,,Expense,NOK
+Refusjon arbeidsmarkedstiltak,Lønnskostnader,5830,,0,,Expense,NOK
+Annen refusjon,Lønnskostnader,5890,,0,,Expense,NOK
+Motkonto for gruppe 58,Lønnskostnader,5899,,0,,Expense,NOK
+"Gaver til ansatte, fradragsberettiget",Lønnskostnader,5900,,0,,Expense,NOK
+"Gaver til ansatte, ikke fradragsberettiget",Lønnskostnader,5905,,0,,Expense,NOK
+Kantinekostnad,Lønnskostnader,5910,,0,,Expense,NOK
+Overtidsmat,Lønnskostnader,5915,,0,,Expense,NOK
+Trekk kantinekostnader ansatte,Lønnskostnader,5919,,0,,Expense,NOK
+Yrkesskadeforsikring,Lønnskostnader,5920,,0,,Expense,NOK
+Annen ikke arbeidsgiveravgiftspliktig forsikring,Lønnskostnader,5930,,0,,Expense,NOK
+LO/NHO-ordningen (O&U + sluttvederlag),Lønnskostnader,5941,,0,,Expense,NOK
+LO/NHO-ordningen (AFP),Lønnskostnader,5942,,0,,Expense,NOK
+"Pensjonsforsikring, arbeidsgiveravgiftspliktig",Lønnskostnader,5943,,0,,Expense,NOK
+"Pensjonsforsikring, ikke arbeidsgiveravgiftspliktig",Lønnskostnader,5944,,0,,Expense,NOK
+Obligatorisk tjenestepensjon (OTP),Lønnskostnader,5950,,0,,Expense,NOK
+Annen personalkostnad,Lønnskostnader,5990,,0,,Expense,NOK
+Motkonto for gruppe 59,Lønnskostnader,5999,,0,,Expense,NOK
+Avskrivning på bygninger og annen fast eiendom,Avskrivninger,6000,,0,Depreciation,Expense,NOK
+"Avskrivning på påkostninger, leid driftsmiddel",Avskrivninger,6005,,0,Depreciation,Expense,NOK
+Avskrivning på transportmidler,Avskrivninger,6010,,0,Depreciation,Expense,NOK
+Avskrivning på maskiner,Avskrivninger,6015,,0,Depreciation,Expense,NOK
+Avskrivning på inventar,Avskrivninger,6017,,0,Depreciation,Expense,NOK
+Avskrivning på ervervet goodwill,Avskrivninger,6020,,0,Depreciation,Expense,NOK
+Avskrivning på andre immaterielle eiendeler,Avskrivninger,6029,,0,Depreciation,Expense,NOK
+Avskrivning annet,Avskrivninger,6030,,0,Depreciation,Expense,NOK
+Nedskrivning av varige driftsmidler,Andre driftskostnader,6050,,0,,Expense,NOK
+Nedskrivning av immaterielle eiendeler,Andre driftskostnader,6055,,0,,Expense,NOK
+Reversering av nedskrivning varige driftsmidler og immaterielle eiendeler,Andre driftskostnader,6059,,0,,Expense,NOK
+Nedskrivning annet,Andre driftskostnader,6060,,0,,Expense,NOK
+Reversering nedskrivning annet,Andre driftskostnader,6061,,0,,Expense,NOK
+"Frakt, transportkostnad og forsikring ved vareforsendelse",Andre driftskostnader,6100,,0,,Expense,NOK
+Toll og spedisjonskostnad ved vareforsendelse,Andre driftskostnader,6110,,0,,Expense,NOK
+Annen frakt- og transportkostnad ved salg,Andre driftskostnader,6190,,0,,Expense,NOK
+Elektrisitet,Andre driftskostnader,6200,,0,,Expense,NOK
+Gass,Andre driftskostnader,6210,,0,,Expense,NOK
+Fyringsolje,Andre driftskostnader,6220,,0,,Expense,NOK
+"Kull, koks",Andre driftskostnader,6230,,0,,Expense,NOK
+Ved,Andre driftskostnader,6240,,0,,Expense,NOK
+"Bensin, dieselolje",Andre driftskostnader,6250,,0,,Expense,NOK
+Vann,Andre driftskostnader,6260,,0,,Expense,NOK
+Annet brensel,Andre driftskostnader,6290,,0,,Expense,NOK
+Leie lokale,Andre driftskostnader,6300,,0,,Expense,NOK
+"Renovasjon, vann, avløp o.l.",Andre driftskostnader,6320,,0,,Expense,NOK
+Lys,Andre driftskostnader,6340,,0,,Expense,NOK
+Varme,Andre driftskostnader,6345,,0,,Expense,NOK
+Renhold,Andre driftskostnader,6360,,0,,Expense,NOK
+Felles-/administrasjonskostnad senterforening,Andre driftskostnader,6391,,0,,Expense,NOK
+Annen kostnad lokaler,Andre driftskostnader,6399,,0,,Expense,NOK
+Leie maskiner,Andre driftskostnader,6400,,0,,Expense,NOK
+Leie inventar,Andre driftskostnader,6410,,0,,Expense,NOK
+Leie datasystemer,Andre driftskostnader,6420,,0,,Expense,NOK
+Leie andre kontormaskiner,Andre driftskostnader,6430,,0,,Expense,NOK
+Leie transportmidler,Andre driftskostnader,6440,,0,,Expense,NOK
+Annen leiekostnad,Andre driftskostnader,6490,,0,,Expense,NOK
+Motordrevet verktøy,Andre driftskostnader,6500,,0,,Expense,NOK
+Håndverktøy,Andre driftskostnader,6510,,0,,Expense,NOK
+Hjelpeverktøy,Andre driftskostnader,6520,,0,,Expense,NOK
+Spesialverktøy,Andre driftskostnader,6530,,0,,Expense,NOK
+Inventar,Andre driftskostnader,6540,,0,,Expense,NOK
+Datautstyr,Andre driftskostnader,6551,,0,,Expense,NOK
+Programvare anskaffelse,Andre driftskostnader,6552,,0,,Expense,NOK
+Programvare årlig vedlikehold,Andre driftskostnader,6553,,0,,Expense,NOK
+Rekvisita,Andre driftskostnader,6560,,0,,Expense,NOK
+"Arbeidsklær, opplysningspliktig",Andre driftskostnader,6570,,0,,Expense,NOK
+"Arbeidsklær, ikke opplysningspliktig",Andre driftskostnader,6571,,0,,Expense,NOK
+Verneutstyr,Andre driftskostnader,6575,,0,,Expense,NOK
+Annet driftsmateriale,Andre driftskostnader,6590,,0,,Expense,NOK
+Reparasjon og vedlikehold bygninger,Andre driftskostnader,6600,,0,,Expense,NOK
+Reparasjon og vedlikehold utstyr,Andre driftskostnader,6620,,0,,Expense,NOK
+Reparasjon og vedlikehold annet,Andre driftskostnader,6690,,0,,Expense,NOK
+Revisjonshonorar,Andre driftskostnader,6700,,0,,Expense,NOK
+Honorar annen bistand fra revisor,Andre driftskostnader,6702,,0,,Expense,NOK
+Regnskapshonorar,Andre driftskostnader,6705,,0,,Expense,NOK
+Honorarer annen bistand fra regnskapsfører,Andre driftskostnader,6706,,0,,Expense,NOK
+Honorar for annen økonomisk rådgivning,Andre driftskostnader,6720,,0,,Expense,NOK
+"Honorar for juridisk bistand, fradragsberettiget",Andre driftskostnader,6725,,0,,Expense,NOK
+"Honorar for juridisk bistand, ikke fradragsberettiget",Andre driftskostnader,6726,,0,,Expense,NOK
+Honorar for databistand,Andre driftskostnader,6750,,0,,Expense,NOK
+"Annen fremmed tjeneste, opplysningspliktig",Andre driftskostnader,6790,,0,,Expense,NOK
+"Annen fremmed tjeneste, ikke opplysningspliktig",Andre driftskostnader,6795,,0,,Expense,NOK
+Kontorrekvisita,Andre driftskostnader,6800,,0,,Expense,NOK
+Trykksak,Andre driftskostnader,6820,,0,,Expense,NOK
+"Aviser, tidsskrifter, bøker o.l.",Andre driftskostnader,6840,,0,,Expense,NOK
+"Møte, kurs, oppdatering o.l.",Andre driftskostnader,6860,,0,,Expense,NOK
+Annen kontorkostnad,Andre driftskostnader,6890,,0,,Expense,NOK
+Telefon,Andre driftskostnader,6900,,0,,Expense,NOK
+Mobiltelefon,Andre driftskostnader,6903,,0,,Expense,NOK
+Datakommunikasjon,Andre driftskostnader,6907,,0,,Expense,NOK
+Annen telekommunikasjon,Andre driftskostnader,6909,,0,,Expense,NOK
+Porto,Andre driftskostnader,6940,,0,,Expense,NOK
+Drivstoff transportmiddel 1,Andre driftskostnader,7000,,0,,Expense,NOK
+Vedlikehold transportmiddel 1,Andre driftskostnader,7020,,0,,Expense,NOK
+Forsikring transportmiddel 1,Andre driftskostnader,7040,,0,,Expense,NOK
+Annen kostnad transportmiddel 1,Andre driftskostnader,7090,,0,,Expense,NOK
+"Bilgodtgjørelse, opplysningspliktig",Andre driftskostnader,7100,,0,,Expense,NOK
+"Reisekostnad, opplysningspliktig",Andre driftskostnader,7130,,0,,Expense,NOK
+"Reisekostnad, ikke opplysningspliktig",Andre driftskostnader,7140,,0,,Expense,NOK
+"Diettkostnad, opplysningspliktig",Andre driftskostnader,7150,,0,,Expense,NOK
+"Diettkostnad, ikke opplysningspliktig",Andre driftskostnader,7160,,0,,Expense,NOK
+Verktøygodtgjørelse,Andre driftskostnader,7190,,0,,Expense,NOK
+Arbeidstøygodtgjørelse,Andre driftskostnader,7195,,0,,Expense,NOK
+Annen kostnadsgodtgjørelse,Andre driftskostnader,7199,,0,,Expense,NOK
+"Provisjonskostnad, opplysningspliktig",Andre driftskostnader,7200,,0,,Expense,NOK
+"Provisjonskostnad, ikke opplysningspliktig",Andre driftskostnader,7210,,0,,Expense,NOK
+Salgskostnad,Andre driftskostnader,7300,,0,,Expense,NOK
+Reklameannonser,Andre driftskostnader,7320,,0,,Expense,NOK
+Reklameavis/-katalog mv.,Andre driftskostnader,7322,,0,,Expense,NOK
+Reklameartikler,Andre driftskostnader,7323,,0,,Expense,NOK
+Annen reklamekostnad,Andre driftskostnader,7329,,0,,Expense,NOK
+"Representasjon, fradragsberettiget",Andre driftskostnader,7350,,0,,Expense,NOK
+"Representasjon, ikke fradragsberettiget",Andre driftskostnader,7360,,0,,Expense,NOK
+"Annen salgskostnad, fradragsberettiget",Andre driftskostnader,7390,,0,,Expense,NOK
+"Annen salgskostnad, ikke fradragsberettiget",Andre driftskostnader,7395,,0,,Expense,NOK
+"Kontingent, fradragsberettiget",Andre driftskostnader,7400,,0,,Expense,NOK
+"Kontingent, ikke fradragsberettiget",Andre driftskostnader,7410,,0,,Expense,NOK
+"Gave, fradragsberettiget",Andre driftskostnader,7420,,0,,Expense,NOK
+"Gave, ikke fradragsberettiget",Andre driftskostnader,7430,,0,,Expense,NOK
+Forsikringspremie,Andre driftskostnader,7500,,0,,Expense,NOK
+Frivillig tilleggstrygd for næringsdrivende,Andre driftskostnader,7530,,0,,Expense,NOK
+Garantikostnad,Andre driftskostnader,7550,,0,,Expense,NOK
+Servicekostnad,Andre driftskostnader,7560,,0,,Expense,NOK
+Lisensavgift,Andre driftskostnader,7600,,0,,Expense,NOK
+Royalties,Andre driftskostnader,7605,,0,,Expense,NOK
+Patentkostnad ved egen patent,Andre driftskostnader,7610,,0,,Expense,NOK
+Kostnad ved varemerke o.l.,Andre driftskostnader,7620,,0,,Expense,NOK
+"Kontroll-, prøve- og stempelavgifter",Andre driftskostnader,7630,,0,,Expense,NOK
+Styremøter,Andre driftskostnader,7710,,0,,Expense,NOK
+Bedriftsforsamlingsmøter,Andre driftskostnader,7715,,0,,Expense,NOK
+Generalforsamling,Andre driftskostnader,7720,,0,,Expense,NOK
+Kostnad ved egne aksjer,Andre driftskostnader,7730,,0,,Expense,NOK
+Øresavrunding,Andre driftskostnader,7740,,0,Round Off,Expense,NOK
+Eiendoms- og festeavgift,Andre driftskostnader,7750,,0,,Expense,NOK
+Bank- og kortgebyr,Andre driftskostnader,7770,,0,,Expense,NOK
+Kredittkortprovisjoner,Andre driftskostnader,7775,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats",Andre driftskostnader,7780,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, høy sats, motkonto",Andre driftskostnader,7781,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats",Andre driftskostnader,7782,,0,,Expense,NOK
+"Grunnlag MVA innførsel av varer, middels sats, motkonto",Andre driftskostnader,7783,,0,,Expense,NOK
+Grunnlag innførsel av varer med null sats,Andre driftskostnader,7784,,0,,Expense,NOK
+"Grunnlag innførsel av varer med null sats, motkonto",Andre driftskostnader,7785,,0,,Expense,NOK
+Grunnlag utgående MVA kjøp tjenester fra utlandet,Andre driftskostnader,7786,,0,,Expense,NOK
+"Grunnlag utgående MVA kjøp tjenester fra utlandet, motkonto",Andre driftskostnader,7787,,0,,Expense,NOK
+"Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt",Andre driftskostnader,7788,,0,,Expense,NOK
+"Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto",Andre driftskostnader,7789,,0,,Expense,NOK
+"Annen kostnad, fradragsberettiget",Andre driftskostnader,7798,,0,,Expense,NOK
+"Annen kostnad, ikke fradragsberettiget",Andre driftskostnader,7799,,0,,Expense,NOK
+"Innkommet på tidligere nedskrevne fordringer, skattepliktig",Andre driftskostnader,7820,,0,,Expense,NOK
+"Innkommet på tidligere nedskrevne fordringer, ikke skattepliktig",Andre driftskostnader,7825,,0,,Expense,NOK
+"Tap på fordringer, fradragsberettiget",Andre driftskostnader,7830,,0,,Expense,NOK
+"Tap på fordringer, ikke fradragsberettiget",Andre driftskostnader,7835,,0,,Expense,NOK
+Endring i avsetning for forventet tap,Andre driftskostnader,7839,,0,,Expense,NOK
+Tap på kontrakter,Andre driftskostnader,7860,,0,,Expense,NOK
+Tap ved avgang anleggsmidler,Andre driftskostnader,7880,,0,,Expense,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, avgiftspliktig salg",Andre driftskostnader,7881,,0,,Expense,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, avgiftsfritt salg",Andre driftskostnader,7882,,0,,Expense,NOK
+"Salgssum immatr. eiendeler og varige driftsmidler, unntatt avgiftsplikt",Andre driftskostnader,7883,,0,,Expense,NOK
+"Motkonto, balanseverdi solgte immatr. eiendeler og varige driftsmidler",Andre driftskostnader,7889,,0,,Expense,NOK
+Salgssum finansielle anleggsmidler,Andre driftskostnader,7891,,0,,Expense,NOK
+Motkonto balanseført verdi solgte finansielle driftsmidler,Andre driftskostnader,7899,,0,,Expense,NOK
+Justering inngående merverdiavgift fast eiendom,Andre driftskostnader,7971,,0,,Expense,NOK
+"Justering inngående merverdiavgift maskiner, inventar mv",Andre driftskostnader,7972,,0,,Expense,NOK
+Tilbakeføring av inngående merverdiavgift,Andre driftskostnader,7980,,0,,Expense,NOK
+Aksjeutbytte fra norsk datterselskap,Finansinntekter,8000,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk datterselskap, innenfor fritaksmetoden",Finansinntekter,8003,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk datterselskap, utenfor fritaksmetoden",Finansinntekter,8004,,0,,Income,NOK
+Resultatandel fra datterselskap etter egenkapitalmetoden,Finansinntekter,8005,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, innenfor fritaksmetoden",Finansinntekter,8007,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i datterselskap, utenfor fritaksmetoden",Finansinntekter,8008,,0,,Income,NOK
+Aksjeutbytte fra norsk foretak i samme konsern,Finansinntekter,8010,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk foretak i samme konsern, innenfor fritaksmetoden",Finansinntekter,8013,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk foretak i samme konsern, utenfor fritaksmetoden",Finansinntekter,8014,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, innenfor fritaksmodellen",Finansinntekter,8017,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i foretak i samme konsern, utenfor fritaksmetoden",Finansinntekter,8018,,0,,Income,NOK
+Aksjeutbytte fra norsk tilknyttet selskap,Finansinntekter,8020,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk tilknyttet selskap, innenfor fritaksmetoden",Finansinntekter,8023,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk tilknyttet selskap, utenfor fritaksmetoden",Finansinntekter,8024,,0,,Income,NOK
+Resultatandel fra tilknyttet selskap etter egenkapitalmetoden,Finansinntekter,8025,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, innenfor fritaksmetoden",Finansinntekter,8027,,0,,Income,NOK
+"Gevinst/tap ved realisasjon av aksjer/andeler i tilknyttet selskap, utenfor fritaksmetoden",Finansinntekter,8028,,0,,Income,NOK
+Renteinntekt fra foretak i samme konsern,Finansinntekter,8030,,0,,Income,NOK
+"Renteinntekt, skattefri",Finansinntekter,8040,,0,,Income,NOK
+Renteinntekt bankinnskudd,Finansinntekter,8050,,0,,Income,NOK
+Renteinntekt kundefordringer,Finansinntekter,8055,,0,,Income,NOK
+Annen renteinntekt,Finansinntekter,8059,,0,,Income,NOK
+Valutagevinst (agio),Finansinntekter,8060,,0,,Income,NOK
+Aksjeutbytte fra norsk foretak,Finansinntekter,8070,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk foretak, innenfor fritaksmetoden",Finansinntekter,8073,,0,,Income,NOK
+"Aksjeutbytte fra utenlandsk foretak, utenfor fritaksmetoden",Finansinntekter,8074,,0,,Income,NOK
+"Gevinst ved realisasjon av andre aksjer/andeler, innenfor fritaksmetoden",Finansinntekter,8077,,0,,Income,NOK
+"Gevinst ved realisasjon av andre aksjer/andeler, utenfor fritaksmetoden",Finansinntekter,8078,,0,,Income,NOK
+Annen finansinntekt,Finansinntekter,8079,,0,,Income,NOK
+"Verdiøkning av finansielle instrumenter vurdert til virkelig verdi, urealisert",Finansinntekter,8080,,0,,Income,NOK
+Verdiøkning av finansielle instrumenter vurdert til virkelig verdi realisert,Finansinntekter,8082,,0,,Income,NOK
+Inntekt på andre investeringer,Finansinntekter,8090,,0,,Income,NOK
+"Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, urealisert",Finanskostnader,8100,,0,,Expense,NOK
+"Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, realisert",Finanskostnader,8105,,0,,Expense,NOK
+Nedskrivning av andre finansielle omløpsmidler,Finanskostnader,8110,,0,,Expense,NOK
+Nedskrivning av finansielle anleggsmidler,Finanskostnader,8120,,0,,Expense,NOK
+Reversering av nedskrivning finansielle anleggsmidler,Finanskostnader,8129,,0,,Expense,NOK
+Rentekostnad til foretak i samme konsern,Finanskostnader,8130,,0,,Expense,NOK
+"Rentekostnad, ikke fradragsberettiget",Finanskostnader,8140,,0,,Expense,NOK
+Rentekostnad banklån,Finanskostnader,8150,,0,,Expense,NOK
+Renter/provisjon kassekreditt,Finanskostnader,8154,,0,,Expense,NOK
+Rentekostnad leverandørgjeld,Finanskostnader,8155,,0,,Expense,NOK
+Annen rentekostnad,Finanskostnader,8159,,0,,Expense,NOK
+Valutatap (disagio),Finanskostnader,8160,,0,,Expense,NOK
+"Tap ved realisasjon av aksjer/andeler, innenfor fritaksmetoden (jf. konto 8007, 8017 og 8027)",Finanskostnader,8177,,0,,Expense,NOK
+"Tap ved realisasjon av aksjer/andeler, utenfor fritaksmetoden (jf. konto 8008, 8018 og 8028)",Finanskostnader,8178,,0,,Expense,NOK
+Annen finanskostnad,Finanskostnader,8179,,0,,Expense,NOK
+Betalbar skatt,Skatt og resultatdisponering,8300,,0,,Expense,NOK
+"Betalbar skatt, for mye/lite avsatt tidligere år",Skatt og resultatdisponering,8309,,0,,Expense,NOK
+Endring i utsatt skatt/skattefordel,Skatt og resultatdisponering,8320,,0,,Expense,NOK
+Årsresultat,Skatt og resultatdisponering,8800,,0,,Expense,NOK
+Overføringer fond,Skatt og resultatdisponering,8900,,0,,Expense,NOK
+Overføringer felleseid andelskapital for samvirkeforetak,Skatt og resultatdisponering,8910,,0,,Expense,NOK
+Avsatt utbytte/ renter på egenkapitalbevis / etterbetaling for samvirkeforetak,Skatt og resultatdisponering,8920,,0,,Expense,NOK
+Avsatt tilleggsutbytte,Skatt og resultatdisponering,8921,,0,,Expense,NOK
+Avsatt ekstraordinær utbytte,Skatt og resultatdisponering,8922,,0,,Expense,NOK
+Mottatt konsernbidrag,Skatt og resultatdisponering,8930,,0,,Expense,NOK
+Avsatt konsernbidrag,Skatt og resultatdisponering,8935,,0,,Expense,NOK
+Fondsemisjon,Skatt og resultatdisponering,8950,,0,,Expense,NOK
+Overføringer annen egenkapital,Skatt og resultatdisponering,8960,,0,,Expense,NOK
+Overføringer udisponert vinning,Skatt og resultatdisponering,8968,,0,,Expense,NOK
+Overføringer udisponert tap,Skatt og resultatdisponering,8969,,0,,Expense,NOK
+Privatuttak,Skatt og resultatdisponering,8980,,0,,Expense,NOK
+Udekket tap,Skatt og resultatdisponering,8990,,0,,Expense,NOK

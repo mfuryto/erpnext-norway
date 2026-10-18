@@ -8,6 +8,8 @@ Installasjonen inneholder standard ERPNext; referansearbeidet er ikke automatisk
 
 - Vedvarende Docker Compose-oppsett med data under prosjektets private `data/`-mappe.
 - Native ERPNext-backup med privat driftskonfigurasjon og prøvd gjenoppretting.
+- [Norsk kontoplan](docs/norwegian-chart.md) for den native importeren, med kilde/lisens
+  og prøvd salgs-, kjøps- og bankflyt uten en egen hovedbok.
 - Native norsk modulprofil som viser Lager og skjuler Produksjon, Prosjekter og Kvalitet
   som standard, med mulighet for senere visning gjennom brukerinnstillingene.
 - Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.

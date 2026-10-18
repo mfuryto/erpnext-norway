@@ -82,6 +82,17 @@ try:
         assert is_module_visible("Projects", "runtime-modules@example.invalid")
         assert is_module_visible("Stock", "runtime-modules@example.invalid")
         assert not is_module_visible("Manufacturing", "runtime-modules@example.invalid")
+        norwegian_company = "Runtime Norwegian Example"
+        assert frappe.db.exists("Company", norwegian_company)
+        codes = frappe.get_all("Account", filters={"company": norwegian_company}, pluck="account_number")
+        assert len([code for code in codes if code and len(code) == 4]) == 745
+        bank = frappe.db.get_value("Account", {"company": norwegian_company, "account_number": "1920"})
+        assert float(frappe.db.sql(
+            "SELECT SUM(debit-credit) FROM `tabGL Entry` WHERE company=%s AND account=%s AND is_cancelled=0",
+            (norwegian_company, bank),
+        )[0][0]) == 275
+        for template in ("Sales Taxes and Charges Template", "Purchase Taxes and Charges Template"):
+            assert not frappe.db.exists(template, {"company": norwegian_company, "is_default": 1})
         assert get_decrypted_password("User", "Administrator", "api_secret") == "synthetic-secret"
         for path in (public, private):
             assert path.read_text() == "synthetic recovery evidence"
