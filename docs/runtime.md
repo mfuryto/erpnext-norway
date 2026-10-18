@@ -28,29 +28,19 @@ Første innlogging er `Administrator`. Passordet ligger i den lokale private
 `deploy/.env` som `ADMIN_PASSWORD`. Ikke send filen eller passordet i chatten.
 Et senere passordbytte i brukergrensesnittet endrer ikke automatisk verdien i filen.
 
-## Portbytte og tilbakeføring
+## Portbytte
 
 ```sh
 python3 scripts/cutover-from-dolibarr.py "$LEGACY_DIR"
 ```
 
-Skriptet finner den faktisk kjørende produksjonsinstallasjonen fra Compose-labels,
-ikke fra et antatt container-navn. Det kontrollerer at ERPNext allerede svarer,
-stopper gamle webskriv, tar full gammel backup, overtar faktisk publisert HTTP-IP
-og port og kontrollerer nytt svar. Til sist stoppes gammel database. Gamle filer,
-images og backup beholdes. Ingen `down -v`, volumpruning eller sletting brukes.
-Det blir et kort driftsavbrudd mens backup og portbytte skjer.
-
-Feil under overgangen forsøker automatisk å starte den gamle installasjonen igjen.
-Ved behov kan samme overgang tilbakeføres senere:
-
-```sh
-python3 scripts/cutover-from-dolibarr.py --rollback
-```
-
-Dette starter de opprinnelige Compose-tjenestene og stopper ERPNext-frontenden;
-ERPNext-data beholdes. Tilbakeføringen flytter ikke data mellom regnskapssystemene.
-Den lokale `.cutover.json` er privat driftsstatus, ikke en del av Git.
+Skriptet finner den eksisterende produksjonsinstallasjonen fra Compose-labels,
+kontrollerer at ERPNext allerede svarer, stopper Dolibarr og overtar den lagrede
+HTTP-IP-en og porten. Eksisterende Dolibarr-filer og eventuelle gamle backupfiler
+blir liggende. Det tas ingen ny backup av Dolibarr, og det er ingen automatisk
+eller separat tilbakeføringsfunksjon. Sletting av data inngår ikke i overgangen.
+Ved oppstartsfeil stopper kommandoen med feil; eventuell videre håndtering tas da.
+Det blir et kort driftsavbrudd mens porten byttes.
 
 ## Reverse proxy
 

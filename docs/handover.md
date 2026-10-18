@@ -1,7 +1,7 @@
 # Overgang til ERPNext Norway
 
 Beslutning 2026-10-18: ERPNext blir prosjektets videre grunnlag. Dolibarr Norway
-settes på vent; repo, historikk, installasjonsdata og backup beholdes. Dolibarr er
+settes på vent; repo, historikk, installasjonsfiler beholdes. Ingen ny backup av Dolibarr eller tilbakeføringsfunksjon skal lages. Dolibarr er
 oppgitt ikke tatt i ordinær bruk, så ingen produksjonshistorikk skal migreres som standard.
 
 ## Førende prinsipp
@@ -83,7 +83,7 @@ Ikke utvid automatisk til AS-årsregnskap, lønn, utenlandske forbrukerregler el
 
 1. **Drift og repo.** Bevar to grener og sikker arbeidsflyt. Klargjør standard ERPNext
    med Compose, privat konfigurasjon og data i prosjektets data-mappe. Prøv installasjon,
-   oppdatering, backup/restore og tilbakeføring. Overtak gammel HTTP-port først etter
+   oppdatering og ERPNext backup/restore. Overtak gammel HTTP-port først etter
    klargjøring; verifiser eksisterende proxy, TLS og Socket.IO. Den norske appen er ennå
    ikke installert i dette driftsgrunnlaget. Ingen reelle bilag før regnskapsaksept.
 2. **Kjerne og norsk minimum.** Opprett en liten ekstern Frappe-app bare for faktiske gap.

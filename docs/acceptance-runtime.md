@@ -1,14 +1,15 @@
 # Aksept for driftsgrunnlaget
 
 Dette gjelder standard ERPNext 16.51.1 / Frappe 16.52.0, ikke en ferdig norsk app.
-Kontrolleres før første promotering til main:
+Kontrolleres før promotering til main:
 
 - Ny installasjon med tilfeldige private passord og separate mapper for database,
   site-filer, kø og logger. Ingen gamle databaser eller evalueringsdata gjenbrukes.
 - Native site og HTTP API svarer, og Socket.IO polling går gjennom frontend.
 - Restart bevarer site-lagring og Frappe-krypteringsnøkkel.
-- Fire isolerte kontraktstester av portbytte: riktig rekkefølge, backupfeil,
-  ny frontendfeil og avvisning av konflikt før tjenester stoppes.
+- Tre isolerte kontraktstester av portbytte: riktig rekkefølge og bevarte ERPNext-
+  passord, avvisning før stopp når ny tjeneste ikke svarer, og oppstartsfeil uten
+  ubestilt backup eller tilbakeføring.
 - Ingen reell server er automatisk byttet fra utviklingsmiljøet.
 - Privat URL overføres bare på serveren. Ingen driftshemmeligheter eller private
   konfigurasjonsfiler publiseres. Lokal evalueringsrapport/bevis ligger ignorert.

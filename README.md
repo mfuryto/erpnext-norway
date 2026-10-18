@@ -7,7 +7,7 @@ Den norske modulen er ennå ikke implementert eller godkjent for ordinær norsk 
 Installasjonen inneholder standard ERPNext; referansearbeidet er ikke automatisk aktivert.
 
 - Vedvarende Docker Compose-oppsett med data under prosjektets private `data/`-mappe.
-- Klargjøring før portbytte, backup av tidligere installasjon og tilbakeføring.
+- Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.
 - Plan for norsk kontoplan, MVA, dokumentkrav, SAF-T, EHF og årsgrunnlag.
 - ERPNext-kjernen først; tillegg brukes som referanser, ikke som automatisk produktgrunnlag.
 
