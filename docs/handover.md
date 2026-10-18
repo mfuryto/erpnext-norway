@@ -74,6 +74,9 @@ referanse, ikke valgt produktavhengighet. Den bygger mye egen flate og har avgre
 - Årsgrunnlag skal hjelpe utfylling av næringsspesifikasjonen og vise sporbarhet,
   men ikke utgi seg for å være en full personlig skatteberegning eller innsending.
 - Oppstartsveileder: enkel status, forklaring og lenker. Vanlige oppgaver på naturlig sted.
+- Uttrykkelig språkkrav: oversett engelske elementer og rett feil norske fagbegreper
+  i støttet arbeidsflyt og dokumenter. Følg [språkkrav og arbeidsordliste](language.md).
+  Norsk språkvalg alene lukker ikke dette gapet; rettelser leveres i ekstern app.
 
 Bruk faktisk registreringsstatus, virkningsdato og gjeldende regelverk. Ikke anta
 MVA-registrering bare fordi det skal faktureres. Foretaksform og kontoer er konfigurasjon.

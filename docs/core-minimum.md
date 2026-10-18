@@ -33,6 +33,7 @@ er kvalifisert. Ikke installer tredjepartsapper eller importer evalueringsdata.
 | Dokumentnummer | Native F/K/T-masker med seks løpesifre besto | Nummer kom ved kladdlagring, og kladd kunne slettes. Prøv native nummer ved innsending før valg av ekstern app-hook. Test samtidighet, avbrutt innsending, separate serier, valgfritt startnummer og kreditnota. |
 | Bilagsbevaring | Private File-vedlegg avviste gjest | Administrator kunne slette vedlegg fra bokført kjøpsfaktura. Undersøk alle native slette-/erstatningsveier før et lite bevaringsvern gjennom dokumenthendelser. Prøv også kansellert dokument og direkte File-API. |
 | Norsk/engelsk dokument | PDF ble generert på begge språk | Kvalifiser ordvalg, organisasjonsopplysninger, avgiftsstatus, datoer, nummer og originalreferanse på faktura/kreditnota. Teknisk PDF-rendering er ikke malaksept. |
+| Norsk skjermspråk | Evalueringen viste engelske felt og ufullstendig bokmål | Oversett og rett fagbegreper i den støttede flyten etter [språkkravene](language.md). Prøv menyer, handlinger, statuser, hjelpetekster og feil, også med vanlig eierbruker. |
 | Nummer på kunde/leverandør | Native navngiving er førstevalg | Prøv fem siffer og valgfritt prefiks uten å blande kode og visningsnavn. |
 | Rettigheter | Begrenset REST-leser og foretaksfiltrering besto | Bokføring ble tidligere prøvd som Administrator. Eierbruker må kunne fullføre normalflyt og være avskåret fra uønsket endring/sletting. |
 
