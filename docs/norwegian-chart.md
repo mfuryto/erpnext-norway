@@ -50,17 +50,20 @@ ikke automatisk opp en ferdig kvalifisert valutaflyt.
 
 ## Ikke MVA-registrert
 
-I den låste ERPNext-versjonen oppretter norsk standardoppsett en 25 %-mal som
-standard uten å kjenne registreringsstatusen. Dette kan også skje ved kontoplanimport.
-For et ikke-registrert foretak må standardvalget fjernes på foretakets **Sales Taxes
-and Charges Template** og **Purchase Taxes and Charges Template** før fakturering.
-Kontroller at en vanlig ny salgsfaktura ikke automatisk får avgift. Ikke bruk dette
-som en generell definisjon av fritak/nullsats eller som regel for alle utenlandskjøp.
+I den låste ERPNext-versjonen oppretter landoppsettet tidløse MVA-standardmaler
+uten å kjenne registreringen. Med app 0.3.0 velges **MVA-registrering (Norge)** i
+Foretak. Velg **Ikke registrert** nå; bekreftet registrering med virkningsdato kan
+legges inn senere. Appen fjerner de tidløse MVA-standardene når registreringen
+konfigureres. Eksisterende bilag og hovedbok beregnes ikke på nytt.
 
-Ved kjøp skal manglende fradragsrett gi riktig kostnad og ingen urettmessig inngående
-MVA. Native avgiftsrader er teknisk prøvd, men norsk behandlingsvalg per linje og
-registrering med virkningsdato må fortsatt ferdigstilles. Kontoens navn eller type
-er ingen MVA-regel. Ingen faktisk registreringsstatus legges i offentlige testdata.
+[Norsk MVA-registrering og overgang](vat-registration.md) beskriver felt, daterte
+native regler, ordinær 25 %-behandling, kreditnota og avgrensningene. Fradrag for
+eldre kjøp vurderes særskilt. Ikke-registrering er ikke en generell nullsats eller
+et fritak for plikter ved utenlandskjøp.
+
+Uten appen må standardvalget fortsatt fjernes manuelt på foretakets Sales Taxes
+and Charges Template og Purchase Taxes and Charges Template før ikke-registrert
+fakturering. Kontoens navn eller type alene er ingen MVA-regel.
 
 ## Artikkel, kreditnota og betaling
 

@@ -53,7 +53,7 @@
 <tr><td>{{ _("Total (Without Tax)") }}</td><td class="norway-number">{{ doc.get_formatted("net_total" if doc.flags.show_inclusive_tax_in_print else "total") }}</td></tr>
 </table>
 {% if doc.taxes %}
-{% set data = doc.taxes %}
+{% set data = translated_taxes(doc.taxes) %}
 {% include "templates/print_formats/includes/taxes.html" %}
 {% endif %}
 <table class="norway-totals">

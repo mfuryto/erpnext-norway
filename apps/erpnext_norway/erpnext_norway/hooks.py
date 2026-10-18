@@ -19,12 +19,19 @@ extend_doctype_class = {
     **{name: ["erpnext_norway.preservation.RetainedDocumentMixin"] for name in _accounting},
 }
 doc_events = {
-    "Company": {"before_validate": "erpnext_norway.chart.select_default"},
+    "Company": {
+        "before_validate": ["erpnext_norway.chart.select_default", "erpnext_norway.vat.validate_company"],
+        "on_update": "erpnext_norway.vat.configure_company",
+    },
     "File": {"before_validate": "erpnext_norway.preservation.guard_file_change"},
+    "Purchase Invoice": {"validate": "erpnext_norway.vat.validate_invoice",
+        "before_submit": "erpnext_norway.vat.validate_invoice"},
     "Sales Invoice": {
+        "validate": "erpnext_norway.vat.validate_invoice",
+        "before_submit": "erpnext_norway.vat.validate_invoice",
         "on_submit": "erpnext_norway.printing.preserve_submission",
         "before_naming": "erpnext_norway.numbering.guard_import_name",
-        "before_validate": "erpnext_norway.numbering.guard_invoice_identity",
+        "before_validate": ["erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice"],
         "before_rename": "erpnext_norway.numbering.prevent_rename",
     },
     "Quotation": {"on_submit": "erpnext_norway.printing.preserve_submission",
@@ -44,4 +51,4 @@ override_whitelisted_methods = {
 }
 doctype_js = {"Company": "public/js/company.js"}
 
-jinja = {"methods": ["erpnext_norway.printing.bank_details"]}
+jinja = {"methods": ["erpnext_norway.printing.bank_details", "erpnext_norway.printing.translated_taxes"]}
