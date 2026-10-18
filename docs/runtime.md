@@ -58,5 +58,7 @@ Ikke bytt images automatisk. Videre oppdateringsrutine skal stoppe skriv, ta
 full backup av database/site-filer/config, migrere, kontrollere og bevare gammel
 versjon for tilbakeføring. En testet restore-rutine for den norske appen er et
 ferdigkriterium før regnskapsmessig produksjonsaksept. Redis-kødata erstatter ikke
-bilagsarkiv eller hovedbok. Første leveranse har bare prøvd den avgrensede
-standardinstallasjonen og portovergangen som beskrevet i testbevisene.
+bilagsarkiv eller hovedbok. Den isolerte driftstesten prøver standardinstallasjon,
+WebSocket Upgrade, PDF-rendering og native backup/gjenoppretting med etterfølgende
+migrering. Se [driftsaksept](acceptance-runtime.md) for avgrensninger; testen
+erstatter ikke backup/gjenoppretting av faktisk drift eller den kommende norske appen.

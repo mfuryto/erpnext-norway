@@ -6,6 +6,11 @@ oppgitt ikke tatt i ordinær bruk, så ingen produksjonshistorikk skal migreres 
 
 ## Førende prinsipp
 
+Brukeren har gitt varig godkjenning til promotering: ferdige endringer skal alltid
+fra staging til main gjennom PR og beståtte aktuelle CI-kontroller, uten ny
+godkjenningsrunde. Synkroniser staging etter sammenslåing uten force-push. Dette
+gir ikke servertilgang; brukeren kjører fortsatt serverblokkene selv.
+
 ERPNext-kjernen er primær. Dolibarr Norway, ENK Norge og Peppol-tilleggene brukes
 som referanser. Ikke installer dem automatisk, kopier tidligere kontrollag eller
 bygg en ny brukerflate rundt hele ERPNext. For hvert område registreres bare:
@@ -74,6 +79,9 @@ referanse, ikke valgt produktavhengighet. Den bygger mye egen flate og har avgre
 - Årsgrunnlag skal hjelpe utfylling av næringsspesifikasjonen og vise sporbarhet,
   men ikke utgi seg for å være en full personlig skatteberegning eller innsending.
 - Oppstartsveileder: enkel status, forklaring og lenker. Vanlige oppgaver på naturlig sted.
+- Uttrykkelig språkkrav: oversett engelske elementer og rett feil norske fagbegreper
+  i støttet arbeidsflyt og dokumenter. Følg [språkkrav og arbeidsordliste](language.md).
+  Norsk språkvalg alene lukker ikke dette gapet; rettelser leveres i ekstern app.
 
 Bruk faktisk registreringsstatus, virkningsdato og gjeldende regelverk. Ikke anta
 MVA-registrering bare fordi det skal faktureres. Foretaksform og kontoer er konfigurasjon.
@@ -110,6 +118,16 @@ Ikke utvid automatisk til AS-årsregnskap, lønn, utenlandske forbrukerregler el
 8. **Samlet sluttkontroll sist.** Hele ordinære flyten, vanlig eierbruker, backup/restore,
    oppgraderinger, dokumentasjon og norsk regnskapsmessig aksept i eksplisitt omfang.
    Dette trinnet utsettes til EHF og de øvrige avtalte gapene er lukket.
+
+## Videreføring av driftsprøver
+
+Oppfølgingsarbeidet utvider den syntetiske Compose-testen med faktisk WebSocket
+Upgrade, native PDF-rendering og backup/gjenoppretting av et innsendt syntetisk
+bilag, hovedbok, offentlige/private vedlegg og en kryptert verdi. Etter gjenoppretting
+kjøres migrering, HTTP og avvisning av gjest på privat vedlegg. Se
+[driftsaksept](acceptance-runtime.md) for avgrensningene og
+[kjerneoppsett og gap](core-minimum.md) for neste arbeidspakke.
+Dette endrer ikke en kjørende server og kvalifiserer ikke den fremtidige norske appen.
 
 ## EHF som må videreføres
 

@@ -12,7 +12,8 @@ Installasjonen inneholder standard ERPNext; referansearbeidet er ikke automatisk
 - ERPNext-kjernen først; tillegg brukes som referanser, ikke som automatisk produktgrunnlag.
 
 Se [installasjon og overgang](docs/runtime.md), [plan og overlevering](docs/handover.md)
-og [referanser](references/README.md). Hemmeligheter og driftsdata skal aldri i Git.
+og [kjerneoppsett og norske gap](docs/core-minimum.md), samt
+[referanser](references/README.md). Hemmeligheter og driftsdata skal aldri i Git.
 
 Utvikling skjer på `staging`. `main` er stabil kanal og mottar endringer gjennom PR
 etter relevante tester. Norsk regnskapsmessig produksjonsaksept er en egen milepæl.
