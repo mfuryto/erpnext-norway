@@ -52,7 +52,8 @@ ikke startnummer eller endrer eksisterende identifikatorer.
 ## Bygging og oppdatering
 
 `bash scripts/build-app-image.sh` bygger på det låste ERPNext-imaget og skriver
-ett uforanderlig lokalt image-ID på standard output. Byggeloggen går til stderr.
+ett uforanderlig lokalt image-ID på standard output. Byggeloggen går til stderr. Hver bygd versjon får også et lokalt innholdstag,
+slik at vanlig opprydding av navnløse images ikke fjerner forrige appversjon.
 Bare appen og et versjons-/hashlåst standard byggverktøy tilføyes; kjernens
 avhengigheter oppgraderes ikke. Byggekonteksten utelukker driftsdata og hemmeligheter.
 
