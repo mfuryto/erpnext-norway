@@ -82,8 +82,8 @@ referanse, ikke valgt produktavhengighet. Den bygger mye egen flate og har avgre
 - Uttrykkelig språkkrav: oversett engelske elementer og rett feil norske fagbegreper
   i støttet arbeidsflyt og dokumenter. Følg [språkkrav og arbeidsordliste](language.md).
   Norsk språkvalg alene lukker ikke dette gapet; rettelser leveres i ekstern app.
-- Presisert modulvalg: Lager, Produksjon, Prosjekter og Kvalitet skal primært skjules
-  som standard med native modulprofil. Brukeren kan vise dem senere; det er ikke
+- Presisert modulvalg: Lager/Stock skal være synlig for artikkelregisteret.
+  Produksjon, Prosjekter og Kvalitet skjules som standard med native modulprofil. Brukeren kan vise dem senere; det er ikke
   bestilt systemblokkering. Bevar funksjoner og senere brukervalg. Følg
   [moduloppsett og aksept](module-defaults.md).
 

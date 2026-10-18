@@ -9,7 +9,7 @@ Kontrolleres før promotering til main:
 - Socket.IO WebSocket Upgrade gir HTTP 101 og korrekt handshake gjennom Compose-
   frontend. Dette gjelder ikke den eksterne reverse proxyen.
 - Restart bevarer site-lagring og Frappe-krypteringsnøkkel.
-- Native norsk modulprofil skjuler Lager, Produksjon, Prosjekter og Kvalitet som
+- Native norsk modulprofil viser Lager og skjuler Produksjon, Prosjekter og Kvalitet som
   standard. Ny bruker arver profilen, senere personlige/delte valg bevares, og
   dokumentrettigheter endres ikke. Se [modulvisning](module-defaults.md).
 - Native PDF-renderer lager en PDF fra syntetisk HTML. Dette kvalifiserer ikke
@@ -19,6 +19,9 @@ Kontrolleres før promotering til main:
   Innsendt bilag, hovedbok og filkoblinger kontrolleres, samt dekryptering av en
   syntetisk hemmelighet med bevart nøkkel. Native migrering og HTTP prøves etterpå;
   offentlig testfil skal svare, mens privat testfil fortsatt skal avvise gjest.
+- Serververktøyet for native backup brukes i samme prøve. Privat Compose-konfigurasjon,
+  filmodi, SHA256SUMS og opprinnelig tjenestestatus kontrolleres. Gjenopprettingen
+  bruker den eksporterte kopien etter sletting av kildebackup og endring av testnøkkel.
 - Tre isolerte kontraktstester av portbytte: riktig rekkefølge og bevarte ERPNext-
   passord, avvisning før stopp når ny tjeneste ikke svarer, og oppstartsfeil uten
   ubestilt backup eller tilbakeføring.
