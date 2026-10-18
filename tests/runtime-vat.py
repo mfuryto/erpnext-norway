@@ -93,6 +93,28 @@ try:
             'country': 'Norway', 'default_currency': 'NOK', 'tax_id': '999999999',
             'create_chart_of_accounts_based_on': 'Standard Template',
             'enable_perpetual_inventory': 0, vat.STATUS: 'Not registered'}).insert()
+        for rate in (12, 25):
+            for doctype in ('Sales Taxes and Charges Template', 'Purchase Taxes and Charges Template', 'Item Tax Template'):
+                direction = {'Sales Taxes and Charges Template': 'Utgående MVA',
+                             'Purchase Taxes and Charges Template': 'Inngående MVA',
+                             'Item Tax Template': 'MVA'}[doctype]
+                title = f'{direction} {rate} %' + (' – ERPNext-standard' if doctype != 'Item Tax Template' else '')
+                assert frappe.db.exists(doctype, f'{title} - RVE')
+                assert not frappe.db.exists(doctype, f'Norway VAT {rate}% - RVE')
+            assert frappe.db.get_value('Account', f'MVA {rate} % - RVE', 'account_name') == f'MVA {rate} %'
+        # Simulate an existing English seed linked from a rule; migration uses native rename.
+        from erpnext_norway.tax_names import configure as configure_names
+        seeded = 'Utgående MVA 12 % – ERPNext-standard - RVE'
+        legacy = 'Norway VAT 12% - RVE'
+        doctype = 'Sales Taxes and Charges Template'
+        frappe.rename_doc(doctype, seeded, legacy)
+        frappe.db.set_value(doctype, legacy, 'title', 'Norway VAT 12%')
+        rule = frappe.get_doc({'doctype': 'Tax Rule', 'company': COMPANY, 'tax_type': 'Sales',
+            'sales_tax_template': legacy, 'priority': 99}).insert()
+        configure_names(COMPANY)
+        assert frappe.db.get_value('Tax Rule', rule.name, 'sales_tax_template') == seeded
+        configure_names(COMPANY)  # Idempotent.
+        frappe.delete_doc('Tax Rule', rule.name)
         accounts = {r.account_number: r.name for r in frappe.get_all('Account',
             filters={'company': COMPANY}, fields=['name', 'account_number']) if r.account_number}
         assert company.chart_of_accounts == 'Norsk kontoplan'
@@ -243,8 +265,20 @@ try:
         submit_purchase(purchase_credit)
         ledger(purchase_credit, {'2400': 500, '4500': -400, '2710': -100}, accounts)
         evidence.append(fingerprint(purchase_credit))
+        # Upgrade the previous app seed names after posting, preserving rules, invoice links and PDFs.
+        frappe.set_user('Administrator')
+        for doctype, old_title, new_title in (
+            ('Sales Taxes and Charges Template', 'Norge MVA 25 % – salg', 'Utgående MVA 25 %'),
+            ('Purchase Taxes and Charges Template', 'Norge MVA 25 % – kjøp med fullt fradrag', 'Inngående MVA 25 % – fullt fradrag'),
+        ):
+            current, legacy = f'{new_title} - RVE', f'{old_title} - RVE'
+            frappe.rename_doc(doctype, current, legacy)
+            frappe.db.set_value(doctype, legacy, 'title', old_title)
+        configure_names(COMPANY)
+        assert frappe.db.get_value('Sales Invoice', sale.name, 'taxes_and_charges') == 'Utgående MVA 25 % - RVE'
+        assert frappe.db.get_value('Purchase Invoice', purchase.name, 'taxes_and_charges') == 'Inngående MVA 25 % – fullt fradrag - RVE'
         # Original values/PDF bytes did not change when the company registered.
-        for row in evidence[:3]:
+        for row in evidence:
             doc = frappe.get_doc(row['doctype'], row['name'])
             equal(doc.grand_total, row['total'])
             equal(doc.total_taxes_and_charges, row['tax'])

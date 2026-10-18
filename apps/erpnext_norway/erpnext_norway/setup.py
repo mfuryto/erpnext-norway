@@ -8,6 +8,8 @@ from erpnext_norway.preservation import RETAINED
 def configure():
     from erpnext_norway.vat import configure as configure_vat
     configure_vat()
+    from erpnext_norway.tax_names import configure as configure_tax_names
+    configure_tax_names()
     for doctype in RETAINED:
         if not frappe.get_meta(doctype).protect_attached_files:
             make_property_setter(doctype, None, "protect_attached_files", 1, "Check", for_doctype=True)

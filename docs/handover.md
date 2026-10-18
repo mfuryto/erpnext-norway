@@ -242,3 +242,8 @@ framtidig godkjent dato, sperret tidlig fradrag, originaltro kreditnota og bevar
 PDF-er. MVA er ikke samlet ferdig med dette: linjefordelt fradrag, reduserte satser,
 fritak/unntak, utland, portalgrunnlag, oppgjør/avstemming og kvittering gjenstår.
 Tilbakegående avgiftsoppgjør vurderes særskilt; ikke endre gamle kjøp automatisk.
+
+MVA-navngiving: native norske standardmaler navngis med Utgående/Inngående MVA
+og ERPNext-standard. Vareavgiftsmaler/kategori er nøytrale. Appmalene heter
+Utgående MVA 25 % og Inngående MVA 25 % – fullt fradrag. Migrering bruker native
+rename_doc for lenker, uten sammenslåing av kollisjoner eller endring av bilagsbeløp.

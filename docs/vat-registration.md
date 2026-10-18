@@ -99,3 +99,18 @@ System Manager prøver før-/etterdato, ikke konfigurert, bekreftet framtidig da
 fullt fradrag, sperret tidlig fradrag, kreditnota og uendrede originaler.
 Samme status, bilagsbeløp og PDF-bytes skal bestå eksportert backup/restore/migrering.
 Nettleserprøven skal kontrollere de norske feltene og native behandlingsvalg.
+
+## Norske standardnavn
+
+Ved oppdatering og foretaksoppsett blir kjernens eksakte standardnavn
+«Norway VAT 25%» og «Norway VAT 12%» til «Utgående MVA … – ERPNext-standard»
+på salg, «Inngående MVA … – ERPNext-standard» på kjøp og «MVA …» for vareavgiftsmaler.
+Appens daterte 25 %-maler heter «Utgående MVA 25 %» og
+«Inngående MVA 25 % – fullt fradrag». Kategorien «Norge MVA 25 %» er felles.
+Standardmalens navn dokumenterer ikke alene korrekt fradrag eller kontovalg;
+registreringsflyten bruker appens daterte maler med 2700/2710.
+Tilsvarende standardbeskrivelser og unummererte MVA-kontonavn får MVA.
+Native navneendring oppdaterer lenker; satser, beløp og lagrede PDF-originaler
+endres ikke. Egne navn og navnekollisjoner beholdes uten sammenslåing.
+Dette navngir også kjernens 12 %-mal; det utvider ikke den regnskapsmessig
+kvalifiserte flyten utover 25 %-delen over.

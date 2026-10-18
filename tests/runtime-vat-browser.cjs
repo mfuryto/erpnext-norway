@@ -54,7 +54,7 @@ const assert = require('node:assert/strict');
     await page.evaluate(() => cur_frm.set_value('posting_date', '2026-10-16'));
     await page.waitForFunction(() => !frappe.request.ajax_count);
     await page.evaluate(() => cur_frm.set_value('tax_category', 'Norge MVA 25 %'));
-    await page.waitForFunction(() => cur_frm.doc.taxes_and_charges?.startsWith('Norge MVA 25 %') && cur_frm.doc.taxes.length === 1);
+    await page.waitForFunction(() => cur_frm.doc.taxes_and_charges?.startsWith('Utgående MVA 25 %') && cur_frm.doc.taxes.length === 1);
     const choice = await page.evaluate(() => ({
       category: cur_frm.doc.tax_category, rate: cur_frm.doc.taxes[0].rate,
       account: cur_frm.doc.taxes[0].account_head, label: __('Tax Category', null, 'Sales Invoice')

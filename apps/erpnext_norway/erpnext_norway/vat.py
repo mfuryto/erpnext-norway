@@ -44,6 +44,8 @@ def organisation_number(value):
 
 
 def configure_company(doc, method=None):
+    from erpnext_norway.tax_names import configure as configure_names
+    configure_names(doc.name)
     if doc.country != 'Norway' or doc.get(STATUS) not in ('Not registered', 'Registered'):
         return
     previous = doc.get_doc_before_save()
@@ -68,9 +70,9 @@ def configure_company(doc, method=None):
         return
     if not frappe.db.exists('Tax Category', CATEGORY):
         frappe.get_doc({'doctype': 'Tax Category', 'title': CATEGORY}).insert(ignore_permissions=True)
-    for tax_type, code, suffix in [('Sales', '2700', 'salg'), ('Purchase', '2710', 'kjøp med fullt fradrag')]:
+    for tax_type, code in [('Sales', '2700'), ('Purchase', '2710')]:
         doctype = f'{tax_type} Taxes and Charges Template'
-        title = f'Norge MVA 25 % – {suffix}'
+        title = 'Utgående MVA 25 %' if tax_type == 'Sales' else 'Inngående MVA 25 % – fullt fradrag'
         name = frappe.db.get_value(doctype, {'company': doc.name, 'tax_category': CATEGORY, 'disabled': 0})
         if not name:
             name = frappe.get_doc({'doctype': doctype, 'title': title, 'company': doc.name,
