@@ -33,5 +33,5 @@ jobs:
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0
         with:
           persist-credentials: false
-      - name: Install a fresh synthetic runtime and verify persistence
+      - name: Verify synthetic runtime, PDF and backup recovery
         run: bash tests/runtime-smoke.sh

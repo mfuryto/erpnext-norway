@@ -111,6 +111,16 @@ Ikke utvid automatisk til AS-årsregnskap, lønn, utenlandske forbrukerregler el
    oppgraderinger, dokumentasjon og norsk regnskapsmessig aksept i eksplisitt omfang.
    Dette trinnet utsettes til EHF og de øvrige avtalte gapene er lukket.
 
+## Videreføring av driftsprøver
+
+Oppfølgingsarbeidet utvider den syntetiske Compose-testen med faktisk WebSocket
+Upgrade, native PDF-rendering og backup/gjenoppretting av et innsendt syntetisk
+bilag, hovedbok, offentlige/private vedlegg og en kryptert verdi. Etter gjenoppretting
+kjøres migrering, HTTP og avvisning av gjest på privat vedlegg. Se
+[driftsaksept](acceptance-runtime.md) for avgrensningene og
+[kjerneoppsett og gap](core-minimum.md) for neste arbeidspakke.
+Dette endrer ikke en kjørende server og kvalifiserer ikke den fremtidige norske appen.
+
 ## EHF som må videreføres
 
 Peppyrus-testkonto og API-nøkkel er opprettet av eieren. Nøkkelen skal legges privat
