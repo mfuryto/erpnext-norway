@@ -33,5 +33,6 @@
 - Skill teknisk drift fra regnskapsmessig aksept. Ingen generell påstand om norsk
   etterlevelse basert bare på grønn CI eller standard ERPNext.
 - Bruk «kontroll» om regnskapsvalidering. Ikke introduser sjekkbetaling i norsk arbeidsflyt.
-- Lever serveroppdateringer som én kjørbar blokk. Bevar eksisterende data ved overgang.
+- Lever serveroppdateringer som én kjørbar blokk som henter gjeldende origin/main
+  med fetch og fast-forward, uten låst target/revisjon. Bevar eksisterende data ved overgang.
 - Les docs/handover.md før videre arbeid. Utvikling i Dolibarr Norway er satt på vent.

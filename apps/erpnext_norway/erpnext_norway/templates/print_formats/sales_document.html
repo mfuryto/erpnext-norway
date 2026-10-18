@@ -1,0 +1,70 @@
+{# Native Jinja Print Format: values and rounding come from the saved ERPNext document. #}
+{% from "templates/print_formats/standard_macros.html" import add_header with context %}
+{% set heading = '<h1>{{ _("Credit Note") if doc.get("is_return") else _(doc.doctype) }}</h1><p>{{ doc.name | e }}</p>' %}
+{{ add_header(0, 1, doc, letter_head, no_letterhead, footer, print_settings, heading) }}
+<style>
+.print-format { font-family: "DejaVu Sans", sans-serif; font-size: 10pt; color: #202020; }
+.norway-parties { width: 100%; margin: 16px 0; }
+.norway-parties td { width: 50%; vertical-align: top; padding: 0 16px 10px 0; }
+.norway-items { width: 100%; border-collapse: collapse; margin: 18px 0; }
+.norway-items th, .norway-items td { border-bottom: 1px solid #ccc; padding: 7px 4px; vertical-align: top; }
+.norway-items thead { display: table-header-group; }
+.norway-items tr { page-break-inside: avoid; }
+.norway-number { text-align: right; white-space: nowrap; }
+.norway-totals { margin-left: auto; width: 55%; }
+.norway-totals td { padding: 4px; }
+.norway-terms { margin-top: 18px; }
+</style>
+{% set company = frappe.get_doc("Company", doc.company) %}
+{% set bank = bank_details(doc.company, doc.get("customer") or (doc.get("party_name") if doc.get("quotation_to") == "Customer" else None)) %}
+<table class="norway-parties"><tr><td>
+<strong>{{ company.company_name | e }}</strong><br>
+{{ _("Organisation number") }}: {{ (doc.get("company_tax_id") or company.tax_id or "") | e }}<br>
+{{ doc.get("company_address_display") or "" }}
+</td><td>
+<strong>{{ (doc.get("customer_name") or doc.get("party_name") or "") | e }}</strong><br>
+{{ doc.get("address_display") or "" }}
+{% if doc.get("tax_id") %}<br>{{ _("Organisation number") }}: {{ doc.tax_id | e }}{% endif %}
+</td></tr></table>
+<table class="norway-parties"><tr><td>
+{{ _("Document number") }}: {{ doc.name | e }}<br>
+{{ _("Invoice date") if doc.doctype == "Sales Invoice" else _("Date") }}:
+{{ doc.get_formatted("posting_date" if doc.doctype == "Sales Invoice" else "transaction_date") }}<br>
+{% if doc.get("return_against") %}{{ _("Original invoice") }}: {{ doc.return_against | e }}<br>{% endif %}
+{% if doc.get("po_no") %}{{ _("Your reference") }}: {{ doc.po_no | e }}<br>{% endif %}
+</td><td>
+{% if doc.get("due_date") and not doc.get("is_return") %}{{ _("Due Date") }}: {{ doc.get_formatted("due_date") }}<br>{% endif %}
+{% if doc.get("valid_till") %}{{ _("Valid Till") }}: {{ doc.get_formatted("valid_till") }}<br>{% endif %}
+{% if doc.get("from_date") %}{{ _("From Date") }}: {{ doc.get_formatted("from_date") }}<br>{% endif %}
+{% if doc.get("to_date") %}{{ _("To Date") }}: {{ doc.get_formatted("to_date") }}<br>{% endif %}
+{{ _("Currency") }}: {{ doc.currency | e }}
+</td></tr></table>
+<table class="norway-items"><thead><tr>
+<th>{{ _("Description") }}</th><th class="norway-number">{{ _("Quantity") }}</th>
+<th>{{ _("UOM") }}</th><th class="norway-number">{{ _("Unit Price") }}</th><th class="norway-number">{{ _("Amount") }}</th>
+</tr></thead><tbody>
+{% for row in doc.items %}<tr>
+<td><strong>{{ row.item_name | e }}</strong>{% if row.description and row.description != row.item_name %}<br>{{ row.description }}{% endif %}</td>
+<td class="norway-number">{{ row.get_formatted("qty", doc) }}</td><td>{{ _(row.uom) }}</td>
+<td class="norway-number">{{ row.get_formatted("rate", doc) }}</td><td class="norway-number">{{ row.get_formatted("amount", doc) }}</td>
+</tr>{% endfor %}
+</tbody></table>
+<table class="norway-totals">
+<tr><td>{{ _("Total (Without Tax)") }}</td><td class="norway-number">{{ doc.get_formatted("net_total" if doc.flags.show_inclusive_tax_in_print else "total") }}</td></tr>
+</table>
+{% if doc.taxes %}
+{% set data = doc.taxes %}
+{% include "templates/print_formats/includes/taxes.html" %}
+{% endif %}
+<table class="norway-totals">
+{% if not doc.taxes and doc.discount_amount %}<tr><td>{{ _("Discount") }}</td><td class="norway-number">{{ doc.get_formatted("discount_amount") }}</td></tr>{% endif %}
+<tr><td><strong>{{ _("Grand Total") }}</strong></td><td class="norway-number"><strong>{{ doc.get_formatted("grand_total") }}</strong></td></tr>
+{% if not doc.disable_rounded_total %}
+<tr><td>{{ _("Rounding Adjustment") }}</td><td class="norway-number">{{ doc.get_formatted("rounding_adjustment") }}</td></tr>
+<tr><td><strong>{{ _("Rounded Total") }}</strong></td><td class="norway-number"><strong>{{ doc.get_formatted("rounded_total") }}</strong></td></tr>
+{% endif %}
+</table>
+{% if bank %}<p>{{ _("Bank account") }}: {{ (bank.bank_account_no or "") | e }}{% if bank.iban %}<br>IBAN: {{ bank.iban | e }}{% endif %}</p>{% endif %}
+{% if doc.get("shipping_address") %}<div><strong>{{ _("Shipping Address") }}</strong>{{ doc.shipping_address }}</div>{% endif %}
+{% if doc.terms %}<div class="norway-terms"><strong>{{ _("Terms and Conditions") }}</strong>{{ doc.terms }}</div>{% endif %}
+{% if footer and not no_letterhead %}<div>{{ footer }}</div>{% endif %}

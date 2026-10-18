@@ -2,7 +2,8 @@
 
 Bestilt omfang: oversett engelske elementer og rett misvisende norske begreper i
 den støttede arbeidsflyten. Bokmål er første norske språk. Dette er et leveransekrav;
-oversettelsene er ikke implementert i driftsgrunnlaget ennå.
+målrettede rettelser leveres nå i den eksterne appens `nb.csv`. Dette er ikke
+en påstand om at hele ERPNext-katalogen er fullstendig oversatt.
 
 ## Omfang og gjennomføring
 
@@ -69,3 +70,22 @@ implementasjon, særlig for bokføring, kansellering og retting.
 
 Ingen påstand om full norsk dekning baseres bare på antall oversatte strenger.
 Faktiske skjermbilder, feilflyt og dokumenter er akseptgrunnlaget.
+
+## Levert arbeidspakke
+
+App 0.2.0 retter de sentrale regnskapsbegrepene og feltene i salgs-, kjøps-,
+betalings- og bankflyten, med egne kontekstnøkler for de aktuelle DocType-feltene.
+Kjernens oversettelser beholdes der de er riktige. Intern status, API-felter og
+brukerens egennavn/fritekst endres ikke. Generell Submit blir «Send inn», ikke
+en global «Bokfør» på tilbud og andre dokumenter. Enhetspris har egen priskontekst;
+Rate for renter/valuta byttes ikke globalt.
+
+[Norske/engelske salgsdokumenter](sales-documents.md) beskriver maler, språkvalg,
+PDF ved innsending og bevaring. Det uendrede native Company Letterhead skriver
+dokumenttypen som uoversatt data; bare en eksakt kopi av den leverte malen får
+en oversettbar tittel. Brukertilpassede brevark overtas ikke.
+
+Akseptsporet er `tests/runtime-language.py` og `tests/runtime-language-browser.cjs`,
+sammen med eksisterende vanlig-eier-prøver. Browserprøven krever Playwright 1.58.2
+og kjøres bare mot den syntetiske localhost-instansen. Bredere språkfunn i senere
+MVA-/års-/EHF-flyt skal behandles sammen med den aktuelle funksjonstesten.

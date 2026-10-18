@@ -12,6 +12,8 @@ import frappe
 os.chdir("/home/frappe/frappe-bench/sites")
 frappe.init(site="accounting", sites_path="/home/frappe/frappe-bench/sites")
 frappe.connect()
+if 'erpnext_norway' in frappe.get_installed_apps():
+    frappe.conf.host_name = 'http://frontend:8080'
 frappe.set_user("Administrator")
 frappe.local.lang = "en"
 from frappe.utils.file_manager import save_file

@@ -8,3 +8,4 @@ __pycache__/
 /.runtime.lock
 
 /deploy/.runtime-update-*
+/tests/browser/node_modules/

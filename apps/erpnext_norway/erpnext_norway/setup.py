@@ -2,11 +2,11 @@
 import frappe
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 from erpnext_norway.numbering import RULES
-from erpnext_norway.preservation import ACCOUNTING
+from erpnext_norway.preservation import RETAINED
 
 
 def configure():
-    for doctype in ACCOUNTING:
+    for doctype in RETAINED:
         if not frappe.get_meta(doctype).protect_attached_files:
             make_property_setter(doctype, None, "protect_attached_files", 1, "Check", for_doctype=True)
     # Never retrofit counters onto a used register or override existing native rules.
@@ -23,4 +23,6 @@ def configure():
                 "prefix": rule_prefix, "prefix_digits": rule_digits, "counter": 0, "priority": 100,
                 "conditions": [{"field": field, "condition": "=", "value": value} for field, value in rule_conditions],
             }).insert(set_name=key)
+    from erpnext_norway.printing import configure as configure_printing
+    configure_printing()
     frappe.clear_cache()

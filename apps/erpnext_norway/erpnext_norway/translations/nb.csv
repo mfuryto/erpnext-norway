@@ -8,3 +8,1481 @@ This native naming rule is in use and cannot be reset or changed.,Denne nummerer
 Keep the native naming rule used by existing documents.,Bevar nummereringsregelen som er brukt av eksisterende dokumenter.
 Let the existing invoice series assign the number. Importing a supplied invoice number is not supported.,La den eksisterende fakturaserien tildele nummeret. Import med angitt fakturanummer støttes ikke.
 The Norwegian chart template currently supports NOK as company currency.,Den norske kontoplanmalen støtter foreløpig NOK som selskapsvaluta.
+Sales Invoice,Salgsfaktura
+Purchase Invoice,Leverandørfaktura
+Credit Note,Kreditnota
+Quotation,Tilbud
+Posting Date,Bokføringsdato
+Payment Due Date,Forfallsdato
+Due Date,Forfallsdato
+Chart of Accounts,Kontoplan
+General Ledger,Hovedbok
+Journal Entry,Bokføringsbilag
+Payment Entry,Betalingsregistrering
+Bank Reconciliation,Bankavstemming
+Bank Reconciliation Tool,Bankavstemming
+Outstanding Amount,Utestående beløp
+Draft,Kladd
+DRAFT,KLADD
+CANCELLED,KANSELLERT
+Banking,Bank
+Accounts Receivable,Kundefordringer
+Accounts Payable,Leverandørgjeld
+Customer,Kunde
+Supplier,Leverandør
+Customer Name,Kundenavn
+Supplier Name,Leverandørnavn
+Customer Address,Kundeadresse
+Company Address,Foretaksadresse
+Company Address Name,Foretakets adresse
+Address & Contact,Adresse og kontakt
+Company,Foretak
+Company Name,Foretaksnavn
+Company Tax ID,Foretakets organisasjonsnummer / MVA-ID
+Tax Id,Organisasjonsnummer / MVA-ID
+Tax ID,Organisasjonsnummer / MVA-ID
+Print Language,Dokumentspråk
+Print Heading,Dokumentoverskrift
+Print Settings,Utskriftsinnstillinger
+Organisation number,Organisasjonsnummer
+Document number,Dokumentnummer
+Invoice date,Fakturadato
+Original invoice,Opprinnelig faktura
+Your reference,Deres referanse
+Date,Dato
+Valid Till,Gyldig til
+From Date,Fra dato
+To Date,Til dato
+Currency,Valuta
+Description,Beskrivelse
+Quantity,Antall
+Qty,Antall
+UOM,Enhet
+Amount,Beløp
+Net Total,Sum ekskl. avgifter
+Grand Total,Totalsum
+Rounded Total,Avrundet totalsum
+Rounding Adjustment,Avrundingsdifferanse
+Discount,Rabatt
+Bank account,Bankkonto
+Terms and Conditions,Vilkår
+Terms and Conditions Details,Vilkår
+Term Details,Vilkår
+Item,Artikkel
+Item Name,Artikkelnavn
+Item Code,Artikkelkode
+Items,Artikler
+Nos,stk.
+Sr,Nr.
+Stock,Lager
+Selling,Salg
+Buying,Kjøp
+Accounting,Regnskap
+Accounts,Regnskap
+Manufacturing,Produksjon
+Projects,Prosjekter
+Quality Management,Kvalitet
+Balance Sheet,Balanse
+Profit and Loss Statement,Resultatregnskap
+Trial Balance,Saldobalanse
+Payment Type,Betalingstype
+Paid Amount,Betalt beløp
+Received Amount,Mottatt beløp
+Reference No,Referansenummer
+Reference Date,Referansedato
+Mode of Payment,Betalingsmåte
+Bank Account,Bankkonto
+Bank Transaction,Banktransaksjon
+Payment Terms,Betalingsvilkår
+Payment Terms Template,Mal for betalingsvilkår
+Billing Address,Fakturaadresse
+Shipping Address,Leveringsadresse
+Return Against,Retur mot
+Is Return (Credit Note),Er kreditnota
+Update Stock,Oppdater lager
+Is Stock Item,Lagerført artikkel
+Non Stock Items,Ikke lagerførte artikler
+Customer's Purchase Order,Kundens bestillingsnummer
+Customer's Purchase Order Date,Kundens bestillingsdato
+Taxes and Charges,Avgifter og tillegg
+Sales Taxes and Charges Template,Mal for salgsavgifter og tillegg
+Purchase Taxes and Charges Template,Mal for kjøpsavgifter og tillegg
+Total Taxes and Charges,Sum avgifter og tillegg
+Net Rate,Netto enhetspris
+Net Amount,Nettobeløp
+Total Quantity,Totalt antall
+Cost Center,Kostnadssted
+Income Account,Inntektskonto
+Expense Account,Kostnadskonto
+Debit To,Fordringskonto
+Credit To,Gjeldskonto
+Against Income Account,Mot inntektskonto
+Against Expense Account,Mot kostnadskonto
+In Words,Beløp med bokstaver
+Submitted,Sendt inn
+Unpaid,Ubetalt
+Paid,Betalt
+Overdue,Forfalt
+Cancelled,Kansellert
+Return,Retur
+Credit Note Issued,Kreditnota utstedt
+Partly Paid,Delvis betalt
+Unreconciled Amount,Ikke avstemt beløp
+Allocated Amount,Tildelt beløp
+Unallocated Amount,Ikke tildelt beløp
+Reconcile,Avstem
+Reconciled,Avstemt
+Unreconciled,Ikke avstemt
+Save,Lagre
+Print,Skriv ut
+Get PDF,Hent PDF
+Attach,Legg ved
+Attachments,Vedlegg
+New Sales Invoice,Ny salgsfaktura
+New Purchase Invoice,Ny leverandørfaktura
+New Quotation,Nytt tilbud
+Debit,Debet
+Credit,Kredit
+Account,Konto
+Account Name,Kontonavn
+Account Number,Kontonummer
+Fiscal Year,Regnskapsår
+Country,Land
+Default Currency,Standardvaluta
+Default Bank Account,Standard bankkonto
+Is Default,Er standard
+Bank Account No,Bankkontonummer
+Billing Details,Fakturaopplysninger
+More Information,Mer informasjon
+Payments,Betalinger
+Contact,Kontakt
+Contact Person,Kontaktperson
+Contact Email,Kontaktens e-post
+Contact Mobile,Kontaktens mobilnummer
+Customer Group,Kundegruppe
+Supplier Group,Leverandørgruppe
+Territory,Salgsområde
+Customer Type,Kundetype
+Supplier Type,Leverandørtype
+Transaction Date,Transaksjonsdato
+Status,Status
+Quotation To,Tilbud til
+Party,Part
+Party Name,Partsnavn
+Party Type,Partstype
+Terms,Vilkår
+Address,Adresse
+Remarks,Merknader
+Amended From,Korrigert fra
+Cancel,Kanseller
+Amend,Opprett korrigert versjon
+Submit,Send inn
+Submit this document?,Vil du sende inn dokumentet?
+Supplier Name,Leverandørnavn,Supplier
+Country,Land,Supplier
+Tax ID,Organisasjonsnummer / MVA-ID,Supplier
+Supplier Group,Leverandørgruppe,Supplier
+Supplier Type,Leverandørtype,Supplier
+Print Language,Dokumentspråk,Supplier
+Payment Terms Template,Mal for betalingsvilkår,Supplier
+More Information,Mer informasjon,Supplier
+Address & Contact,Adresse og kontakt,Supplier
+Accounting,Regnskap,Supplier
+Company,Foretak,Company
+Default Currency,Standardvaluta,Company
+Country,Land,Company
+Tax ID,Organisasjonsnummer / MVA-ID,Company
+Default Bank Account,Standard bankkonto,Company
+Address & Contact,Adresse og kontakt,Company
+Chart of Accounts,Kontoplan,Company
+Accounts,Regnskap,Company
+Manufacturing,Produksjon,Company
+Item,Artikkel,Purchase Invoice Item
+Item Name,Artikkelnavn,Purchase Invoice Item
+Description,Beskrivelse,Purchase Invoice Item
+UOM,Enhet,Purchase Invoice Item
+Amount,Beløp,Purchase Invoice Item
+Net Rate,Netto enhetspris,Purchase Invoice Item
+Net Amount,Nettobeløp,Purchase Invoice Item
+Accounting,Regnskap,Purchase Invoice Item
+Cost Center,Kostnadssted,Purchase Invoice Item
+Customer,Kunde,Sales Invoice
+Customer Name,Kundenavn,Sales Invoice
+Tax Id,Organisasjonsnummer / MVA-ID,Sales Invoice
+Is Return (Credit Note),Er kreditnota,Sales Invoice
+Company,Foretak,Sales Invoice
+Cost Center,Kostnadssted,Sales Invoice
+Posting Date,Bokføringsdato,Sales Invoice
+Payment Due Date,Forfallsdato,Sales Invoice
+Amended From,Korrigert fra,Sales Invoice
+Return Against,Retur mot,Sales Invoice
+Customer's Purchase Order,Kundens bestillingsnummer,Sales Invoice
+Customer's Purchase Order Date,Kundens bestillingsdato,Sales Invoice
+Billing Address,Fakturaadresse,Sales Invoice
+Customer Address,Kundeadresse,Sales Invoice
+Address,Adresse,Sales Invoice
+Contact Person,Kontaktperson,Sales Invoice
+Contact,Kontakt,Sales Invoice
+Contact Email,Kontaktens e-post,Sales Invoice
+Territory,Salgsområde,Sales Invoice
+Shipping Address,Leveringsadresse,Sales Invoice
+Company Address Name,Foretakets adresse,Sales Invoice
+Company Address,Foretaksadresse,Sales Invoice
+Currency,Valuta,Sales Invoice
+Items,Artikler,Sales Invoice
+Update Stock,Oppdater lager,Sales Invoice
+Total Quantity,Totalt antall,Sales Invoice
+Net Total,Sum ekskl. avgifter,Sales Invoice
+Taxes and Charges,Avgifter og tillegg,Sales Invoice
+Sales Taxes and Charges Template,Mal for salgsavgifter og tillegg,Sales Invoice
+Total Taxes and Charges,Sum avgifter og tillegg,Sales Invoice
+Grand Total,Totalsum,Sales Invoice
+Rounding Adjustment,Avrundingsdifferanse,Sales Invoice
+Rounded Total,Avrundet totalsum,Sales Invoice
+In Words,Beløp med bokstaver,Sales Invoice
+Outstanding Amount,Utestående beløp,Sales Invoice
+Payment Terms,Betalingsvilkår,Sales Invoice
+Payment Terms Template,Mal for betalingsvilkår,Sales Invoice
+Payments,Betalinger,Sales Invoice
+Paid Amount,Betalt beløp,Sales Invoice
+Terms and Conditions,Vilkår,Sales Invoice
+Terms,Vilkår,Sales Invoice
+Terms and Conditions Details,Vilkår,Sales Invoice
+Print Settings,Utskriftsinnstillinger,Sales Invoice
+Print Language,Dokumentspråk,Sales Invoice
+Print Heading,Dokumentoverskrift,Sales Invoice
+Customer Group,Kundegruppe,Sales Invoice
+Status,Status,Sales Invoice
+Debit To,Fordringskonto,Sales Invoice
+Remarks,Merknader,Sales Invoice
+From Date,Fra dato,Sales Invoice
+To Date,Til dato,Sales Invoice
+Against Income Account,Mot inntektskonto,Sales Invoice
+Company Tax ID,Foretakets organisasjonsnummer / MVA-ID,Sales Invoice
+Address & Contact,Adresse og kontakt,Sales Invoice
+Supplier,Leverandør,Purchase Invoice
+Supplier Name,Leverandørnavn,Purchase Invoice
+Tax Id,Organisasjonsnummer / MVA-ID,Purchase Invoice
+Due Date,Forfallsdato,Purchase Invoice
+Company,Foretak,Purchase Invoice
+Cost Center,Kostnadssted,Purchase Invoice
+Posting Date,Bokføringsdato,Purchase Invoice
+Amended From,Korrigert fra,Purchase Invoice
+Address,Adresse,Purchase Invoice
+Contact Person,Kontaktperson,Purchase Invoice
+Contact,Kontakt,Purchase Invoice
+Contact Email,Kontaktens e-post,Purchase Invoice
+Shipping Address,Leveringsadresse,Purchase Invoice
+Currency,Valuta,Purchase Invoice
+Items,Artikler,Purchase Invoice
+Update Stock,Oppdater lager,Purchase Invoice
+Total Quantity,Totalt antall,Purchase Invoice
+Net Total,Sum ekskl. avgifter,Purchase Invoice
+Taxes and Charges,Avgifter og tillegg,Purchase Invoice
+Purchase Taxes and Charges Template,Mal for kjøpsavgifter og tillegg,Purchase Invoice
+Total Taxes and Charges,Sum avgifter og tillegg,Purchase Invoice
+Grand Total,Totalsum,Purchase Invoice
+Rounding Adjustment,Avrundingsdifferanse,Purchase Invoice
+Rounded Total,Avrundet totalsum,Purchase Invoice
+In Words,Beløp med bokstaver,Purchase Invoice
+Outstanding Amount,Utestående beløp,Purchase Invoice
+Payments,Betalinger,Purchase Invoice
+Mode of Payment,Betalingsmåte,Purchase Invoice
+Paid Amount,Betalt beløp,Purchase Invoice
+Payment Terms,Betalingsvilkår,Purchase Invoice
+Payment Terms Template,Mal for betalingsvilkår,Purchase Invoice
+Terms and Conditions,Vilkår,Purchase Invoice
+Terms,Vilkår,Purchase Invoice
+Print Settings,Utskriftsinnstillinger,Purchase Invoice
+Print Heading,Dokumentoverskrift,Purchase Invoice
+Print Language,Dokumentspråk,Purchase Invoice
+Credit To,Gjeldskonto,Purchase Invoice
+Against Expense Account,Mot kostnadskonto,Purchase Invoice
+Status,Status,Purchase Invoice
+Remarks,Merknader,Purchase Invoice
+From Date,Fra dato,Purchase Invoice
+To Date,Til dato,Purchase Invoice
+Billing Address,Fakturaadresse,Purchase Invoice
+Address & Contact,Adresse og kontakt,Purchase Invoice
+Supplier Group,Leverandørgruppe,Purchase Invoice
+Account Name,Kontonavn,Bank Account
+Company,Foretak,Bank Account
+Party Type,Partstype,Bank Account
+Party,Part,Bank Account
+Bank Account No,Bankkontonummer,Bank Account
+Item,Artikkel,Sales Invoice Item
+Item Name,Artikkelnavn,Sales Invoice Item
+Description,Beskrivelse,Sales Invoice Item
+Quantity,Antall,Sales Invoice Item
+UOM,Enhet,Sales Invoice Item
+Amount,Beløp,Sales Invoice Item
+Net Rate,Netto enhetspris,Sales Invoice Item
+Net Amount,Nettobeløp,Sales Invoice Item
+Income Account,Inntektskonto,Sales Invoice Item
+Expense Account,Kostnadskonto,Sales Invoice Item
+Cost Center,Kostnadssted,Sales Invoice Item
+Payment Type,Betalingstype,Payment Entry
+Posting Date,Bokføringsdato,Payment Entry
+Company,Foretak,Payment Entry
+Cost Center,Kostnadssted,Payment Entry
+Mode of Payment,Betalingsmåte,Payment Entry
+Party Type,Partstype,Payment Entry
+Party,Part,Payment Entry
+Party Name,Partsnavn,Payment Entry
+Contact,Kontakt,Payment Entry
+Accounts,Regnskap,Payment Entry
+Amount,Beløp,Payment Entry
+Paid Amount,Betalt beløp,Payment Entry
+Received Amount,Mottatt beløp,Payment Entry
+Unallocated Amount,Ikke tildelt beløp,Payment Entry
+More Information,Mer informasjon,Payment Entry
+Remarks,Merknader,Payment Entry
+Print Heading,Dokumentoverskrift,Payment Entry
+Bank Account No,Bankkontonummer,Payment Entry
+Amended From,Korrigert fra,Payment Entry
+Status,Status,Payment Entry
+Taxes and Charges,Avgifter og tillegg,Payment Entry
+Purchase Taxes and Charges Template,Mal for kjøpsavgifter og tillegg,Payment Entry
+Sales Taxes and Charges Template,Mal for salgsavgifter og tillegg,Payment Entry
+Total Taxes and Charges,Sum avgifter og tillegg,Payment Entry
+In Words,Beløp med bokstaver,Payment Entry
+Posting Date,Bokføringsdato,Journal Entry
+Company,Foretak,Journal Entry
+Reference Date,Referansedato,Journal Entry
+Due Date,Forfallsdato,Journal Entry
+Print Heading,Dokumentoverskrift,Journal Entry
+Mode of Payment,Betalingsmåte,Journal Entry
+Amended From,Korrigert fra,Journal Entry
+Date,Dato,Bank Transaction
+Status,Status,Bank Transaction
+Bank Account,Bankkonto,Bank Transaction
+Company,Foretak,Bank Transaction
+Currency,Valuta,Bank Transaction
+Description,Beskrivelse,Bank Transaction
+Allocated Amount,Tildelt beløp,Bank Transaction
+Amended From,Korrigert fra,Bank Transaction
+Unallocated Amount,Ikke tildelt beløp,Bank Transaction
+Party Type,Partstype,Bank Transaction
+Party,Part,Bank Transaction
+Item Code,Artikkelkode,Item
+Item Name,Artikkelnavn,Item
+Description,Beskrivelse,Item
+Manufacturing,Produksjon,Item
+Accounting,Regnskap,Item
+UOM,Enhet,Item
+Quotation To,Tilbud til,Quotation
+Party,Part,Quotation
+Customer Name,Kundenavn,Quotation
+Amended From,Korrigert fra,Quotation
+Company,Foretak,Quotation
+Date,Dato,Quotation
+Valid Till,Gyldig til,Quotation
+Customer Address,Kundeadresse,Quotation
+Address,Adresse,Quotation
+Contact Person,Kontaktperson,Quotation
+Contact,Kontakt,Quotation
+Contact Email,Kontaktens e-post,Quotation
+Shipping Address,Leveringsadresse,Quotation
+Customer Group,Kundegruppe,Quotation
+Territory,Salgsområde,Quotation
+Currency,Valuta,Quotation
+Items,Artikler,Quotation
+Total Quantity,Totalt antall,Quotation
+Net Total,Sum ekskl. avgifter,Quotation
+Taxes and Charges,Avgifter og tillegg,Quotation
+Sales Taxes and Charges Template,Mal for salgsavgifter og tillegg,Quotation
+Total Taxes and Charges,Sum avgifter og tillegg,Quotation
+Grand Total,Totalsum,Quotation
+Rounding Adjustment,Avrundingsdifferanse,Quotation
+Rounded Total,Avrundet totalsum,Quotation
+In Words,Beløp med bokstaver,Quotation
+Payment Terms,Betalingsvilkår,Quotation
+Payment Terms Template,Mal for betalingsvilkår,Quotation
+Terms and Conditions,Vilkår,Quotation
+Terms,Vilkår,Quotation
+Term Details,Vilkår,Quotation
+Print Settings,Utskriftsinnstillinger,Quotation
+Print Heading,Dokumentoverskrift,Quotation
+Print Language,Dokumentspråk,Quotation
+Status,Status,Quotation
+Company Address Name,Foretakets adresse,Quotation
+Company Address,Foretaksadresse,Quotation
+Address & Contact,Adresse og kontakt,Quotation
+Billing Address,Fakturaadresse,Quotation
+Item Code,Artikkelkode,Quotation Item
+Item Name,Artikkelnavn,Quotation Item
+Description,Beskrivelse,Quotation Item
+Quantity,Antall,Quotation Item
+UOM,Enhet,Quotation Item
+Net Rate,Netto enhetspris,Quotation Item
+Amount,Beløp,Quotation Item
+Net Amount,Nettobeløp,Quotation Item
+Customer Name,Kundenavn,Customer
+Customer Type,Kundetype,Customer
+Customer Group,Kundegruppe,Customer
+Territory,Salgsområde,Customer
+Tax ID,Organisasjonsnummer / MVA-ID,Customer
+Print Language,Dokumentspråk,Customer
+Payment Terms Template,Mal for betalingsvilkår,Customer
+Address & Contact,Adresse og kontakt,Customer
+Accounting,Regnskap,Customer
+Rate,Enhetspris,Sales Invoice Item
+Rate,Enhetspris,Purchase Invoice Item
+Rate,Enhetspris,Quotation Item
+Total (Without Tax),Sum før avgifter og rabatt
+Discount Amount,Rabattbeløp
+Norway Invoice,Faktura (Norge)
+Norway Quotation,Tilbud (Norge)
+The submitted document number must be retained.,Det innsendte dokumentnummeret skal bevares.
+Unit Price,Enhetspris
+Details,Detaljer
+Posting Time,Bokføringstidspunkt
+Edit Posting Date and Time,Endre bokføringsdato og tidspunkt
+Include Payment (POS),Inkluder betaling (kasse)
+POS Profile,Kasseprofil
+Is Consolidated,Er samlet
+Update Outstanding for Self,Oppdater eget utestående beløp
+"Credit Note will update it's own outstanding amount, even if 'Return Against' is specified.","Kreditnotaen oppdaterer sitt eget utestående beløp, også når opprinnelig faktura er angitt."
+Update Billed Amount in Sales Order,Oppdater fakturert beløp i salgsordre
+Update Billed Amount in Delivery Note,Oppdater fakturert beløp i leveringsseddel
+Is Rate Adjustment Entry (Debit Note),Er prisjustering (debetnota)
+Issue a debit note against an existing Sales Invoice to adjust the rate. The quantity will be retained from the original invoice.,Opprett en debetnota mot en eksisterende salgsfaktura for å justere prisen. Antallet beholdes fra den opprinnelige fakturaen.
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt
+Is created using POS,Opprettet fra kasse
+POS Closing Entry,Kasseoppgjør
+Has Subcontracted,Har underleveranse
+Currency and Price List,Valuta og prisliste
+Exchange Rate,Valutakurs
+Rate at which Customer Currency is converted to customer's base currency,Kurs for omregning fra kundens valuta til kundens basisvaluta
+Price List,Prisliste
+Price List Currency,Prislistens valuta
+Price List Exchange Rate,Prislistens valutakurs
+Rate at which Price list currency is converted to customer's base currency,Kurs for omregning fra prislistens valuta til kundens basisvaluta
+Ignore Pricing Rule,Ignorer prisregel
+Last Scanned Warehouse,Sist skannede lager
+"If checked, updates inventory; stock and accounting entries are created together. Leave unchecked if a Delivery Note is created separately.",Oppdaterer lageret og oppretter lager- og regnskapsposteringer samtidig. La feltet være umerket hvis leveringsseddel opprettes separat.
+Source Warehouse,Fra lager
+Set Target Warehouse,Angi mottakslager
+Total Net Weight,Samlet nettovekt
+Total (Company Currency),Sum i foretakets valuta
+Net Total (Company Currency),Nettosum i foretakets valuta
+Tax Category,Avgiftskategori
+Shipping Rule,Fraktregel
+Named Place,Navngitt leveringssted
+Sales Taxes and Charges,Salgsavgifter og tillegg
+Total Taxes and Charges (Company Currency),Sum avgifter og tillegg i foretakets valuta
+Use Company default Cost Center for Round off,Bruk foretakets standard kostnadssted for avrunding
+Disable Rounded Total,Deaktiver avrundet totalsum
+Totals (Company Currency),Totalsummer i foretakets valuta
+In Words will be visible once you save the Sales Invoice.,Beløpet med bokstaver vises når salgsfakturaen lagres.
+Total Advance,Samlet forskudd
+Tax Withholding Entry,Kildeskattepostering
+Tax Withholding Group,Kildeskattegruppe
+Ignore Tax Withholding Threshold,Ignorer grense for kildeskatt
+Edit Tax Withholding Entries,Endre kildeskatteposteringer
+Tax Withholding Entries,Kildeskatteposteringer
+Coupon Code,Kupongkode
+Is Cash or Non Trade Discount,Er kontantrabatt eller annen rabatt utenom varerabatt
+Discount Account,Rabattkonto
+Tax Breakup,Avgiftsspesifikasjon
+Taxes and Charges Calculation,Beregning av avgifter og tillegg
+Item Wise Tax Details,Avgiftsdetaljer per artikkel
+Pricing Rules,Prisregler
+Pricing Rule Detail,Detaljer om prisregel
+Packed Items,Pakkede artikler
+Time Sheet List,Liste over timelister
+Time Sheets,Timelister
+Total Billing Hours,Samlede fakturerbare timer
+Total Billing Amount,Samlet fakturerbart beløp
+Cash/Bank Account,Kasse-/bankkonto
+Sales Invoice Payment,Betaling av salgsfaktura
+Paid Amount (Company Currency),Betalt beløp i foretakets valuta
+Base Change Amount (Company Currency),Vekselbeløp i foretakets valuta
+Change Amount,Vekselbeløp
+Account for Change Amount,Konto for vekselbeløp
+Advance Payments,Forskuddsbetalinger
+Only Include Allocated Payments,Ta bare med tildelte betalinger
+Get Advances Received,Hent mottatte forskudd
+Advances,Forskudd
+Write Off,Avskriv beløp
+Write Off Amount,Avskrivningsbeløp
+Write Off Amount (Company Currency),Avskrivningsbeløp i foretakets valuta
+Write Off Outstanding Amount,Avskriv utestående beløp
+Write Off Account,Konto for avskrivning av beløp
+Write Off Cost Center,Kostnadssted for avskrivning av beløp
+Loyalty Points Redemption,Innløsing av bonuspoeng
+Redeem Loyalty Points,Løs inn bonuspoeng
+Loyalty Points,Bonuspoeng
+Loyalty Amount,Bonusbeløp
+Loyalty Program,Bonusprogram
+Don't Create Loyalty Points,Ikke opprett bonuspoeng
+Redemption Account,Konto for innløsing
+Redemption Cost Center,Kostnadssted for innløsing
+Mobile No,Mobilnummer
+Shipping Address Name,Navn på leveringsadresse
+Dispatch Address Name,Navn på avsenderadresse
+Dispatch Address,Avsenderadresse
+Company Contact Person,Foretakets kontaktperson
+Ignore Default Payment Terms Template,Ignorer standardmal for betalingsvilkår
+Payment Schedule,Betalingsplan
+Customer PO Details,Kundens bestillingsopplysninger
+Party Account Currency,Valuta for partens konto
+Is Opening Entry,Er åpningspostering
+Unrealized Profit / Loss Account,Konto for urealisert gevinst/tap
+Unrealized Profit / Loss account for intra-company transfers,Konto for urealisert gevinst/tap ved overføringer mellom foretak
+Commission,Provisjon
+Sales Partner,Salgspartner
+Amount Eligible for Commission,Provisjonsgrunnlag
+Commission Rate (%),Provisjonssats (%)
+Total Commission,Samlet provisjon
+Sales Team,Salgsteam
+Sales Contributions and Incentives,Salgsbidrag og insentiver
+Group same items,Slå sammen like artikler
+Subscription,Abonnement
+Update Auto Repeat Reference,Oppdater referanse til automatisk gjentakelse
+UTM Analytics,UTM-analyse
+Medium,Medium
+Is Internal Customer,Er intern kunde
+Represents Company,Representerer foretak
+Company which internal customer represents,Foretaket den interne kunden representerer
+Inter Company Invoice Reference,Referanse til faktura mellom foretak
+Is Discounted,Er diskontert
+Is Paid,Er betalt
+Is Return (Debit Note),Er kreditnota fra leverandør
+Return Against Purchase Invoice,Retur mot leverandørfaktura
+"Debit Note will update it's own outstanding amount, even if 'Return Against' is specified.","Returdokumentet oppdaterer sitt eget utestående beløp, også når opprinnelig leverandørfaktura er angitt."
+Update Billed Amount in Purchase Order,Oppdater fakturert beløp i innkjøpsordre
+Update Billed Amount in Purchase Receipt,Oppdater fakturert beløp i varemottak
+Supplier Invoice,Leverandørens faktura
+Supplier Invoice No,Leverandørens fakturanummer
+Supplier Invoice Date,Leverandørens fakturadato
+Use Transaction Date Exchange Rate,Bruk valutakurs på transaksjonsdatoen
+"If checked, updates inventory; stock and accounting entries are created together. Leave unchecked if a Purchase Receipt is created separately.",Oppdaterer lageret og oppretter lager- og regnskapsposteringer samtidig. La feltet være umerket hvis varemottak opprettes separat.
+Set Accepted Warehouse,Angi lager for mottatte varer
+Set From Warehouse,Angi avsenderlager
+Is Subcontracted,Er underleveranse
+Rejected Warehouse,Lager for avviste varer
+Supplier Warehouse,Leverandørens lager
+Claimed Landed Cost Amount (Company Currency),Fordelte anskaffelseskostnader i foretakets valuta
+Purchase Taxes and Charges,Kjøpsavgifter og tillegg
+Taxes and Charges Added (Company Currency),Tillagte avgifter og tillegg i foretakets valuta
+Taxes and Charges Deducted (Company Currency),Fratrukne avgifter og tillegg i foretakets valuta
+Taxes and Charges Added,Tillagte avgifter og tillegg
+Taxes and Charges Deducted,Fratrukne avgifter og tillegg
+Use Company Default Round Off Cost Center,Bruk foretakets standard kostnadssted for avrunding
+Raw Materials Supplied,Levererte råvarer
+Supplied Items,Levererte artikler
+Clearance Date,Bankføringsdato
+Set Advances and Allocate (FIFO),Hent og fordel forskudd (FIFO)
+Get Advances Paid,Hent betalte forskudd
+Supplier Address,Leverandøradresse
+Select Supplier Address,Velg leverandøradresse
+Select Dispatch Address,Velg avsenderadresse
+Select Shipping Address,Velg leveringsadresse
+Company Billing Address,Foretakets fakturaadresse
+Select Billing Address,Velg fakturaadresse
+Per Received,Mottatt andel
+Unrealized Profit/Loss account for intra-company transfers,Konto for urealisert gevinst/tap ved overføringer mellom foretak
+Start date of current invoice's period,Startdato for fakturaperioden
+End date of current invoice's period,Sluttdato for fakturaperioden
+Hold Invoice,Sett faktura på vent
+Release Date,Frigivelsesdato
+"Once set, this invoice will be on hold till the set date",Fakturaen holdes på vent frem til angitt dato
+Reason For Putting On Hold,Årsak til at fakturaen settes på vent
+Is Internal Supplier,Er intern leverandør
+Company which internal supplier represents,Foretaket den interne leverandøren representerer
+Is Old Subcontracting Flow,Bruker tidligere underleveranseflyt
+Entry Type,Bilagstype
+Multi Currency,Flere valutaer
+Tax Withholding Category,Kategori for kildeskatt
+Periodic Accounting,Periodisk regnskapsføring
+For All Stock Asset Accounts,For alle lagerkonti
+Stock Asset Account,Lagerkonto
+Periodic Entry Difference Account,Differansekonto for periodisk postering
+Get Balance,Hent saldo
+Total Debit,Sum debet
+Total Credit,Sum kredit
+Difference (Dr - Cr),Differanse (debet − kredit)
+Make Difference Entry,Opprett differansepostering
+Reference Number,Referansenummer
+User Remark,Brukerens merknad
+Tax Withholding,Kildeskatt
+Bill No,Fakturanummer
+Bill Date,Fakturadato
+Inter Company Journal Entry Reference,Referanse til bokføringsbilag mellom foretak
+Process Deferred Accounting,Behandle periodisert regnskap
+Reversal Of,Reversering av
+Payment Order,Betalingsordre
+Stock Entry,Lagerpostering
+Printing Settings,Utskriftsinnstillinger
+Pay To / Recd From,Betal til / mottatt fra
+Total Amount Currency,Valuta for totalbeløp
+Total Amount,Totalbeløp
+Total Amount in Words,Totalbeløp med bokstaver
+Write Off Based On,Grunnlag for avskrivning av beløp
+Get Outstanding Invoices,Hent utestående fakturaer
+Is Opening,Er åpningspostering
+Finance Book,Regnskapsbok
+From Template,Fra mal
+Custom Remark,Egen merknad
+Remark,Merknad
+Party Not Required,Part er ikke påkrevd
+Type of Payment,Betalingstype
+Payment Order Status,Status for betalingsordre
+Payment From / To,Betaling fra / til
+Book Advance Payments in Separate Party Account,Bokfør forskudd på egen partskonto
+Reconcile on Advance Payment Date,Avstem på forskuddets betalingsdato
+Company Bank Account,Foretakets bankkonto
+Party Bank Account,Partens bankkonto
+Paid From Account Type,Kontotype for utbetaling
+Paid To Account Type,Kontotype for innbetaling
+Paid Amount After Tax,Betalt beløp etter avgifter
+Source Exchange Rate,Kurs for kildevaluta
+Paid Amount After Tax (Company Currency),Betalt beløp etter avgifter i foretakets valuta
+Received Amount After Tax,Mottatt beløp etter avgifter
+Target Exchange Rate,Kurs for målvaluta
+Received Amount (Company Currency),Mottatt beløp i foretakets valuta
+Received Amount After Tax (Company Currency),Mottatt beløp etter avgifter i foretakets valuta
+Get Outstanding Orders,Hent utestående ordrer
+Payment References,Betalingsreferanser
+Writeoff,Avskrivning av beløp
+Total Allocated Amount,Samlet tildelt beløp
+Total Allocated Amount (Company Currency),Samlet tildelt beløp i foretakets valuta
+Difference Amount (Company Currency),Differansebeløp i foretakets valuta
+Write Off Difference Amount,Avskriv differansebeløp
+Advance Taxes and Charges,Avgifter og tillegg på forskudd
+Deductions or Loss,Fradrag eller tap
+Payment Deductions or Loss,Fradrag eller tap ved betaling
+Transaction ID,Transaksjons-ID
+Cheque/Reference No,Betalingsreferanse
+Cheque/Reference Date,Referansedato
+Custom Remarks,Egne merknader
+In Words (Company Currency),Beløp med bokstaver i foretakets valuta
+Order Type,Ordretype
+Has Unit Price Items,Har artikler med enhetspris
+Rate at which customer's currency is converted to company's base currency,Kurs for omregning fra kundens valuta til foretakets basisvaluta
+Rate at which Price list currency is converted to company's base currency,Kurs for omregning fra prislistens valuta til foretakets basisvaluta
+Grand Total (Company Currency),Totalsum i foretakets valuta
+Rounding Adjustment (Company Currency),Avrundingsdifferanse i foretakets valuta
+Rounded Total (Company Currency),Avrundet totalsum i foretakets valuta
+Referral Sales Partner,Henvisende salgspartner
+Bundle Items,Artikkelpakker
+Lost Reasons,Årsaker til tapt tilbud
+Competitors,Konkurrenter
+Detailed Reason,Utfyllende årsak
+Opportunity,Salgsmulighet
+Opportunity Item,Artikkel i salgsmulighet
+Supplier Quotation,Leverandørtilbud
+Taxes,Avgifter
+Budgeting,Budsjettering
+Last Edited By You,Sist endret av deg
+Posting Time,Bokføringstidspunkt,Sales Invoice
+Edit Posting Date and Time,Endre bokføringsdato og tidspunkt,Sales Invoice
+Include Payment (POS),Inkluder betaling (kasse),Sales Invoice
+POS Profile,Kasseprofil,Sales Invoice
+Is Consolidated,Er samlet,Sales Invoice
+Update Outstanding for Self,Oppdater eget utestående beløp,Sales Invoice
+"Credit Note will update it's own outstanding amount, even if 'Return Against' is specified.","Kreditnotaen oppdaterer sitt eget utestående beløp, også når opprinnelig faktura er angitt.",Sales Invoice
+Update Billed Amount in Sales Order,Oppdater fakturert beløp i salgsordre,Sales Invoice
+Update Billed Amount in Delivery Note,Oppdater fakturert beløp i leveringsseddel,Sales Invoice
+Is Rate Adjustment Entry (Debit Note),Er prisjustering (debetnota),Sales Invoice
+Issue a debit note against an existing Sales Invoice to adjust the rate. The quantity will be retained from the original invoice.,Opprett en debetnota mot en eksisterende salgsfaktura for å justere prisen. Antallet beholdes fra den opprinnelige fakturaen.,Sales Invoice
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt,Sales Invoice
+Is created using POS,Opprettet fra kasse,Sales Invoice
+POS Closing Entry,Kasseoppgjør,Sales Invoice
+Has Subcontracted,Har underleveranse,Sales Invoice
+Currency and Price List,Valuta og prisliste,Sales Invoice
+Exchange Rate,Valutakurs,Sales Invoice
+Rate at which Customer Currency is converted to customer's base currency,Kurs for omregning fra kundens valuta til kundens basisvaluta,Sales Invoice
+Price List,Prisliste,Sales Invoice
+Price List Currency,Prislistens valuta,Sales Invoice
+Price List Exchange Rate,Prislistens valutakurs,Sales Invoice
+Rate at which Price list currency is converted to customer's base currency,Kurs for omregning fra prislistens valuta til kundens basisvaluta,Sales Invoice
+Ignore Pricing Rule,Ignorer prisregel,Sales Invoice
+Last Scanned Warehouse,Sist skannede lager,Sales Invoice
+"If checked, updates inventory; stock and accounting entries are created together. Leave unchecked if a Delivery Note is created separately.",Oppdaterer lageret og oppretter lager- og regnskapsposteringer samtidig. La feltet være umerket hvis leveringsseddel opprettes separat.,Sales Invoice
+Source Warehouse,Fra lager,Sales Invoice
+Set Target Warehouse,Angi mottakslager,Sales Invoice
+Total Net Weight,Samlet nettovekt,Sales Invoice
+Total (Company Currency),Sum i foretakets valuta,Sales Invoice
+Net Total (Company Currency),Nettosum i foretakets valuta,Sales Invoice
+Tax Category,Avgiftskategori,Sales Invoice
+Shipping Rule,Fraktregel,Sales Invoice
+Named Place,Navngitt leveringssted,Sales Invoice
+Sales Taxes and Charges,Salgsavgifter og tillegg,Sales Invoice
+Total Taxes and Charges (Company Currency),Sum avgifter og tillegg i foretakets valuta,Sales Invoice
+Use Company default Cost Center for Round off,Bruk foretakets standard kostnadssted for avrunding,Sales Invoice
+Disable Rounded Total,Deaktiver avrundet totalsum,Sales Invoice
+Totals (Company Currency),Totalsummer i foretakets valuta,Sales Invoice
+In Words will be visible once you save the Sales Invoice.,Beløpet med bokstaver vises når salgsfakturaen lagres.,Sales Invoice
+Total Advance,Samlet forskudd,Sales Invoice
+Tax Withholding Entry,Kildeskattepostering,Sales Invoice
+Tax Withholding Group,Kildeskattegruppe,Sales Invoice
+Ignore Tax Withholding Threshold,Ignorer grense for kildeskatt,Sales Invoice
+Edit Tax Withholding Entries,Endre kildeskatteposteringer,Sales Invoice
+Tax Withholding Entries,Kildeskatteposteringer,Sales Invoice
+Coupon Code,Kupongkode,Sales Invoice
+Is Cash or Non Trade Discount,Er kontantrabatt eller annen rabatt utenom varerabatt,Sales Invoice
+Discount Account,Rabattkonto,Sales Invoice
+Tax Breakup,Avgiftsspesifikasjon,Sales Invoice
+Taxes and Charges Calculation,Beregning av avgifter og tillegg,Sales Invoice
+Item Wise Tax Details,Avgiftsdetaljer per artikkel,Sales Invoice
+Pricing Rules,Prisregler,Sales Invoice
+Pricing Rule Detail,Detaljer om prisregel,Sales Invoice
+Packed Items,Pakkede artikler,Sales Invoice
+Time Sheet List,Liste over timelister,Sales Invoice
+Time Sheets,Timelister,Sales Invoice
+Total Billing Hours,Samlede fakturerbare timer,Sales Invoice
+Total Billing Amount,Samlet fakturerbart beløp,Sales Invoice
+Cash/Bank Account,Kasse-/bankkonto,Sales Invoice
+Sales Invoice Payment,Betaling av salgsfaktura,Sales Invoice
+Paid Amount (Company Currency),Betalt beløp i foretakets valuta,Sales Invoice
+Base Change Amount (Company Currency),Vekselbeløp i foretakets valuta,Sales Invoice
+Change Amount,Vekselbeløp,Sales Invoice
+Account for Change Amount,Konto for vekselbeløp,Sales Invoice
+Advance Payments,Forskuddsbetalinger,Sales Invoice
+Only Include Allocated Payments,Ta bare med tildelte betalinger,Sales Invoice
+Get Advances Received,Hent mottatte forskudd,Sales Invoice
+Advances,Forskudd,Sales Invoice
+Write Off,Avskriv beløp,Sales Invoice
+Write Off Amount,Avskrivningsbeløp,Sales Invoice
+Write Off Amount (Company Currency),Avskrivningsbeløp i foretakets valuta,Sales Invoice
+Write Off Outstanding Amount,Avskriv utestående beløp,Sales Invoice
+Write Off Account,Konto for avskrivning av beløp,Sales Invoice
+Write Off Cost Center,Kostnadssted for avskrivning av beløp,Sales Invoice
+Loyalty Points Redemption,Innløsing av bonuspoeng,Sales Invoice
+Redeem Loyalty Points,Løs inn bonuspoeng,Sales Invoice
+Loyalty Points,Bonuspoeng,Sales Invoice
+Loyalty Amount,Bonusbeløp,Sales Invoice
+Loyalty Program,Bonusprogram,Sales Invoice
+Don't Create Loyalty Points,Ikke opprett bonuspoeng,Sales Invoice
+Redemption Account,Konto for innløsing,Sales Invoice
+Redemption Cost Center,Kostnadssted for innløsing,Sales Invoice
+Mobile No,Mobilnummer,Sales Invoice
+Shipping Address Name,Navn på leveringsadresse,Sales Invoice
+Dispatch Address Name,Navn på avsenderadresse,Sales Invoice
+Dispatch Address,Avsenderadresse,Sales Invoice
+Company Contact Person,Foretakets kontaktperson,Sales Invoice
+Ignore Default Payment Terms Template,Ignorer standardmal for betalingsvilkår,Sales Invoice
+Payment Schedule,Betalingsplan,Sales Invoice
+Customer PO Details,Kundens bestillingsopplysninger,Sales Invoice
+Party Account Currency,Valuta for partens konto,Sales Invoice
+Is Opening Entry,Er åpningspostering,Sales Invoice
+Unrealized Profit / Loss Account,Konto for urealisert gevinst/tap,Sales Invoice
+Unrealized Profit / Loss account for intra-company transfers,Konto for urealisert gevinst/tap ved overføringer mellom foretak,Sales Invoice
+Commission,Provisjon,Sales Invoice
+Sales Partner,Salgspartner,Sales Invoice
+Amount Eligible for Commission,Provisjonsgrunnlag,Sales Invoice
+Commission Rate (%),Provisjonssats (%),Sales Invoice
+Total Commission,Samlet provisjon,Sales Invoice
+Sales Team,Salgsteam,Sales Invoice
+Sales Contributions and Incentives,Salgsbidrag og insentiver,Sales Invoice
+Group same items,Slå sammen like artikler,Sales Invoice
+Subscription,Abonnement,Sales Invoice
+Update Auto Repeat Reference,Oppdater referanse til automatisk gjentakelse,Sales Invoice
+UTM Analytics,UTM-analyse,Sales Invoice
+Medium,Medium,Sales Invoice
+Is Internal Customer,Er intern kunde,Sales Invoice
+Represents Company,Representerer foretak,Sales Invoice
+Company which internal customer represents,Foretaket den interne kunden representerer,Sales Invoice
+Inter Company Invoice Reference,Referanse til faktura mellom foretak,Sales Invoice
+Is Discounted,Er diskontert,Sales Invoice
+Tax Withholding Category,Kategori for kildeskatt,Sales Invoice Item
+Pricing Rules,Prisregler,Sales Invoice Item
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt,Sales Invoice Item
+Finance Book,Regnskapsbok,Sales Invoice Item
+Discount Account,Rabattkonto,Sales Invoice Item
+Total (Company Currency),Sum i foretakets valuta,Sales Taxes and Charges
+Tax Withholding Category,Kategori for kildeskatt,Tax Withholding Entry
+Tax Withholding Group,Kildeskattegruppe,Tax Withholding Entry
+Exchange Rate,Valutakurs,Tax Withholding Entry
+Clearance Date,Bankføringsdato,Sales Invoice Payment
+Paid Amount (Company Currency),Betalt beløp i foretakets valuta,Payment Schedule
+Posting Time,Bokføringstidspunkt,Purchase Invoice
+Edit Posting Date and Time,Endre bokføringsdato og tidspunkt,Purchase Invoice
+Is Paid,Er betalt,Purchase Invoice
+Is Return (Debit Note),Er kreditnota fra leverandør,Purchase Invoice
+Return Against Purchase Invoice,Retur mot leverandørfaktura,Purchase Invoice
+Update Outstanding for Self,Oppdater eget utestående beløp,Purchase Invoice
+"Debit Note will update it's own outstanding amount, even if 'Return Against' is specified.","Returdokumentet oppdaterer sitt eget utestående beløp, også når opprinnelig leverandørfaktura er angitt.",Purchase Invoice
+Update Billed Amount in Purchase Order,Oppdater fakturert beløp i innkjøpsordre,Purchase Invoice
+Update Billed Amount in Purchase Receipt,Oppdater fakturert beløp i varemottak,Purchase Invoice
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt,Purchase Invoice
+Supplier Invoice,Leverandørens faktura,Purchase Invoice
+Supplier Invoice No,Leverandørens fakturanummer,Purchase Invoice
+Supplier Invoice Date,Leverandørens fakturadato,Purchase Invoice
+Currency and Price List,Valuta og prisliste,Purchase Invoice
+Exchange Rate,Valutakurs,Purchase Invoice
+Use Transaction Date Exchange Rate,Bruk valutakurs på transaksjonsdatoen,Purchase Invoice
+Price List,Prisliste,Purchase Invoice
+Price List Currency,Prislistens valuta,Purchase Invoice
+Price List Exchange Rate,Prislistens valutakurs,Purchase Invoice
+Ignore Pricing Rule,Ignorer prisregel,Purchase Invoice
+Last Scanned Warehouse,Sist skannede lager,Purchase Invoice
+"If checked, updates inventory; stock and accounting entries are created together. Leave unchecked if a Purchase Receipt is created separately.",Oppdaterer lageret og oppretter lager- og regnskapsposteringer samtidig. La feltet være umerket hvis varemottak opprettes separat.,Purchase Invoice
+Set Accepted Warehouse,Angi lager for mottatte varer,Purchase Invoice
+Set From Warehouse,Angi avsenderlager,Purchase Invoice
+Is Subcontracted,Er underleveranse,Purchase Invoice
+Rejected Warehouse,Lager for avviste varer,Purchase Invoice
+Supplier Warehouse,Leverandørens lager,Purchase Invoice
+Total Net Weight,Samlet nettovekt,Purchase Invoice
+Total (Company Currency),Sum i foretakets valuta,Purchase Invoice
+Net Total (Company Currency),Nettosum i foretakets valuta,Purchase Invoice
+Claimed Landed Cost Amount (Company Currency),Fordelte anskaffelseskostnader i foretakets valuta,Purchase Invoice
+Tax Category,Avgiftskategori,Purchase Invoice
+Shipping Rule,Fraktregel,Purchase Invoice
+Named Place,Navngitt leveringssted,Purchase Invoice
+Purchase Taxes and Charges,Kjøpsavgifter og tillegg,Purchase Invoice
+Taxes and Charges Added (Company Currency),Tillagte avgifter og tillegg i foretakets valuta,Purchase Invoice
+Taxes and Charges Deducted (Company Currency),Fratrukne avgifter og tillegg i foretakets valuta,Purchase Invoice
+Total Taxes and Charges (Company Currency),Sum avgifter og tillegg i foretakets valuta,Purchase Invoice
+Taxes and Charges Added,Tillagte avgifter og tillegg,Purchase Invoice
+Taxes and Charges Deducted,Fratrukne avgifter og tillegg,Purchase Invoice
+Use Company Default Round Off Cost Center,Bruk foretakets standard kostnadssted for avrunding,Purchase Invoice
+Disable Rounded Total,Deaktiver avrundet totalsum,Purchase Invoice
+Totals (Company Currency),Totalsummer i foretakets valuta,Purchase Invoice
+Total Advance,Samlet forskudd,Purchase Invoice
+Tax Withholding Entry,Kildeskattepostering,Purchase Invoice
+Tax Withholding Group,Kildeskattegruppe,Purchase Invoice
+Ignore Tax Withholding Threshold,Ignorer grense for kildeskatt,Purchase Invoice
+Edit Tax Withholding Entries,Endre kildeskatteposteringer,Purchase Invoice
+Tax Withholding Entries,Kildeskatteposteringer,Purchase Invoice
+Tax Breakup,Avgiftsspesifikasjon,Purchase Invoice
+Taxes and Charges Calculation,Beregning av avgifter og tillegg,Purchase Invoice
+Item Wise Tax Details,Avgiftsdetaljer per artikkel,Purchase Invoice
+Pricing Rules,Prisregler,Purchase Invoice
+Pricing Rule Detail,Detaljer om prisregel,Purchase Invoice
+Raw Materials Supplied,Levererte råvarer,Purchase Invoice
+Supplied Items,Levererte artikler,Purchase Invoice
+Paid Amount (Company Currency),Betalt beløp i foretakets valuta,Purchase Invoice
+Clearance Date,Bankføringsdato,Purchase Invoice
+Cash/Bank Account,Kasse-/bankkonto,Purchase Invoice
+Advance Payments,Forskuddsbetalinger,Purchase Invoice
+Set Advances and Allocate (FIFO),Hent og fordel forskudd (FIFO),Purchase Invoice
+Only Include Allocated Payments,Ta bare med tildelte betalinger,Purchase Invoice
+Get Advances Paid,Hent betalte forskudd,Purchase Invoice
+Advances,Forskudd,Purchase Invoice
+Write Off,Avskriv beløp,Purchase Invoice
+Write Off Amount,Avskrivningsbeløp,Purchase Invoice
+Write Off Amount (Company Currency),Avskrivningsbeløp i foretakets valuta,Purchase Invoice
+Write Off Account,Konto for avskrivning av beløp,Purchase Invoice
+Write Off Cost Center,Kostnadssted for avskrivning av beløp,Purchase Invoice
+Supplier Address,Leverandøradresse,Purchase Invoice
+Select Supplier Address,Velg leverandøradresse,Purchase Invoice
+Mobile No,Mobilnummer,Purchase Invoice
+Select Dispatch Address ,Velg avsenderadresse,Purchase Invoice
+Dispatch Address,Avsenderadresse,Purchase Invoice
+Select Shipping Address,Velg leveringsadresse,Purchase Invoice
+Company Billing Address,Foretakets fakturaadresse,Purchase Invoice
+Select Billing Address,Velg fakturaadresse,Purchase Invoice
+Ignore Default Payment Terms Template,Ignorer standardmal for betalingsvilkår,Purchase Invoice
+Payment Schedule,Betalingsplan,Purchase Invoice
+Per Received,Mottatt andel,Purchase Invoice
+Party Account Currency,Valuta for partens konto,Purchase Invoice
+Is Opening Entry,Er åpningspostering,Purchase Invoice
+Unrealized Profit / Loss Account,Konto for urealisert gevinst/tap,Purchase Invoice
+Unrealized Profit/Loss account for intra-company transfers,Konto for urealisert gevinst/tap ved overføringer mellom foretak,Purchase Invoice
+Subscription,Abonnement,Purchase Invoice
+Start date of current invoice's period,Startdato for fakturaperioden,Purchase Invoice
+End date of current invoice's period,Sluttdato for fakturaperioden,Purchase Invoice
+Update Auto Repeat Reference,Oppdater referanse til automatisk gjentakelse,Purchase Invoice
+Group same items,Slå sammen like artikler,Purchase Invoice
+Hold Invoice,Sett faktura på vent,Purchase Invoice
+Release Date,Frigivelsesdato,Purchase Invoice
+"Once set, this invoice will be on hold till the set date",Fakturaen holdes på vent frem til angitt dato,Purchase Invoice
+Reason For Putting On Hold,Årsak til at fakturaen settes på vent,Purchase Invoice
+Is Internal Supplier,Er intern leverandør,Purchase Invoice
+Represents Company,Representerer foretak,Purchase Invoice
+Company which internal supplier represents,Foretaket den interne leverandøren representerer,Purchase Invoice
+Inter Company Invoice Reference,Referanse til faktura mellom foretak,Purchase Invoice
+Is Old Subcontracting Flow,Bruker tidligere underleveranseflyt,Purchase Invoice
+Tax Withholding Category,Kategori for kildeskatt,Purchase Invoice Item
+Pricing Rules,Prisregler,Purchase Invoice Item
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt,Purchase Invoice Item
+Rejected Warehouse,Lager for avviste varer,Purchase Invoice Item
+Total (Company Currency),Sum i foretakets valuta,Purchase Taxes and Charges
+Entry Type,Bilagstype,Journal Entry
+Multi Currency,Flere valutaer,Journal Entry
+Consider for Tax Withholding ,Ta med ved beregning av kildeskatt,Journal Entry
+Tax Withholding Category,Kategori for kildeskatt,Journal Entry
+Periodic Accounting,Periodisk regnskapsføring,Journal Entry
+For All Stock Asset Accounts,For alle lagerkonti,Journal Entry
+Stock Asset Account,Lagerkonto,Journal Entry
+Periodic Entry Difference Account,Differansekonto for periodisk postering,Journal Entry
+Get Balance,Hent saldo,Journal Entry
+Total Debit,Sum debet,Journal Entry
+Total Credit,Sum kredit,Journal Entry
+Difference (Dr - Cr),Differanse (debet − kredit),Journal Entry
+Make Difference Entry,Opprett differansepostering,Journal Entry
+Reference Number,Referansenummer,Journal Entry
+Clearance Date,Bankføringsdato,Journal Entry
+User Remark,Brukerens merknad,Journal Entry
+Tax Withholding,Kildeskatt,Journal Entry
+Tax Withholding Group,Kildeskattegruppe,Journal Entry
+Ignore Tax Withholding Threshold,Ignorer grense for kildeskatt,Journal Entry
+Edit Tax Withholding Entries,Endre kildeskatteposteringer,Journal Entry
+Tax Withholding Entries,Kildeskatteposteringer,Journal Entry
+Bill No,Fakturanummer,Journal Entry
+Bill Date,Fakturadato,Journal Entry
+Inter Company Journal Entry Reference,Referanse til bokføringsbilag mellom foretak,Journal Entry
+Process Deferred Accounting,Behandle periodisert regnskap,Journal Entry
+Reversal Of,Reversering av,Journal Entry
+Payment Order,Betalingsordre,Journal Entry
+Stock Entry,Lagerpostering,Journal Entry
+Printing Settings,Utskriftsinnstillinger,Journal Entry
+Pay To / Recd From,Betal til / mottatt fra,Journal Entry
+Total Amount Currency,Valuta for totalbeløp,Journal Entry
+Total Amount,Totalbeløp,Journal Entry
+Total Amount in Words,Totalbeløp med bokstaver,Journal Entry
+Write Off,Avskriv beløp,Journal Entry
+Write Off Based On,Grunnlag for avskrivning av beløp,Journal Entry
+Get Outstanding Invoices,Hent utestående fakturaer,Journal Entry
+Write Off Amount,Avskrivningsbeløp,Journal Entry
+Is Opening,Er åpningspostering,Journal Entry
+Finance Book,Regnskapsbok,Journal Entry
+From Template,Fra mal,Journal Entry
+Custom Remark,Egen merknad,Journal Entry
+Remark,Merknad,Journal Entry
+Party Not Required,Part er ikke påkrevd,Journal Entry
+Exchange Rate,Valutakurs,Journal Entry Account
+User Remark,Brukerens merknad,Journal Entry Account
+Type of Payment,Betalingstype,Payment Entry
+Payment Order Status,Status for betalingsordre,Payment Entry
+Payment From / To,Betaling fra / til,Payment Entry
+Book Advance Payments in Separate Party Account,Bokfør forskudd på egen partskonto,Payment Entry
+Reconcile on Advance Payment Date,Avstem på forskuddets betalingsdato,Payment Entry
+Consider for Tax Withholding,Ta med ved beregning av kildeskatt,Payment Entry
+Tax Withholding Category,Kategori for kildeskatt,Payment Entry
+Company Bank Account,Foretakets bankkonto,Payment Entry
+Party Bank Account,Partens bankkonto,Payment Entry
+Paid From Account Type,Kontotype for utbetaling,Payment Entry
+Paid To Account Type,Kontotype for innbetaling,Payment Entry
+Paid Amount After Tax,Betalt beløp etter avgifter,Payment Entry
+Source Exchange Rate,Kurs for kildevaluta,Payment Entry
+Paid Amount (Company Currency),Betalt beløp i foretakets valuta,Payment Entry
+Paid Amount After Tax (Company Currency),Betalt beløp etter avgifter i foretakets valuta,Payment Entry
+Received Amount After Tax,Mottatt beløp etter avgifter,Payment Entry
+Target Exchange Rate,Kurs for målvaluta,Payment Entry
+Received Amount (Company Currency),Mottatt beløp i foretakets valuta,Payment Entry
+Received Amount After Tax (Company Currency),Mottatt beløp etter avgifter i foretakets valuta,Payment Entry
+Get Outstanding Invoices,Hent utestående fakturaer,Payment Entry
+Get Outstanding Orders,Hent utestående ordrer,Payment Entry
+Payment References,Betalingsreferanser,Payment Entry
+Writeoff,Avskrivning av beløp,Payment Entry
+Total Allocated Amount,Samlet tildelt beløp,Payment Entry
+Total Allocated Amount (Company Currency),Samlet tildelt beløp i foretakets valuta,Payment Entry
+Difference Amount (Company Currency),Differansebeløp i foretakets valuta,Payment Entry
+Write Off Difference Amount,Avskriv differansebeløp,Payment Entry
+Advance Taxes and Charges,Avgifter og tillegg på forskudd,Payment Entry
+Total Taxes and Charges (Company Currency),Sum avgifter og tillegg i foretakets valuta,Payment Entry
+Deductions or Loss,Fradrag eller tap,Payment Entry
+Payment Deductions or Loss,Fradrag eller tap ved betaling,Payment Entry
+Tax Withholding Entry,Kildeskattepostering,Payment Entry
+Tax Withholding Group,Kildeskattegruppe,Payment Entry
+Ignore Tax Withholding Threshold,Ignorer grense for kildeskatt,Payment Entry
+Edit Tax Withholding Entries,Endre kildeskatteposteringer,Payment Entry
+Tax Withholding Entries,Kildeskatteposteringer,Payment Entry
+Transaction ID,Transaksjons-ID,Payment Entry
+Cheque/Reference No,Betalingsreferanse,Payment Entry
+Cheque/Reference Date,Referansedato,Payment Entry
+Clearance Date,Bankføringsdato,Payment Entry
+Custom Remarks,Egne merknader,Payment Entry
+In Words (Company Currency),Beløp med bokstaver i foretakets valuta,Payment Entry
+Is Opening,Er åpningspostering,Payment Entry
+Payment Order,Betalingsordre,Payment Entry
+Supplier Invoice No,Leverandørens fakturanummer,Payment Entry Reference
+Exchange Rate,Valutakurs,Payment Entry Reference
+Total (Company Currency),Sum i foretakets valuta,Advance Taxes and Charges
+Order Type,Ordretype,Quotation
+Has Unit Price Items,Har artikler med enhetspris,Quotation
+Currency and Price List,Valuta og prisliste,Quotation
+Exchange Rate,Valutakurs,Quotation
+Rate at which customer's currency is converted to company's base currency,Kurs for omregning fra kundens valuta til foretakets basisvaluta,Quotation
+Price List,Prisliste,Quotation
+Price List Currency,Prislistens valuta,Quotation
+Price List Exchange Rate,Prislistens valutakurs,Quotation
+Rate at which Price list currency is converted to company's base currency,Kurs for omregning fra prislistens valuta til foretakets basisvaluta,Quotation
+Ignore Pricing Rule,Ignorer prisregel,Quotation
+Last Scanned Warehouse,Sist skannede lager,Quotation
+Total Net Weight,Samlet nettovekt,Quotation
+Total (Company Currency),Sum i foretakets valuta,Quotation
+Net Total (Company Currency),Nettosum i foretakets valuta,Quotation
+Tax Category,Avgiftskategori,Quotation
+Shipping Rule,Fraktregel,Quotation
+Named Place,Navngitt leveringssted,Quotation
+Sales Taxes and Charges,Salgsavgifter og tillegg,Quotation
+Total Taxes and Charges (Company Currency),Sum avgifter og tillegg i foretakets valuta,Quotation
+Grand Total (Company Currency),Totalsum i foretakets valuta,Quotation
+Rounding Adjustment (Company Currency),Avrundingsdifferanse i foretakets valuta,Quotation
+Rounded Total (Company Currency),Avrundet totalsum i foretakets valuta,Quotation
+In Words (Company Currency),Beløp med bokstaver i foretakets valuta,Quotation
+Disable Rounded Total,Deaktiver avrundet totalsum,Quotation
+Coupon Code,Kupongkode,Quotation
+Referral Sales Partner,Henvisende salgspartner,Quotation
+Tax Breakup,Avgiftsspesifikasjon,Quotation
+Taxes and Charges Calculation,Beregning av avgifter og tillegg,Quotation
+Item Wise Tax Details,Avgiftsdetaljer per artikkel,Quotation
+Bundle Items,Artikkelpakker,Quotation
+Pricing Rules,Prisregler,Quotation
+Pricing Rule Detail,Detaljer om prisregel,Quotation
+Mobile No,Mobilnummer,Quotation
+Company Contact Person,Foretakets kontaktperson,Quotation
+Payment Schedule,Betalingsplan,Quotation
+Update Auto Repeat Reference,Oppdater referanse til automatisk gjentakelse,Quotation
+Group same items,Slå sammen like artikler,Quotation
+Lost Reasons,Årsaker til tapt tilbud,Quotation
+Competitors,Konkurrenter,Quotation
+Detailed Reason,Utfyllende årsak,Quotation
+UTM Analytics,UTM-analyse,Quotation
+Medium,Medium,Quotation
+Opportunity,Salgsmulighet,Quotation
+Opportunity Item,Artikkel i salgsmulighet,Quotation
+Supplier Quotation,Leverandørtilbud,Quotation
+Pricing Rules,Prisregler,Quotation Item
+Write Off Account,Konto for avskrivning av beløp,Company
+Unrealized Profit / Loss Account,Konto for urealisert gevinst/tap,Company
+Advance Payments,Forskuddsbetalinger,Company
+Book Advance Payments in Separate Party Account,Bokfør forskudd på egen partskonto,Company
+Reconcile on Advance Payment Date,Avstem på forskuddets betalingsdato,Company
+Company Bank Account,Foretakets bankkonto,Customer
+Price List,Prisliste,Customer
+Loyalty Points,Bonuspoeng,Customer
+Loyalty Program,Bonusprogram,Customer
+Mobile No,Mobilnummer,Customer
+Is Internal Customer,Er intern kunde,Customer
+Represents Company,Representerer foretak,Customer
+Tax Category,Avgiftskategori,Customer
+Tax Withholding Group,Kildeskattegruppe,Customer
+Tax Withholding Category,Kategori for kildeskatt,Customer
+Sales Team,Salgsteam,Customer
+Sales Partner,Salgspartner,Customer
+Opportunity,Salgsmulighet,Customer
+Company Bank Account,Foretakets bankkonto,Supplier
+Price List,Prisliste,Supplier
+Mobile No,Mobilnummer,Supplier
+Is Internal Supplier,Er intern leverandør,Supplier
+Represents Company,Representerer foretak,Supplier
+Tax Category,Avgiftskategori,Supplier
+Tax Withholding Category,Kategori for kildeskatt,Supplier
+Tax Withholding Group,Kildeskattegruppe,Supplier
+Release Date,Frigivelsesdato,Supplier
+Taxes,Avgifter,Item
+Tax Category,Avgiftskategori,Item Tax
+Reference Number,Referansenummer,Bank Transaction
+Transaction ID,Transaksjons-ID,Bank Transaction
+Payment From / To,Betaling fra / til,Bank Transaction
+Clearance Date,Bankføringsdato,Bank Transaction Payments
+Has Item Scanned,Artikkel er skannet
+Customer's Item Code,Kundens artikkelkode
+Item Group,Artikkelgruppe
+Brand Name,Merkenavn
+Stock UOM,Lagerenhet
+UOM Conversion Factor,Omregningsfaktor for enhet
+Qty as per Stock UOM,Antall i lagerenhet
+Price List Rate,Prislistepris
+Price List Rate (Company Currency),Prislistepris i foretakets valuta
+Discount and Margin,Rabatt og påslag
+Margin Type,Påslagstype
+Margin Rate or Amount,Påslag i prosent eller beløp
+Rate With Margin,Pris med påslag
+Discount (%) on Price List Rate with Margin,Rabatt (%) på prislistepris med påslag
+Distributed Discount Amount,Fordelt rabattbeløp
+Rate With Margin (Company Currency),Pris med påslag i foretakets valuta
+Item Tax Template,Avgiftsmal for artikkel
+Rate (Company Currency),Enhetspris i foretakets valuta
+Amount (Company Currency),Beløp i foretakets valuta
+Rate of Stock UOM,Pris per lagerenhet
+Is Free Item,Er gratisartikkel
+Grant Commission,Gi provisjon
+Allow Zero Valuation Rate,Tillat null i verdsettingspris
+Net Rate (Company Currency),Netto enhetspris i foretakets valuta
+Net Amount (Company Currency),Nettobeløp i foretakets valuta
+Drop Ship,Direktelevering
+Delivered By Supplier,Levert av leverandør
+Is Fixed Asset,Er driftsmiddel
+Deferred Revenue,Periodisert inntekt
+Deferred Revenue Account,Konto for periodisert inntekt
+Service Stop Date,Stoppdato for tjeneste
+Enable Deferred Revenue,Aktiver inntektsperiodisering
+Service Start Date,Startdato for tjeneste
+Service End Date,Sluttdato for tjeneste
+Item Weight Details,Artikkelens vektopplysninger
+Weight Per Unit,Vekt per enhet
+Total Weight,Samlet vekt
+Weight UOM,Vektenhet
+Stock Details,Lageropplysninger
+Target Warehouse,Mottakslager
+Quality Inspection,Kvalitetskontroll
+Pick Serial / Batch No,Velg serie-/partinummer
+Use Serial No / Batch Fields,Bruk felt for serie-/partinummer
+Incoming Rate (Costing),Inngående pris (kostnad)
+Item Tax Rate,Artikkelens avgiftssats
+Available Batch Qty at Warehouse,Tilgjengelig antall i parti på lager
+Batch No,Partinummer
+Available Quantity,Tilgjengelig antall
+Qty (Warehouse),Antall på lagersted
+Qty (Company),Antall i foretaket
+Sales Order Item,Salgsordrelinje
+Sales Invoice Item,Salgsfakturalinje
+Pick List Item,Plukklisterad
+Delivery Note,Leveringsseddel
+Delivery Note Item,Leveringsseddellinje
+Delivered Qty,Levert antall
+POS Invoice Item,Kassefakturalinje
+SCIO Detail,Detalj for innkommende underleveranseordre
+Against Pick List,Mot plukkliste
+Internal Transfer,Intern overføring
+Purchase Order,Innkjøpsordre
+Purchase Order Item,Innkjøpsordrelinje
+Type,Type
+Reference Row #,Referanserad nr.
+Is this Tax included in Basic Rate?,Er avgiften inkludert i grunnprisen?
+"If checked, the tax amount will be considered as already included in the Print Rate / Print Amount",Avgiften behandles som allerede inkludert i pris og beløp på utskriften
+Considered In Paid Amount,Inkludert i betalt beløp
+"If checked, the tax amount will be considered as already included in the Paid Amount in Payment Entry",Avgiften behandles som allerede inkludert i betalt beløp i betalingsregistreringen
+Set by Item Tax Template,Angitt av artikkelens avgiftsmal
+Is Tax Withholding Account,Er konto for kildeskatt
+Tax Rate,Avgiftssats
+Tax Amount After Discount Amount,Avgiftsbeløp etter rabatt
+Tax Amount After Discount Amount (Company Currency),Avgiftsbeløp etter rabatt i foretakets valuta
+Don't Recompute Tax,Ikke beregn avgift på nytt
+Payment Term,Betalingsvilkår
+Invoice Portion,Fakturaandel
+Credit Days,Kredittdager
+Credit Months,Kredittmåneder
+Discount Date,Rabattdato
+Discount Type,Rabattype
+Discount Validity Based On,Grunnlag for rabattens gyldighet
+Discount Validity,Rabattens gyldighet
+Payment Amount,Betalingsbeløp
+Outstanding,Utestående
+Discounted Amount,Rabattert beløp
+Payment Amount (Company Currency),Betalingsbeløp i foretakets valuta
+Outstanding (Company Currency),Utestående i foretakets valuta
+Quantity and Rate,Antall og enhetspris
+Received Qty,Mottatt antall
+Accepted Qty,Godkjent antall
+Rejected Qty,Avvist antall
+Accepted Qty in Stock UOM,Godkjent antall i lagerenhet
+Discount on Price List Rate (%),Rabatt på prislistepris (%)
+Valuation Rate,Verdsettingspris
+Sales Incoming Rate,Inngående pris ved salg
+Valuation rate for the item as per Sales Invoice (Only for Internal Transfers),Artikkelens verdsettingspris fra salgsfakturaen (bare ved interne overføringer)
+Item Tax Amount Included in Value,Artikkelavgift inkludert i verdien
+Landed Cost Voucher Amount,Beløp fra bilag for anskaffelseskostnader
+Raw Materials Supplied Cost,Kostnad for leverte råvarer
+Accepted Warehouse,Lager for godkjente varer
+Add Serial / Batch No,Legg til serie-/partinummer
+From Warehouse,Fra lager
+Rejected Serial No,Avvist serienummer
+Expense Head,Kostnadskonto
+WIP Composite Asset,Sammensatt driftsmiddel under tilvirkning
+Asset Category,Driftsmiddelkategori
+Deferred Expense,Periodisert kostnad
+Deferred Expense Account,Konto for periodisert kostnad
+Enable Deferred Expense,Aktiver kostnadsperiodisering
+Tax detail table fetched from item master as a string and stored in this field. Used for Taxes and Charges,Avgiftsdetaljer hentes som tekst fra artikkelregisteret og lagres i dette feltet for beregning av avgifter og tillegg
+BOM,Stykkliste
+Include Exploded Items,Ta med underliggende komponenter
+Purchase Invoice Item,Leverandørfakturalinje
+Purchase Receipt,Varemottak
+Purchase Receipt Detail,Varemottakslinje
+Material Request,Materialforespørsel
+Material Request Item,Materialforespørselslinje
+Delivered by Supplier,Levert av leverandør
+Consider Tax or Charge for,Bruk avgift eller tillegg ved
+Add or Deduct,Legg til eller trekk fra
+Allocate Full Amount to Stock Items,Fordel hele beløpet på lagerførte artikler
+"If checked, the entire amount (e.g. Freight) is allocated to the valuation of stock & asset items only. If unchecked, the amount is distributed across all items and the portion belonging to non-stock items is not added to valuation.","Hele beløpet, for eksempel frakt, fordeles bare på verdien av lagerførte artikler og driftsmidler. Uten dette valget fordeles beløpet på alle artikler, men andelen for ikke lagerførte artikler øker ikke lagerverdien."
+If Income or Expense,Ved inntekt eller kostnad
+Debit in Company Currency,Debet i foretakets valuta
+Credit in Company Currency,Kredit i foretakets valuta
+Reference Due Date,Forfallsdato for referansen
+Reference Detail No,Referansens detaljnummer
+Advance Voucher Type,Bilagstype for forskudd
+Advance Voucher No,Bilagsnummer for forskudd
+Is Advance,Er forskudd
+Against Account,Motkonto
+Payment Term Outstanding,Utestående per betalingsvilkår
+Reconcile Effect On,Avstemming påvirker
+Exchange Gain/Loss,Valutagevinst/-tap
+Payment Request Outstanding,Utestående betalingsforespørsel
+Is Exchange Gain / Loss?,Er valutagevinst/-tap?
+Is Alternative,Er alternativ
+Has Alternative Item,Har alternativ artikkel
+Ordered Qty,Bestilt antall
+Warehouse and Reference,Lager og referanse
+Blanket Order,Rammeordre
+Blanket Order Rate,Pris i rammeordre
+Against Docname,Mot dokumentnummer
+Planning,Planlegging
+Projected Qty,Forventet antall
+Stock Balance,Lagerbeholdning
+Shopping Cart,Handlekurv
+Has Item Scanned,Artikkel er skannet,Sales Invoice Item
+Customer's Item Code,Kundens artikkelkode,Sales Invoice Item
+Item Group,Artikkelgruppe,Sales Invoice Item
+Brand Name,Merkenavn,Sales Invoice Item
+Stock UOM,Lagerenhet,Sales Invoice Item
+UOM Conversion Factor,Omregningsfaktor for enhet,Sales Invoice Item
+Qty as per Stock UOM,Antall i lagerenhet,Sales Invoice Item
+Price List Rate,Prislistepris,Sales Invoice Item
+Price List Rate (Company Currency),Prislistepris i foretakets valuta,Sales Invoice Item
+Discount and Margin,Rabatt og påslag,Sales Invoice Item
+Margin Type,Påslagstype,Sales Invoice Item
+Margin Rate or Amount,Påslag i prosent eller beløp,Sales Invoice Item
+Rate With Margin,Pris med påslag,Sales Invoice Item
+Discount (%) on Price List Rate with Margin,Rabatt (%) på prislistepris med påslag,Sales Invoice Item
+Distributed Discount Amount,Fordelt rabattbeløp,Sales Invoice Item
+Rate With Margin (Company Currency),Pris med påslag i foretakets valuta,Sales Invoice Item
+Item Tax Template,Avgiftsmal for artikkel,Sales Invoice Item
+Rate (Company Currency),Enhetspris i foretakets valuta,Sales Invoice Item
+Amount (Company Currency),Beløp i foretakets valuta,Sales Invoice Item
+Rate of Stock UOM,Pris per lagerenhet,Sales Invoice Item
+Is Free Item,Er gratisartikkel,Sales Invoice Item
+Grant Commission,Gi provisjon,Sales Invoice Item
+Allow Zero Valuation Rate,Tillat null i verdsettingspris,Sales Invoice Item
+Net Rate (Company Currency),Netto enhetspris i foretakets valuta,Sales Invoice Item
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Sales Invoice Item
+Drop Ship,Direktelevering,Sales Invoice Item
+Delivered By Supplier,Levert av leverandør,Sales Invoice Item
+Is Fixed Asset,Er driftsmiddel,Sales Invoice Item
+Deferred Revenue,Periodisert inntekt,Sales Invoice Item
+Deferred Revenue Account,Konto for periodisert inntekt,Sales Invoice Item
+Service Stop Date,Stoppdato for tjeneste,Sales Invoice Item
+Enable Deferred Revenue,Aktiver inntektsperiodisering,Sales Invoice Item
+Service Start Date,Startdato for tjeneste,Sales Invoice Item
+Service End Date,Sluttdato for tjeneste,Sales Invoice Item
+Item Weight Details,Artikkelens vektopplysninger,Sales Invoice Item
+Weight Per Unit,Vekt per enhet,Sales Invoice Item
+Total Weight,Samlet vekt,Sales Invoice Item
+Weight UOM,Vektenhet,Sales Invoice Item
+Stock Details,Lageropplysninger,Sales Invoice Item
+Target Warehouse,Mottakslager,Sales Invoice Item
+Quality Inspection,Kvalitetskontroll,Sales Invoice Item
+Pick Serial / Batch No,Velg serie-/partinummer,Sales Invoice Item
+Use Serial No / Batch Fields,Bruk felt for serie-/partinummer,Sales Invoice Item
+Incoming Rate (Costing),Inngående pris (kostnad),Sales Invoice Item
+Item Tax Rate,Artikkelens avgiftssats,Sales Invoice Item
+Available Batch Qty at Warehouse,Tilgjengelig antall i parti på lager,Sales Invoice Item
+Batch No,Partinummer,Sales Invoice Item
+Available Quantity,Tilgjengelig antall,Sales Invoice Item
+Qty (Warehouse),Antall på lagersted,Sales Invoice Item
+Qty (Company),Antall i foretaket,Sales Invoice Item
+Sales Order Item,Salgsordrelinje,Sales Invoice Item
+Sales Invoice Item,Salgsfakturalinje,Sales Invoice Item
+Pick List Item,Plukklisterad,Sales Invoice Item
+Delivery Note,Leveringsseddel,Sales Invoice Item
+Delivery Note Item,Leveringsseddellinje,Sales Invoice Item
+Delivered Qty,Levert antall,Sales Invoice Item
+POS Invoice Item,Kassefakturalinje,Sales Invoice Item
+SCIO Detail,Detalj for innkommende underleveranseordre,Sales Invoice Item
+Against Pick List,Mot plukkliste,Sales Invoice Item
+Internal Transfer,Intern overføring,Sales Invoice Item
+Purchase Order,Innkjøpsordre,Sales Invoice Item
+Purchase Order Item,Innkjøpsordrelinje,Sales Invoice Item
+Type,Type,Sales Taxes and Charges
+Reference Row #,Referanserad nr.,Sales Taxes and Charges
+Is this Tax included in Basic Rate?,Er avgiften inkludert i grunnprisen?,Sales Taxes and Charges
+"If checked, the tax amount will be considered as already included in the Print Rate / Print Amount",Avgiften behandles som allerede inkludert i pris og beløp på utskriften,Sales Taxes and Charges
+Considered In Paid Amount,Inkludert i betalt beløp,Sales Taxes and Charges
+"If checked, the tax amount will be considered as already included in the Paid Amount in Payment Entry",Avgiften behandles som allerede inkludert i betalt beløp i betalingsregistreringen,Sales Taxes and Charges
+Set by Item Tax Template,Angitt av artikkelens avgiftsmal,Sales Taxes and Charges
+Is Tax Withholding Account,Er konto for kildeskatt,Sales Taxes and Charges
+Tax Rate,Avgiftssats,Sales Taxes and Charges
+Tax Amount After Discount Amount,Avgiftsbeløp etter rabatt,Sales Taxes and Charges
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Sales Taxes and Charges
+Amount (Company Currency),Beløp i foretakets valuta,Sales Taxes and Charges
+Tax Amount After Discount Amount (Company Currency),Avgiftsbeløp etter rabatt i foretakets valuta,Sales Taxes and Charges
+Don't Recompute Tax,Ikke beregn avgift på nytt,Sales Taxes and Charges
+Tax Rate,Avgiftssats,Tax Withholding Entry
+Tax Rate,Avgiftssats,Item Wise Tax Detail
+Margin Type,Påslagstype,Pricing Rule Detail
+From Warehouse,Fra lager,Packed Item
+Pick Serial / Batch No,Velg serie-/partinummer,Packed Item
+Use Serial No / Batch Fields,Bruk felt for serie-/partinummer,Packed Item
+Batch No,Partinummer,Packed Item
+Projected Qty,Forventet antall,Packed Item
+Ordered Qty,Bestilt antall,Packed Item
+Type,Type,Sales Invoice Payment
+Exchange Gain/Loss,Valutagevinst/-tap,Sales Invoice Advance
+Payment Term,Betalingsvilkår,Payment Schedule
+Invoice Portion,Fakturaandel,Payment Schedule
+Credit Days,Kredittdager,Payment Schedule
+Credit Months,Kredittmåneder,Payment Schedule
+Discount Date,Rabattdato,Payment Schedule
+Discount Type,Rabattype,Payment Schedule
+Discount Validity Based On,Grunnlag for rabattens gyldighet,Payment Schedule
+Discount Validity,Rabattens gyldighet,Payment Schedule
+Payment Amount,Betalingsbeløp,Payment Schedule
+Outstanding,Utestående,Payment Schedule
+Discounted Amount,Rabattert beløp,Payment Schedule
+Payment Amount (Company Currency),Betalingsbeløp i foretakets valuta,Payment Schedule
+Outstanding (Company Currency),Utestående i foretakets valuta,Payment Schedule
+Item Group,Artikkelgruppe,Purchase Invoice Item
+Quantity and Rate,Antall og enhetspris,Purchase Invoice Item
+Received Qty,Mottatt antall,Purchase Invoice Item
+Accepted Qty,Godkjent antall,Purchase Invoice Item
+Rejected Qty,Avvist antall,Purchase Invoice Item
+UOM Conversion Factor,Omregningsfaktor for enhet,Purchase Invoice Item
+Stock UOM,Lagerenhet,Purchase Invoice Item
+Accepted Qty in Stock UOM,Godkjent antall i lagerenhet,Purchase Invoice Item
+Price List Rate,Prislistepris,Purchase Invoice Item
+Price List Rate (Company Currency),Prislistepris i foretakets valuta,Purchase Invoice Item
+Discount and Margin,Rabatt og påslag,Purchase Invoice Item
+Margin Type,Påslagstype,Purchase Invoice Item
+Margin Rate or Amount,Påslag i prosent eller beløp,Purchase Invoice Item
+Rate With Margin,Pris med påslag,Purchase Invoice Item
+Discount on Price List Rate (%),Rabatt på prislistepris (%),Purchase Invoice Item
+Distributed Discount Amount,Fordelt rabattbeløp,Purchase Invoice Item
+Rate With Margin (Company Currency),Pris med påslag i foretakets valuta,Purchase Invoice Item
+Item Tax Template,Avgiftsmal for artikkel,Purchase Invoice Item
+Rate (Company Currency),Enhetspris i foretakets valuta,Purchase Invoice Item
+Amount (Company Currency),Beløp i foretakets valuta,Purchase Invoice Item
+Rate of Stock UOM,Pris per lagerenhet,Purchase Invoice Item
+Is Free Item,Er gratisartikkel,Purchase Invoice Item
+Allow Zero Valuation Rate,Tillat null i verdsettingspris,Purchase Invoice Item
+Net Rate (Company Currency),Netto enhetspris i foretakets valuta,Purchase Invoice Item
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Purchase Invoice Item
+Valuation Rate,Verdsettingspris,Purchase Invoice Item
+Sales Incoming Rate,Inngående pris ved salg,Purchase Invoice Item
+Valuation rate for the item as per Sales Invoice (Only for Internal Transfers),Artikkelens verdsettingspris fra salgsfakturaen (bare ved interne overføringer),Purchase Invoice Item
+Item Tax Amount Included in Value,Artikkelavgift inkludert i verdien,Purchase Invoice Item
+Landed Cost Voucher Amount,Beløp fra bilag for anskaffelseskostnader,Purchase Invoice Item
+Raw Materials Supplied Cost,Kostnad for leverte råvarer,Purchase Invoice Item
+Accepted Warehouse,Lager for godkjente varer,Purchase Invoice Item
+Add Serial / Batch No,Legg til serie-/partinummer,Purchase Invoice Item
+Use Serial No / Batch Fields,Bruk felt for serie-/partinummer,Purchase Invoice Item
+From Warehouse,Fra lager,Purchase Invoice Item
+Quality Inspection,Kvalitetskontroll,Purchase Invoice Item
+Rejected Serial No,Avvist serienummer,Purchase Invoice Item
+Batch No,Partinummer,Purchase Invoice Item
+Expense Head,Kostnadskonto,Purchase Invoice Item
+WIP Composite Asset,Sammensatt driftsmiddel under tilvirkning,Purchase Invoice Item
+Is Fixed Asset,Er driftsmiddel,Purchase Invoice Item
+Asset Category,Driftsmiddelkategori,Purchase Invoice Item
+Deferred Expense,Periodisert kostnad,Purchase Invoice Item
+Deferred Expense Account,Konto for periodisert kostnad,Purchase Invoice Item
+Service Stop Date,Stoppdato for tjeneste,Purchase Invoice Item
+Enable Deferred Expense,Aktiver kostnadsperiodisering,Purchase Invoice Item
+Service Start Date,Startdato for tjeneste,Purchase Invoice Item
+Service End Date,Sluttdato for tjeneste,Purchase Invoice Item
+Item Tax Rate,Artikkelens avgiftssats,Purchase Invoice Item
+BOM,Stykkliste,Purchase Invoice Item
+Include Exploded Items,Ta med underliggende komponenter,Purchase Invoice Item
+Purchase Invoice Item,Leverandørfakturalinje,Purchase Invoice Item
+Purchase Order,Innkjøpsordre,Purchase Invoice Item
+Purchase Order Item,Innkjøpsordrelinje,Purchase Invoice Item
+Purchase Receipt,Varemottak,Purchase Invoice Item
+Purchase Receipt Detail,Varemottakslinje,Purchase Invoice Item
+Sales Invoice Item,Salgsfakturalinje,Purchase Invoice Item
+Material Request,Materialforespørsel,Purchase Invoice Item
+Material Request Item,Materialforespørselslinje,Purchase Invoice Item
+Delivered by Supplier,Levert av leverandør,Purchase Invoice Item
+Item Weight Details,Artikkelens vektopplysninger,Purchase Invoice Item
+Weight Per Unit,Vekt per enhet,Purchase Invoice Item
+Total Weight,Samlet vekt,Purchase Invoice Item
+Weight UOM,Vektenhet,Purchase Invoice Item
+Consider Tax or Charge for,Bruk avgift eller tillegg ved,Purchase Taxes and Charges
+Add or Deduct,Legg til eller trekk fra,Purchase Taxes and Charges
+Type,Type,Purchase Taxes and Charges
+Reference Row #,Referanserad nr.,Purchase Taxes and Charges
+Is Tax Withholding Account,Er konto for kildeskatt,Purchase Taxes and Charges
+Set by Item Tax Template,Angitt av artikkelens avgiftsmal,Purchase Taxes and Charges
+Allocate Full Amount to Stock Items,Fordel hele beløpet på lagerførte artikler,Purchase Taxes and Charges
+"If checked, the entire amount (e.g. Freight) is allocated to the valuation of stock & asset items only. If unchecked, the amount is distributed across all items and the portion belonging to non-stock items is not added to valuation.","Hele beløpet, for eksempel frakt, fordeles bare på verdien av lagerførte artikler og driftsmidler. Uten dette valget fordeles beløpet på alle artikler, men andelen for ikke lagerførte artikler øker ikke lagerverdien.",Purchase Taxes and Charges
+Is this Tax included in Basic Rate?,Er avgiften inkludert i grunnprisen?,Purchase Taxes and Charges
+"If checked, the tax amount will be considered as already included in the Print Rate / Print Amount",Avgiften behandles som allerede inkludert i pris og beløp på utskriften,Purchase Taxes and Charges
+Considered In Paid Amount,Inkludert i betalt beløp,Purchase Taxes and Charges
+"If checked, the tax amount will be considered as already included in the Paid Amount in Payment Entry",Avgiften behandles som allerede inkludert i betalt beløp i betalingsregistreringen,Purchase Taxes and Charges
+Tax Rate,Avgiftssats,Purchase Taxes and Charges
+Tax Amount After Discount Amount,Avgiftsbeløp etter rabatt,Purchase Taxes and Charges
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Purchase Taxes and Charges
+Amount (Company Currency),Beløp i foretakets valuta,Purchase Taxes and Charges
+Don't Recompute Tax,Ikke beregn avgift på nytt,Purchase Taxes and Charges
+Batch No,Partinummer,Purchase Receipt Item Supplied
+Purchase Order,Innkjøpsordre,Purchase Receipt Item Supplied
+Exchange Gain/Loss,Valutagevinst/-tap,Purchase Invoice Advance
+If Income or Expense,Ved inntekt eller kostnad,Journal Entry Account
+Debit in Company Currency,Debet i foretakets valuta,Journal Entry Account
+Credit in Company Currency,Kredit i foretakets valuta,Journal Entry Account
+Reference Due Date,Forfallsdato for referansen,Journal Entry Account
+Reference Detail No,Referansens detaljnummer,Journal Entry Account
+Advance Voucher Type,Bilagstype for forskudd,Journal Entry Account
+Advance Voucher No,Bilagsnummer for forskudd,Journal Entry Account
+Is Tax Withholding Account,Er konto for kildeskatt,Journal Entry Account
+Is Advance,Er forskudd,Journal Entry Account
+Against Account,Motkonto,Journal Entry Account
+Type,Type,Payment Entry Reference
+Payment Term,Betalingsvilkår,Payment Entry Reference
+Payment Term Outstanding,Utestående per betalingsvilkår,Payment Entry Reference
+Reconcile Effect On,Avstemming påvirker,Payment Entry Reference
+Outstanding,Utestående,Payment Entry Reference
+Exchange Gain/Loss,Valutagevinst/-tap,Payment Entry Reference
+Payment Request Outstanding,Utestående betalingsforespørsel,Payment Entry Reference
+Advance Voucher Type,Bilagstype for forskudd,Payment Entry Reference
+Advance Voucher No,Bilagsnummer for forskudd,Payment Entry Reference
+Type,Type,Advance Taxes and Charges
+Reference Row #,Referanserad nr.,Advance Taxes and Charges
+Considered In Paid Amount,Inkludert i betalt beløp,Advance Taxes and Charges
+Set by Item Tax Template,Angitt av artikkelens avgiftsmal,Advance Taxes and Charges
+Is Tax Withholding Account,Er konto for kildeskatt,Advance Taxes and Charges
+Tax Rate,Avgiftssats,Advance Taxes and Charges
+Amount (Company Currency),Beløp i foretakets valuta,Advance Taxes and Charges
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Advance Taxes and Charges
+Amount (Company Currency),Beløp i foretakets valuta,Payment Entry Deduction
+Is Exchange Gain / Loss?,Er valutagevinst/-tap?,Payment Entry Deduction
+Customer's Item Code,Kundens artikkelkode,Quotation Item
+Is Free Item,Er gratisartikkel,Quotation Item
+Is Alternative,Er alternativ,Quotation Item
+Has Alternative Item,Har alternativ artikkel,Quotation Item
+Item Group,Artikkelgruppe,Quotation Item
+Quantity and Rate,Antall og enhetspris,Quotation Item
+Stock UOM,Lagerenhet,Quotation Item
+UOM Conversion Factor,Omregningsfaktor for enhet,Quotation Item
+Qty as per Stock UOM,Antall i lagerenhet,Quotation Item
+Ordered Qty,Bestilt antall,Quotation Item
+Available Quantity,Tilgjengelig antall,Quotation Item
+Qty (Warehouse),Antall på lagersted,Quotation Item
+Qty (Company),Antall i foretaket,Quotation Item
+Price List Rate,Prislistepris,Quotation Item
+Price List Rate (Company Currency),Prislistepris i foretakets valuta,Quotation Item
+Discount and Margin,Rabatt og påslag,Quotation Item
+Margin Type,Påslagstype,Quotation Item
+Margin Rate or Amount,Påslag i prosent eller beløp,Quotation Item
+Rate With Margin,Pris med påslag,Quotation Item
+Discount (%) on Price List Rate with Margin,Rabatt (%) på prislistepris med påslag,Quotation Item
+Distributed Discount Amount,Fordelt rabattbeløp,Quotation Item
+Rate With Margin (Company Currency),Pris med påslag i foretakets valuta,Quotation Item
+Item Tax Template,Avgiftsmal for artikkel,Quotation Item
+Rate (Company Currency),Enhetspris i foretakets valuta,Quotation Item
+Net Rate (Company Currency),Netto enhetspris i foretakets valuta,Quotation Item
+Amount (Company Currency),Beløp i foretakets valuta,Quotation Item
+Net Amount (Company Currency),Nettobeløp i foretakets valuta,Quotation Item
+Rate of Stock UOM,Pris per lagerenhet,Quotation Item
+Valuation Rate,Verdsettingspris,Quotation Item
+Item Weight Details,Artikkelens vektopplysninger,Quotation Item
+Weight Per Unit,Vekt per enhet,Quotation Item
+Total Weight,Samlet vekt,Quotation Item
+Weight UOM,Vektenhet,Quotation Item
+Warehouse and Reference,Lager og referanse,Quotation Item
+Blanket Order,Rammeordre,Quotation Item
+Blanket Order Rate,Pris i rammeordre,Quotation Item
+Against Docname,Mot dokumentnummer,Quotation Item
+Planning,Planlegging,Quotation Item
+Projected Qty,Forventet antall,Quotation Item
+Stock Balance,Lagerbeholdning,Quotation Item
+Item Tax Rate,Artikkelens avgiftssats,Quotation Item
+Shopping Cart,Handlekurv,Quotation Item
+Item Group,Artikkelgruppe,Item
+Is Fixed Asset,Er driftsmiddel,Item
+Asset Category,Driftsmiddelkategori,Item
+Enable Deferred Expense,Aktiver kostnadsperiodisering,Item
+Enable Deferred Revenue,Aktiver inntektsperiodisering,Item
+Valuation Rate,Verdsettingspris,Item
+Weight Per Unit,Vekt per enhet,Item
+Weight UOM,Vektenhet,Item
+Grant Commission,Gi provisjon,Item
+Deferred Expense Account,Konto for periodisert kostnad,Item Default
+Deferred Revenue Account,Konto for periodisert inntekt,Item Default
+Item Tax Template,Avgiftsmal for artikkel,Item Tax

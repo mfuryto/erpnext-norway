@@ -3,13 +3,14 @@ import frappe
 from frappe import _
 
 ACCOUNTING = ("Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment Entry")
+RETAINED = (*ACCOUNTING, "Quotation")
 IDENTITY_FIELDS = ("attached_to_doctype", "attached_to_name", "attached_to_field", "file_url",
                    "file_name", "content_hash", "is_private", "is_folder", "thumbnail_url")
 
 
 def is_retained(file, cancelled_only=False):
     doctype, name = file.get("attached_to_doctype"), file.get("attached_to_name")
-    return bool(doctype in ACCOUNTING and name and
+    return bool(doctype in RETAINED and name and
                 frappe.db.get_value(doctype, name, "docstatus", for_update=True) in ((2,) if cancelled_only else (1, 2)))
 
 

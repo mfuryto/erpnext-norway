@@ -7,6 +7,8 @@ import frappe
 os.chdir('/home/frappe/frappe-bench/sites')
 frappe.init(site='accounting', sites_path='/home/frappe/frappe-bench/sites')
 frappe.connect()
+if 'erpnext_norway' in frappe.get_installed_apps():
+    frappe.conf.host_name = 'http://frontend:8080'
 frappe.set_user('Administrator')
 frappe.local.lang = 'en'
 from frappe.utils.file_manager import save_file
@@ -31,6 +33,8 @@ try:
     for doctype in ('Sales Invoice', 'Purchase Invoice', 'Journal Entry', 'Payment Entry'):
         assert frappe.get_meta(doctype).protect_attached_files
     if sys.argv[1] == 'fresh':
+        assert frappe.get_meta('Sales Invoice').default_print_format == 'Norway Invoice'
+        assert frappe.get_meta('Quotation').default_print_format == 'Norway Quotation'
         for name in RULES:
             assert frappe.db.get_value('Document Naming Rule', name, 'counter') == 0
         # Existing native settings permit selecting a starting number before use.
@@ -194,6 +198,8 @@ try:
 import json, frappe
 frappe.init(site='accounting', sites_path='/home/frappe/frappe-bench/sites')
 frappe.connect()
+if 'erpnext_norway' in frappe.get_installed_apps():
+    frappe.conf.host_name = 'http://frontend:8080'
 frappe.set_user('runtime-owner@example.invalid')
 sale=frappe.get_doc('Sales Invoice', 'F000041')
 try:
