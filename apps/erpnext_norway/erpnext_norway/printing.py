@@ -33,8 +33,9 @@ def configure():
                 "pdf_generator": "wkhtmltopdf", "html": html}).insert(ignore_permissions=True)
         if not installing:
             format_doc = frappe.get_doc('Print Format', name)
-            legacy = html.replace('translated_taxes(doc.taxes)', 'doc.taxes')
-            if format_doc.html == legacy:
+            before_snapshot = html.replace('doc.get("custom_norway_company_tax_id") or ', '')
+            legacy = before_snapshot.replace('translated_taxes(doc.taxes)', 'doc.taxes')
+            if format_doc.html in (legacy, before_snapshot, html.replace('translated_taxes(doc.taxes)', 'doc.taxes')):
                 format_doc.html = html
                 format_doc.save(ignore_permissions=True)
         current = frappe.get_meta(doctype).default_print_format
@@ -49,8 +50,9 @@ def translated_taxes(rows):
     """Localize our seeded label for printing; keep native tax rows/formatting and stored data."""
     copied = deepcopy(rows)
     for row in copied:
-        if row.description == 'MVA 25 %':
-            row.description = f"{frappe._('VAT')} 25 %"
+        for rate in (25, 15, 12):
+            if row.description == f'MVA {rate} %':
+                row.description = f"{frappe._('VAT')} {rate} %"
     return copied
 
 

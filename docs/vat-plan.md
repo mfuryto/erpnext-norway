@@ -1,0 +1,107 @@
+# Samlet MVA-plan – hovedplanens punkt 5
+
+Bestilling 19. oktober 2026: fullfør hele MVA-planen, deretter hovedplanens punkt 6
+(SAF-T) og 7 (ENK/årsavslutning). Ingen ny avgiftsmotor eller parallell hovedbok.
+ERPNexts maler, vareavgifter, regler, beregning, kreditnotaer og bokføring brukes.
+Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regnskapsresultat.
+
+| Rekkefølge | Leveranse | Status ved samlet bestilling |
+| --- | --- | --- |
+| 1 | Ikke registrert/registrert, virkningsdato, MVA-merking og historiske bilag | Prøvd i app 0.3.0 |
+| 2 | Norske navn, inngående/utgående MVA og forståelige beskrivelser | Prøvd i app 0.3.1 |
+| 3 | 25/15/12 %, kontoer, gyldighet og norske behandlings-/rapporteringskoder | Ordinært blandet 25/15/12 %-salg og koder prøvd |
+| 4 | Separate valg for fritatt/nullsats, unntatt og uten MVA-behandling | Separate varelinjevalg prøvd; vilkårene avgjør faktisk bruk |
+| 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad med fullt/60/0 % fradrag prøvd; lager/driftsmiddel er foreløpig kjerneprøve |
+| 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer og kjøpsskjerm prøvd; ordre-/mottakskjede gjenstår |
+| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt og begge kreditnotatyper prøvd; øvrige kombinasjoner gjenstår |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Bare teknisk posteringstilfelle prøvd |
+| 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
+| 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
+| 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport og leverandørens dokumentperiode prøvd; utland/import gjenstår |
+| 12 | Oppgjørsføring, betaling/refusjon, korrigert melding, vedlagt melding/kvittering | Native oppgjør/betaling/refusjon/differanse og privat dokumentbevaring prøvd; portal først |
+
+Navn alene betyr ikke kvalifisert behandling. En eksisterende 12 %-standardmal
+beviser ikke korrekt norsk konto-/fradrags-/rapporteringsflyt. Års- og særregler
+må avgrenses uttrykkelig; foretaket er ikke registrert nå, men planlegger registrering.
+
+Hver behandling skal prøves gjennom vanlig bilagsregistrering og kreditnota til
+hovedbok og rapportgrunnlag, med vanlig eierbruker. Oppgraderinger skal bevare
+valg, bokførte verdier og PDF-originaler. Skjemaendringer krever backup/restore-prøve.
+
+Kilder: [satser](https://www.skatteetaten.no/satser/merverdiavgift?pageid=1500),
+[fritak/unntak](https://www.skatteetaten.no/bedrift-og-organisasjon/avgifter/mva/slik-fungerer-mva/forskjellen-pa-fritak-og-unntak-fra-merverdiavgift/),
+[MVA-meldingens informasjonsmodell](https://skatteetaten.github.io/mva-meldingen/mvameldingen/informasjonsmodell/).
+Eksisterende leveranse og prøver er beskrevet i [MVA-registrering](vat-registration.md).
+
+## Kjerneprøve for satser og linjevalg
+
+Kjernen har Item Tax Template og native avgiftsrader per konto. Prosentvalg per
+varelinje er derfor konfigurasjon, ikke grunnlag for en ny beregningsmotor.
+Norske kontoer er 2700/2710 (25 %), 2701/2711 (15 %) og 2703/2713 (12 %).
+Standard MVA-koder er 3/1, 31/11 og 33/13 for henholdsvis salg/kjøp med fradrag.
+En blandet faktura skal prøve 1 000 i grunnlag per sats: 250 + 150 + 120 = 520.
+Kjernens avgiftsrader, hovedbok og kreditnota er fasit for faktisk oppførsel.
+
+Påvist gap: den native malen har ikke norske rapporteringskoder. Minste tillegg er
+kodefelt på native Item Tax Template og en kode på fakturalinjen som bevarer valget
+ved bokføring. Rapportering skal lese disse native bilagene og hovedboken.
+Etterfølgende endring av en mal må ikke omklassifisere et allerede bokført bilag.
+
+## Arbeidsstatus 19. oktober – ikke promotert
+
+Isolerte native prøver har bestått for blandet 25/15/12 %-salg (520 MVA),
+60/0 %-fradrag i ett kjøp (150 inngående MVA, 2350 kostnad, 2500 leverandørgjeld),
+vanlig eier uten System Manager og faktisk standard kjøpsskjerm med fradragsvalg.
+Første rapportprøve leser native Item Wise Tax Detail og avstemmer bilagene mot
+GL Entry: 520 utgående minus 150 inngående gir 370. Samlet MVA er fortsatt ikke ferdig: utland/import, normal vare-/driftsmiddelkjede
+og øvrige åpne kombinasjoner i tabellen gjenstår. Rapport-/oppgjørsprøvene
+under kvalifiserer bare de uttrykkelig prøvde tilfellene.
+
+Videre isolert prøve har bestått for faktisk native rapport, separat vurdert
+tilbakegående fradragsbilag, oppgjør 270, betaling og bankavstemming, senere
+refusjon 100 samt bevaring av privat rapportgrunnlag og kvittering. Dette er
+syntetisk lokal kvalifisering, ikke innlevering eller kontroll av brukerens server.
+Prøven ligger i tests/runtime-vat-portal-cycle.py og inngår i appens driftsprøve.
+Delvis fradrag mot 4300 er også prøvd uten å endre Cost of Goods Sold-kontotypen.
+Native blandet kreditnota og 10 % rabatt er prøvd: 520 reverseres til -520,
+og rabatt gir 2700 netto + 468 MVA = 3168. Kjøpskreditnota reverserer både
+150 inngående MVA og 2350 kostnad ved opprinnelig 60/0 %-fradrag.
+
+Periodegap: kjernens posting_date alene dekker ikke leverandørens dokumentdato.
+Rapporten viser derfor både bokføringsdato og MVA-dato og bruker native bill_date
+for kjøpsfakturaer. Oppgjørsforslaget bygger på rapportens avstemte native
+avgiftsdetaljer, fratrukket allerede bokførte oppgjør for samme periode. Det
+skriver ikke om fakturaens bokføringsdato. Deklarasjonsdato og øvrige unntak
+krever egne kvalifiserte importtilfeller før den behandlingen tilbys.
+Kilde: [Skatteetatens tidfestingsregel](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-15/M-15-9/M-15-9.3/).
+
+Videre kjerneprøve, ennå ikke tilgjengelig fra appens fradragsvalg: native
+Valuation and Total med 15 % fradragsført og 10 % kapitalisert ved 25 % MVA
+ga 1250 leverandørgjeld, 150 inngående MVA og 1100 lagerverdi i både GL Entry
+og Stock Ledger Entry. Et tilsvarende direkte driftsmiddelkjøp ga 1100 på
+1250 og native Asset.net_purchase_amount/purchase_amount = 1100. Dette skal
+brukes ved videreføring; ingen egen verdsettings- eller avskrivningsmotor.
+
+Undersøkt kjernealternativ for utenlandstjenester før MVA-registrering:
+Tax Withholding Category/Details er parts-/skattetrekkbasert og dekker ikke
+foretakets samlede kvartalsgrunnlag på tvers av leverandører. Det skal ikke
+omdøpes eller gjenbrukes som om det var norsk omvendt MVA. Vanlig registrert
+omvendt avgift kan bruke native avgiftsrader, men ikke-registrert kvartalsterskel
+og korrekt særskilt melding er fortsatt et dokumentert gap.
+
+Native avgiftsmaler mangler et fradragsprosent-parameter og norske rapporteringskoder.
+Tillegget konfigurerer native Item Tax Template/rader og lar kjernen beregne og føre.
+Blank account_type på en valgt kostnadskonto presiseres til native Expense Account
+for at kjernens vareavgiftsmal skal godta kontoen; root_type, kontonummer/navn og
+bokførte verdier endres ikke. Det forutsetter brukerens ordinære kontorettigheter.
+Koder på eldre bilag kan korrigeres som metadata gjennom native felt/Version;
+økonomiske beløpsrettinger skal fortsatt bruke native kreditnota/journal.
+Rapporten er en native Script Report, ikke egen hovedbok eller kontrollflate.
+
+
+Kjernefunn: Item Tax Template tillater Expense Account, men ikke Cost of Goods Sold,
+selv om den native fakturaens avgiftsrader/hovedbok godtar kostnadskontoen. Å endre
+4300 fra COGS til generell kostnad ville endre eksisterende kontosemantikk. Den
+smale klasseutvidelsen i item_tax.py beholder kjernens validering for alle ordinære
+rader, bruker kjernens foretaks-/enkeltkontokontroll for COGS og beholder duplikatkontroll.
+Ingen beregnings- eller bokføringsmetode erstattes.

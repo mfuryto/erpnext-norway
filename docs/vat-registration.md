@@ -1,6 +1,6 @@
 # MVA-registrering og overgang
 
-Første MVA-del dekker et norsk NOK-foretak som går fra ikke registrert til godkjent
+Registreringsgrunnlaget dekker et norsk NOK-foretak som går fra ikke registrert til godkjent
 registrering, med innenlandsk ordinær sats 25 %. Planlagt registrering er ikke en
 bekreftelse. Appen registrerer ikke virksomheten hos Skatteetaten og aktiverer ikke
 MVA automatisk ved en omsetningsgrense.
@@ -15,7 +15,7 @@ Sales Invoice har allerede company_tax_id som dokumentets eget felt.
 Minste tillegg er to native Custom Fields på Company, vanlige dokumenthendelser
 for registreringskontroll og eksisterende Tax Category/Tax Rule/avgiftsmaler.
 Kjernens beløpsberegning, avrunding, hovedbok, kreditnota, betaling, File og Version
-beholdes. Ingen ny avgiftsmotor, historikktabell, registreringsportal eller rapportflate.
+beholdes. Rapporttillegget bruker native Script Report over disse kildene.
 
 ## Foretaksinnstilling
 
@@ -67,13 +67,57 @@ beløpsformatering og avgiftsutskrift brukes videre.
 
 Native kreditnota beholder originalfakturaens avgiftsbehandling og referanse, også
 når kreditnotaen bokføres etter registreringen og originalen var uten MVA.
+Utsteders organisasjonsnummer/MVA-merke følger derimot registreringen ved
+utstedelsen av den nye kreditnotaen. Allerede utstedte originaler endres ikke.
+
+## Satser, varelinjer og fradrag i app 0.4.0
+
+Registrert foretak med norsk kontoplan får også daterte 15/12 %-maler og native
+vareavgiftsmaler **MVA 25/15/12 % – varelinjer**. Velg mal per fakturalinje ved
+blandet behandling. Koder og sats lagres på bilagslinjen; senere malendringer skal
+ikke endre klassifiseringen av tidligere bilag.
+
+På en ordinær kostnadslinje i kjøpsfakturaen angis **MVA-fradrag i prosent**.
+Kjernen beregner både fradraget og den ikke-fradragsførte delen på valgt
+kostnadskonto. Eksempel: 1000 ekskl. MVA, 25 % sats og 60 % fradrag gir 1250
+leverandørgjeld, 150 inngående MVA og 1100 kostnad. Velg 100 % for fullt fradrag
+eller 0 % for at hele avgiften inngår i kostnaden. Lagrede delvise maler beholder
+sitt fradragsvalg når de velges på en ny linje. Lager/driftsmidler omfattes ennå
+ikke av dette fradragsfeltets kvalifiserte normalflyt.
+
+Separate native vareavgiftsvalg skiller **Fritatt MVA – nullsats**, **Unntatt MVA**,
+**Uten MVA-behandling** og **Eksport – fritatt MVA**. De gir ulike norske koder;
+de rettslige vilkårene avgjør hvilket valg som faktisk gjelder for leveransen.
+Ingen utenlandsbehandling utledes automatisk bare fra kundens land.
+
+Åpne **Norsk MVA-spesifikasjon** gjennom ERPNexts rapportsøk. Velg foretak og
+periode. Visning per kode gir grunnlag for portalen; detaljvisning gir native
+bilagslenker, linje, bokføringsdato og dato for MVA-perioden. Kjøpsfaktura bruker
+leverandørens fakturadato når den er angitt. Rapporten avstemmer avgiftsdetaljene
+mot bilagets hovedbok og avviser uklassifiserte MVA-posteringer.
+Eldre bilag fra før kodefeltene ble innført må klassifiseres med riktig
+**Norsk MVA-kode** på den native faktura-/journallinjen. Dette er metadata med
+native endringssporing og periodevern; rapporten gjetter ikke nullsats versus
+unntak fra at avgiftsbeløpet er null. Beløpsrettelser krever ordinær kreditnota
+eller dokumentert journal, og tidligere bevarte originaler endres ikke.
+
+**Opprett MVA-oppgjør** lager en vanlig Journal Entry-kladd til ordinær kontroll
+og bokføring. Tidligere oppgjør for samme periode trekkes fra ved en rettelse;
+et oppgjør for en overlappende annen periode avvises. Fra det bokførte oppgjøret
+kan **Opprett MVA-betaling eller refusjon** åpne et vanlig bankbilag med native referanse.
+Fyll faktisk bankdato og bankreferanse, bokfør og bruk standard bankavstemming.
+Betaling bruker 2740; beløp til gode bruker 1640 for å støtte kjernens refusjonsreferanse.
+
+**Bevar MVA-grunnlag** lagrer et privat, beskyttet File-vedlegg på foretaket.
+Innlevert melding og kvittering kan legges ved samme sted via rapportens knapper.
+Nullmelding krever ikke et fiktivt nullbilag. Appen sender ikke meldingen og
+produserer ikke en kvittering fra Skatteetaten. Faktisk innlevering gjøres i portalen.
 
 ## Videre MVA-arbeid og avgrensning
 
-Dette er registreringsgrunnlaget og ordinær innenlandsk 25 %-flyt, ikke ferdig
-samlet MVA-støtte. Delvis/intet fradrag per linje, reduserte satser, fritak/unntak,
-utenlandsforhold, MVA-meldingsgrunnlag, perioder, oppgjør og kvitteringer må
-kvalifiseres videre i normalflyten.
+Dette er ikke ferdig samlet MVA-støtte. [Den samlede MVA-planen](vat-plan.md)
+angir prøvd omfang og åpne gap, blant annet utland/import, ikke-registrert
+kvartalsgrunnlag og ordre-/mottakskjede med kapitalisert MVA.
 
 Ikke-registrering betyr heller ikke at alle utenlandskjøp er uten avgiftsplikt.
 Kontrollen tillater en positiv native kreditpostering på utgående MVA-konto ved
@@ -112,5 +156,5 @@ registreringsflyten bruker appens daterte maler med 2700/2710.
 Tilsvarende standardbeskrivelser og unummererte MVA-kontonavn får MVA.
 Native navneendring oppdaterer lenker; satser, beløp og lagrede PDF-originaler
 endres ikke. Egne navn og navnekollisjoner beholdes uten sammenslåing.
-Dette navngir også kjernens 12 %-mal; det utvider ikke den regnskapsmessig
-kvalifiserte flyten utover 25 %-delen over.
+Kjernens standardmaler beholdes som egne maler; de skal ikke forveksles med
+appens daterte norske maler og varelinjevalg.

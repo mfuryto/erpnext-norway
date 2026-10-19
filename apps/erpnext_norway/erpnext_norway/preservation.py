@@ -4,21 +4,33 @@ from frappe import _
 
 ACCOUNTING = ("Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment Entry")
 RETAINED = (*ACCOUNTING, "Quotation")
-IDENTITY_FIELDS = ("attached_to_doctype", "attached_to_name", "attached_to_field", "file_url",
+NATIVE_IDENTITY_FIELDS = ("attached_to_doctype", "attached_to_name", "attached_to_field", "file_url",
                    "file_name", "content_hash", "is_private", "is_folder", "thumbnail_url")
 
 
+
+def identity_fields():
+    from erpnext_norway.vat_evidence import RETAIN, FIELDS
+    return (*NATIVE_IDENTITY_FIELDS, *FIELDS) if frappe.db.has_column('File', RETAIN) else NATIVE_IDENTITY_FIELDS
+
+
 def is_retained(file, cancelled_only=False):
+    from erpnext_norway.vat_evidence import RETAIN
+    if file.get(RETAIN):
+        return True
     doctype, name = file.get("attached_to_doctype"), file.get("attached_to_name")
     return bool(doctype in RETAINED and name and
                 frappe.db.get_value(doctype, name, "docstatus", for_update=True) in ((2,) if cancelled_only else (1, 2)))
 
 
 def stored_file(file):
-    return frappe.db.get_value("File", file.name, ["name", *IDENTITY_FIELDS], as_dict=True) if file.name else None
+    return frappe.db.get_value("File", file.name, ["name", *identity_fields()], as_dict=True) if file.name else None
 
 
-def refuse():
+def refuse(file=None):
+    from erpnext_norway.vat_evidence import RETAIN
+    if file and file.get(RETAIN):
+        frappe.throw(_("VAT return evidence must be retained. Add a new file for a correction."))
     frappe.throw(_("Attachments on posted or cancelled accounting documents must be retained. Add a new attachment to document a correction."))
 
 
@@ -27,15 +39,15 @@ def guard_file_change(doc, method=None):
         return
     previous = stored_file(doc)
     if previous and is_retained(previous):
-        if any((previous.get(field) or "") != (doc.get(field) or "") for field in IDENTITY_FIELDS):
-            refuse()
+        if any((previous.get(field) or "") != (doc.get(field) or "") for field in identity_fields()):
+            refuse(previous)
 
 
 class RetainedFileMixin:
     def on_trash(self):
         previous = stored_file(self)
         if is_retained(self, cancelled_only=True) or (previous and is_retained(previous, cancelled_only=True)):
-            refuse()
+            refuse(previous or self)
         # Submitted files are already protected by the native DocType setting.
         parent = getattr(super(), "on_trash", None)
         return parent() if parent else None
@@ -45,7 +57,7 @@ class RetainedFileMixin:
         # including a draft attachment sharing the same native file URL.
         previous = stored_file(self) if not self.is_new() else None
         if previous and is_retained(previous):
-            refuse()
+            refuse(previous)
         urls = {value for value in (self.file_url, previous and previous.file_url) if value}
         overwrite = kwargs.get("overwrite", args[3] if len(args) > 3 else False)
         if self.file_name and overwrite:
@@ -53,9 +65,9 @@ class RetainedFileMixin:
             prefix = "/private/files/" if self.is_private else "/files/"
             urls.add(prefix + get_safe_file_name(self.file_name))
         for url in urls:
-            for other in frappe.get_all("File", filters={"file_url": url}, fields=["attached_to_doctype", "attached_to_name"]):
+            for other in frappe.get_all("File", filters={"file_url": url}, fields=list(identity_fields())):
                 if is_retained(other):
-                    refuse()
+                    refuse(other)
         return super().save_file(*args, **kwargs)
 
 
