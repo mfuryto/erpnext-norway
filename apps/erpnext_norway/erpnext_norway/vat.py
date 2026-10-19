@@ -8,12 +8,25 @@ from frappe.utils import getdate
 STATUS = 'custom_norway_vat_status'
 FROM = 'custom_norway_vat_from'
 CATEGORY = 'Norge MVA 25 %'
+CONFIGURED = 'custom_norway_vat_configured'
 
 
 def configure():
+    from erpnext_norway.vat_catalog import configure_fields
+    configure_fields()
+    from erpnext_norway.vat_journal import configure_fields as configure_journal_fields
+    configure_journal_fields()
+    from erpnext_norway.vat_evidence import configure_fields as configure_evidence_fields
+    configure_evidence_fields()
     # Company has Tax ID but no Norwegian registration/approval or effective date.
     # Native Custom Field/Version and Tax Rule date ranges provide the missing data.
+    create_custom_fields({doctype: [{
+        'fieldname': 'custom_norway_company_tax_id', 'label': 'Company organisation number',
+        'fieldtype': 'Data', 'insert_after': 'company', 'read_only': 1, 'no_copy': 1,
+    }] for doctype in ('Quotation', 'Sales Order', 'Delivery Note', 'Purchase Order')})
     create_custom_fields({'Company': [
+        {'fieldname': CONFIGURED, 'label': 'Norwegian VAT configuration initialized',
+         'fieldtype': 'Check', 'insert_after': 'tax_id', 'hidden': 1, 'read_only': 1, 'no_copy': 1},
         {'fieldname': STATUS, 'label': 'Norwegian VAT registration', 'fieldtype': 'Select',
          'insert_after': 'tax_id', 'no_copy': 1, 'options': 'Not configured\nNot registered\nRegistered',
          'depends_on': 'eval:doc.country==="Norway"',
@@ -49,7 +62,8 @@ def configure_company(doc, method=None):
     if doc.country != 'Norway' or doc.get(STATUS) not in ('Not registered', 'Registered'):
         return
     previous = doc.get_doc_before_save()
-    if (doc.get(STATUS) == 'Registered' and previous and previous.get(STATUS) == 'Registered'
+    first = not doc.get(CONFIGURED)
+    if (not first and doc.get(STATUS) == 'Registered' and previous and previous.get(STATUS) == 'Registered'
             and getdate(previous.get(FROM)) == getdate(doc.get(FROM))):
         return
     # A timeless default bypasses Tax Rule.from_date, including on backdated drafts.
@@ -62,11 +76,14 @@ def configure_company(doc, method=None):
                 template.save(ignore_permissions=True)
     if doc.get(STATUS) != 'Registered':
         return
+    if not doc.cost_center:
+        return  # Native Company can save itself while still creating defaults.
     accounts = {code: frappe.db.get_value('Account', {
         'company': doc.name, 'account_number': code, 'is_group': 0,
     }) for code in ('2700', '2710')}
     # Explicit alternative charts remain usable with the site's own native templates.
     if not all(accounts.values()):
+        doc.db_set(CONFIGURED, 1, update_modified=False)
         return
     if not frappe.db.exists('Tax Category', CATEGORY):
         frappe.get_doc({'doctype': 'Tax Category', 'title': CATEGORY}).insert(ignore_permissions=True)
@@ -84,7 +101,7 @@ def configure_company(doc, method=None):
         filters = {'company': doc.name, 'tax_type': tax_type, 'tax_category': CATEGORY}
         rules = frappe.get_all('Tax Rule', filters=filters, pluck='name')
         template_field = 'sales_tax_template' if tax_type == 'Sales' else 'purchase_tax_template'
-        if not rules and (not previous or previous.get(STATUS) != 'Registered'):
+        if not rules and (first or not previous or previous.get(STATUS) != 'Registered'):
             frappe.get_doc({'doctype': 'Tax Rule', **filters, template_field: name,
                 'from_date': doc.get(FROM), 'priority': 1}).insert(ignore_permissions=True)
         elif previous and previous.get(FROM) and previous.get(FROM) != doc.get(FROM):
@@ -100,11 +117,20 @@ def configure_company(doc, method=None):
                     rule.from_date = doc.get(FROM)
                     rule.save(ignore_permissions=True)
 
+    from erpnext_norway.vat_catalog import seed, move_seed_dates
+    if first or not previous or previous.get(STATUS) != 'Registered':
+        seed(doc)
+        doc.db_set(CONFIGURED, 1, update_modified=False)
+    else:
+        move_seed_dates(doc, previous)
+
 
 def is_vat_account(name):
     if not name:
         return False
     row = frappe.get_cached_value('Account', name, ['account_number', 'account_name', 'account_type'], as_dict=True)
+    if row and row.account_number in ('1640', '2740'):
+        return False  # Settlement/bank transfers are not a new taxable transaction.
     return bool(row and ((row.account_number or '').startswith(('270', '271')) or
         (row.account_type == 'Tax' and re.search(r'\b(?:VAT|MVA|merverdiavgift)\b', row.account_name or '', re.I))))
 
@@ -135,13 +161,10 @@ def stamp_invoice(doc, method=None):
     company = frappe.get_cached_doc('Company', doc.company)
     if company.country != 'Norway' or company.get(STATUS) not in ('Registered', 'Not registered'):
         return
-    original = original_invoice(doc)
-    if original:
-        doc.company_tax_id = original.company_tax_id
-    else:
-        number = organisation_number(company.tax_id) or company.tax_id or ''
-        # Snapshot the invoice's own registration treatment in an existing native field.
-        doc.company_tax_id = number + (' MVA' if effective(company, doc.posting_date) else '')
+    number = organisation_number(company.tax_id) or company.tax_id or ''
+    # The current issuer's registration mark is distinct from the original
+    # transaction's VAT calculation, which native credit notes still reverse.
+    doc.company_tax_id = number + (' MVA' if effective(company, doc.posting_date) else '')
 
 
 def validate_invoice(doc, method=None):
@@ -179,10 +202,25 @@ def validate_invoice(doc, method=None):
         if prohibited:
             frappe.throw(frappe._('VAT on sales or input VAT deduction requires approved registration effective for this invoice.'))
     elif method == 'before_submit' or doc.docstatus == 1:
-        if not (doc.tax_category or doc.taxes_and_charges or doc.taxes):
+        from erpnext_norway.vat_catalog import CODE
+        explicit_lines = bool(doc.items) and all(row.get(CODE) for row in doc.items)
+        if not (doc.tax_category or doc.taxes_and_charges or doc.taxes or explicit_lines):
             frappe.throw(frappe._('Select the applicable native tax category or tax template before submitting the invoice.'))
         template_type = 'Sales' if doc.doctype == 'Sales Invoice' else 'Purchase'
         template_category = frappe.db.get_value(template_type + ' Taxes and Charges Template',
             doc.taxes_and_charges, 'tax_category') if doc.taxes_and_charges else None
-        if (doc.tax_category == CATEGORY or template_category == CATEGORY) and not doc.taxes:
+        from erpnext_norway.vat_catalog import ORDINARY
+        categories = {f'Norge MVA {rate} %' for rate, *_ in ORDINARY}
+        if (doc.tax_category in categories or template_category in categories) and not doc.taxes:
             frappe.throw(frappe._('No active VAT template was applied. Check the native tax rule and apply the correct template.'))
+
+
+def stamp_commercial_document(doc, method=None):
+    if not doc.company or posted_update(doc):
+        return
+    company = frappe.get_cached_doc('Company', doc.company)
+    if company.country != 'Norway' or company.get(STATUS) not in ('Registered', 'Not registered'):
+        return
+    date = doc.get('transaction_date') or doc.get('posting_date')
+    number = organisation_number(company.tax_id) or company.tax_id or ''
+    doc.custom_norway_company_tax_id = number + (' MVA' if effective(company, date) else '')

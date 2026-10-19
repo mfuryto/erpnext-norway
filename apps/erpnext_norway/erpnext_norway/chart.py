@@ -40,6 +40,14 @@ def select_default(doc, method=None):
 
 
 class NorwegianCompanyMixin:
+    def on_trash(self):
+        from erpnext_norway.vat_evidence import RETAIN
+        if frappe.db.has_column('File', RETAIN) and frappe.db.exists('File', {
+                'attached_to_doctype': 'Company', 'attached_to_name': self.name, RETAIN: 1}):
+            frappe.throw(frappe._('Keep the Company to retain its VAT return evidence.'))
+        parent = getattr(super(), "on_trash", None)
+        return parent() if parent else None
+
     def create_default_accounts(self):
         if self.chart_of_accounts != NAME or self.existing_company:
             return super().create_default_accounts()

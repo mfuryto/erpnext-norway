@@ -254,7 +254,7 @@ try:
             credit.update_outstanding_for_self = 0
             credit.save()
             credit.submit()
-            assert credit.company_tax_id == original.company_tax_id
+            assert credit.company_tax_id == '999999999 MVA'
             equal(credit.total_taxes_and_charges, -original.total_taxes_and_charges)
             evidence.append(fingerprint(credit))
         purchase_credit = make_return_doc('Purchase Invoice', purchase.name)

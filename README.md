@@ -15,8 +15,9 @@ fortsatt kjernen; appen aktiveres gjennom den særskilte oppdateringsrutinen.
 - ERPNexts standard modulvisning, med tilbakeføring av tidligere modulskjuling.
 - Norsk skjermspråk i grunndata, innstillinger og regnskapsflyt, samt norske/engelske
   salgsdokumenter. Se [språkomfang og aksept](docs/language.md).
-- [MVA-registrering og senere overgang](docs/vat-registration.md) med native regler og
-  første innenlandske 25 %-flyt; øvrig MVA-aksept gjenstår.
+- [MVA-registrering og senere overgang](docs/vat-registration.md), native satser og
+  linjefradrag, rapportgrunnlag og oppgjør. [Samlet MVA-plan](docs/vat-plan.md)
+  viser prøvd omfang og åpne gap.
 - Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.
 - Plan for norsk kontoplan, MVA, dokumentkrav, SAF-T, EHF og årsgrunnlag.
 - ERPNext-kjernen først; tillegg brukes som referanser, ikke som automatisk produktgrunnlag.

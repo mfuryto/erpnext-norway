@@ -13,28 +13,39 @@ after_migrate = "erpnext_norway.setup.configure"
 # native disk removal; a cooperative extension is needed for that specific gap.
 _accounting = ["Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment Entry"]
 extend_doctype_class = {
+    "Item Tax Template": ["erpnext_norway.item_tax.NorwegianItemTaxMixin"],
     "File": ["erpnext_norway.preservation.RetainedFileMixin"],
     "Company": ["erpnext_norway.chart.NorwegianCompanyMixin"],
     "Quotation": ["erpnext_norway.preservation.RetainedDocumentMixin"],
     **{name: ["erpnext_norway.preservation.RetainedDocumentMixin"] for name in _accounting},
 }
 doc_events = {
+    "Sales Order": {"before_validate": "erpnext_norway.vat.stamp_commercial_document"},
+    "Delivery Note": {"before_validate": "erpnext_norway.vat.stamp_commercial_document"},
+    "Purchase Order": {"before_validate": "erpnext_norway.vat.stamp_commercial_document"},
+    "Journal Entry": {"validate": "erpnext_norway.vat_journal.validate",
+        "before_submit": "erpnext_norway.vat_journal.validate",
+        "on_update_after_submit": "erpnext_norway.vat_journal.validate"},
     "Company": {
         "before_validate": ["erpnext_norway.chart.select_default", "erpnext_norway.vat.validate_company"],
         "on_update": "erpnext_norway.vat.configure_company",
     },
     "File": {"before_validate": "erpnext_norway.preservation.guard_file_change"},
-    "Purchase Invoice": {"validate": "erpnext_norway.vat.validate_invoice",
-        "before_submit": "erpnext_norway.vat.validate_invoice"},
+    "Purchase Invoice": {"before_validate": ["erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes"],
+        "validate": "erpnext_norway.vat.validate_invoice",
+        "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes"],
+        "on_update_after_submit": "erpnext_norway.vat_catalog.validate_code_changes"},
     "Sales Invoice": {
         "validate": "erpnext_norway.vat.validate_invoice",
-        "before_submit": "erpnext_norway.vat.validate_invoice",
+        "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes"],
         "on_submit": "erpnext_norway.printing.preserve_submission",
+        "on_update_after_submit": "erpnext_norway.vat_catalog.validate_code_changes",
         "before_naming": "erpnext_norway.numbering.guard_import_name",
-        "before_validate": ["erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice"],
+        "before_validate": ["erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes"],
         "before_rename": "erpnext_norway.numbering.prevent_rename",
     },
-    "Quotation": {"on_submit": "erpnext_norway.printing.preserve_submission",
+    "Quotation": {"before_validate": "erpnext_norway.vat.stamp_commercial_document",
+        "on_submit": "erpnext_norway.printing.preserve_submission",
         "before_rename": "erpnext_norway.printing.guard_quotation_rename"},
     "Document Naming Rule": {
         "validate": "erpnext_norway.numbering.guard_rule_change",
@@ -49,6 +60,8 @@ override_whitelisted_methods = {
     _chart_api + name: "erpnext_norway.chart." + name
     for name in ("build_tree_from_json", "validate_bank_account")
 }
-doctype_js = {"Company": "public/js/company.js"}
+doctype_js = {"Company": "public/js/company.js",
+    "Sales Invoice": "public/js/vat.js", "Purchase Invoice": "public/js/vat.js",
+    "Journal Entry": "public/js/vat_journal.js"}
 
 jinja = {"methods": ["erpnext_norway.printing.bank_details", "erpnext_norway.printing.translated_taxes"]}

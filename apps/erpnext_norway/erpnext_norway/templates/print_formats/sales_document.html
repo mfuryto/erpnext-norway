@@ -19,7 +19,7 @@
 {% set bank = bank_details(doc.company, doc.get("customer") or (doc.get("party_name") if doc.get("quotation_to") == "Customer" else None)) %}
 <table class="norway-parties"><tr><td>
 <strong>{{ company.company_name | e }}</strong><br>
-{{ _("Organisation number") }}: {{ (doc.get("company_tax_id") or company.tax_id or "") | e }}<br>
+{{ _("Organisation number") }}: {{ (doc.get("company_tax_id") or doc.get("custom_norway_company_tax_id") or company.tax_id or "") | e }}<br>
 {{ doc.get("company_address_display") or "" }}
 </td><td>
 <strong>{{ (doc.get("customer_name") or doc.get("party_name") or "") | e }}</strong><br>

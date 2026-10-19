@@ -90,37 +90,35 @@ Bruk faktisk registreringsstatus, virkningsdato og gjeldende regelverk. Ikke ant
 MVA-registrering bare fordi det skal faktureres. Foretaksform og kontoer er konfigurasjon.
 Ikke utvid automatisk til AS-årsregnskap, lønn, utenlandske forbrukerregler eller særnæringer.
 
-## Plan: fullfør ett støttet trinn før neste
+## Hovedplan: avtalt søndag 18. oktober kl. 18.44
 
-1. **Drift og repo.** Bevar to grener og sikker arbeidsflyt. Klargjør standard ERPNext
-   med Compose, privat konfigurasjon og data i prosjektets data-mappe. Prøv installasjon,
-   oppdatering og ERPNext backup/restore. Overtak gammel HTTP-port først etter
-   klargjøring; verifiser eksisterende proxy, TLS og Socket.IO. Den norske appen er ennå
-   ikke installert i dette driftsgrunnlaget. Ingen reelle bilag før regnskapsaksept.
-2. **Kjerne og norsk minimum.** Opprett en liten ekstern Frappe-app bare for faktiske gap.
-   Prøv kontoplan/defaults, foretaksdata, org.nr/MVA, dokumentkrav, utstedelsesnummer,
-   norsk/engelsk mal og dokumentbevaring. Ingen ekstra godkjennings- eller kontrollflate.
-3. **Normal kjøps-/salgs-/bankflyt og MVA.** Velg behandling ved registrering. Prøv
-   full/delvis/ingen fradragsrett per linje, kreditnota, reverse charge, betaling/refusjon
-   og avrunding. Bruk native journaler, Payment Entry og Bank Reconciliation. Gjør MVA
-   tydelig: grunnlag → portal → oppgjør → betaling/refusjon → avstemming og kvittering.
-4. **SAF-T.** Gjenbruk regler/mapping og uavhengige fasiter, bygg adapter til ERPNext.
-   1.40 må avstemmes mot hovedbok, åpning, reskontro og kilder. Kvalifiser årsversjon
-   og gruppeliste før bruk; tidligere 2025–2026-støtte er ikke automatisk 2027-støtte.
-   SAF-T må være klart før ordinær elektronisk bokføring tas i bruk.
-5. **ENK skatt og årsavslutning.** Bruk native periodisering, balanse, låsing og Period
-   Closing Voucher. Gjør forskuddsskatt/betaling og årsgrunnlag lett å finne. Rapporter
-   for næringsspesifikasjon/fradrag må være årsspesifikke og sporbare. Kvalifiser behov
-   for skattemessige saldogrupper separat; native Asset alene er ikke norsk skatteregel.
-6. **Ekstern integrasjon.** Lisensarbeidet skjer i det separate prosjektet. Bruk standard
-   REST/rettigheter først og valgfrie generiske adaptere ved reelt behov. Ingen leverandørnavn,
-   personlige referanser eller tvungen avhengighet i regnskapsmodulen. Ingen Dolibarr-endringer.
-7. **EHF sluttføring.** Lag/velg minste adapter på faktura/kreditnota. Gjenbruk EHF-fasiter
-   og erfaringer, ikke en antatt ferdig landsmodul. Prøv faktisk Peppol-levering, feil,
-   duplikatvern, ukjent resultat, status og kvittering før steget er ferdig.
-8. **Samlet sluttkontroll sist.** Hele ordinære flyten, vanlig eierbruker, backup/restore,
-   oppgraderinger, dokumentasjon og norsk regnskapsmessig aksept i eksplisitt omfang.
-   Dette trinnet utsettes til EHF og de øvrige avtalte gapene er lukket.
+Nummereringen under er den bruker viser til. Bestilling 19. oktober: sluttfør
+punkt 5–7, med hele MVA-planen først. Integrasjoner/EHF er punkt 8 og inngår
+ikke i denne bestillingen. Tidligere annen nummerering er erstattet her.
+
+1. **Minimal norsk app og trygg oppdatering.** Native nummerserier/filer,
+   dokumentbevaring, oppdatering, migrering og gjenoppretting.
+2. **Norsk språk og dokumenter.** Norske skjermbegreper og norsk/engelsk
+   tilbud, faktura og kreditnota.
+3. **Foretaksoppsett.** Norsk kontoplan, standardkontoer, bank, nummerserier
+   og ikke-MVA-registrert foretak.
+4. **Vanlig regnskapsflyt.** Salg, kjøp, kreditnota, betaling og bankavstemming,
+   inkludert aktuelle utenlandstransaksjoner og avgiftsvalg.
+5. **MVA.** Hele [MVA-planen](vat-plan.md): registrering, satser, behandlingskoder,
+   fradrag/linjevalg, innenlands/utlandsflyt, avstemt portalgrunnlag og oppgjør.
+   Direkteinnsending er ikke bestilt.
+6. **SAF-T.** Norsk eksport avstemt mot hovedbok, åpning, reskontro og kilder.
+   Kvalifiser format, årsversjon og gruppelister. Må være klart før ordinær
+   elektronisk bokføring tas i bruk.
+7. **ENK og årsavslutning.** Eiertransaksjoner, forskuddsskatt, avskrivninger,
+   native periodestenging/låsing og årsspesifikt, sporbart rapportgrunnlag.
+   Native Asset alene er ikke norsk skattemessig saldoregel.
+8. **Integrasjoner og sluttkontroll.** Valgfri ekstern integrasjon i separat
+   prosjekt, EHF med faktisk levering/kvitteringer, deretter samlet aksept.
+
+Bruk kjernen først og test hvert støttet område før neste. Tekniske prøver og
+regnskapsmessig aksept skal fortsatt skilles. Faktisk serverkonfigurasjon og
+portalhandlinger utføres av brukeren; Codex arbeider i arbeidsmappen og GitHub.
 
 ## Videreføring av driftsprøver
 
@@ -247,3 +245,26 @@ MVA-navngiving: native norske standardmaler navngis med Utgående/Inngående MVA
 og ERPNext-standard. Vareavgiftsmaler/kategori er nøytrale. Appmalene heter
 Utgående MVA 25 % og Inngående MVA 25 % – fullt fradrag. Migrering bruker native
 rename_doc for lenker, uten sammenslåing av kollisjoner eller endring av bilagsbeløp.
+
+
+## Videreføring: native MVA-linjer, rapport og oppgjør
+
+App 0.4.0 utvider de dokumenterte innenlandsprøvene med 25/15/12 %, separate
+null-/unntaksvalg, fullt/delvis/intet kostnadsfradrag og native kreditnota/rabatt.
+Norsk MVA-spesifikasjon leser native avgiftsdetaljer og avstemmer mot hovedbok.
+Leverandørens fakturadato styrer MVA-perioden; bokføringsdato endres ikke.
+Native Journal Entry brukes til oppgjør, differanse ved rettelser og bankføring
+av betaling/refusjon. Privat File bevarer grunnlag, innlevert melding og kvittering,
+inkludert nullgrunnlag uten et fiktivt nullbilag. Ingen direkteinnsending.
+
+Prøvd med vanlig eier: blandet salg gir 520 MVA, kjøp med 60/0 % gir 150 fradrag
+og 2350 kostnad; oppgjør 270 og refusjon 100 følger native betaling/bankavstemming.
+En sen kjøpsfaktura gir bare 100 i differanseoppgjør for sin dokumentperiode.
+Samtidig bokføring av to foreldede oppgjørskladder gir ett oppgjør; kjernens
+transaksjonelle tilbakerulling beholdes uten egen retry-motor.
+
+Hele punkt 5 er fortsatt åpent. Se vat-plan.md for gjenstående utland/import,
+ikke-registrert kvartalsterskel, ordre-/mottakskjede og øvrige kombinasjoner.
+Native Valuation and Total er prøvd for 1100 lager-/driftsmiddelkost ved 60 %
+fradrag, men er ennå ikke koblet til appens fradragsvalg. Fullfør disse gapene
+før punkt 6 SAF-T og punkt 7 ENK/årsavslutning. Integrasjoner/EHF er punkt 8.

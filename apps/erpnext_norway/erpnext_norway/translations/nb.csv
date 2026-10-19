@@ -4611,3 +4611,67 @@ Keep the original invoice VAT treatment on its credit note.,Behold originalfaktu
 VAT on sales or input VAT deduction requires approved registration effective for this invoice.,Utgående MVA på salg eller fradrag for inngående MVA krever godkjent registrering som gjelder for denne fakturaen.
 Select the applicable native tax category or tax template before submitting the invoice.,Velg riktig avgiftskategori eller avgiftsmal før fakturaen bokføres.
 No active VAT template was applied. Check the native tax rule and apply the correct template.,Ingen gyldig MVA-mal er brukt. Kontroller avgiftsregelen og bruk riktig mal.
+Norwegian sales VAT code,Norsk MVA-kode for salg
+Norwegian purchase VAT code,Norsk MVA-kode for kjøp
+Norwegian VAT code,Norsk MVA-kode
+Norwegian VAT rate,Norsk MVA-sats
+Input VAT deduction percent,MVA-fradrag i prosent
+Input VAT deduction must be between 0 and 100 percent.,MVA-fradraget må være mellom 0 og 100 prosent.
+Partial VAT deduction for stock or fixed assets requires a qualified valuation template.,Delvis MVA-fradrag for lagervarer eller driftsmidler krever en kvalifisert verdsettingsmal.
+Select a company expense account for non-deductible VAT.,Velg en kostnadskonto i foretaket for ikke-fradragsberettiget MVA.
+Only draft invoices can be changed.,Bare fakturakladder kan endres.
+Select a supported Norwegian VAT code for this invoice line.,Velg en støttet norsk MVA-kode for denne fakturalinjen.
+The VAT code does not match the invoice line tax posting. Use a credit note for amount corrections.,MVA-koden samsvarer ikke med fakturalinjens avgiftspostering. Bruk kreditnota ved beløpsretting.
+"Select Company, From Date and To Date.","Velg foretak, fra-dato og til-dato."
+This Norwegian VAT report requires a Norwegian company with NOK accounting currency.,Den norske MVA-rapporten krever et norsk foretak med NOK som regnskapsvaluta.
+"Norwegian VAT code is missing on invoice {0}, row {1}.","Norsk MVA-kode mangler på faktura {0}, linje {1}."
+VAT details do not reconcile with the ledger for invoice {0}.,MVA-spesifikasjonen stemmer ikke med hovedboken for faktura {0}.
+VAT payable or refundable,MVA å betale eller til gode
+Included in VAT return,Med i MVA-meldingen
+Group by Norwegian VAT code,Grupper etter norsk MVA-kode
+VAT base,MVA-grunnlag
+From Date cannot be after To Date.,Fra-dato kan ikke være etter til-dato.
+Invalid invoice type.,Ugyldig fakturatype.
+VAT specification,MVA-spesifikasjon
+Capital goods adjustment,Justering av MVA for kapitalvarer
+Capital goods reversal,Tilbakeføring av MVA for kapitalvarer
+Norwegian VAT settlement,Norsk MVA-oppgjør
+VAT period from,MVA-periode fra
+VAT period to,MVA-periode til
+Select a Norwegian VAT code on each journal VAT line before submission.,Velg en norsk MVA-kode på hver MVA-linje i journalen før bokføring.
+The journal VAT code does not match its VAT account.,MVA-koden i journalen samsvarer ikke med MVA-kontoen.
+This VAT specification is not supported for the selected VAT code.,Denne MVA-spesifikasjonen støttes ikke for valgt MVA-kode.
+"Enter the documented VAT base on journal {0}, row {1}.","Angi dokumentert MVA-grunnlag på journal {0}, linje {1}."
+VAT posting {0} {1} has no supported classification in the report.,MVA-postering {0} {1} mangler støttet klassifisering i rapporten.
+Bad debt,Tap på krav
+Retained VAT evidence,Bevart MVA-dokumentasjon
+VAT evidence type,Type MVA-dokumentasjon
+VAT basis,MVA-grunnlag
+Submitted VAT return,Levert MVA-melding
+VAT receipt,Kvittering for MVA-melding
+Select a Norwegian company and a valid VAT period.,Velg et norsk foretak og en gyldig MVA-periode.
+VAT evidence must be a private attachment on the Company.,MVA-dokumentasjon må være et privat vedlegg på foretaket.
+Select a submitted VAT return or a VAT receipt.,Velg en levert MVA-melding eller en kvittering for MVA-melding.
+Upload VAT evidence as a private Company attachment first.,Last først opp MVA-dokumentasjonen som et privat vedlegg på foretaket.
+Keep the Company to retain its VAT return evidence.,Bevar foretaket for å beholde dokumentasjonen for MVA-meldingene.
+VAT return evidence must be retained. Add a new file for a correction.,MVA-dokumentasjonen må bevares. Legg til en ny fil ved retting.
+Configure native account {0} before creating the VAT settlement.,Sett opp standardkonto {0} før MVA-oppgjøret opprettes.
+The VAT settlement must use the selected period end as posting date.,MVA-oppgjøret må bruke slutten av valgt periode som bokføringsdato.
+There are no VAT balances to settle. Preserve the VAT basis without a zero-value journal.,Det finnes ingen MVA-saldo å gjøre opp. Bevar MVA-grunnlaget uten et nullbilag.
+The VAT settlement no longer matches the ledger. Recreate the draft from the current report.,MVA-oppgjøret stemmer ikke lenger med hovedboken. Opprett kladden på nytt fra gjeldende rapport.
+Select a submitted native VAT settlement.,Velg et bokført MVA-oppgjør.
+The VAT settlement has no payment or refund amount.,MVA-oppgjøret har ikke noe beløp å betale eller få tilbake.
+Set the native company default bank account first.,Angi foretakets standard bankkonto først.
+Create VAT payment or refund,Opprett MVA-betaling eller refusjon
+Company organisation number,Foretakets organisasjonsnummer
+Preserve VAT basis,Bevar MVA-grunnlag
+Create VAT settlement,Opprett MVA-oppgjør
+Attach submitted VAT return,Legg ved levert MVA-melding
+Attach VAT receipt,Legg ved MVA-kvittering
+VAT documents,MVA-dokumentasjon
+Do not repeat the same account in an item tax template.,Ikke gjenta samme konto i en vareavgiftsmal.
+Norwegian VAT configuration initialized,Norsk MVA-oppsett opprettet
+VAT period date,Dato for MVA-perioden
+The selected VAT period overlaps another submitted settlement period.,Valgt MVA-periode overlapper en annen bokført oppgjørsperiode.
+An existing percentage charge uses the non-deductible VAT cost account. Use a separate charge account.,En eksisterende prosentvis kostnad bruker kostnadskontoen for ikke-fradragsført MVA. Velg en egen konto for denne kostnaden.
+Item-level VAT treatment requires native percentage VAT rows.,MVA-behandling per varelinje krever prosentvise MVA-rader.
