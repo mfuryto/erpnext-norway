@@ -66,7 +66,27 @@ def collect(filters):
                 liability = output - deduction
                 doc_total += liability
                 active = [row for row in rows if money(row.amount)]
-                base = money(active[0].taxable_amount) if active else money(item.base_net_amount)
+                if active:
+                    # Freight can have its own On Previous Row VAT in addition
+                    # to the item's On Net Total VAT. Sum those native bases on
+                    # one side only; reverse charge has output and input on the
+                    # same base and must not double that base.
+                    basis_account = next((tax_rows[row.tax_row].account_head for row in active
+                        if (frappe.get_cached_value('Account', tax_rows[row.tax_row].account_head,
+                            'account_number') or '').startswith('270')),
+                        tax_rows[active[0].tax_row].account_head)
+                    base = sum((money(item.base_net_amount) if not row.taxable_amount
+                        and tax_rows[row.tax_row].charge_type == 'On Net Total'
+                        else money(row.taxable_amount) for row in active
+                        if tax_rows[row.tax_row].account_head == basis_account), Decimal(0))
+                else:
+                    base = money(item.base_net_amount)
+                    if doctype == 'Sales Invoice':
+                        # Native non-VAT charges allocated to a zero-rated sale
+                        # are still consideration; zero VAT is not zero freight.
+                        base += sum((money(row.amount) for row in details
+                            if row.item_row == item.name and row.tax_row in tax_rows
+                            and not is_vat_account(tax_rows[row.tax_row].account_head)), Decimal(0))
                 result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': doctype,
                     'voucher': doc.name, 'line': item.idx, 'item_code': item.item_code,
                     'vat_code': item.get(CODE), 'vat_rate': item.get(RATE) or (active[0].rate if active else 0),

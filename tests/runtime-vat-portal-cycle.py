@@ -109,6 +109,7 @@ try:
     payment(sale,'2026-07-09',3520,True);payment(purchase,'2026-07-10',2500);payment(old,'2026-07-11',500)
     doc=frappe.get_doc('File',preserve_basis(**filters)['name']);path=Path(doc.get_full_path())
     digest=hashlib.sha256(path.read_bytes()).hexdigest();assert doc.get(RETAIN)==1
+    assert preserve_basis(**filters)['name']==doc.name
     rejected(doc.delete)
     doc.reload();doc.is_private=0;rejected(doc.save)
     assert hashlib.sha256(path.read_bytes()).hexdigest()==digest
@@ -146,6 +147,9 @@ try:
     equal(sum(float(r.debit_in_account_currency or 0) for r in amendment.accounts),100)
     assert any(r.account==A['1640'] for r in amendment.accounts)
     rejected(lambda:make_settlement(**filters))
+    changed_basis=preserve_basis(**filters)
+    assert changed_basis['name']!=doc.name
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==digest
     print('PASS ordinary owner: native mixed-rate VAT, retrospective journal, report, settlement 270, refund 100, supplier/customer payments, bank reconciliation and protected private VAT evidence')
     print('PASS supplier document period differs from native posting period; amended native settlement clears only the 100 difference')
 finally:

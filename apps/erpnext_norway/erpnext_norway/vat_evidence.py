@@ -45,13 +45,21 @@ def retain(file, kind, from_date, to_date):
 
 @frappe.whitelist()
 def preserve_basis(company, from_date, to_date):
-    from frappe.utils.file_manager import save_file
+    from frappe.utils.file_manager import save_file, get_content_hash
     from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
     authorize(company, from_date, to_date)
     rows = collect({'company': company, 'from_date': from_date, 'to_date': to_date})
     content = frappe.as_json({'format': 'erpnext-norway-vat-basis-1', 'company': company,
-        'from_date': str(getdate(from_date)), 'to_date': str(getdate(to_date)), 'rows': rows})
-    file = save_file(f'MVA-grunnlag-{from_date}-{to_date}.json', content.encode(),
+        'from_date': str(getdate(from_date)), 'to_date': str(getdate(to_date)), 'rows': rows}).encode()
+    for name in frappe.get_all('File', filters={'attached_to_doctype': 'Company',
+            'attached_to_name': company, 'is_private': 1, RETAIN: 1, KIND: 'VAT basis',
+            FROM: getdate(from_date), TO: getdate(to_date), 'content_hash': get_content_hash(content)}, pluck='name'):
+        file = frappe.get_doc('File', name)
+        file.check_permission('read')
+        saved = file.get_content()
+        if (saved.encode() if isinstance(saved, str) else saved) == content:
+            return {'name': file.name, 'file_url': file.file_url}
+    file = save_file(f'MVA-grunnlag-{from_date}-{to_date}.json', content,
                      'Company', company, is_private=1)
     return retain(file, 'VAT basis', from_date, to_date)
 

@@ -65,6 +65,29 @@ const assert = require('node:assert/strict');
         assert.equal(restored.taxes.find(row=>row.account.startsWith('2710 ')).amount,250);
         assert.equal(restored.taxes.find(row=>row.account.startsWith('4500 ')).amount,0);
         console.log('PASS explicit return to full deduction uses native template and reverses the cost allocation in preview');
+        await page.evaluate(()=>{
+            const cost=cur_frm.doc.taxes.find(row=>row.account_head.startsWith('4500 ')).account_head;
+            cur_frm.doc.taxes=cur_frm.doc.taxes.filter(row=>row.account_head!==cost);
+            cur_frm.add_child('taxes',{charge_type:'Actual',account_head:cost,tax_amount:100,
+                description:'Synthetic separate charge',category:'Total',add_deduct_tax:'Add',
+                cost_center:cur_frm.doc.cost_center});
+            cur_frm.refresh_field('taxes');cur_frm.cscript.calculate_taxes_and_totals();
+        });
+        await page.waitForFunction(()=>cur_frm.doc.grand_total===1350&&!frappe.request.ajax_count);
+        await page.evaluate(async()=>{
+            const item=cur_frm.doc.items.find(row=>row.item_code==='RUNTIME-VAT-SERVICE');
+            await frappe.model.set_value(item.doctype,item.name,'custom_norway_deduction_percent',60);
+        });
+        await page.waitForFunction(()=>!cur_frm.__norway_vat_preview&&!frappe.request.ajax_count&&
+            cur_frm.doc.taxes.filter(row=>row.account_head.startsWith('4500 ')).length===2);
+        const charged=await page.evaluate(()=>({total:cur_frm.doc.grand_total,
+            taxes:cur_frm.doc.taxes.map(row=>({account:row.account_head,type:row.charge_type,
+                amount:row.tax_amount_after_discount_amount}))}));
+        assert.equal(charged.total,1350);
+        assert.equal(charged.taxes.find(row=>row.account.startsWith('2710 ')).amount,150);
+        assert.equal(charged.taxes.find(row=>row.account.startsWith('4500 ')&&row.type==='Actual').amount,100);
+        assert.equal(charged.taxes.find(row=>row.account.startsWith('4500 ')&&row.type==='On Net Total').amount,100);
+        console.log('PASS native browser retains separate charge and non-deductible VAT on the same account: 1350 payable');
         await page.goto('/app/query-report/Norsk%20MVA-spesifikasjon?company=Runtime%20VAT%20Example&from_date=2026-10-15&to_date=2026-10-31');
         await page.waitForFunction(()=>window.frappe?.query_report?.report_name==='Norsk MVA-spesifikasjon'&&
             frappe.query_report.data?.length&&!frappe.request.ajax_count);

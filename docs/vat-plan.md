@@ -13,7 +13,7 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 4 | Separate valg for fritatt/nullsats, unntatt og uten MVA-behandling | Separate varelinjevalg prøvd; vilkårene avgjør faktisk bruk |
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad med fullt/60/0 % fradrag prøvd; lager/driftsmiddel er foreløpig kjerneprøve |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer og kjøpsskjerm prøvd; ordre-/mottakskjede gjenstår |
-| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt og begge kreditnotatyper prøvd; øvrige kombinasjoner gjenstår |
+| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, kreditnotaer, native fraktgrunnlag og inklusiv kjøpspris prøvd; ordrekjede og øvrige kombinasjoner gjenstår |
 | 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Bare teknisk posteringstilfelle prøvd |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
@@ -66,6 +66,25 @@ Delvis fradrag mot 4300 er også prøvd uten å endre Cost of Goods Sold-kontoty
 Native blandet kreditnota og 10 % rabatt er prøvd: 520 reverseres til -520,
 og rabatt gir 2700 netto + 468 MVA = 3168. Kjøpskreditnota reverserer både
 150 inngående MVA og 2350 kostnad ved opprinnelig 60/0 %-fradrag.
+Separate native tillegg er prøvd: vare 1000 + frakt 100 gir 1100 i grunnlag
+og 275 MVA med On Previous Row/On Net Total, mens nullsats beholder 1100 i
+grunnlag uten MVA. Et Actual-tillegg på samme kostnadskonto beholdes som en
+egen rad ved delvis fradrag. En eksisterende prosentvis kostnadsrad må bruke
+en annen konto enn MVA-kostnadsfordelingen: kjernens vareavgiftskart er per
+konto og kan ikke skille to ulike prosentsatser på samme konto.
+Ved delvis/intet fradrag følger MVA-kostnadsfordelingen også kjernens fraktgrunnlag:
+1000 varer + 100 frakt gir 275 MVA, hvorav 165 inngående og 110 i kostnad ved
+60 % fradrag. Samlet kostnad blir 1210 og leverandørgjeld 1375. Både On Previous
+Row Amount og On Previous Row Total er prøvd; Total får ikke en ekstra grunnlagsrad.
+Pris 1250 inkludert MVA er prøvd med 1000 netto, 150 fradrag og 100 MVA-kostnad.
+Kjernefunn i den låste versjonen: Item Wise Tax Detail kan ha taxable_amount=0
+for en vanlig On Net Total-rad uten vareavgiftsmal, selv om MVA-beløpet er riktig.
+Rapporten må da lese varens eksisterende base_net_amount som grunnlag; den skal
+ikke rapportere nullgrunnlag eller beregne fakturaens avgift på nytt.
+Gjentatt bevaring av identisk grunnlag må gjenbruke det eksisterende native
+File-vedlegget: kjernens blob-deduplisering møter ellers med rette skrivevernet
+på den allerede beskyttede URL-en. Endret grunnlag skal opprette et nytt vedlegg
+uten å endre de tidligere bytes; filvernet skal ikke svekkes for å få dette til.
 
 Periodegap: kjernens posting_date alene dekker ikke leverandørens dokumentdato.
 Rapporten viser derfor både bokføringsdato og MVA-dato og bruker native bill_date

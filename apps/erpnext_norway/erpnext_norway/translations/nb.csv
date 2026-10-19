@@ -4673,3 +4673,5 @@ Do not repeat the same account in an item tax template.,Ikke gjenta samme konto 
 Norwegian VAT configuration initialized,Norsk MVA-oppsett opprettet
 VAT period date,Dato for MVA-perioden
 The selected VAT period overlaps another submitted settlement period.,Valgt MVA-periode overlapper en annen bokført oppgjørsperiode.
+An existing percentage charge uses the non-deductible VAT cost account. Use a separate charge account.,En eksisterende prosentvis kostnad bruker kostnadskontoen for ikke-fradragsført MVA. Velg en egen konto for denne kostnaden.
+Item-level VAT treatment requires native percentage VAT rows.,MVA-behandling per varelinje krever prosentvise MVA-rader.

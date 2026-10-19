@@ -29,7 +29,10 @@ async function norway_vat_preview(frm, options = {}) {
             }
         }
         for (const tax of message.taxes) {
-            if (!frm.doc.taxes.some(row => row.account_head === tax.account_head)) {
+            if (!frm.doc.taxes.some(row => row.account_head === tax.account_head &&
+                row.charge_type === tax.charge_type &&
+                (!tax.charge_type.startsWith('On Previous Row') ||
+                    String(row.row_id || '') === String(tax.row_id || '')))) {
                 const { name, parent, parenttype, parentfield, idx, ...values } = tax;
                 frm.add_child('taxes', values);
             }

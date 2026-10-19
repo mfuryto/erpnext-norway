@@ -179,6 +179,9 @@ def prepare_items(doc, method=None):
         account = frappe.get_doc('Account', row.expense_account)
         if account.company != doc.company or account.root_type != 'Expense' or account.is_group:
             frappe.throw(frappe._('Select a company expense account for non-deductible VAT.'))
+        if any(tax.account_head == account.name and tax.charge_type != 'Actual'
+                and float(tax.rate or 0) and not tax.get('set_by_item_tax_template') for tax in doc.taxes):
+            frappe.throw(frappe._('An existing percentage charge uses the non-deductible VAT cost account. Use a separate charge account.'))
         # Native Item Tax Template validates account_type; this refines an untyped
         # expense account without changing its root, number, name or ledger values.
         if not account.account_type:
@@ -214,13 +217,35 @@ def append_native_rows(doc, item, template):
         expense = doc.doctype == 'Purchase Invoice' and account.root_type == 'Expense'
         if not ((account.account_number or '').startswith(prefix) or expense):
             continue
-        if any(tax.account_head == account.name for tax in doc.taxes):
-            continue
-        doc.append('taxes', {'charge_type': 'On Net Total', 'account_head': account.name,
-            'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
-            'rate': 0, 'category': 'Total', 'add_deduct_tax': 'Add',
-            'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': included,
-            'set_by_item_tax_template': 1})
+        percentage = ('On Net Total', 'On Previous Row Amount', 'On Previous Row Total')
+        if expense:
+            nominal_input = next(input_ for rate, _, input_, _, _ in ORDINARY if rate == template.get(RATE))
+            input_account = frappe.db.get_value('Account', {'company': doc.company, 'account_number': nominal_input})
+            sources = [tax for tax in doc.taxes if tax.account_head == input_account]
+            if any(tax.charge_type not in percentage for tax in sources):
+                frappe.throw(frappe._('Item-level VAT treatment requires native percentage VAT rows.'))
+            # Mirror the native VAT bases, including VAT on freight/insurance.
+            # Core calculates each percentage; this only configures counterpart rows.
+            bases = [(tax.charge_type, tax.get('row_id')) for tax in sources] or [('On Net Total', None)]
+            if sources and not any(tax.charge_type in ('On Net Total', 'On Previous Row Total') for tax in sources):
+                bases.append(('On Net Total', None))
+        else:
+            existing = [tax for tax in doc.taxes if tax.account_head == account.name]
+            if any(tax.charge_type not in percentage for tax in existing):
+                frappe.throw(frappe._('Item-level VAT treatment requires native percentage VAT rows.'))
+            if any(tax.charge_type in ('On Net Total', 'On Previous Row Total') for tax in existing):
+                continue  # Previous Row Total already includes the goods' net amount.
+            bases = [('On Net Total', None)]
+        for kind, reference in bases:
+            if any(tax.account_head == account.name and tax.charge_type == kind
+                   and (kind == 'On Net Total' or str(tax.get('row_id') or '') == str(reference or ''))
+                   for tax in doc.taxes):
+                continue
+            doc.append('taxes', {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
+                'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
+                'rate': 0, 'category': 'Total', 'add_deduct_tax': 'Add',
+                'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': included,
+                'set_by_item_tax_template': 1})
 
 
 def move_seed_dates(company, previous):
