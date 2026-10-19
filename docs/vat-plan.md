@@ -47,7 +47,7 @@ kodefelt på native Item Tax Template og en kode på fakturalinjen som bevarer v
 ved bokføring. Rapportering skal lese disse native bilagene og hovedboken.
 Etterfølgende endring av en mal må ikke omklassifisere et allerede bokført bilag.
 
-## Arbeidsstatus 19. oktober – ikke promotert
+## Kvalifisert delomfang i app 0.4.0
 
 Isolerte native prøver har bestått for blandet 25/15/12 %-salg (520 MVA),
 60/0 %-fradrag i ett kjøp (150 inngående MVA, 2350 kostnad, 2500 leverandørgjeld),

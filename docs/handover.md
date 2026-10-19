@@ -245,3 +245,26 @@ MVA-navngiving: native norske standardmaler navngis med Utgående/Inngående MVA
 og ERPNext-standard. Vareavgiftsmaler/kategori er nøytrale. Appmalene heter
 Utgående MVA 25 % og Inngående MVA 25 % – fullt fradrag. Migrering bruker native
 rename_doc for lenker, uten sammenslåing av kollisjoner eller endring av bilagsbeløp.
+
+
+## Videreføring: native MVA-linjer, rapport og oppgjør
+
+App 0.4.0 utvider de dokumenterte innenlandsprøvene med 25/15/12 %, separate
+null-/unntaksvalg, fullt/delvis/intet kostnadsfradrag og native kreditnota/rabatt.
+Norsk MVA-spesifikasjon leser native avgiftsdetaljer og avstemmer mot hovedbok.
+Leverandørens fakturadato styrer MVA-perioden; bokføringsdato endres ikke.
+Native Journal Entry brukes til oppgjør, differanse ved rettelser og bankføring
+av betaling/refusjon. Privat File bevarer grunnlag, innlevert melding og kvittering,
+inkludert nullgrunnlag uten et fiktivt nullbilag. Ingen direkteinnsending.
+
+Prøvd med vanlig eier: blandet salg gir 520 MVA, kjøp med 60/0 % gir 150 fradrag
+og 2350 kostnad; oppgjør 270 og refusjon 100 følger native betaling/bankavstemming.
+En sen kjøpsfaktura gir bare 100 i differanseoppgjør for sin dokumentperiode.
+Samtidig bokføring av to foreldede oppgjørskladder gir ett oppgjør; kjernens
+transaksjonelle tilbakerulling beholdes uten egen retry-motor.
+
+Hele punkt 5 er fortsatt åpent. Se vat-plan.md for gjenstående utland/import,
+ikke-registrert kvartalsterskel, ordre-/mottakskjede og øvrige kombinasjoner.
+Native Valuation and Total er prøvd for 1100 lager-/driftsmiddelkost ved 60 %
+fradrag, men er ennå ikke koblet til appens fradragsvalg. Fullfør disse gapene
+før punkt 6 SAF-T og punkt 7 ENK/årsavslutning. Integrasjoner/EHF er punkt 8.
