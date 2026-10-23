@@ -65,7 +65,7 @@ def frozen_template(company, rates):
 
 
 def prepare(doc, method=None):
-    from erpnext_norway.vat import posted_update
+    from erpnext_norway.vat import posted_update, is_vat_account
     from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
     if (not doc.get('is_return') or not doc.get('return_against') or posted_update(doc)
             or frappe.get_cached_value('Company', doc.company, 'country') != 'Norway'):
@@ -74,6 +74,14 @@ def prepare(doc, method=None):
     original.check_permission('read')
     if original.company != doc.company or original.docstatus != 1:
         frappe.throw(frappe._('Select a submitted original invoice from the same Company.'))
+    # Preserve the existing rejection of an added/changed VAT header row.
+    # A changed item template is repaired; a newly introduced VAT charge is not.
+    signatures = {(row.account_head, row.charge_type, flt(row.rate))
+                  for row in original.taxes if is_vat_account(row.account_head)}
+    if any(is_vat_account(row.account_head) and
+            (row.account_head, row.charge_type, flt(row.rate)) not in signatures
+            for row in doc.taxes):
+        frappe.throw(frappe._('Keep the original invoice VAT treatment on its credit note.'))
     source_field = get_return_against_item_fields(doc.doctype)
     originals = {row.name: row for row in original.items}
     defaults = get_item_tax_map(doc=doc, as_json=False)
