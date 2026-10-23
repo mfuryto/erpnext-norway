@@ -268,3 +268,12 @@ ikke-registrert kvartalsterskel, ordre-/mottakskjede og øvrige kombinasjoner.
 Native Valuation and Total er prøvd for 1100 lager-/driftsmiddelkost ved 60 %
 fradrag, men er ennå ikke koblet til appens fradragsvalg. Fullfør disse gapene
 før punkt 6 SAF-T og punkt 7 ENK/årsavslutning. Integrasjoner/EHF er punkt 8.
+
+## Videreføring: kreditnota etter endring av avgiftsmal
+
+App 0.4.1 bruker de opprinnelige ratene som allerede er lagret på fakturaen
+når dagens vareavgiftsmal avviker. Native kreditnotaberegning og hovedbok
+beholdes. To delkreditnotaer etter 25→12 %-malendring og kjøpskreditnota
+etter endret fradragsfordeling inngår i appprøven. Originale PDF-er og
+brukerens senere malvalg beholdes; uendrede satser gir ingen ekstra mal.
+Dette lukker bare dette kreditnotagapet. Resten av MVA-planen gjenstår.

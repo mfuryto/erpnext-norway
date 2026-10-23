@@ -109,6 +109,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-treatment.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-charges.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-return-rates.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-portal-cycle.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-evidence.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-settlement-race.py"

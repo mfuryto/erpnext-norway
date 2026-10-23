@@ -108,6 +108,22 @@ omdøpes eller gjenbrukes som om det var norsk omvendt MVA. Vanlig registrert
 omvendt avgift kan bruke native avgiftsrader, men ikke-registrert kvartalsterskel
 og korrekt særskilt melding er fortsatt et dokumentert gap.
 
+## Malendring etter fakturering: retting i app 0.4.1
+
+Native get_item_tax_map leser dagens Item Tax Template også på en kreditnota.
+Isolert prøve: faktura med 250 MVA, senere malendring fra 25 til 12, deretter
+native full kreditnota ga bare -120 MVA. Kjernens varelinjehenvisning og lagrede
+item_tax_rate gir allerede opprinnelig behandling; ingen ny historikk trengs.
+Minste tilpasning er å konfigurere en native vareavgiftsmal med de opprinnelige
+ratene bare når dagens mal avviker, og la kjernen beregne kreditnotaen som før.
+Uendrede satser skal ikke opprette ekstra maler, og brukerens endrede mal beholdes.
+
+Isolerte prøver med vanlig eier består: to delkreditnotaer gir -125 hver etter
+malendring fra 25 til 12 %, og gjenbruker én native mal med opprinnelige satser.
+En kjøpskreditnota beholder 150 i inngående MVA og 100 i MVA-kostnad ved
+opprinnelig 60 % fradrag, selv om malen senere er endret. Begge originalenes
+PDF-bytes beholdes. Uendret behandling oppretter ingen ekstra mal.
+
 Native avgiftsmaler mangler et fradragsprosent-parameter og norske rapporteringskoder.
 Tillegget konfigurerer native Item Tax Template/rader og lar kjernen beregne og føre.
 Blank account_type på en valgt kostnadskonto presiseres til native Expense Account
