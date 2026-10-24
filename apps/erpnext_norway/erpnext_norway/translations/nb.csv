@@ -4677,3 +4677,15 @@ An existing percentage charge uses the non-deductible VAT cost account. Use a se
 Item-level VAT treatment requires native percentage VAT rows.,MVA-behandling per varelinje krever prosentvise MVA-rader.
 Select a submitted original invoice from the same Company.,Velg en bokført originalfaktura fra samme foretak.
 Keep the native original invoice row reference on each credit note line.,Behold henvisningen til opprinnelig fakturalinje på hver kreditnotalinje.
+Norwegian VAT cost allocation,Norsk fordeling av MVA-kostnad
+Norwegian VAT source invoice,Opprinnelig faktura for MVA-verdsetting
+Select one existing Expenses Included In Valuation account in the purchase taxes.,Velg én eksisterende konto av typen Kostnader inkludert i verdsettelsen i innkjøpets avgiftsrader.
+VAT valuation on freight with multiple item lines is not yet qualified. Use a qualified native landed cost allocation.,MVA-verdsetting av frakt med flere varelinjer er ennå ikke kvalifisert. Bruk en kvalifisert fordeling i bilag for tilleggskostnader.
+A native VAT valuation adjustment already exists for this invoice.,Det finnes allerede et bilag for justering av MVA-verdsetting for denne fakturaen.
+Keep the native submitted purchase receipt row reference.,Behold henvisningen til den opprinnelige linjen i det innsendte varemottaket.
+Non-deductible VAT valuation adjustment,Justering av verdsetting for ikke-fradragsberettiget MVA
+Select the original purchase invoice on the receipt return line.,Velg opprinnelig innkjøpsfaktura på returlinjen i varemottaket.
+Receipt returns with VAT on freight require a qualified native allocation.,Varemottaksretur med MVA på frakt krever en kvalifisert fordeling i kjernen.
+Select a matching submitted Purchase Receipt return before crediting received goods.,Velg en tilhørende innsendt varemottaksretur før mottatte varer krediteres.
+Select the original purchase invoice and a quantity within its unreturned quantity.,Velg opprinnelig innkjøpsfaktura og et antall som ikke overstiger gjenstående returantall.
+Posting Date will change to today's date as Edit Posting Date and Time is unchecked. Are you sure want to proceed?,Bokføringsdatoen endres til dagens dato fordi Rediger bokføringsdato og klokkeslett ikke er valgt. Vil du fortsette?

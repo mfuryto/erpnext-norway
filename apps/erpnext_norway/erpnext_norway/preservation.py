@@ -2,7 +2,7 @@
 import frappe
 from frappe import _
 
-ACCOUNTING = ("Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment Entry")
+ACCOUNTING = ("Sales Invoice", "Purchase Invoice", "Journal Entry", "Payment Entry", "Purchase Receipt", "Landed Cost Voucher")
 RETAINED = (*ACCOUNTING, "Quotation")
 NATIVE_IDENTITY_FIELDS = ("attached_to_doctype", "attached_to_name", "attached_to_field", "file_url",
                    "file_name", "content_hash", "is_private", "is_folder", "thumbnail_url")

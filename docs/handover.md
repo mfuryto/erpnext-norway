@@ -277,3 +277,24 @@ beholdes. To delkreditnotaer etter 25→12 %-malendring og kjøpskreditnota
 etter endret fradragsfordeling inngår i appprøven. Originale PDF-er og
 brukerens senere malvalg beholdes; uendrede satser gir ingen ekstra mal.
 Dette lukker bare dette kreditnotagapet. Resten av MVA-planen gjenstår.
+
+## Videreføring: MVA ved lager-/driftsmiddelkjøp
+
+App 0.4.2 fører fradragsvalget gjennom native innkjøpsordre, varemottak og faktura.
+Valuation and Total brukes til kapitalisering. Ved endret fradrag på faktura
+brukes kjernens avgiftsdetaljer og native Landed Cost Voucher; ingen egen
+avgiftsberegning eller hovedbok. Native driftsmiddel- og lagermotkontoer er ulike
+og håndteres etter de faktiske posteringene. Kumulativ fordeling av mottakets
+beløp bevarer siste øre ved delfakturering. Native kansellering tilbakefører
+justeringen, mens mottak, justeringsbilag og vedlegg beholdes.
+
+Retur bruker opprinnelig fakturas behandling og eksisterende native faktura-/
+mottakslenker. Ved flere alternativer velges kilden i de eksisterende linjefeltene.
+Senere malendring påvirker ikke opprinnelige satser. Manuelt valg av Asset-
+oppretting beholdes. Kontoer opprettes ikke automatisk for lageroppsettet.
+Se vat-valuation.md og native lager-/driftsmiddelprøvene, nettleserprøven og
+samtidighetsprøven. Backup/restore kontrollerer bilagslenker, verdier og PDF-bytes.
+
+Hele MVA-planen er fortsatt åpen. Flere linjer med MVA-verdsetting på frakt via
+On Previous Row er et dokumentert, fortsatt sperret kjerneavvik. Utland/import,
+resterende ordrekjeder og øvrige kombinasjoner gjenstår før SAF-T og ENK/årsgrunnlag.

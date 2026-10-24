@@ -38,7 +38,7 @@ jobs:
   app:
     name: Norwegian app integration
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0
         with:
