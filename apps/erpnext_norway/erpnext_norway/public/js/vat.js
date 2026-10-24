@@ -73,7 +73,13 @@ for (const parent of ['Sales Invoice', 'Purchase Invoice', 'Purchase Receipt']) 
         const field = parent === 'Purchase Receipt' ? 'purchase_invoice' :
             parent === 'Purchase Invoice' ? 'purchase_receipt' : null;
         if (field) {
-            frm.fields_dict.items.grid.update_docfield_property(field, 'read_only', 0);
+            const grid = frm.fields_dict.items.grid;
+            grid.update_docfield_property(field, 'read_only', 0);
+            if (parent === 'Purchase Invoice') {
+                for (const [property, value] of Object.entries({fieldtype: 'Autocomplete', hidden: 0, read_only: 0, options: []})) {
+                    grid.update_docfield_property('pr_detail', property, value);
+                }
+            }
             frm.set_query(field, 'items', () => ({filters: {
                 company: frm.doc.company, supplier: frm.doc.supplier, docstatus: 1,
                 is_return: parent === 'Purchase Invoice' ? 1 : 0,
@@ -90,6 +96,7 @@ frappe.ui.form.on('Purchase Receipt Item', { purchase_invoice: async (frm, cdt, 
 frappe.ui.form.on('Purchase Invoice Item', { purchase_receipt: async (frm, cdt, cdn) => {
     if (!frm.doc.is_return || frm.__norway_vat_applying) return;
     await frappe.model.set_value(cdt, cdn, 'pr_detail', null);
+    await norway_return_receipt_options(frm, cdt, cdn);
     return norway_vat_preview(frm);
 }});
 
@@ -98,3 +105,41 @@ for (const child of ['Purchase Receipt Item', 'Purchase Invoice Item']) {
         if (frm.doc.is_return) return norway_vat_preview(frm);
     }});
 }
+
+// The native receipt row reference uses Frappe's standard autocomplete on credits.
+async function norway_return_receipt_options(frm, cdt, cdn) {
+    if (!frm.doc.is_return || frm.doc.docstatus) return;
+    const item = locals[cdt][cdn];
+    const name = item.purchase_receipt;
+    let options = [];
+    if (name) {
+        await frappe.model.with_doc('Purchase Receipt', name);
+        await frappe.model.with_doc('Purchase Invoice', frm.doc.return_against);
+        const receipt = frappe.get_doc('Purchase Receipt', name);
+        const original = frappe.get_doc('Purchase Invoice', frm.doc.return_against).items
+            .find(row => row.name === item.purchase_invoice_item);
+        if (original && receipt.docstatus === 1 && receipt.is_return &&
+            receipt.company === frm.doc.company && receipt.supplier === frm.doc.supplier) {
+            options = receipt.items.filter(row => row.purchase_receipt_item === original.pr_detail &&
+                (!row.purchase_invoice_item || row.purchase_invoice_item === original.name))
+                .map(row => ({value: row.name, label: __('Source row {0}', [row.idx]),
+                    description: __('Quantity: {0}; input VAT deduction: {1} %',
+                        [row.qty, row.custom_norway_deduction_percent ?? 100])}));
+        }
+    }
+    if (item.purchase_receipt !== name) return;
+    const gridRow = frm.fields_dict.items.grid.grid_rows_by_docname[cdn];
+    const definition = gridRow?.docfields.find(df => df.fieldname === 'pr_detail');
+    if (definition) definition.options = options;
+    const control = gridRow?.grid_form?.fields_dict.pr_detail;
+    if (control?.set_data) {
+        control.set_data(options);
+        control.refresh();
+    }
+}
+frappe.ui.form.on('Purchase Invoice Item', {
+    form_render: norway_return_receipt_options,
+    pr_detail: frm => {
+        if (frm.doc.is_return && !frm.__norway_vat_applying) return norway_vat_preview(frm);
+    },
+});

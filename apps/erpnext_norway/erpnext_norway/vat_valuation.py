@@ -267,7 +267,7 @@ def link_credit_receipts(doc, method=None):
         if explicit_return:
             candidates = [row for row in candidates if row.parent == item.purchase_receipt]
         selected = next((row for row in candidates if row.name == item.pr_detail), None)
-        if not selected and len(candidates) == 1:
+        if not selected and len(candidates) == 1 and (not explicit_return or not item.pr_detail):
             selected = candidates[0]
         if not selected:
             frappe.throw(frappe._('Select a matching submitted Purchase Receipt return before crediting received goods.'))

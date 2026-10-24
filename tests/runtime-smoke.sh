@@ -126,6 +126,13 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-treatment-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-valuation-browser.cjs"
 fi
+if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-return-sources.py"
+  if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
+    ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-return-sources-browser.cjs"
+  fi
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - finish < "$root/tests/runtime-vat-return-sources.py"
+fi
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
 [[ "$(stat -c %a "$fixture/backups/runtime-ci/runtime.env")" == 600 ]]

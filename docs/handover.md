@@ -298,3 +298,14 @@ samtidighetsprøven. Backup/restore kontrollerer bilagslenker, verdier og PDF-by
 Hele MVA-planen er fortsatt åpen. Flere linjer med MVA-verdsetting på frakt via
 On Previous Row er et dokumentert, fortsatt sperret kjerneavvik. Utland/import,
 resterende ordrekjeder og øvrige kombinasjoner gjenstår før SAF-T og ENK/årsgrunnlag.
+
+
+## Videreføring: velg eksisterende returmottakslinje
+
+App 0.4.3 viser native pr_detail som standard Autocomplete på kjøpskreditnota.
+Flere returlinjer på samme returmottak kan dermed skilles uten nye felt eller
+arbeidsflater. Originale dokumenter leses med vanlig dokumenttilgang, og en
+uttrykkelig ugyldig kildelinje avvises fremfor automatisk omvalg. Native antall,
+duplikatvern og postering beholdes. Kjerneprøven avklarte dessuten at flere
+fakturalinjer mot samme mottakslinje allerede avvises; denne regelen omgås ikke.
+Se vat-valuation.md og runtime-vat-return-sources-prøvene. Øvrig MVA-plan er åpen.
