@@ -71,9 +71,13 @@ const assert = require('node:assert/strict');
         await page.goto('/app/sales-invoice/new-sales-invoice-language-calendar');
         await page.waitForFunction(() => window.cur_frm?.doctype === 'Sales Invoice' && cur_frm.doc.__islocal);
         await page.evaluate(async () => {
+            await frappe.after_ajax();
+            await cur_frm.set_value('set_posting_time',1);
             await cur_frm.set_value('posting_date','2026-10-24');
-            cur_frm.fields_dict.posting_date.$input.trigger('focus');
         });
+        // Wait for the rendered, editable control and use a real click. A
+        // synthetic focus event during setup does not prove it is interactive.
+        await page.locator('.frappe-control[data-fieldname="posting_date"] input:visible').first().click();
         const calendar = page.locator('.datepicker.active');
         await calendar.waitFor();
         const calendarText = await calendar.innerText();
