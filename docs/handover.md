@@ -338,3 +338,19 @@ native add_taxes_from_tax_template, og brukerens native valg om å slå av denne
 automatikken respekteres. Eksplisitte avgiftsrader virker fortsatt. Adapteren
 beholder bare nødvendig norsk grunnlag-/fradragsmetadata og ekstra grunnlag på
 samme konto. Ingen ny funksjon i MVA-planen leveres gjennom denne oppryddingen.
+
+## Hjemskjermer og alle apper på bokmål
+
+Brukeren meldte fortsatt mye engelsk, særlig knappene under Alle apper,
+hjemskjermer og oversikter, og ba også om selvstendig gjennomgang av øvrige hull.
+App 0.4.6 utvider native nb.csv for standardmodulenes oppstartsveiledninger,
+rapporter/grupper, diagramforklaringer, nøkkeltall, app-/navigasjonsvalg og bank-
+og betalingsavstemming. Ingen menyer, veiledninger eller rapportdata erstattes.
+Kildedefinisjonene og native onboarding-API inngår nå i kontrollen, i tillegg til
+skjemafeltene. Ny nettleserprøve dekker All apps-ikonvisningen og ni hjemskjermer.
+
+Native datovelger mangler nb-lokalisering i det låste imaget. Appen registrerer
+språkdata fra nettleserens Intl/CLDR i den eksisterende kontrollen. En uoversatt
+lenkeparameter i bankverktøyets intro settes med native form-hook/set_intro.
+Engelsk økt og norsk/engelsk PDF beholdes. Se language.md for gap og avgrensning.
+Ingen serveroppdatering utføres av Codex; bruker kjører gjeldende main-blokk.
