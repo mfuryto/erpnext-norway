@@ -106,6 +106,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - probe < "$root/tests/runtime-app.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-language.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-ui-language.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-language-surfaces.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-treatment.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-charges.py"
@@ -127,6 +128,9 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-treatment-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-valuation-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-freight-browser.cjs"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - desktop < "$root/tests/runtime-language-surfaces.py"
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-language-surfaces-browser.cjs"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - restore-desktop < "$root/tests/runtime-language-surfaces.py"
 fi
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-return-sources.py"

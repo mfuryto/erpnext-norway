@@ -5,6 +5,7 @@ app_description = "Minimal safeguards for native accounting documents"
 app_email = "maintainers@example.invalid"
 app_license = "GPL-3.0-only"
 required_apps = ["erpnext"]
+app_include_js = ["/assets/erpnext_norway/js/locale.js"]
 
 after_install = "erpnext_norway.setup.configure"
 after_migrate = "erpnext_norway.setup.configure"
@@ -70,6 +71,7 @@ override_whitelisted_methods = {
     for name in ("build_tree_from_json", "validate_bank_account")
 }
 doctype_js = {"Company": "public/js/company.js",
+    "Bank Reconciliation Tool": "public/js/bank_language.js",
     "Sales Invoice": "public/js/vat.js", "Purchase Invoice": "public/js/vat.js",
     "Purchase Order": "public/js/vat.js", "Purchase Receipt": "public/js/vat.js",
     "Journal Entry": "public/js/vat_journal.js"}

@@ -122,3 +122,50 @@ Dekningskontrollen er en regresjonskontroll for dette omfanget, ikke bevis for a
 hver eneste skjerm i alle ERPNext-moduler er gjennomgått manuelt. Brukerlagde navn,
 fritekst, tredjepartsinnhold og tekniske identifikatorer maskinoversettes ikke.
 Videre funksjonsaksept skal også kontrollere faktisk skjermspråk.
+
+## Hjemskjermer, alle apper og oversikter (0.4.6)
+
+En ny gjennomgang i nettleseren fant engelske oppstartsveiledninger, rapportgrupper,
+rapportlenker, nøkkeltall og diagramforklaringer selv om skjemafeltene var oversatt.
+Den tidligere kontrollen av 173 dokumenttyper dekket ikke disse tekstkildene.
+Språkressursen utvides derfor med tekstene i native Desktop Icon, Sidebar, Dock,
+Workspace, Module Onboarding, Onboarding Step, Number Card og Dashboard Chart.
+Det omfatter standardmodulene, også Lager, Produksjon, Prosjekter og Kvalitet.
+Hilsener, fremdrift, valgfrie trinn, navigasjonsmeldinger og bankhandlinger er med.
+
+Ingen nye menyer, oversikter eller veiledninger opprettes. Kjernen leser de norske
+tekstene fra sin ordinære katalog; lagrede modulnavn, rapportnavn, ruter og brukerens
+oppsett beholdes. Betalingsavstemming gjelder både inn- og utbetalinger og rettes
+fra «Avstemming av utbetalinger». «Accounts Receivable Summary» vises som
+«Oversikt over kundefordringer».
+
+To synlige hull kan ikke lukkes med CSV alene i den låste kjernen:
+
+- Air Datepicker mangler nb i de leverte språkdataene og faller tilbake til engelsk.
+  Appen registrerer nb i datovelgerens eksisterende språkregister, med måneds- og
+  dagsnavn fra nettleserens standard Intl/CLDR. Selve datovelgeren, systemets datoformat,
+  validering og lagrede datoer beholdes. Engelske økter får ingen slik registrering. De statiske språkdataene kobles inn
+  ved imagebygging med kjernens link_assets_dir; native containeroppstart eksponerer
+  dem som øvrige appressurser. Ingen egen ressursbygger eller ny avhengighet legges til.
+- Bank Reconciliation Tool setter inn lenketeksten «new Banking module» som rå
+  parameter i en ellers oversettbar melding. Et vanlig refresh-hook bruker native
+  set_intro med oversatt lenketekst og samme /banking-rute. Ingen DOM-tekstbytter
+  eller endring av avstemmingsfunksjonen inngår.
+
+`runtime-language-surfaces.py` kontrollerer også de leverte native definisjonene
+på disk: standardmodusen Apps oppretter ikke Desktop Icon-rader i databasen.
+Kontrollen krever oversettelse av 1 013 ulike tekster i dette kildeutvalget, med
+uttrykkelige unntak for produktnavn og uttrykk som også heter Bank/System/Data på
+norsk. Kjernens onboarding-API prøves separat for tittel, forklaring og knapp.
+
+Den tilhørende nettleserprøven åpner ikonvisningen under Alle apper, Hjem,
+regnskap, salg, kjøp, lager, eiendeler, prosjekter, produksjon og kvalitet, samt
+bank-/betalingsavstemming og en faktisk datovelger. Testen skifter bare den
+syntetiske fiksturens native skrivebordsmodus og tilbakefører den etter prøven.
+Det er ikke en produktmigrering eller en endring av serverbrukernes oppsett.
+Eksisterende norsk/engelsk dokument- og PDF-prøve beholdes.
+
+Dette erstatter ikke brukerens navn eller fritekst, tekniske identifikatorer,
+produktnavn eller innhold fra eksterne tjenester. En rå dokumenttype i enkelte
+native feilmeldingsparametere kan fortsatt være engelsk; ingen egen feil- eller
+oversettelsesmotor innføres for å skjule slike begrensninger.

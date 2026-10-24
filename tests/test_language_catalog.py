@@ -22,6 +22,9 @@ class LanguageCatalog(unittest.TestCase):
             entries[source, context] = target
             self.assertEqual(Counter(re.findall(r'\{[^{}]+\}', source)),
                              Counter(re.findall(r'\{[^{}]+\}', target)), source)
+            if 'https://docs.frappe.io' in source:
+                self.assertEqual(re.findall(r'\]\(([^)]+)\)', source),
+                                 re.findall(r'\]\(([^)]+)\)', target), source)
         self.assertEqual(entries['Warehouse', ''], 'Lager')
         self.assertEqual(entries['Serial & Batch', ''], 'Serienumre og partier')
         self.assertEqual(entries['Norway', ''], 'Norge')
@@ -31,3 +34,6 @@ class LanguageCatalog(unittest.TestCase):
         self.assertNotIn(('Tax', ''), entries)
         self.assertEqual(entries['Rate', 'Item Price'], 'Enhetspris')
         self.assertEqual(entries['Submit', ''], 'Send inn')
+        self.assertEqual(entries['Payment Reconciliation', ''], 'Betalingsavstemming')
+        self.assertEqual(entries['Accounts Setup', ''], 'Regnskapsoppsett')
+        self.assertEqual(entries['{0} of {1} steps done', ''], '{0} av {1} trinn fullført')

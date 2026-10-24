@@ -4515,7 +4515,7 @@ Issue Priority,Prioritet for henvendelse
 Issue Type,Henvendelsestype
 Item Variant,Artikkelvariant
 Item Variant Settings,Innstillinger for artikkelvarianter
-Job Card Summary,Oversikt over jobbkort
+Job Card Summary,Oversikt over arbeidskort
 Jobs,Jobber
 Landed Cost Voucher,Bilag for tilleggskostnader
 Lead Details,Opplysninger om salgsemne
@@ -4697,3 +4697,606 @@ Keep a matching native freight tax basis on the receipt return.,Behold samme ber
 Keep matching native VAT bases for automatic VAT cost rows.,Bruk samme avgiftsgrunnlag for MVA og den automatiske MVA-kostnaden.
 VAT inclusion must match for lines sharing a VAT cost account and tax basis.,MVA-inkludering må være lik for linjer som deler MVA-kostnadskonto og avgiftsgrunnlag.
 "Enable Automatically add Taxes and Charges from Item Tax Template in Accounts Settings, or configure the required tax rows explicitly.","Aktiver automatisk tilføying av avgiftsrader fra vareavgiftsmal i regnskapsinnstillingene, eller legg inn de nødvendige avgiftsradene selv."
+Keep quality in check,Hold oversikt over kvaliteten
+Get to know ERPNext,Bli kjent med ERPNext
+Plan and deliver projects,Planlegg og gjennomfør prosjekter
+Track what your business owns,Hold oversikt over foretakets eiendeler
+Get your books ready,Gjør regnskapet klart
+Keep track of your stock,Hold oversikt over lageret
+Make your first sale,Gjennomfør ditt første salg
+Plan and run production,Planlegg og gjennomfør produksjon
+Order from your suppliers,Bestill fra leverandørene dine
+Set up an inspection and record your first check.,Sett opp en kvalitetskontroll og registrer det første resultatet.
+Open Quality,Åpne Kvalitet
+Record an asset and see what it's worth year by year.,Registrer en eiendel og se verdien år for år.
+Open Assets,Åpne Eiendeler
+Break a project into tasks and log the time your team spends.,Del et prosjekt inn i oppgaver og registrer tiden dere bruker.
+Open Projects,Åpne prosjekter
+Write down what goes into a product and make it with a work order.,"Beskriv hva som inngår i et produkt, og produser det med en arbeidsordre."
+Open Manufacturing,Åpne Produksjon
+Set up your warehouses and enter the stock you have today.,Sett opp lagrene og registrer beholdningen du har i dag.
+Open Stock,Åpne Lager
+"Add a supplier, order from them and pay their bill.","Legg til en leverandør, bestill fra leverandøren og betal fakturaen."
+Open Buying,Åpne Kjøp
+"Add an item and a customer, bill them and collect the payment.","Legg til en artikkel og en kunde, fakturer kunden og registrer betalingen."
+Open Selling,Åpne Salg
+"Check your chart of accounts and taxes, and add the bank account you use.","Kontroller kontoplanen og avgiftene, og legg til bankkontoen du bruker."
+Open Accounts,Åpne Regnskap
+Plan maintenance visits,Planlegg vedlikeholdsbesøk
+"Regular service visits for equipment you sold, planned ahead for the whole contract. See [Maintenance Schedule](https://docs.frappe.io/erpnext/user/manual/en/maintenance-schedule).","Regelmessige servicebesøk for solgt utstyr, planlagt for hele avtaleperioden. Se [Vedlikeholdsplan](https://docs.frappe.io/erpnext/user/manual/en/maintenance-schedule)."
+Create Maintenance Schedule,Opprett vedlikeholdsplan
+Review how a goal is going,Følg opp et kvalitetsmål
+"Compare the results against the goal, and decide what to change. See [Quality Management](https://docs.frappe.io/erpnext/user/manual/en/quality-management).",Sammenlign resultatene med målet og bestem hva som skal endres. Se [Kvalitetsstyring](https://docs.frappe.io/erpnext/user/manual/en/quality-management).
+Create Quality Review,Opprett kvalitetsgjennomgang
+Log a problem,Registrer et avvik
+"When something falls short of the procedure, note what happened, the cause, and what you will do about it. See [Non Conformance](https://docs.frappe.io/erpnext/user/manual/en/non-conformance).","Når noe avviker fra prosedyren, registrer hendelsen, årsaken og planlagte tiltak. Se [Avvik](https://docs.frappe.io/erpnext/user/manual/en/non-conformance)."
+Create Non Conformance,Opprett avvik
+Inspect goods coming in or going out,Kontroller varer ved mottak eller levering
+"Record the results against a receipt or a delivery, and accept or reject the goods. See [Quality Inspection](https://docs.frappe.io/erpnext/user/manual/en/quality-inspection).","Registrer kontrollresultatene på et mottak eller en levering, og godkjenn eller avvis varene. Se [Kvalitetskontroll](https://docs.frappe.io/erpnext/user/manual/en/quality-inspection)."
+Create Quality Inspection,Opprett kvalitetskontroll
+Decide what to check,Bestem hva som skal kontrolleres
+"The parameters to inspect and what counts as a pass, reused on every inspection. See [Quality Inspection Template](https://docs.frappe.io/erpnext/user/manual/en/quality-inspection-template).",Kontrollpunkter og krav til godkjenning som gjenbrukes ved hver kontroll. Se [Mal for kvalitetskontroll](https://docs.frappe.io/erpnext/user/manual/en/quality-inspection-template).
+Create Quality Inspection Template,Opprett mal for kvalitetskontroll
+Write down how the work is done,Beskriv hvordan arbeidet utføres
+"The steps your team follows, so it is done the same way every time. See [Quality Management](https://docs.frappe.io/erpnext/user/manual/en/quality-management).","Fremgangsmåten medarbeiderne følger, slik at arbeidet utføres likt hver gang. Se [Kvalitetsstyring](https://docs.frappe.io/erpnext/user/manual/en/quality-management)."
+Create Quality Procedure,Opprett kvalitetsprosedyre
+Set a quality goal,Sett et kvalitetsmål
+"Something you want to measure and improve, like on-time delivery or returns, reviewed on a schedule you choose. See [Quality Management](https://docs.frappe.io/erpnext/user/manual/en/quality-management).","Noe du vil måle og forbedre, som levering til avtalt tid eller returer, vurdert etter en plan du velger. Se [Kvalitetsstyring](https://docs.frappe.io/erpnext/user/manual/en/quality-management)."
+Create Quality Goal,Opprett kvalitetsmål
+Schedule its upkeep,Planlegg vedlikeholdet
+"Servicing, inspections and calibration, with reminders to the team doing it. See [Asset Maintenance](https://docs.frappe.io/erpnext/user/manual/en/asset-maintenance).","Service, kontroll og kalibrering med påminnelser til dem som utfører arbeidet. Se [Vedlikehold av eiendel](https://docs.frappe.io/erpnext/user/manual/en/asset-maintenance)."
+Create Asset Maintenance,Opprett vedlikehold for eiendel
+Hand it to a person or place,Registrer ansvarlig person eller plassering
+"Record who has it and where it is, so you always know. See [Asset Movement](https://docs.frappe.io/erpnext/user/manual/en/asset-movement).",Registrer hvem som har eiendelen og hvor den befinner seg. Se [Flytting av eiendel](https://docs.frappe.io/erpnext/user/manual/en/asset-movement).
+Create Asset Movement,Opprett flytting av eiendel
+Check its depreciation,Kontroller avskrivningene
+"Depreciation is posted on schedule, asset by asset, without a journal entry from you. See [Depreciation](https://docs.frappe.io/erpnext/user/manual/en/asset-depreciation).","Avskrivninger bokføres etter planen for hver eiendel, uten at du oppretter bokføringsbilag manuelt. Se [Avskrivninger](https://docs.frappe.io/erpnext/user/manual/en/asset-depreciation)."
+Open Asset Depreciation Ledger,Åpne avskrivningsoversikt
+Spot delayed tasks,Finn forsinkede oppgaver
+"Tasks past their due date, and how late each one is.","Oppgaver som har passert fristen, og hvor forsinket hver oppgave er."
+Open Delayed Tasks Summary,Åpne oversikt over forsinkede oppgaver
+Reuse it as a template,Gjenbruk som mal
+"Save the tasks you repeat on every job, and start the next project from them.","Lagre oppgaver du gjentar i hvert oppdrag, og bruk dem som utgangspunkt for neste prosjekt."
+Create Project Template,Opprett prosjektmal
+Plan production from your orders,Planlegg produksjon fra ordrene
+"Pull in open sales orders and work out what to make, and what to buy, to fill them.",Hent åpne salgsordrer og beregn hva som må produseres og kjøpes inn for å levere dem.
+Create Production Plan,Opprett produksjonsplan
+Follow every movement,Følg hver lagerbevegelse
+"Every movement of every item, in and out, with the balance after each. See [Stock Ledger](https://docs.frappe.io/erpnext/user/manual/en/stock-ledger).","Alle bevegelser inn og ut for hver artikkel, med beholdningen etter hver bevegelse. Se [Lagerbok](https://docs.frappe.io/erpnext/user/manual/en/stock-ledger)."
+Open Stock Ledger,Åpne lagerbok
+Move stock between warehouses,Flytt varer mellom lagre
+"From the store to the shop floor, or between branches. See [Stock Entry](https://docs.frappe.io/erpnext/user/manual/en/stock-entry).","Fra lageret til produksjonen, eller mellom avdelinger. Se [Lagerpostering](https://docs.frappe.io/erpnext/user/manual/en/stock-entry)."
+Create Stock Entry,Opprett lagerpostering
+Review your taxes,Kontroller avgiftsoppsettet
+The taxes that fill in on every invoice. We added your country's where we had them; check the rates match what you charge. Purchase taxes live in [Purchase Taxes and Charges Template](/desk/purchase-taxes-and-charges-template). See [Setting Up Taxes](https://docs.frappe.io/erpnext/user/manual/en/setting-up-taxes).,"Avgiftene som fylles inn på fakturaene. Der vi har et landoppsett, har vi lagt det til. Kontroller at satsene stemmer med det du skal beregne. Kjøpsavgifter settes opp i [Mal for kjøpsavgifter og tillegg](/desk/purchase-taxes-and-charges-template). Se [Oppsett av avgifter](https://docs.frappe.io/erpnext/user/manual/en/setting-up-taxes)."
+Open Sales Taxes and Charges Template,Åpne mal for salgsavgifter og tillegg
+Check what you owe,Se hva du skylder
+"Who you owe, how much, and when each bill is due.","Hvem du skylder penger, hvor mye og når fakturaene forfaller."
+Open Accounts Payable,Åpne leverandørgjeld
+Record a supplier's quote,Registrer et leverandørtilbud
+"Note down a price a supplier offered, so you can compare suppliers before you order. See [Supplier Quotation](https://docs.frappe.io/erpnext/user/manual/en/supplier-quotation).","Registrer en pris leverandøren har tilbudt, slik at du kan sammenligne tilbud før du bestiller. Se [Leverandørtilbud](https://docs.frappe.io/erpnext/user/manual/en/supplier-quotation)."
+Create Supplier Quotation,Opprett leverandørtilbud
+Add an item you buy,Legg til en artikkel du kjøper
+Goods or services you buy from suppliers. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).,Varer eller tjenester du kjøper fra leverandører. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item).
+Know what you own and owe,Se eiendeler og gjeld
+"Assets, liabilities and equity on any date, straight from your ledger. See [Balance Sheet](https://docs.frappe.io/erpnext/user/manual/en/balance-sheet).","Eiendeler, gjeld og egenkapital på en valgt dato, hentet direkte fra hovedboken. Se [Balanse](https://docs.frappe.io/erpnext/user/manual/en/balance-sheet)."
+Open Balance Sheet,Åpne balanse
+Trace every posting,Spor hver postering
+"Every posting from your invoices and payments, with its debit and credit. See [General Ledger](https://docs.frappe.io/erpnext/user/manual/en/general-ledger).","Hver postering fra fakturaer og betalinger, med debet og kredit. Se [Hovedbok](https://docs.frappe.io/erpnext/user/manual/en/general-ledger)."
+Open General Ledger,Åpne hovedbok
+Match your bank statement,Avstem kontoutskriften
+"Import a statement from your bank and pair each line with a payment, so your books agree with it. See [Bank Reconciliation](https://docs.frappe.io/erpnext/user/manual/en/bank-reconciliation).","Importer en kontoutskrift fra banken og koble hver linje til en betaling, slik at regnskapet stemmer med banken. Se [Bankavstemming](https://docs.frappe.io/erpnext/user/manual/en/bank-reconciliation)."
+Open Banking,Åpne Bank
+Post a journal entry,Registrer et bokføringsbilag
+"For anything that isn't an invoice or a payment: accruals, depreciation, or fixing a mistake. See [Journal Entry](https://docs.frappe.io/erpnext/user/manual/en/journal-entry).","For det som ikke er en faktura eller betaling: periodisering, avskrivning eller retting av feil. Se [Bokføringsbilag](https://docs.frappe.io/erpnext/user/manual/en/journal-entry)."
+Create Journal Entry,Opprett bokføringsbilag
+Enter a supplier's bill,Registrer en leverandørfaktura
+"It posts the expense, and what you owe the supplier, to your ledger. See [Purchase Invoice](https://docs.frappe.io/erpnext/user/manual/en/purchase-invoice).",Bokfører kostnaden og det du skylder leverandøren i hovedboken. Se [Leverandørfaktura](https://docs.frappe.io/erpnext/user/manual/en/purchase-invoice).
+Create Purchase Invoice,Opprett leverandørfaktura
+Add the bank account you use,Legg til bankkontoen du bruker
+"The account your customers pay into and you pay from, linked to its account in your chart of accounts. See [Bank Account](https://docs.frappe.io/erpnext/user/manual/en/bank-account).","Kontoen kundene betaler til og du betaler fra, koblet til riktig konto i kontoplanen. Se [Bankkonto](https://docs.frappe.io/erpnext/user/manual/en/bank-account)."
+Add Bank Account,Legg til bankkonto
+Add an item you sell,Legg til en artikkel du selger
+A product or a service you sell. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).,Et produkt eller en tjeneste du selger. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item).
+Confirm a sales order,Bekreft en salgsordre
+Confirm what the customer ordered and when it is due. Deliver and invoice from the order itself. See [Sales Order](https://docs.frappe.io/erpnext/user/manual/en/sales-order).,Bekreft hva kunden har bestilt og leveringsfristen. Opprett levering og faktura fra ordren. Se [Sales Order](https://docs.frappe.io/erpnext/user/manual/en/sales-order).
+Create Sales Order,Opprett salgsordre
+See everything you own,Se alle eiendelene
+"What you own, where it is, and what it is worth today.","Hva du eier, hvor det er og verdien i dag."
+Open Fixed Asset Register,Åpne anleggsregister
+Finish making it,Fullfør produksjonen
+"Raw materials come out of stock and the finished products go in. From the work order, **Finish** fills this in for you. See [Stock Entry](https://docs.frappe.io/erpnext/user/manual/en/stock-entry).",Råvarer tas ut av lageret og ferdigvarer legges inn. Fra arbeidsordren fyller **Fullfør** dette ut for deg. Se [Lagerpostering](https://docs.frappe.io/erpnext/user/manual/en/stock-entry).
+Enter the stock you have today,Registrer dagens lagerbeholdning
+"How much of each item is on your shelves, and what it is worth. From here, every receipt and delivery keeps it up to date. See [Stock Reconciliation](https://docs.frappe.io/erpnext/user/manual/en/stock-reconciliation).",Antallet av hver artikkel på lageret og verdien av beholdningen. Deretter holdes beholdningen oppdatert av mottak og leveringer. Se [Stock Reconciliation](https://docs.frappe.io/erpnext/user/manual/en/stock-reconciliation).
+Create Stock Reconciliation,Opprett lageravstemming
+Pay your supplier,Betal leverandøren
+It clears their bill and takes the money out of your bank or cash account. See [Payment Entry](https://docs.frappe.io/erpnext/user/manual/en/payment-entry).,Gjør opp fakturaen og fører betalingen fra bank- eller kontantkontoen. Se [Betalingsregistrering](https://docs.frappe.io/erpnext/user/manual/en/payment-entry).
+Create Payment Entry,Opprett betalingsregistrering
+Spot your best sellers,Finn de mest solgte artiklene
+"Sales by customer, item or territory, over any period. See [Sales Analytics](https://docs.frappe.io/erpnext/user/manual/en/sales-analytics).","Salg per kunde, artikkel eller område i en valgt periode. Se [Salgsanalyse](https://docs.frappe.io/erpnext/user/manual/en/sales-analytics)."
+Open Sales Analytics,Åpne salgsanalyse
+Quote a price,Gi et pristilbud
+"Once the customer agrees, turn it into a sales order or an invoice from the quotation itself. See [Quotation](https://docs.frappe.io/erpnext/user/manual/en/quotation).","Når kunden godtar tilbudet, kan du opprette en salgsordre eller faktura direkte fra tilbudet. Se [Tilbud](https://docs.frappe.io/erpnext/user/manual/en/quotation)."
+Create Quotation,Opprett tilbud
+Check your profit,Kontroller resultatet
+"Income against expenses for any period, built from every invoice and payment you have recorded.","Inntekter og kostnader for en valgt periode, basert på registrerte fakturaer og betalinger."
+Open Profit and Loss,Åpne resultatrapport
+Follow up on unpaid invoices,Følg opp ubetalte fakturaer
+"Who owes you, how much, and for how long. See [Accounts Receivable](https://docs.frappe.io/erpnext/user/manual/en/accounts-receivable).","Hvem som skylder deg penger, hvor mye og hvor lenge beløpet har vært utestående. Se [Kundefordringer](https://docs.frappe.io/erpnext/user/manual/en/accounts-receivable)."
+Open Accounts Receivable,Åpne kundefordringer
+Invite your team,Inviter medarbeidere
+Add the people you work with and choose what they can see.,Legg til dem du arbeider med og velg hva de skal ha tilgang til.
+Add User,Legg til bruker
+Track progress and costs,Følg fremdrift og kostnader
+"Progress, hours and costs for every project.","Fremdrift, timer og kostnader for hvert prosjekt."
+Open Project Summary,Åpne prosjektsammendrag
+Log time against it,Registrer tid på prosjektet
+Record the hours spent on tasks. Bill them to the customer or use them to cost the project. See [Timesheet](https://docs.frappe.io/erpnext/user/manual/en/timesheets).,Registrer timer på oppgaver. Fakturer timene til kunden eller bruk dem til å beregne prosjektkostnaden. Se [Timeliste](https://docs.frappe.io/erpnext/user/manual/en/timesheets).
+Create Timesheet,Opprett timeliste
+Break it into tasks,Del prosjektet inn i oppgaver
+"Who does what, by when. Tasks roll up into the project's progress. See [Task](https://docs.frappe.io/erpnext/user/manual/en/task).","Hvem som gjør hva, og til hvilken frist. Oppgavene inngår i prosjektets samlede fremdrift. Se [Task](https://docs.frappe.io/erpnext/user/manual/en/task)."
+Create Task,Opprett oppgave
+Start a project,Start et prosjekt
+"Anything with a start and an end: a client job, an installation, an internal initiative. See [Project](https://docs.frappe.io/erpnext/user/manual/en/project).","Et arbeid med en start og slutt: et kundeoppdrag, en installasjon eller et internt tiltak. Se [Project](https://docs.frappe.io/erpnext/user/manual/en/project)."
+Create Project,Opprett prosjekt
+Record an asset you already own,Registrer en eiendel du allerede eier
+"Something you bought before using ERPNext, with what you paid, where it is, and how much has already depreciated. See [Asset](https://docs.frappe.io/erpnext/user/manual/en/asset).","Noe du kjøpte før du tok i bruk ERPNext, med kjøpspris, plassering og tidligere avskrivninger. Se [Asset](https://docs.frappe.io/erpnext/user/manual/en/asset)."
+Add Asset,Legg til eiendel
+Add an asset item,Legg til en artikkel for eiendeler
+"The kind of thing you own, marked as a fixed asset. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).","Typen eiendel du eier, merket som anleggsmiddel. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item)."
+Set up an asset category,Sett opp en eiendelskategori
+"Computers, vehicles, furniture: how each kind depreciates, and which accounts it posts to. See [Asset Category](https://docs.frappe.io/erpnext/user/manual/en/asset-category).","Datamaskiner, kjøretøy eller møbler: hvordan hver type avskrives, og hvilke kontoer den bokføres på. Se [Driftsmiddelkategori](https://docs.frappe.io/erpnext/user/manual/en/asset-category)."
+Create Asset Category,Opprett eiendelskategori
+Add a product you make,Legg til et produkt du produserer
+"What comes out at the end of production, kept in the Products group. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).","Det ferdige produktet etter produksjonen, plassert i artikkelgruppen Produkter. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item)."
+Add a raw material,Legg til en råvare
+"Something you use to make your products, kept in the Raw Material group. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).","Noe du bruker til å produsere produktene dine, plassert i artikkelgruppen Råvarer. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item)."
+Track your orders,Følg opp bestillingene
+"What you ordered, what has arrived, and what is still to come.","Hva du har bestilt, hva som er mottatt og hva som gjenstår."
+Open Purchase Order Analysis,Åpne analyse av innkjøpsordre
+Get paid,Registrer en innbetaling
+"When your customer pays, record it here. It is matched against their invoice, so you can see what is still owed. See [Payment Entry](https://docs.frappe.io/erpnext/user/manual/en/payment-entry).","Registrer kundens betaling her. Den kobles til fakturaen, slik at du ser hva som fortsatt er utestående. Se [Betalingsregistrering](https://docs.frappe.io/erpnext/user/manual/en/payment-entry)."
+Review your chart of accounts,Kontroller kontoplanen
+"We set up a standard chart of accounts for your country. See how your accounts are grouped, and rename or add any to match how you report. See [Chart of Accounts](https://docs.frappe.io/erpnext/user/manual/en/chart-of-accounts).","Vi har opprettet en standard kontoplan for landet ditt. Se hvordan kontoene er gruppert, og endre navn eller legg til kontoer etter rapporteringsbehovet ditt. Se [Kontoplan](https://docs.frappe.io/erpnext/user/manual/en/chart-of-accounts)."
+Open Chart of Accounts,Åpne kontoplan
+Check your stock levels,Kontroller lagerbeholdningen
+"What you have in each warehouse, and what it is worth.","Hva du har på hvert lager, og verdien av beholdningen."
+Open Stock Balance,Åpne lagerbeholdning
+Review your warehouses,Kontroller lagrene
+"We created a few to start with. Rename them, or add the places you actually keep stock. See [Warehouse](https://docs.frappe.io/erpnext/user/manual/en/warehouse).",Vi har opprettet noen lagre som utgangspunkt. Endre navnene eller legg til stedene du faktisk lagrer varer. Se [Lager](https://docs.frappe.io/erpnext/user/manual/en/warehouse).
+Open Warehouse,Åpne lager
+Send your first invoice,Send din første faktura
+"Bill your customer for the item. Submit it, then use **Print** to see it on paper or send it as a PDF. See [Sales Invoice](https://docs.frappe.io/erpnext/user/manual/en/sales-invoice).",Fakturer kunden for artikkelen. Bokfør fakturaen og bruk deretter **Skriv ut** for å se den på papir eller sende den som PDF. Se [Salgsfaktura](https://docs.frappe.io/erpnext/user/manual/en/sales-invoice).
+Create Sales Invoice,Opprett salgsfaktura
+Ship to a customer,Lever varer til en kunde
+"Stock goes down as the goods leave, and the invoice can be made from the delivery. See [Delivery Note](https://docs.frappe.io/erpnext/user/manual/en/delivery-note).","Lagerbeholdningen reduseres når varene leveres, og fakturaen kan opprettes fra leveringen. Se [Leveringsseddel](https://docs.frappe.io/erpnext/user/manual/en/delivery-note)."
+Create Delivery Note,Opprett leveringsseddel
+Add a customer,Legg til en kunde
+A business or person you sell to. See [Customer](https://docs.frappe.io/erpnext/user/manual/en/customer).,En virksomhet eller person du selger til. Se [Kunde](https://docs.frappe.io/erpnext/user/manual/en/customer).
+Add Customer,Legg til kunde
+See how production is going,Følg produksjonen
+"Every work order, how far along it is, and what is running late. See [Work Order Summary](https://docs.frappe.io/erpnext/user/manual/en/work-order-summary).","Alle arbeidsordrer, fremdriften på hver ordre og det som er forsinket. Se [Oversikt over arbeidsordrer](https://docs.frappe.io/erpnext/user/manual/en/work-order-summary)."
+Open Work Order Summary,Åpne oversikt over arbeidsordrer
+Plan a work order,Planlegg en arbeidsordre
+Decide how many to make. The raw materials you need are worked out from the BOM. See [Work Order](https://docs.frappe.io/erpnext/user/manual/en/work-order).,Bestem antallet som skal produseres. Behovet for råvarer beregnes fra stykklisten. Se [Produksjonsordre](https://docs.frappe.io/erpnext/user/manual/en/work-order).
+Create Work Order,Opprett arbeidsordre
+Write its bill of materials,Lag en stykkliste
+"The raw materials, and how much of each, that go into one unit of your product. Submit it to use it in production. See [BOM](https://docs.frappe.io/erpnext/user/manual/en/bill-of-materials).
+
+Sending some of the work to a supplier? See [Subcontracting](https://docs.frappe.io/erpnext/user/manual/en/subcontracting).","Råvarene og mengden av hver som inngår i én enhet av produktet. Send inn stykklisten for å bruke den i produksjonen. Se [Stykkliste](https://docs.frappe.io/erpnext/user/manual/en/bill-of-materials).
+
+Skal en leverandør utføre deler av arbeidet? Se [Underleverandøroppdrag](https://docs.frappe.io/erpnext/user/manual/en/subcontracting)."
+Create BOM,Opprett stykkliste
+Receive goods from a supplier,Motta varer fra en leverandør
+"Stock goes up in the warehouse you receive into, and the bill can be made from the receipt. See [Purchase Receipt](https://docs.frappe.io/erpnext/user/manual/en/purchase-receipt).","Beholdningen øker på mottakslageret, og fakturaen kan opprettes fra mottaket. Se [Varemottak](https://docs.frappe.io/erpnext/user/manual/en/purchase-receipt)."
+Create Purchase Receipt,Opprett varemottak
+Add an item you stock,Legg til en artikkel du lagerfører
+Anything you keep on shelves and count. See [Item](https://docs.frappe.io/erpnext/user/manual/en/item).,Noe du oppbevarer på lager og teller. Se [Artikkel](https://docs.frappe.io/erpnext/user/manual/en/item).
+Enter their bill,Registrer leverandørens faktura
+"The bill your supplier sent, so you know what you owe and when it is due. See [Purchase Invoice](https://docs.frappe.io/erpnext/user/manual/en/purchase-invoice).","Fakturaen leverandøren har sendt, slik at du vet hva du skylder og når den forfaller. Se [Leverandørfaktura](https://docs.frappe.io/erpnext/user/manual/en/purchase-invoice)."
+Place a purchase order,Opprett en innkjøpsordre
+"Order from the supplier. When the goods arrive, receive them and record the bill from the order itself. See [Purchase Order](https://docs.frappe.io/erpnext/user/manual/en/purchase-order).","Bestill fra leverandøren. Når varene kommer, kan du opprette mottak og registrere fakturaen fra ordren. Se [Innkjøpsordre](https://docs.frappe.io/erpnext/user/manual/en/purchase-order)."
+Create Purchase Order,Opprett innkjøpsordre
+Add a supplier,Legg til en leverandør
+A business or person you buy from. See [Supplier](https://docs.frappe.io/erpnext/user/manual/en/supplier).,En virksomhet eller person du kjøper fra. Se [Leverandør](https://docs.frappe.io/erpnext/user/manual/en/supplier).
+Add Supplier,Legg til leverandør
+Open Issues,Åpne henvendelser
+Overdue Issues,Forfalte henvendelser
+Resolved Issues,Løste henvendelser
+Open Quality Actions,Åpne kvalitetstiltak
+Open Quality Reviews,Åpne kvalitetsgjennomganger
+Open Non Conformances,Åpne avvik
+Failed Scheduled Jobs,Mislykkede planlagte jobber
+Active RQ Worker,Aktive bakgrunnsarbeidere
+Scheduled Jobs,Planlagte jobber
+Sales Orders Count,Antall salgsordrer
+Total Sales Amount,Samlet salgsbeløp
+Average Sales Order Value,Gjennomsnittlig salgsordreverdi
+Timesheet Working Hours,Registrerte arbeidstimer
+Non Completed Tasks,Ufullførte oppgaver
+Active Subcontracted Items,Aktive artikler hos underleverandør
+Subcontracting Outward Order Count,Antall utgående underleverandørordrer
+Subcontracting Inward Order Count,Antall inngående underleverandørordrer
+Average Order Values,Gjennomsnittlig ordreverdi
+Purchase Orders Count,Antall innkjøpsordrer
+Total Purchase Amount,Samlet kjøpsbeløp
+Manufactured Items Value,Verdi av produserte artikler
+WIP Work Orders,Arbeidsordrer under arbeid
+Open Work Orders,Åpne arbeidsordrer
+Total Website Users,Antall nettstedsbrukere
+Total System Users,Antall systembrukere
+Total Stock Value,Samlet lagerverdi
+Total Warehouses,Antall lagre
+Total Active Items,Antall aktive artikler
+Active Suppliers,Aktive leverandører
+Purchase Orders to Bill,Innkjøpsordrer som skal faktureres
+Purchase Orders to Receive,Innkjøpsordrer som skal mottas
+Annual Purchase,Årets innkjøp
+Active Customers,Aktive kunder
+Sales Orders to Bill,Salgsordrer som skal faktureres
+Sales Orders to Deliver,Salgsordrer som skal leveres
+Annual Sales,Årets salg
+Open Opportunity,Åpne salgsmuligheter
+Won Opportunity (Last 1 Month),Vunne salgsmuligheter siste måned
+New Opportunity (Last 1 Month),Nye salgsmuligheter siste måned
+New Lead (Last 1 Month),Nye kundeemner siste måned
+Total Incoming Bills,Sum inngående fakturaer
+Total Outgoing Bills,Sum utgående fakturaer
+Total Outgoing Payment,Sum utbetalinger
+Total Incoming Payment,Sum innbetalinger
+Asset Value,Eiendelsverdi
+New Assets (This Year),Nye eiendeler i år
+Total Assets,Antall eiendeler
+Monthly Quality Inspections,Månedlige kvalitetskontroller
+Ongoing Job Cards,Pågående arbeidskort
+Monthly Completed Work Orders,Fullførte arbeidsordrer per måned
+Monthly Total Work Orders,Antall arbeidsordrer per måned
+Issues Opened,Nye henvendelser
+Quality Inspections,Kvalitetskontroller
+Completed Projects,Fullførte prosjekter
+Stock Value by Item Group,Lagerverdi per artikkelgruppe
+Notifications By Type,Varsler per type
+Background Job Activity,Aktivitet for bakgrunnsjobber
+Email Activity,E-postaktivitet
+Webpage Views,Sidevisninger
+Oldest Items,Eldste artikler
+Warehouse wise Stock Value,Lagerverdi per lager
+Item Shortage Summary,Oversikt over artikkelmangel
+Delivery Trends,Leveringstrender
+Purchase Receipt Trends,Trender for varemottak
+Top Suppliers,Største leverandører
+Purchase Order Trends,Trender for innkjøpsordrer
+Material Request Analysis,Analyse av materialforespørsler
+Top Customers,Største kunder
+Sales Order Trends,Trender for salgsordrer
+Item-wise Annual Sales,Årlig salg per artikkel
+Territory Wise Sales,Salg per område
+Territory Wise Opportunity Count,Antall salgsmuligheter per område
+Won Opportunities,Vunne salgsmuligheter
+Opportunities via Campaigns,Salgsmuligheter fra kampanjer
+Opportunity Trends,Trender for salgsmuligheter
+Incoming Leads,Nye kundeemner
+Bank Balance,Banksaldo
+Accounts Payable Ageing,Aldersfordelt leverandørgjeld
+Accounts Receivable Ageing,Aldersfordelte kundefordringer
+Outgoing Bills (Sales Invoice),Utgående fakturaer (salgsfaktura)
+Incoming Bills (Purchase Invoice),Inngående fakturaer (leverandørfaktura)
+Location-wise Asset Value,Eiendelsverdi per plassering
+Category-wise Asset Value,Eiendelsverdi per kategori
+Asset Value Analytics,Analyse av eiendelsverdi
+Job Card Analysis,Analyse av arbeidskort
+Work Order Qty Analysis,Analyse av antall på arbeidsordrer
+Last Month Downtime Analysis,Analyse av driftsstans siste måned
+Pending Work Order,Ventende arbeidsordrer
+Quality Inspection Analysis,Analyse av kvalitetskontroller
+Work Order Analysis,Analyse av arbeidsordrer
+Completed Operation,Fullførte operasjoner
+Produced Quantity,Produsert antall
+ERPNext Settings,ERPNext-innstillinger
+CRM,Kundebehandling
+Electronic Invoice Register,Register for elektroniske fakturaer
+Bank Account Type,Bankkontotype
+Opening Invoice Tool,Verktøy for inngående fakturaer ved oppstart
+Subscription Plan,Abonnementsplan
+Opening & Closing,Åpning og avslutning
+Process Payment Reconciliation,Behandle betalingsavstemming
+Registers & Profitability,Registre og lønnsomhet
+Bank Reconciliation (old),Bankavstemming (eldre)
+Cheque Print Template,Mal for utskrift av sjekk
+Share Type,Aksjetype
+Bank Guarantee,Bankgaranti
+Period Closing Voucher,Bilag for periodeavslutning
+Ledger Merge,Sammenslåing av hovedboksposter
+Bank Account Subtype,Bankkontoundertype
+Tax Withholding Details,Detaljer om kildeskatt
+Invoicing & Payments,Fakturering og betaling
+Ledger Tools,Hovedboksverktøy
+Journal Entry Template,Mal for bokføringsbilag
+Share Transfer,Aksjeoverføring
+TDS Computation Summary,Oversikt over beregnet kildeskatt
+Deduction Certificate,Fradragsattest
+Gross and Net Profit Report,Rapport for brutto- og nettoresultat
+Consolidated Trial Balance,Konsolidert saldobalanse
+Deferred Revenue and Expense,Periodiserte inntekter og kostnader
+Ledger Health Monitor,Tilstandskontroll av hovedbok
+Reconciliation,Avstemming
+Receivables & Payables,Fordringer og gjeld
+Share Balance,Aksjebeholdning
+COA Importer,Kontoplanimport
+Repost Payment Ledger,Omposter betalingsreskontro
+Bank Clearance Summary,Oversikt over bankklarering
+Share Ledger,Aksjebok
+Process Statement Of Accounts,Behandle kontoutdrag
+Financial Ratios,Finansielle nøkkeltall
+VAT Audit Report,MVA-kontrollrapport
+FX Revaluation,Omvurdering av valutaposter
+UAE VAT 201,MVA-melding UAE 201
+Unreconcile Payment,Opphev betalingsavstemming
+South Africa VAT Settings,MVA-innstillinger for Sør-Afrika
+Tax & Compliance,Avgifter og regelverk
+Repost Accounting Ledger,Omposter hovedbok
+Share Management,Aksjeforvaltning
+Forecasting,Prognoser
+Work Orders in Progress,Arbeidsordrer under arbeid
+BOM Stock Analysis,Lageranalyse for stykkliste
+Work Order Stock Report,Lagerrapport for arbeidsordre
+Cost of Poor Quality Report,Rapport over kostnader ved kvalitetsavvik
+BOM Explorer,Stykklisteoversikt
+Completed Work Orders,Fullførte arbeidsordrer
+BOM Search,Søk i stykklister
+Downtime Analysis,Analyse av driftsstans
+Work Order Consumed Materials,Forbrukte materialer per arbeidsordre
+Production Reports,Produksjonsrapporter
+BOM Reports,Stykklisterapporter
+Production Plan Summary,Sammendrag av produksjonsplan
+Planning Reports,Planleggingsrapporter
+Visual Plant Floor,Visuell produksjonsoversikt
+Master Production Schedule,Hovedplan for produksjon
+Workstation Type,Arbeidsstasjonstype
+BOM Variance Report,Avviksrapport for stykkliste
+Issued Items Against Work Order,Utleverte artikler til arbeidsordre
+Sales Forecast,Salgsprognose
+Process Loss Report,Rapport over produksjonstap
+BOM Operations Time,Operasjonstid for stykkliste
+Quality Reports,Kvalitetsrapporter
+Quality Inspection Parameter,Parameter for kvalitetskontroll
+Quality Inspection Parameter Group,Parametergruppe for kvalitetskontroll
+Project Reports,Prosjektrapporter
+Asset Maintenance Report,Vedlikeholdsrapport for eiendeler
+Asset Shift Factor,Skiftfaktor for eiendeler
+Asset Shift Allocation,Skifttildeling for eiendeler
+Asset Reports,Eiendelsrapporter
+Serial No Service Contract Expiry,Utløp av serviceavtale per serienummer
+Total Stock Summary,Samlet lageroversikt
+Incorrect Serial No Valuation,Feil verdsetting av serienummer
+Repost Item Valuation,Omposter artikkelverdsetting
+Available Serial No,Tilgjengelige serienumre
+Delayed Item Report,Rapport over forsinkede artikler
+Item Where Used,Hvor artikkelen brukes
+Stock Closing Entry,Lageravslutning
+Shipment,Forsendelse
+Warehouse Capacity Summary,Oversikt over lagerkapasitet
+Landed Cost Report,Rapport over tilleggskostnader
+COGS By Item Group,Varekostnad per artikkelgruppe
+Shipment Parcel Template,Mal for kolli i forsendelse
+Delivery Note Trends,Trender for leveringssedler
+Stock Ledger Invariant Check,Konsistenskontroll av lagerbok
+Batch Item Expiry Status,Utløpsstatus for partiartikler
+Incorrect Stock Value Report,Rapport over feil lagerverdi
+Serial No Warranty Expiry,Garantiutløp per serienummer
+Requested Items To Be Transferred,Forespurte artikler som skal overføres
+Item Wise Consumption,Forbruk per artikkel
+Delayed Order Report,Rapport over forsinkede ordrer
+Reserved Stock,Reservert lagerbeholdning
+Stock Reports,Lagerrapporter
+Itemwise Recommended Reorder Level,Anbefalt bestillingspunkt per artikkel
+Item Variant Details,Detaljer om artikkelvarianter
+Negative Batch Report,Rapport over negative partibeholdninger
+Stock Qty vs Serial No Count,Lagerantall mot antall serienumre
+Item Price Stock,Artikkelpris og lagerbeholdning
+Items To Be Requested,Artikler som må bestilles
+Quick Stock Balance,Rask lageroversikt
+Stock Ledger Variance,Avvik i lagerbok
+Serial No Status,Serienummerstatus
+UOM Category,Enhetskategori
+Audit Reports,Kontrollrapporter
+Item Alternative,Alternativ artikkel
+Movement Reports,Rapporter om lagerbevegelser
+Stock and Account Value Comparison,Sammenligning av lagerverdi og regnskapsverdi
+Stock Summary,Lagersammendrag
+Serial and Batch Summary,Oversikt over serienumre og partier
+Serial No Ledger,Serienummerbok
+Stock Reservation Entry,Lagerreservasjon
+Available Batch Report,Rapport over tilgjengelige partier
+Item Shortage Report,Rapport over artikkelmangel
+Stock Qty vs Batch Qty,Lagerantall mot partiantall
+Warehouse Wise Stock Balance,Lagerbeholdning per lager
+FIFO Queue vs Qty After Transaction Comparison,Sammenligning av FIFO-kø og antall etter transaksjon
+Warehouse wise Item Balance Age and Value,Alder og verdi på artikkelbeholdning per lager
+Incorrect Balance Qty After Transaction,Feil beholdningsantall etter transaksjon
+Serial & Batch Reports,Rapporter for serienumre og partier
+Batch-Wise Balance History,Beholdningshistorikk per parti
+Serial No and Batch Traceability,Sporbarhet for serienumre og partier
+Item Reports,Artikkelrapporter
+Item-wise Price List Rate,Prislistepris per artikkel
+Materials To Be Transferred,Materialer som skal overføres
+Requested Items to Order and Receive,Forespurte artikler som skal bestilles og mottas
+Billed Items To Be Received,Fakturerte artikler som skal mottas
+Item-wise Purchase History,Kjøpshistorikk per artikkel
+Supplier Scorecard Criteria,Kriterier for leverandørvurdering
+Items To Be Received,Artikler som skal mottas
+Terms Template,Vilkårsmal
+Subcontracting Reports,Rapporter for underleverandøroppdrag
+Supplier Scorecard Variable,Variabel for leverandørvurdering
+Supplier Scorecard Standing,Vurderingsklasse for leverandør
+Tax Template,Avgiftsmal
+Procurement Tracker,Oversikt over anskaffelser
+Supplier Addresses And Contacts,Leverandøradresser og kontakter
+Purchase Reports,Innkjøpsrapporter
+Supplier Reports,Leverandørrapporter
+Subcontract Order Summary,Oversikt over underleverandørordrer
+Order Status Reports,Rapporter om ordrestatus
+Sales Partner Transaction Summary,Transaksjonssammendrag per salgspartner
+Sales Person Commission Summary,Provisjonsoversikt per selger
+Customer-wise Item Price,Artikkelpris per kunde
+Sales Team Reports,Rapporter for salgsteam
+Customers Without Any Sales Transactions,Kunder uten salgstransaksjoner
+Point of Sale,Kasse
+Territory Target Variance Based On Item Group,Målavvik per område og artikkelgruppe
+POS Opening Entry,Kasseåpning
+Item-wise Sales History,Salgshistorikk per artikkel
+Inactive Customers,Inaktive kunder
+Sales Partner Commission Summary,Provisjonsoversikt per salgspartner
+Quotation Trends,Trender for tilbud
+Sales Person Target Variance Based On Item Group,Målavvik per selger og artikkelgruppe
+Territory-wise Sales,Salg per område
+Sales Person-wise Transaction Summary,Transaksjonssammendrag per selger
+Payment Terms Status for Sales Order,Betalingsvilkårstatus for salgsordre
+Customer Acquisition and Loyalty,Kundetilvekst og lojalitet
+Customer Reports,Kunderapporter
+Lost Quotations,Tapte tilbud
+Sales Partner Target Variance based on Item Group,Målavvik per salgspartner og artikkelgruppe
+Promotional Scheme,Kampanjeordning
+Sales Reports,Salgsrapporter
+DocType,Dokumenttype
+Event,Hendelse
+chart,diagram
+shortcut,snarvei
+card,kort
+onboarding,oppstartsveiledning
+quick list,hurtigliste
+number card,nøkkeltall
+custom block,egendefinert blokk
+widget,element
+"Another {0} in this workspace is already labelled {1}. Labels are used to tell widgets apart when the workspace is saved, so the two would overwrite each other. Please pick a different label.","Et annet element av typen {0} på dette arbeidsområdet har allerede etiketten {1}. Etikettene brukes til å skille elementene ved lagring, så elementene vil overskrive hverandre. Velg en annen etikett."
+Duplicate Label,Etiketten er allerede i bruk
+This label is already used by another {0} in this workspace.,Denne etiketten brukes allerede av et annet element av typen {0} på arbeidsområdet.
+"Good morning, {0}","God morgen, {0}"
+Good morning,God morgen
+"Good afternoon, {0}","God ettermiddag, {0}"
+Good afternoon,God ettermiddag
+"Good evening, {0}","God kveld, {0}"
+Good evening,God kveld
+{0} of {1} done · {2} skipped,{0} av {1} fullført · {2} hoppet over
+{0} of {1} steps done,{0} av {1} trinn fullført
+Optional,Valgfritt
+Play video,Spill av video
+YouTube video player,YouTube-videoavspiller
+Submit it to finish this step.,Send inn dokumentet for å fullføre dette trinnet.
+Done: {0},Fullført: {0}
+You're all set.,Alt er klart.
+N/A,Ikke tilgjengelig,Number not available
+This chart couldn't load,Diagrammet kunne ikke lastes
+No data yet,Ingen data ennå
+Couldn't open Cloud settings. Please try again.,Kunne ikke åpne skyinnstillingene. Prøv igjen.
+Edit Layout,Rediger oppsett
+Untitled {0},Uten navn {0}
+Create Folder,Opprett mappe
+Add To Folder,Legg til i mappe
+No Matching Bank Transactions Found,Ingen samsvarende banktransaksjoner funnet
+Upload Bank Statement,Last opp kontoutskrift
+Auto Reconcile,Avstem automatisk
+Please select Bank Account,Velg bankkonto
+Get Unreconciled Entries,Hent uavstemte poster
+Try the {0} for a better experience.,Prøv {0} for en bedre arbeidsflyt.
+From Reference Date cannot be greater than To Reference Date,Fra referansedato kan ikke være etter til referansedato
+From Date cannot be greater than To Date,Fra dato kan ikke være etter til dato
+Payment Reconciliation Job: {0} is running for this party. Can't reconcile now.,Betalingsavstemmingsjobben {0} kjører for denne parten. Avstemming kan ikke utføres nå.
+No Unreconciled Invoices and Payments found for this party and account,Ingen uavstemte fakturaer eller betalinger funnet for denne parten og kontoen
+No Outstanding Invoices found for this party,Ingen utestående fakturaer funnet for denne parten
+No Unreconciled Payments found for this party,Ingen uavstemte betalinger funnet for denne parten
+Select Difference Account,Velg differansekonto
+Allocation,Fordeling
+Difference Amount,Differansebeløp
+New Journal Entry will be posted for the difference amount. The Posting Date can be modified.,Et nytt bokføringsbilag opprettes for differansen. Bokføringsdatoen kan endres.
+Reconcile Entries,Avstem poster
+"Your income and expenses over the year, and what's left as profit.","Årets inntekter og kostnader, og resultatet etter kostnader."
+What you bill your customers each month.,Det du fakturerer kundene hver måned.
+What your suppliers bill you each month.,Det leverandørene fakturerer deg hver måned.
+Your budgets against what you actually spent.,Budsjettet sammenlignet med de faktiske kostnadene.
+"How much money sits in your bank accounts, month by month.","Saldo på bankkontoene, måned for måned."
+How long your customers' unpaid invoices have been due.,Hvor lenge kundenes ubetalte fakturaer har vært forfalt.
+How long your unpaid supplier bills have been due.,Hvor lenge ubetalte leverandørfakturaer har vært forfalt.
+"What your assets are worth, by location.",Verdien av eiendelene per plassering.
+"What your assets are worth, by category.",Verdien av eiendelene per kategori.
+"What your assets are worth, year by year.","Verdien av eiendelene, år for år."
+"Your suppliers, ranked by what they deliver to you.",Leverandørene rangert etter leveransene til deg.
+How much you order from suppliers each month.,Det du bestiller fra leverandører hver måned.
+"Where your purchase orders stand: to receive, to bill, or done.","Status for innkjøpsordrene: venter på mottak, venter på faktura eller fullført."
+"Your material requests by status, from pending to ordered.","Materialforespørslene etter status, fra ventende til bestilt."
+The opportunities you win each month.,Salgsmulighetene du vinner hver måned.
+The value of opportunities you win in each territory.,Verdien av vunne salgsmuligheter i hvert område.
+How many opportunities each territory brings in.,Antall salgsmuligheter fra hvert område.
+New opportunities coming in each week.,Nye salgsmuligheter hver uke.
+Which campaigns bring in your opportunities.,Kampanjene som gir salgsmuligheter.
+Where your leads come from.,Hvor kundeemnene kommer fra.
+New leads coming in each week.,Nye kundeemner hver uke.
+What your work orders planned against what they produced.,Planlagt antall på arbeidsordrene sammenlignet med produsert antall.
+"Your work orders by status, from planned to completed.","Arbeidsordrene etter status, fra planlagt til fullført."
+How many of your inspections pass or fail.,Antall godkjente og avviste kvalitetskontroller.
+How much you produce each month.,Produsert antall hver måned.
+How long your open work orders have been waiting.,Hvor lenge de åpne arbeidsordrene har ventet.
+How long your workstations were down last month.,Varighet av driftsstans på arbeidsstasjonene siste måned.
+"Your job cards each month, by status.",Arbeidskort per måned og status.
+Operations completed on your work orders each quarter.,Fullførte operasjoner på arbeidsordrene hvert kvartal.
+How far along your open projects are.,Fremdriften på åpne prosjekter.
+The projects you finish each month.,Prosjektene du fullfører hver måned.
+How many inspections you run each month.,Antall kvalitetskontroller du utfører hver måned.
+"Your customers, ranked by what you deliver to them.",Kundene rangert etter leveransene til dem.
+How much your customers order each month.,Det kundene bestiller hver måned.
+Sales orders still waiting to be delivered or billed.,Salgsordrer som fortsatt venter på levering eller fakturering.
+Your best-selling items over the year.,De mest solgte artiklene i løpet av året.
+What your stock is worth in each warehouse.,Verdien av beholdningen på hvert lager.
+"What your stock is worth, by item group.",Verdien av lagerbeholdningen per artikkelgruppe.
+What you receive from suppliers each month.,Det du mottar fra leverandører hver måned.
+The stock that has sat longest in your warehouses.,Artiklene som har ligget lengst på lager.
+Items you're about to run short of.,Artikler det snart blir for lite av på lageret.
+What you deliver to your customers each month.,Det du leverer til kundene hver måned.
+What you send out for subcontracting each month.,Det du sender til underleverandører hver måned.
+Support issues opened each month.,Nye kundestøttehenvendelser hver måned.
+Accounts Setup,Regnskapsoppsett
+Reconciliation Statement,Avstemmingsoversikt
+Banking Setup,Bankoppsett
+Customer Ledger,Kundereskontro
+Supplier Ledger,Leverandørreskontro
+Registers,Registre
+AR Summary,Oversikt over kundefordringer
+AP Summary,Oversikt over leverandørgjeld
+Item-wise sales Register,Varespesifikt salgsregister
+Subscriptions,Abonnementer
+Purchase Receipt Trends ,Trender for varemottak
+Monthly Completed Work Order,Fullførte arbeidsordrer per måned
+Material Planning,Materialplanlegging
+Item Lead Time,Ledetid for artikkel
+POS Invoice Merge Log,Logg over sammenslåtte kassafakturaer
+Loyalty Point Entry,Bonuspoengpostering
+Items & Pricing,Artikler og priser
+Item Price,Artikkelpris
+Customer Addresses And Contacts,Kundeadresser og kontakter
+Available Stock for Packing Items,Tilgjengelig beholdning for pakkeartikler
+Sales Partner Target Variance Based On Item Group,Målavvik per salgspartner og artikkelgruppe
+Pending SO Items For Purchase Request,Salgsordreartikler som venter på innkjøpsforespørsel
+Other Settings,Andre innstillinger
+Item Standard Cost,Standardkostnad for artikkel
+Payment Reconciliation,Betalingsavstemming
+Accounts Receivable Summary,Oversikt over kundefordringer
+Website Users,Nettstedsbrukere
+Today,I dag
+Clear,Tøm
+Desktop,Skrivebord
+Closing Balance as per Bank Statement,Utgående saldo på kontoutskriften
+Closing Balance as per ERP,Utgående saldo i regnskapet
+Difference,Differanse
+new Banking module,den nye bankmodulen
+Try the new navigation,Prøv den nye navigasjonen
+Navigation on the desktop has two modes:,Skrivebordet har to navigasjonsmåter:
+"{0}: a grid of icons you can arrange, which is what you use today.","{0}: ikoner du kan ordne selv, slik du bruker det i dag."
+"{0}: your modules sit in a dock, and each one has its own sidebar.","{0}: modulene ligger i en navigasjonslinje, og hver modul har sin egen sidemeny."
+"Your icons and their layout stay just as they are, and you can switch back anytime from Desktop Settings.","Ikonene og oppsettet ditt beholdes, og du kan når som helst bytte tilbake i skrivebordsinnstillingene."
+Read the migration guide,Les overgangsveiledningen
+Try it,Prøv
+No thanks,Nei takk
+Switching you to the new navigation…,Bytter til den nye navigasjonen …
+No problem. You can try it anytime from Desktop Settings.,Du kan prøve dette senere i skrivebordsinnstillingene.
+Desktop Icons,Skrivebordsikoner
+Desktop Settings,Skrivebordsinnstillinger
