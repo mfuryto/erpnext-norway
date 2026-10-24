@@ -1,8 +1,10 @@
 # MVA-fradrag for lager og driftsmidler
 
-App 0.4.3 bruker ERPNexts ordinære innkjøpsordre, varemottak, innkjøpsfaktura,
+App 0.4.4 bruker ERPNexts ordinære innkjøpsordre, varemottak, innkjøpsfaktura,
 retur, avgiftsmaler og verdsetting. Ikke-fradragsført MVA inngår i kostnaden;
-appens fradragsvalg konfigurerer kjernens prosentsatser og Valuation and Total.
+appens fradragsvalg konfigurerer kjernens prosentsatser. Ordinære nettogrunnlag
+bruker Valuation and Total. Frakt med flere lager-/tjenestelinjer bruker Total
+og ordinære kostnadsfordelingsbilag basert på kjernens avgiftsdetaljer.
 Kjernen beregner beløp, lagerverdi, driftsmiddelkostnad og hovedbok.
 
 ## Vanlig registrering
@@ -78,8 +80,12 @@ i det eksisterende mottakslinjefeltet på kreditnotaen. Listen viser linjenummer
 antall og opprinnelig MVA-fradrag. En eksplisitt ugyldig linje avvises; den
 skal ikke stille byttes til en annen mulig kilde.
 
-Flere varelinjer kombinert med MVA-verdsetting på frakt via On Previous Row er
-fortsatt et åpent kjerneavvik. Den kombinasjonen åpnes ikke av denne leveransen.
+Flere lager-/tjenestelinjer med MVA på frakt via On Previous Row er prøvd i
+app 0.4.4. Kombinasjonen med driftsmidler er fortsatt sperret: native negativ
+kostnadsfordeling på retur krever et Asset-dokument på returdokumentet, som
+ikke opprettes i den ordinære returflyten. Dette gjelder også automatisk
+opprettede driftsmidler. Manuell oppretting og beskyttelse av innsendte
+driftsmidler omgås ikke.
 Utland/import og resten av [MVA-planen](vat-plan.md) er heller ikke ferdig med
 lagerdelen. Nettleser, backup/restore og CI kvalifiserer de beskrevne prøvene,
 ikke brukerens faktiske konto-/fradragsvalg eller generell norsk etterlevelse.
@@ -97,3 +103,60 @@ Prøven bruker ett mottak og én fakturalinje, to returlinjer med antall 1 og 3,
 og en kreditnota med én linje mot hver returlinje. Alle berørte hovedbokskontoer
 går i null. Et eksplisitt valgt returantall som er for lite, avvises selv om en
 annen linje på samme returmottak har nok antall.
+
+## Grunnlaget for frakttilpasningen
+
+Native Valuation and Total på On Previous Row fordeler ikke MVA-kostnaden
+riktig ved flere varelinjer. Direkte kjerneprøver med Total og et ordinært
+Landed Cost Voucher bruker allerede beregnede Item Wise Tax Detail-beløp og gir
+riktig lagerverdi, full/delvis kreditnota og kansellering. Dette er konfigurasjon
+og native bilagskoblinger; ingen ny avgifts- eller verdsettingsberegning.
+
+Appen bruker samme native kostnadsfordeling på varemottak, fakturadifferanse
+og retur. Automatisk opprettede fordelingsbilag på et mottak har et entydig
+merke for ordinær kansellering; den eksisterende native
+mottakslenken beholdes. Fakturajusteringer bruker den eksisterende fakturalenken.
+Driftsmiddelkrav og uavklarte endringer i fraktens beregningsgrunnlag skal fortsatt
+avvises inntil hele den aktuelle native kjeden er prøvd. Asset-oppretting eller
+kjernens beskyttelse av innsendte Asset-dokumenter skal ikke overstyres.
+
+
+## Fraktflyt i app 0.4.4
+
+På lager-/tjenestekjøp med flere linjer fører appen den ikke-fradragsførte
+lager-MVA-en som Total og bruker kjernens allerede beregnede linjebeløp i et
+ordinært Bilag for tilleggskostnader. Dette gjelder direkte lagerfaktura,
+varemottak og retur. Ved endret fradrag på en mottaksbasert faktura fordeles bare
+differansen. Negative beløp bruker ordinære negative kostnadsfordelingsbilag.
+Mottakets automatiske bilag er merket **Norsk MVA-fordeling** og bruker den
+native mottakslenken; fakturajusteringer beholder den eksisterende fakturalenken.
+Kansellering tilbakefører disse bilagene med kjernen og bevarer dokumentasjonen.
+Manuelle kostnadsfordelingsbilag kanselleres ikke som om appen opprettet dem.
+
+Native innkjøpsskjerm oppdaterer også forhåndsberegningen når fraktavgiftsradene
+endres etter fradragsvalget. Ved flere satser angis avgiftsgrunnlagene på de
+ordinære avgiftsradene. Appen skal ikke gjette at en eksplisitt konfigurert sats
+har samme fraktgrunnlag som en annen. Ved pris inklusive MVA på varer og frakt
+eksklusive MVA må den native innstillingen for inkludering angis per grunnlag;
+MVA-kostnadsradene følger den tilsvarende avgiftsraden.
+
+Prøvd: direkte kjøp, begge native On Previous Row-grunnlag, inklusiv varepris med
+eksklusiv frakt, 25/15 % med 60/0 % fradrag, flere lagerlinjer med ulikt fradrag,
+ordre/mottak/faktura med 60→60, 100→60, 60→100 og 60→30 %, full retur/kreditnota,
+delfakturering med siste øre, delretur og vanlig avrunding samt kansellering.
+1 000 lager + 1 000 tjeneste + 100 frakt ved 25 % og 60 % fradrag gir 1 105
+lager, 1 105 tjenestekostnad, 100 fraktkostnad, 315 inngående MVA og 2 625 gjeld.
+Kjernen styrer eventuell avrundet gjeld og fører avrundingsdifferansen selv.
+
+Endring av selve avgiftsgrunnlagets struktur mellom mottak og faktura er ikke
+generelt kvalifisert for retur. Eksisterende automatiske kostnadsrader må ha et
+tilsvarende avgiftsgrunnlag, og referansen på returen må passe den opprinnelige
+fakturaen. Tvetydige grunnlag avvises fremfor å gjette eller endre hovedboken.
+
+
+En annen native verdsettingsrad som allerede kapitaliseres av kjernen, tas ikke
+med en gang til i det automatiske fraktbilaget. Bare merkede Total-rader brukes
+ved første fordeling. Dersom ulike satser har ulik MVA-inkludering på samme
+MVA-kostnadskonto og samme grunnlag, avvises kombinasjonen: én native avgiftsrad
+kan ikke ha to ulike inkluderingsinnstillinger. Innstillingen må være lik, eller
+kostnadskontoene må skilles gjennom ordinært kontooppsett.

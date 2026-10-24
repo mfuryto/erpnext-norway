@@ -133,6 +133,7 @@ def prepare_items(doc, method=None):
         return
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
+    doc.flags.norway_vat_cost_inclusions = {}
     for row in doc.items:
         if not row.item_tax_template and doc.doctype != 'Sales Invoice' and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
             category = doc.tax_category
@@ -234,15 +235,26 @@ def append_native_rows(doc, item, template):
                 continue  # Previous Row Total already includes the goods' net amount.
             bases = [('On Net Total', None)]
         for kind, reference in bases:
-            if any(tax.account_head == account.name and tax.charge_type == kind
-                   and (kind == 'On Net Total' or str(tax.get('row_id') or '') == str(reference or ''))
-                   for tax in doc.taxes):
+            matching_basis = next((tax for tax in sources if tax.charge_type == kind and
+                (kind == 'On Net Total' or str(tax.get('row_id') or '') == str(reference or ''))), None) if expense else None
+            basis_included = matching_basis.included_in_print_rate if matching_basis else included
+            if expense:
+                key = (account.name, kind, str(reference or '') if kind != 'On Net Total' else '')
+                seen = doc.flags.norway_vat_cost_inclusions
+                if key in seen and seen[key] != basis_included:
+                    frappe.throw(frappe._('VAT inclusion must match for lines sharing a VAT cost account and tax basis.'))
+                seen[key] = basis_included
+            existing_row = next((tax for tax in doc.taxes if tax.account_head == account.name and tax.charge_type == kind
+                and (kind == 'On Net Total' or str(tax.get('row_id') or '') == str(reference or ''))), None)
+            if existing_row:
+                if expense and existing_row.get('custom_norway_vat_cost'):
+                    existing_row.included_in_print_rate = basis_included
                 continue
             doc.append('taxes', {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
                 'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
                 'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Add',
                 'custom_norway_vat_cost': int(expense),
-                'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': included,
+                'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': basis_included,
                 'set_by_item_tax_template': 1})
 
 

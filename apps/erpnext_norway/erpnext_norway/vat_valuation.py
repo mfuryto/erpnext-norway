@@ -11,6 +11,7 @@ from frappe.utils import flt
 
 COST = 'custom_norway_vat_cost'
 SOURCE = 'custom_norway_vat_invoice'
+ALLOCATION = 'custom_norway_vat_allocation'
 VALUATION = 'Expenses Included In Valuation'
 
 
@@ -22,6 +23,8 @@ def configure_fields():
     ], 'Landed Cost Voucher': [
         {'fieldname': SOURCE, 'label': 'Norwegian VAT source invoice', 'fieldtype': 'Link',
          'options': 'Purchase Invoice', 'read_only': 1, 'no_copy': 1, 'insert_after': 'company'},
+        {'fieldname': ALLOCATION, 'label': 'Norwegian VAT allocation', 'fieldtype': 'Check',
+         'read_only': 1, 'no_copy': 1, 'print_hide': 1, 'insert_after': SOURCE},
     ]})
 
 
@@ -56,20 +59,43 @@ def configured(doc):
     return bool(doc.company and frappe.get_cached_value('Company', doc.company, 'country') == 'Norway')
 
 
+def basis_key(tax):
+    return (tax.charge_type, str(tax.get('row_id') or '')
+            if (tax.charge_type or '').startswith('On Previous Row') else '')
+
+
 def guard_configuration(doc, method=None):
     if not configured(doc) or doc.docstatus == 2:
         return
-    costs = [tax for tax in doc.taxes if tax.get(COST) and tax.category == 'Valuation and Total']
-    if costs and len(doc.items) > 1 and any(tax.charge_type.startswith('On Previous Row') for tax in costs):
-        frappe.throw(frappe._('VAT valuation on freight with multiple item lines is not yet qualified. Use a qualified native landed cost allocation.'))
+    valuation_rows = [tax for tax in doc.taxes if tax.get(COST) and
+        frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION]
+    if valuation_rows:
+        # Net is intrinsic, including zero deduction without an input VAT row.
+        bases = {('On Net Total', '')} | {basis_key(tax) for tax in doc.taxes
+                 if tax.account_head and (frappe.get_cached_value('Account', tax.account_head,
+                     'account_number') or '').startswith('271')}
+        if any(basis_key(tax) not in bases for tax in valuation_rows):
+            frappe.throw(frappe._('Keep matching native VAT bases for automatic VAT cost rows.'))
+    rows = [tax for tax in doc.taxes if tax.get(COST) and tax.category == 'Valuation and Total'
+            and frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION]
+    if rows and len(doc.items) > 1 and any(tax.charge_type.startswith('On Previous Row') for tax in rows):
+        if any(row.get('is_fixed_asset') or (row.item_code and
+                frappe.get_cached_value('Item', row.item_code, 'is_fixed_asset')) for row in doc.items):
+            frappe.throw(frappe._('VAT valuation on freight with fixed assets requires a qualified native allocation.'))
+        for tax in rows:
+            tax.category = 'Total'  # Native LCV, rather than the unsupported valuation spread.
+    if total_accounts(doc) and any(row.get('is_fixed_asset') or (row.item_code and
+            frappe.get_cached_value('Item', row.item_code, 'is_fixed_asset')) for row in doc.items):
+        frappe.throw(frappe._('VAT valuation on freight with fixed assets requires a qualified native allocation.'))
 
 
-def costs(doc):
+def costs(doc, category=None):
     """Read base-currency native amounts, including their native return signs."""
-    accounts = {tax.account_head for tax in doc.taxes if tax.category == 'Valuation and Total'
+    accounts = {tax.account_head for tax in doc.taxes if (tax.category == 'Valuation and Total' or tax.get(COST) and tax.category == 'Total')
                 and frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION}
     tax_rows = {tax.name: tax.account_head for tax in doc.taxes if tax.account_head in accounts
-                and tax.category == 'Valuation and Total'}
+                and (tax.category == 'Valuation and Total' or tax.get(COST) and tax.category == 'Total')
+                and (not category or tax.category == category)}
     result = defaultdict(float)
     for detail in frappe.get_all('Item Wise Tax Detail', filters={'parent': doc.name,
             'parenttype': doc.doctype}, fields=['item_row', 'tax_row', 'amount']):
@@ -89,6 +115,7 @@ def lock_receipts(doc, method=None):
 def adjust_receipts(doc, method=None):
     if not configured(doc):
         return
+    allocate_direct(doc)
     received_items = [row for row in doc.items if row.get('purchase_receipt') and capitalized(row)]
     if not received_items:
         return
@@ -134,30 +161,73 @@ def adjust_receipts(doc, method=None):
             # account is therefore the native counterpart in both cases.
             booked = frappe.db.exists('GL Entry', {'voucher_type': 'Purchase Receipt',
                 'voucher_no': receipt.name, 'account': account, 'is_cancelled': 0})
-            contra = account if booked or source.is_fixed_asset else company.stock_received_but_not_billed
+            contra = account if account in total_accounts(doc) or booked or source.is_fixed_asset else company.stock_received_but_not_billed
             grouped[(receipt.name, contra, difference > 0)][source.name] += difference
         billed[key] = after
     for (receipt, account, positive), amounts in grouped.items():
-        voucher = frappe.get_doc({'doctype': 'Landed Cost Voucher', 'company': doc.company,
-            'posting_date': doc.posting_date, SOURCE: doc.name,
-            'distribute_charges_based_on': 'Distribute Manually',
-            'purchase_receipts': [{'receipt_document_type': 'Purchase Receipt', 'receipt_document': receipt}],
-            'taxes': [{'expense_account': account, 'description': frappe._('Non-deductible VAT valuation adjustment'),
-                       'amount': flt(sum(amounts.values()), 2)}]})
-        voucher.get_items_from_purchase_receipts()
-        voucher.set('items', [row for row in voucher.items if row.purchase_receipt_item in amounts])
-        for row in voucher.items:
-            row.applicable_charges = amounts[row.purchase_receipt_item]
-        voucher.insert()
-        voucher.submit()
+        create_allocation(doc, 'Purchase Receipt', receipt, account, amounts, doc.name)
+
+
+def total_accounts(doc):
+    return {tax.account_head for tax in doc.taxes if tax.get(COST) and tax.category == 'Total'
+            and frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION}
+
+
+def create_allocation(doc, receipt_type, receipt, account, amounts, invoice=None):
+    amounts = {name: flt(amount, 2) for name, amount in amounts.items() if flt(amount, 2)}
+    if not amounts:
+        return
+    voucher = frappe.get_doc({'doctype': 'Landed Cost Voucher', 'company': doc.company,
+        'posting_date': doc.posting_date, SOURCE: invoice, ALLOCATION: 1,
+        'distribute_charges_based_on': 'Distribute Manually',
+        'purchase_receipts': [{'receipt_document_type': receipt_type, 'receipt_document': receipt}],
+        'taxes': [{'expense_account': account, 'description': frappe._('Non-deductible VAT valuation adjustment'),
+                   'amount': flt(sum(amounts.values()), 2)}]})
+    voucher.get_items_from_purchase_receipts()
+    voucher.set('items', [row for row in voucher.items if row.purchase_receipt_item in amounts])
+    for row in voucher.items:
+        row.applicable_charges = amounts[row.purchase_receipt_item]
+    voucher.insert()
+    voucher.submit()
+
+
+def allocate_direct(doc, method=None):
+    if not configured(doc) or doc.doctype == 'Purchase Invoice' and not doc.get('update_stock'):
+        return
+    accounts = total_accounts(doc)
+    if not accounts:
+        return
+    # Valuation and Total has already been capitalized by core.
+    native = costs(doc, category='Total')
+    grouped = defaultdict(dict)
+    for item in doc.items:
+        if not capitalized(item):
+            continue
+        for account in accounts:
+            amount = native.get((item.name, account), 0)
+            if amount:
+                grouped[(account, amount > 0)][item.name] = amount
+    for (account, positive), amounts in grouped.items():
+        create_allocation(doc, doc.doctype, doc.name, account, amounts,
+                          doc.name if doc.doctype == 'Purchase Invoice' else None)
+    if grouped:
+        doc.reload()  # Core LCV updates this receipt/invoice; return its current version.
 
 
 def cancel_adjustments(doc, method=None):
     if not configured(doc):
         return
-    lock_receipts(doc)
-    for name in frappe.get_all('Landed Cost Voucher', filters={SOURCE: doc.name, 'docstatus': 1},
-            order_by='creation desc', pluck='name'):
+    if doc.doctype == 'Purchase Invoice':
+        lock_receipts(doc)
+        names = frappe.get_all('Landed Cost Voucher', filters={SOURCE: doc.name, 'docstatus': 1},
+                               order_by='creation desc', pluck='name')
+    else:
+        parents = frappe.get_all('Landed Cost Purchase Receipt', filters={
+            'receipt_document_type': doc.doctype, 'receipt_document': doc.name, 'docstatus': 1}, pluck='parent')
+        names = frappe.get_all('Landed Cost Voucher', filters={'name': ['in', parents],
+            ALLOCATION: 1, SOURCE: ['is', 'not set'], 'docstatus': 1},
+            order_by='creation desc', pluck='name') if parents else []
+    for name in names:
         frappe.get_doc('Landed Cost Voucher', name).cancel()
 
 
@@ -224,12 +294,23 @@ def prepare_receipt_return(doc, method=None):
         for field in (CODE, RATE, DEDUCTION):
             item.set(field, source.get(field))
         item.item_tax_template = source.item_tax_template
+        source_keys = {basis_key(tax) for tax in invoice.taxes if tax.get(COST)}
+        if any(basis_key(tax) not in source_keys
+               for tax in doc.taxes if tax.get(COST)):
+            frappe.throw(frappe._('Keep a matching native freight tax basis on the receipt return.'))
         for tax in invoice.taxes:
             if not tax.get(COST):
                 continue
-            if tax.charge_type != 'On Net Total':
-                frappe.throw(frappe._('Receipt returns with VAT on freight require a qualified native allocation.'))
-            if not any(row.account_head == tax.account_head and row.charge_type == tax.charge_type for row in doc.taxes):
+            if tax.charge_type.startswith('On Previous Row'):
+                index = int(tax.row_id) - 1
+                if index < 0 or index >= len(doc.taxes) or index >= len(invoice.taxes) or any(
+                        doc.taxes[index].get(field) != invoice.taxes[index].get(field)
+                        for field in ('account_head', 'charge_type')):
+                    frappe.throw(frappe._('Keep a matching native freight tax basis on the receipt return.'))
+                if tax.category != 'Total':
+                    frappe.throw(frappe._('Receipt returns with VAT on freight require a qualified native allocation.'))
+            if not any(row.account_head == tax.account_head and row.charge_type == tax.charge_type
+                       and str(row.get('row_id') or '') == str(tax.get('row_id') or '') for row in doc.taxes):
                 values = tax.as_dict()
                 for field in ('name', 'parent', 'parenttype', 'parentfield', 'idx'):
                     values.pop(field, None)

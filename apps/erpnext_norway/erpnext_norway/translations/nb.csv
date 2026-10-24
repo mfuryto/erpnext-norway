@@ -4691,3 +4691,8 @@ Select the original purchase invoice and a quantity within its unreturned quanti
 Posting Date will change to today's date as Edit Posting Date and Time is unchecked. Are you sure want to proceed?,Bokføringsdatoen endres til dagens dato fordi Rediger bokføringsdato og klokkeslett ikke er valgt. Vil du fortsette?
 Source row {0},Kildelinje {0}
 Quantity: {0}; input VAT deduction: {1} %,Antall: {0}; MVA-fradrag: {1} %
+Norwegian VAT allocation,Norsk MVA-fordeling
+VAT valuation on freight with fixed assets requires a qualified native allocation.,Denne kombinasjonen av frakt og driftsmidler støttes ikke ennå.
+Keep a matching native freight tax basis on the receipt return.,Behold samme beregningsgrunnlag for frakt på returmottaket.
+Keep matching native VAT bases for automatic VAT cost rows.,Bruk samme avgiftsgrunnlag for MVA og den automatiske MVA-kostnaden.
+VAT inclusion must match for lines sharing a VAT cost account and tax basis.,MVA-inkludering må være lik for linjer som deler MVA-kostnadskonto og avgiftsgrunnlag.

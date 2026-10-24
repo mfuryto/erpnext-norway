@@ -112,6 +112,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-return-rates.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-valuation.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-valuation-race.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-freight.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-portal-cycle.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-evidence.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-settlement-race.py"
@@ -125,6 +126,7 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-treatment-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-valuation-browser.cjs"
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-freight-browser.cjs"
 fi
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-return-sources.py"
@@ -163,6 +165,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-language.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-valuation.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-freight.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-evidence.py"
 fi
 "${compose[@]}" up -d --wait --wait-timeout 300

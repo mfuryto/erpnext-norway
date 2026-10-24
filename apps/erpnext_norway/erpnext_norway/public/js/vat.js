@@ -5,6 +5,8 @@ async function norway_vat_preview(frm, options = {}) {
         frm.__norway_vat_pending = options;
         return;
     }
+    if (frm.doc.taxes?.some(row => !row.account_head || !row.charge_type ||
+        (row.charge_type.startsWith('On Previous Row') && !row.row_id))) return;
     if (!frm.doc.items.some(row => row.item_tax_template ||
         (row.custom_norway_deduction_percent != null && row.custom_norway_deduction_percent !== 100))) return;
     frm.__norway_vat_preview = true;
@@ -36,12 +38,19 @@ async function norway_vat_preview(frm, options = {}) {
             }
         }
         for (const tax of message.taxes) {
-            if (!frm.doc.taxes.some(row => row.account_head === tax.account_head &&
+            const current = frm.doc.taxes.find(row => row.account_head === tax.account_head &&
                 row.charge_type === tax.charge_type &&
                 (!tax.charge_type.startsWith('On Previous Row') ||
-                    String(row.row_id || '') === String(tax.row_id || '')))) {
+                    String(row.row_id || '') === String(tax.row_id || '')));
+            if (!current) {
                 const { name, parent, parenttype, parentfield, idx, ...values } = tax;
                 frm.add_child('taxes', values);
+            } else if (tax.custom_norway_vat_cost) {
+                for (const field of ['category', 'included_in_print_rate']) {
+                    if (current[field] !== tax[field]) {
+                        await frappe.model.set_value(current.doctype, current.name, field, tax[field]);
+                    }
+                }
             }
         }
         frm.refresh_field('items');
@@ -143,3 +152,7 @@ frappe.ui.form.on('Purchase Invoice Item', {
         if (frm.doc.is_return && !frm.__norway_vat_applying) return norway_vat_preview(frm);
     },
 });
+
+frappe.ui.form.on('Purchase Taxes and Charges', Object.fromEntries(
+    ['charge_type', 'row_id', 'account_head', 'rate', 'tax_amount', 'included_in_print_rate']
+        .map(field => [field, frm => norway_vat_preview(frm)])));

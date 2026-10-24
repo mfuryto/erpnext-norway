@@ -13,7 +13,7 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 4 | Separate valg for fritatt/nullsats, unntatt og uten MVA-behandling | Separate varelinjevalg prøvd; vilkårene avgjør faktisk bruk |
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; salgsordrekjede gjenstår |
-| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, kreditnotaer, native fraktgrunnlag og inklusiv kjøpspris prøvd; ordrekjede og øvrige kombinasjoner gjenstår |
+| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; driftsmiddelfrakt og øvrige kombinasjoner gjenstår |
 | 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Bare teknisk posteringstilfelle prøvd |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
@@ -94,7 +94,7 @@ skriver ikke om fakturaens bokføringsdato. Deklarasjonsdato og øvrige unntak
 krever egne kvalifiserte importtilfeller før den behandlingen tilbys.
 Kilde: [Skatteetatens tidfestingsregel](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-15/M-15-9/M-15-9.3/).
 
-Videre kjerneprøve, ennå ikke tilgjengelig fra appens fradragsvalg: native
+Opprinnelig kjerneprøve før app 0.4.2: native
 Valuation and Total med 15 % fradragsført og 10 % kapitalisert ved 25 % MVA
 ga 1250 leverandørgjeld, 150 inngående MVA og 1100 lagerverdi i både GL Entry
 og Stock Ledger Entry. Et tilsvarende direkte driftsmiddelkjøp ga 1100 på
@@ -157,7 +157,7 @@ Innkjøpsordre og varemottak trenger samme fradragsfelt slik at native mapping k
 føre valget videre. Ved fakturaendring skal native avgiftsdetaljer være grunnlaget
 for kostnadsfordeling, ikke en ny beregning av MVA.
 
-Åpent kjerneavvik: Valuation and Total på On Previous Row-grunnlag fordeler
+Påvist kjerneavvik: Valuation and Total på On Previous Row-grunnlag fordeler
 verdsettingsavgiften feil ved blandede lager-/kostnadslinjer med frakt. Isolert
 prøve ga 52,50 i ubalanse. Native avgiftsdetaljer og manuell fordeling i Landed Cost
 Voucher kan løse dette, men ordinær flyt, driftsmidler, endringer og retur må
@@ -166,3 +166,11 @@ bruk egne hovedboksposteringer for å skjule avviket.
 
 Se [lager- og driftsmiddelflyten](vat-valuation.md) for konto-/rollekrav, native
 justeringsbilag, delfakturering, retur og gjenstående fraktkombinasjoner.
+
+
+App 0.4.4 viderefører fraktgapet med native Total og Landed Cost Voucher for
+lager-/tjenestelinjer, inkludert mottakskjede, endret fradrag, delmengder og
+retur. Ingen egen avgiftsberegning eller postering. Inklusiv pris følger den
+native innstillingen per avgiftsgrunnlag. Driftsmiddelretur i denne kombinasjonen
+krever fortsatt en uavklart native Asset-kobling og forblir sperret; øvrig
+MVA-plan er fortsatt åpen. Se vat-valuation.md for prøver og presise avgrensninger.
