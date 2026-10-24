@@ -309,3 +309,21 @@ uttrykkelig ugyldig kildelinje avvises fremfor automatisk omvalg. Native antall,
 duplikatvern og postering beholdes. Kjerneprøven avklarte dessuten at flere
 fakturalinjer mot samme mottakslinje allerede avvises; denne regelen omgås ikke.
 Se vat-valuation.md og runtime-vat-return-sources-prøvene. Øvrig MVA-plan er åpen.
+
+
+## Videreføring: frakt med lager-/tjenestelinjer
+
+App 0.4.4 bruker native Total + Landed Cost Voucher når flere linjer og MVA på
+frakt ikke kan bruke Valuation and Total korrekt. Beløp kommer fra native Item
+Wise Tax Detail, og kjernen fører verdi, hovedbok, retur og kansellering. En
+readonly Check på native LCV skiller appopprettet mottaksfordeling fra manuelle
+bilag; ingen ny tabell eller arbeidsflate. Eksisterende fakturalenke beholdes.
+Mottaksbaserte fakturaer bruker differansen og kumulativ fordeling av siste øre.
+
+Fraktredigering i standardskjermen oppdaterer den ordinære forhåndsberegningen.
+Inkludert MVA følger hvert native grunnlag. Ordinære nettoflyter og manuell
+Asset-oppretting beholdes. Driftsmidler i den nye fraktkombinasjonen er fortsatt
+sperret: native negativ LCV på retur krever Asset knyttet til returdokumentet,
+uten at kjernen oppretter dette. Ikke omgå denne regelen eller åpne kombinasjonen
+basert bare på grønt lagerkjøp. Utland/import, SAF-T og ENK følger etter MVA.
+Se vat-valuation.md og runtime-vat-freight-prøvene for faktisk kvalifisert omfang.
