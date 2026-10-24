@@ -4696,3 +4696,4 @@ VAT valuation on freight with fixed assets requires a qualified native allocatio
 Keep a matching native freight tax basis on the receipt return.,Behold samme beregningsgrunnlag for frakt på returmottaket.
 Keep matching native VAT bases for automatic VAT cost rows.,Bruk samme avgiftsgrunnlag for MVA og den automatiske MVA-kostnaden.
 VAT inclusion must match for lines sharing a VAT cost account and tax basis.,MVA-inkludering må være lik for linjer som deler MVA-kostnadskonto og avgiftsgrunnlag.
+"Enable Automatically add Taxes and Charges from Item Tax Template in Accounts Settings, or configure the required tax rows explicitly.","Aktiver automatisk tilføying av avgiftsrader fra vareavgiftsmal i regnskapsinnstillingene, eller legg inn de nødvendige avgiftsradene selv."

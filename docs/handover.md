@@ -327,3 +327,14 @@ sperret: native negativ LCV på retur krever Asset knyttet til returdokumentet,
 uten at kjernen oppretter dette. Ikke omgå denne regelen eller åpne kombinasjonen
 basert bare på grønt lagerkjøp. Utland/import, SAF-T og ENK følger etter MVA.
 Se vat-valuation.md og runtime-vat-freight-prøvene for faktisk kvalifisert omfang.
+
+## Gjenbrukskontroll av hele den leverte løsningen
+
+Etter brukerens presisering er appen til og med 0.4.4 og tilhørende data-/driftskode
+kontrollert mot den låste kjernen. [Gjennomgangen](core-reuse-audit.md) kartlegger
+hver funksjonsgruppe, eksisterende kjernefunksjon og begrunnelsen for tillegg.
+Konkret overlapp er korrigert i 0.4.5: ordinær avgiftsradoppretting bruker nå
+native add_taxes_from_tax_template, og brukerens native valg om å slå av denne
+automatikken respekteres. Eksplisitte avgiftsrader virker fortsatt. Adapteren
+beholder bare nødvendig norsk grunnlag-/fradragsmetadata og ekstra grunnlag på
+samme konto. Ingen ny funksjon i MVA-planen leveres gjennom denne oppryddingen.
