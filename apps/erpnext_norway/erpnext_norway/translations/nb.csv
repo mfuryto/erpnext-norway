@@ -4689,3 +4689,5 @@ Receipt returns with VAT on freight require a qualified native allocation.,Varem
 Select a matching submitted Purchase Receipt return before crediting received goods.,Velg en tilhørende innsendt varemottaksretur før mottatte varer krediteres.
 Select the original purchase invoice and a quantity within its unreturned quantity.,Velg opprinnelig innkjøpsfaktura og et antall som ikke overstiger gjenstående returantall.
 Posting Date will change to today's date as Edit Posting Date and Time is unchecked. Are you sure want to proceed?,Bokføringsdatoen endres til dagens dato fordi Rediger bokføringsdato og klokkeslett ikke er valgt. Vil du fortsette?
+Source row {0},Kildelinje {0}
+Quantity: {0}; input VAT deduction: {1} %,Antall: {0}; MVA-fradrag: {1} %

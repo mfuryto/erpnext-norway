@@ -1,6 +1,6 @@
 # MVA-fradrag for lager og driftsmidler
 
-App 0.4.2 bruker ERPNexts ordinære innkjøpsordre, varemottak, innkjøpsfaktura,
+App 0.4.3 bruker ERPNexts ordinære innkjøpsordre, varemottak, innkjøpsfaktura,
 retur, avgiftsmaler og verdsetting. Ikke-fradragsført MVA inngår i kostnaden;
 appens fradragsvalg konfigurerer kjernens prosentsatser og Valuation and Total.
 Kjernen beregner beløp, lagerverdi, driftsmiddelkostnad og hovedbok.
@@ -72,13 +72,28 @@ berørte Asset-dokumentene finnes og er kladder. Innsendte driftsmidler eller
 låste perioder omgås ikke. Regnskapsmessig og skattemessig avskrivning er fortsatt
 ulike spørsmål; dette er ikke skattemessig saldoregel eller årsgrunnlag.
 
-Retur av samme mottakslinje som er splittet i flere linjer med ulik behandling
-på samme faktura er ennå ikke kvalifisert i skjermbildet. Appen avviser tvetydig
-kilde fremfor å gjette; fakturavalget alene skiller ikke disse fakturalinjene.
-Tilsvarende må flere like returlinjer på samme mottak avklares før kreditering.
+Kjernen avviser flere fakturalinjer mot samme mottakslinje. Denne regelen
+beholdes. Ved flere returlinjer på samme returmottak kan kildelinjen velges
+i det eksisterende mottakslinjefeltet på kreditnotaen. Listen viser linjenummer,
+antall og opprinnelig MVA-fradrag. En eksplisitt ugyldig linje avvises; den
+skal ikke stille byttes til en annen mulig kilde.
 
 Flere varelinjer kombinert med MVA-verdsetting på frakt via On Previous Row er
 fortsatt et åpent kjerneavvik. Den kombinasjonen åpnes ikke av denne leveransen.
 Utland/import og resten av [MVA-planen](vat-plan.md) er heller ikke ferdig med
 lagerdelen. Nettleser, backup/restore og CI kvalifiserer de beskrevne prøvene,
 ikke brukerens faktiske konto-/fradragsvalg eller generell norsk etterlevelse.
+
+## Påvist gap og minste tilpasning
+
+Kjernen lagrer allerede pr_detail, men skjuler det som Data-felt. Når flere
+returlinjer på samme mottak er mulige kilder, er valg av foreldredokument alene
+utilstrekkelig. App 0.4.3 viser det eksisterende linjefeltet som Frappe Autocomplete
+på kreditkladden, med linjenummer, kildeantall og MVA-fradrag. Kilden leses med
+ordinær dokumenttilgang. Kjernens antalls-, duplikat- og bokføringskontroller
+beholdes. Ingen ny kildetabell, returveiviser eller avgiftsberegning trengs.
+
+Prøven bruker ett mottak og én fakturalinje, to returlinjer med antall 1 og 3,
+og en kreditnota med én linje mot hver returlinje. Alle berørte hovedbokskontoer
+går i null. Et eksplisitt valgt returantall som er for lite, avvises selv om en
+annen linje på samme returmottak har nok antall.
