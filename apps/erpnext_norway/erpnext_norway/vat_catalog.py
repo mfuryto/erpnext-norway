@@ -203,7 +203,8 @@ def prepare_items(doc, method=None):
 
 
 def append_native_rows(doc, item, template):
-    """Fill configuration rows as the native item-tax setting does, locally only."""
+    """Use core's row creation; adapt only Norwegian direction/basis metadata."""
+    from erpnext.controllers.accounts_controller import add_taxes_from_tax_template
     prefix = '270' if doc.doctype == 'Sales Invoice' else '271'
     included = next((tax.included_in_print_rate for tax in doc.taxes
                      if tax.account_head and frappe.get_cached_value('Account', tax.account_head,
@@ -250,12 +251,28 @@ def append_native_rows(doc, item, template):
                 if expense and existing_row.get('custom_norway_vat_cost'):
                     existing_row.included_in_print_rate = basis_included
                 continue
-            doc.append('taxes', {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
+            values = {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
                 'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
                 'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Add',
                 'custom_norway_vat_cost': int(expense),
                 'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': basis_included,
-                'set_by_item_tax_template': 1})
+                'set_by_item_tax_template': 1}
+            if not any(tax.account_head == account.name for tax in doc.taxes):
+                # The shared Norwegian template contains both sales and purchase
+                # accounts. Pass only this transaction's account to core, with
+                # rate zero: the real per-item rates stay in Item Tax Template.
+                before = len(doc.taxes)
+                add_taxes_from_tax_template(frappe._dict(
+                    item_tax_rate=frappe.as_json({account.name: 0})), doc, db_insert=False)
+                if len(doc.taxes) == before:
+                    frappe.throw(frappe._('Enable Automatically add Taxes and Charges from Item Tax Template in Accounts Settings, or configure the required tax rows explicitly.'))
+                doc.taxes[-1].update(values)
+            else:
+                # Core detects duplicates by account alone. A second basis on
+                # that account (net plus freight) needs one additional row.
+                if not frappe.get_single_value('Accounts Settings', 'add_taxes_from_item_tax_template'):
+                    frappe.throw(frappe._('Enable Automatically add Taxes and Charges from Item Tax Template in Accounts Settings, or configure the required tax rows explicitly.'))
+                doc.append('taxes', values)
 
 
 def move_seed_dates(company, previous):

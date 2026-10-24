@@ -174,3 +174,9 @@ retur. Ingen egen avgiftsberegning eller postering. Inklusiv pris følger den
 native innstillingen per avgiftsgrunnlag. Driftsmiddelretur i denne kombinasjonen
 krever fortsatt en uavklart native Asset-kobling og forblir sperret; øvrig
 MVA-plan er fortsatt åpen. Se vat-valuation.md for prøver og presise avgrensninger.
+
+Gjenbrukskontrollen i app 0.4.5 korrigerer ordinær radoppretting til kjernens
+`add_taxes_from_tax_template`. Innstillingen for automatisk tilføying av avgifter
+fra vareavgiftsmal respekteres; ved avslått automatikk må nødvendige rader finnes
+eksplisitt. Flere grunnlag på samme konto krever fortsatt adapteren fordi kjernen
+finner rader etter konto alene. Se [samlet gjennomgang](core-reuse-audit.md).

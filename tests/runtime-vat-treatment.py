@@ -125,5 +125,29 @@ try:
         assert actual==expected,(account,actual,expected)
     print('PASS partial deduction keeps native Cost of Goods Sold account type and posts 1100 cost / 150 input VAT')
 
+    # A user's native opt-out must not be bypassed by the Norwegian adapter.
+    # Explicit rows still work, including the VAT cost, so an omitted cost row
+    # cannot silently reduce the amount owed to the supplier.
+    frappe.db.savepoint('native_auto_tax_choice')
+    frappe.set_user('Administrator')
+    frappe.db.set_single_value('Accounts Settings','add_taxes_from_item_tax_template',0)
+    frappe.clear_cache()
+    frappe.set_user('runtime-vat-owner@example.invalid')
+    for source, total in ((doc,3520),(purchase,2500)):
+        explicit=frappe.copy_doc(source)
+        explicit.insert(); explicit.submit()
+        assert float(explicit.grand_total)==total
+        missing=frappe.copy_doc(source); missing.set('taxes',[])
+        try:
+            module.prepare_items(missing)
+        except frappe.ValidationError as error:
+            assert 'Accounts Settings' in str(error)
+        else:
+            raise AssertionError('Native automatic-tax opt-out was bypassed')
+        assert not missing.taxes
+    frappe.db.rollback(save_point='native_auto_tax_choice')
+    frappe.clear_cache()
+    print('PASS native automatic-tax opt-out preserved; explicit mixed sales and partial-deduction purchase still post correct totals')
+
 finally:
     frappe.db.rollback(); frappe.clear_cache(); frappe.destroy()
