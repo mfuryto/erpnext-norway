@@ -11,8 +11,8 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 2 | Norske navn, inngående/utgående MVA og forståelige beskrivelser | Prøvd i app 0.3.1 |
 | 3 | 25/15/12 %, kontoer, gyldighet og norske behandlings-/rapporteringskoder | Ordinært blandet 25/15/12 %-salg og koder prøvd |
 | 4 | Separate valg for fritatt/nullsats, unntatt og uten MVA-behandling | Separate varelinjevalg prøvd; vilkårene avgjør faktisk bruk |
-| 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad med fullt/60/0 % fradrag prøvd; lager/driftsmiddel er foreløpig kjerneprøve |
-| 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer og kjøpsskjerm prøvd; ordre-/mottakskjede gjenstår |
+| 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
+| 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; salgsordrekjede gjenstår |
 | 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, kreditnotaer, native fraktgrunnlag og inklusiv kjøpspris prøvd; ordrekjede og øvrige kombinasjoner gjenstår |
 | 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Bare teknisk posteringstilfelle prøvd |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
@@ -140,3 +140,29 @@ selv om den native fakturaens avgiftsrader/hovedbok godtar kostnadskontoen. Å e
 smale klasseutvidelsen i item_tax.py beholder kjernens validering for alle ordinære
 rader, bruker kjernens foretaks-/enkeltkontokontroll for COGS og beholder duplikatkontroll.
 Ingen beregnings- eller bokføringsmetode erstattes.
+
+## Lager, driftsmidler og mottakskjede: påvist gap før tilpasning
+
+Fradragsfeltet finnes bare på kjøpsfaktura, og appen avviser lager/driftsmidler.
+Native Valuation and Total gir riktig kapitalisering ved ordinære nettogrunnlag,
+og native Landed Cost Voucher kan korrigere mottaket når fradraget endres på
+fakturaen. En korrekt retur bruker den faktiske originalfakturaens behandling og
+kjernens lenker mellom returmottak og kreditnota. Felt, native konfigurasjon og
+ordinære hendelser mangler; ingen ny beregnings- eller bokføringsmotor trengs.
+
+Verdsettingskonto velges fra eksisterende avgiftsrader eller en entydig konto med
+native type Expenses Included In Valuation. Det finnes ikke et tilsvarende
+Company-felt i denne versjonen. Ingen kontonumre eller kontooppretting skal gjettes.
+Innkjøpsordre og varemottak trenger samme fradragsfelt slik at native mapping kan
+føre valget videre. Ved fakturaendring skal native avgiftsdetaljer være grunnlaget
+for kostnadsfordeling, ikke en ny beregning av MVA.
+
+Åpent kjerneavvik: Valuation and Total på On Previous Row-grunnlag fordeler
+verdsettingsavgiften feil ved blandede lager-/kostnadslinjer med frakt. Isolert
+prøve ga 52,50 i ubalanse. Native avgiftsdetaljer og manuell fordeling i Landed Cost
+Voucher kan løse dette, men ordinær flyt, driftsmidler, endringer og retur må
+kvalifiseres samlet før den kombinasjonen åpnes. Ikke svekk kontrollen eller
+bruk egne hovedboksposteringer for å skjule avviket.
+
+Se [lager- og driftsmiddelflyten](vat-valuation.md) for konto-/rollekrav, native
+justeringsbilag, delfakturering, retur og gjenstående fraktkombinasjoner.

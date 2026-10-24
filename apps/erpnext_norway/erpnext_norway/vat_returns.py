@@ -84,7 +84,6 @@ def prepare(doc, method=None):
         frappe.throw(frappe._('Keep the original invoice VAT treatment on its credit note.'))
     source_field = get_return_against_item_fields(doc.doctype)
     originals = {row.name: row for row in original.items}
-    defaults = get_item_tax_map(doc=doc, as_json=False)
     for item in doc.items:
         source = originals.get(item.get(source_field))
         if not source:
@@ -92,18 +91,23 @@ def prepare(doc, method=None):
         for field in (CODE, RATE, DEDUCTION):
             if source.get(field) is not None and (field != CODE or source.get(field)):
                 item.set(field, source.get(field))
-        issued = original_rates(original, source)
-        current = get_item_tax_map(doc=doc, tax_template=item.item_tax_template, as_json=False)
-        overrides = {}
-        changed = False
-        for tax in doc.taxes:
-            account = tax.account_head
-            expected = issued.get(account, 0)
-            actual = rate(current.get(account, tax.rate))
-            if tax.charge_type == 'Actual' and NOT_APPLICABLE_TAX not in (expected, actual):
-                continue  # Native fixed amounts do not use percentage overrides.
-            changed |= actual != expected
-            if rate(defaults.get(account, tax.rate)) != expected:
-                overrides[account] = expected
-        if changed:
-            item.item_tax_template = frozen_template(doc.company, overrides) if overrides else None
+        apply_rates(doc, item, original, source)
+
+
+def apply_rates(doc, item, original, source):
+    defaults = get_item_tax_map(doc=doc, as_json=False)
+    issued = original_rates(original, source)
+    current = get_item_tax_map(doc=doc, tax_template=item.item_tax_template, as_json=False)
+    overrides = {}
+    changed = False
+    for tax in doc.taxes:
+        account = tax.account_head
+        expected = issued.get(account, 0)
+        actual = rate(current.get(account, tax.rate))
+        if tax.charge_type == 'Actual' and NOT_APPLICABLE_TAX not in (expected, actual):
+            continue  # Native fixed amounts do not use percentage overrides.
+        changed |= actual != expected
+        if rate(defaults.get(account, tax.rate)) != expected:
+            overrides[account] = expected
+    if changed:
+        item.item_tax_template = frozen_template(doc.company, overrides) if overrides else None

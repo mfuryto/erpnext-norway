@@ -28,14 +28,16 @@ def configure_fields():
          'insert_after': RATE, 'read_only': 1},
     ], **{doctype: [
         {'fieldname': CODE, 'label': 'Norwegian VAT code', 'fieldtype': 'Data',
-         'insert_after': 'item_tax_template', 'read_only': 0, 'allow_on_submit': 1, 'no_copy': 0, 'print_hide': 1},
+         'insert_after': 'item_tax_template', 'read_only': 0, 'allow_on_submit': int(doctype in ('Sales Invoice Item', 'Purchase Invoice Item')), 'no_copy': 0, 'print_hide': 1},
         {'fieldname': RATE, 'label': 'Norwegian VAT rate', 'fieldtype': 'Float',
          'insert_after': CODE, 'read_only': 1, 'no_copy': 0, 'print_hide': 1},
-    ] for doctype in ('Sales Invoice Item', 'Purchase Invoice Item')}})
-    create_custom_fields({'Purchase Invoice Item': [
+    ] for doctype in ('Sales Invoice Item', 'Purchase Invoice Item', 'Purchase Order Item', 'Purchase Receipt Item')}})
+    create_custom_fields({doctype: [
         {'fieldname': DEDUCTION, 'label': 'Input VAT deduction percent', 'fieldtype': 'Percent',
          'insert_after': 'item_tax_template', 'default': '100', 'in_list_view': 1, 'print_hide': 1},
-    ]})
+    ] for doctype in ('Purchase Invoice Item', 'Purchase Order Item', 'Purchase Receipt Item')})
+    from erpnext_norway.vat_valuation import configure_fields as valuation_fields
+    valuation_fields()
 
 
 def seed(company, upgrade=False):
@@ -98,7 +100,7 @@ def stamp_codes(doc, method=None):
         return
     sales = doc.doctype == 'Sales Invoice'
     field = SALES_CODE if sales else PURCHASE_CODE
-    date = doc.posting_date if sales else (doc.get('bill_date') or doc.posting_date)
+    date = doc.get('posting_date') if sales else (doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date'))
     category_codes = {f'Norge MVA {rate} %': sale if sales else purchase
                       for rate, _, _, sale, purchase in ORDINARY}
     for row in doc.items:
@@ -132,7 +134,7 @@ def prepare_items(doc, method=None):
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
     for row in doc.items:
-        if not row.item_tax_template and doc.doctype == 'Purchase Invoice' and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
+        if not row.item_tax_template and doc.doctype != 'Sales Invoice' and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
             category = doc.tax_category
             if not category and doc.taxes_and_charges:
                 category = frappe.db.get_value('Purchase Taxes and Charges Template',
@@ -172,13 +174,8 @@ def prepare_items(doc, method=None):
                     template = frappe.get_cached_doc('Item Tax Template', base)
             append_native_rows(doc, row, template)
             continue
-        if row.is_fixed_asset or frappe.get_cached_value('Item', row.item_code, 'is_stock_item'):
-            frappe.throw(frappe._('Partial VAT deduction for stock or fixed assets requires a qualified valuation template.'))
-        if not row.expense_account:
-            frappe.throw(frappe._('Select a company expense account for non-deductible VAT.'))
-        account = frappe.get_doc('Account', row.expense_account)
-        if account.company != doc.company or account.root_type != 'Expense' or account.is_group:
-            frappe.throw(frappe._('Select a company expense account for non-deductible VAT.'))
+        from erpnext_norway.vat_valuation import allocation_account
+        account = allocation_account(doc, row)
         if any(tax.account_head == account.name and tax.charge_type != 'Actual'
                 and float(tax.rate or 0) and not tax.get('set_by_item_tax_template') for tax in doc.taxes):
             frappe.throw(frappe._('An existing percentage charge uses the non-deductible VAT cost account. Use a separate charge account.'))
@@ -214,7 +211,7 @@ def append_native_rows(doc, item, template):
         if not row.tax_rate:
             continue
         account = frappe.get_cached_doc('Account', row.tax_type)
-        expense = doc.doctype == 'Purchase Invoice' and account.root_type == 'Expense'
+        expense = doc.doctype != 'Sales Invoice' and account.root_type == 'Expense'
         if not ((account.account_number or '').startswith(prefix) or expense):
             continue
         percentage = ('On Net Total', 'On Previous Row Amount', 'On Previous Row Total')
@@ -243,7 +240,8 @@ def append_native_rows(doc, item, template):
                 continue
             doc.append('taxes', {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
                 'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
-                'rate': 0, 'category': 'Total', 'add_deduct_tax': 'Add',
+                'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Add',
+                'custom_norway_vat_cost': int(expense),
                 'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': included,
                 'set_by_item_tax_template': 1})
 
@@ -271,23 +269,37 @@ def move_seed_dates(company, previous):
 def preview_items(document, deduction_row=None, template_row=None):
     """Prepare ordinary form choices; native browser controller calculates totals."""
     doc = frappe.get_doc(frappe.parse_json(document))
-    if doc.doctype not in ('Sales Invoice', 'Purchase Invoice'):
+    if doc.doctype not in ('Sales Invoice', 'Purchase Invoice', 'Purchase Order', 'Purchase Receipt'):
         frappe.throw(frappe._('Invalid invoice type.'))
     doc.check_permission('create' if doc.is_new() else 'write')
     frappe.get_doc('Company', doc.company).check_permission('read')
     if doc.docstatus != 0:
         frappe.throw(frappe._('Only draft invoices can be changed.'))
     doc.flags.norway_vat_deduction_row = deduction_row
-    if doc.doctype == 'Purchase Invoice' and template_row:
+    if doc.doctype != 'Sales Invoice' and template_row:
         for row in doc.items:
             if row.name == template_row and row.item_tax_template:
                 percent = frappe.db.get_value('Item Tax Template', row.item_tax_template, DEDUCTION)
                 if percent is not None:
                     row.set(DEDUCTION, percent)
+    if doc.get('is_return'):
+        if doc.doctype == 'Purchase Receipt':
+            from erpnext_norway.vat_valuation import prepare_receipt_return
+            prepare_receipt_return(doc)
+        elif doc.doctype in ('Purchase Invoice', 'Sales Invoice'):
+            from erpnext_norway.vat_returns import prepare
+            prepare(doc)
+            if doc.doctype == 'Purchase Invoice':
+                from erpnext_norway.vat_valuation import link_credit_receipts
+                link_credit_receipts(doc)
     prepare_items(doc)
-    return {'items': [{'name': row.name, 'item_tax_template': row.item_tax_template,
-                      DEDUCTION: row.get(DEDUCTION)} for row in doc.items],
-            'taxes': [row.as_dict() for row in doc.taxes]}
+    from erpnext_norway.vat_valuation import guard_configuration
+    guard_configuration(doc)
+    fields = ['item_tax_template', DEDUCTION]
+    if doc.get('is_return'):
+        fields += [CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
+    return {'items': [{'name': row.name, **{field: row.get(field) for field in fields}}
+                      for row in doc.items], 'taxes': [row.as_dict() for row in doc.taxes]}
 
 
 def validate_code_changes(doc, method=None):
