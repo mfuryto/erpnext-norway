@@ -45,12 +45,12 @@ def update(runtime, root, image, name):
         raise RuntimeError("Use the immutable local image ID printed by build-app-image.sh.")
     info = json.loads(runtime.call(["docker", "image", "inspect", image], capture=True))[0]
     labels = info["Config"].get("Labels") or {}
-    if labels.get("no.erpnext-norway.base") != "v16.51.1":
+    if labels.get("no.erpnext-norway.base") != "v16.52.1":
         raise RuntimeError("The target must use the qualified pinned ERPNext base.")
     image = info["Id"]
     # No mounted site and no network: inspect code before maintenance or DB changes.
     runtime.call(["docker", "run", "--rm", "--network", "none", "--entrypoint", "env/bin/python", image,
-                  "-c", "import erpnext_norway, frappe, erpnext; assert frappe.__version__ == '16.52.0'; assert erpnext.__version__ == '16.51.1'"])
+                  "-c", "import erpnext_norway, frappe, erpnext; assert frappe.__version__ == '16.53.0'; assert erpnext.__version__ == '16.52.1'"])
     environment_path = root / "deploy/.env"
     original = environment_path.read_text()
     configured = replace_image(original, image)

@@ -22,7 +22,7 @@ cleanup() {
   fi
   if [[ -d "$fixture/data" ]]; then
     docker run --rm --user 0 --entrypoint sh -v "$fixture/data:/fixture-data" \
-      frappe/erpnext:v16.51.1@sha256:a856e7f65c7bfc9cfa2e74f95b62e11d37190c380d958cbf3bea5d05e2ec9268 \
+      frappe/erpnext:v16.52.1@sha256:eb1c22d2bb926ed97352b63334507bf0297f1ca1244b406e3f30869ca5d0092b \
       -c "chown -R $(id -u):$(id -g) /fixture-data" >/dev/null 2>&1 || true
   fi
   rm -rf "$fixture"

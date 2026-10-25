@@ -100,3 +100,8 @@ Direkte kontrollprøver under gjennomgangen bekreftet også:
   4 856 ERPNext-filer og 3 105 Frappe-filer (Python, JavaScript, JSON, HTML,
   CSV og CSS). Appens ekstra malreferanse er en egen symlenke; ingen av
   disse eksisterende kjernefilene er endret.
+
+Oppfølging ved ERPNext 16.52.1 / Frappe 16.53.0: native AccountsController
+avviser nå sletting av kansellerte bilag med Immutable Ledger aktivert. Fra
+app 0.4.7 brukes dette vernet direkte. Appvernet beholdes når innstillingen er
+av og for nummererte kladder/tilbud; filgapene består. Se core-update.md.

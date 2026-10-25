@@ -1,6 +1,6 @@
 # Aksept for driftsgrunnlaget
 
-Baseline gjelder standard ERPNext 16.51.1 / Frappe 16.52.0. Den separate
+Baseline gjelder standard ERPNext 16.52.1 / Frappe 16.53.0. Den separate
 appprøven nedenfor kvalifiserer bare den minimale appen, ikke hele norsk regnskap.
 Kontrolleres før promotering til main:
 

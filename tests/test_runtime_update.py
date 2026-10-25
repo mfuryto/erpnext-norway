@@ -22,7 +22,7 @@ class UpdateRuntime:
     def call(self, args, capture=False):
         self.events.append(('call', args))
         if args[:3] == ['docker', 'image', 'inspect']:
-            return json.dumps([{'Id': IMAGE, 'Config': {'Labels': {'no.erpnext-norway.base': 'v16.51.1'}}}])
+            return json.dumps([{'Id': IMAGE, 'Config': {'Labels': {'no.erpnext-norway.base': 'v16.52.1'}}}])
 
     def compose(self, *args, **kwargs):
         self.events.append(('compose', args))
@@ -85,6 +85,15 @@ class UpdateContract(unittest.TestCase):
                 update(runtime, Path('unused'), 'mutable:latest', 'test')
             backup.assert_not_called()
         self.assertFalse(runtime.events)
+
+    def test_previous_base_is_rejected_before_backup_or_site_changes(self):
+        runtime = UpdateRuntime()
+        with patch.object(runtime, 'call', return_value=json.dumps([
+                {'Id': IMAGE, 'Config': {'Labels': {'no.erpnext-norway.base': 'v16.51.1'}}}])):
+            with patch('runtime_update.write_backup') as backup:
+                with self.assertRaisesRegex(RuntimeError, 'qualified pinned ERPNext base'):
+                    update(runtime, Path('unused'), IMAGE, 'test')
+                backup.assert_not_called()
 
     def test_configuration_write_failure_restores_original_runtime_before_migration(self):
         with TemporaryDirectory() as directory:
