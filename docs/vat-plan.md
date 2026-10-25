@@ -14,7 +14,7 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; blandet tjenestesalg gjennom tilbud/ordre/dellevering/faktura/kreditnota prøvd i 0.4.10 |
 | 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; tilbud/ordre/dellevering/delfaktura med salgsrabatt, inklusivt tilbud og frakthenvisning prøvd i 0.4.10; driftsmiddelfrakt og øvrige kombinasjoner gjenstår |
-| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; manuell valutaomgåelse sperret etter native grunnlags-/presisjonsprøve i 0.4.11; kvartalsgrense før registrering, særskilt melding og valuta gjenstår |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; kvartalsgrense før registrering, særskilt melding og øvrig utlandsomfang gjenstår |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
 | 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport og leverandørens dokumentperiode prøvd; utland/import gjenstår |
@@ -186,4 +186,6 @@ vareavgiftsmalene og fradragsadapteren, native Add/Deduct og ordinær
 kreditnota/betaling/oppgjør. Rapportens lesing av signed Deduct-detaljer er
 korrigert, med enkelt grunnlag og hovedboksavstemming. Se
 [tjenestekjøp fra utlandet](vat-foreign-services.md) for nøyaktig omfang.
-Punkt 8 er fortsatt åpent til ikke-registrert kvartal og valuta er kvalifisert.
+Registrert valutalinjeflyt bruker fra 0.4.12 kjernens grunnlagsresolvers, ordinære
+linjefelt og presisjonsinnstillinger; se vat-currency.md. Punkt 8 er fortsatt åpent
+for ikke-registrert kvartal, registreringsovergang og øvrig utlandsomfang.

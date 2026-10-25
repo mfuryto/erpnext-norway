@@ -1,3 +1,8 @@
+// Core resolver: provide a basis, leave rates/rounding/totals to ERPNext.
+erpnext.taxable_base_resolvers = erpnext.taxable_base_resolvers || {};
+erpnext.taxable_base_resolvers['On Norwegian VAT Base'] = (calc, item) =>
+    flt(item.net_amount) * flt(item.custom_norway_vat_exchange_rate) / flt(calc.frm.doc.conversion_rate);
+
 // Configure native item tax templates/rows; native controller calculates all amounts.
 async function norway_vat_preview(frm, options = {}) {
     if (frm.doc.docstatus || !frm.doc.company || frm.updating_party_details || frm.__norway_vat_applying) return;
@@ -17,6 +22,7 @@ async function norway_vat_preview(frm, options = {}) {
         });
         // A user edit during the request wins over the older response.
         if (frm.__norway_vat_pending) return;
+        if (message.pending_currency) return;
         frm.__norway_vat_applying = true;
         for (const name of message.removed_taxes || []) {
             const tax = frm.doc.taxes.find(row => row.name === name);
@@ -36,7 +42,7 @@ async function norway_vat_preview(frm, options = {}) {
             if (current.item_tax_template !== row.item_tax_template) {
                 await frappe.model.set_value(current.doctype, current.name, 'item_tax_template', row.item_tax_template);
             }
-            for (const field of ['custom_norway_vat_code', 'custom_norway_vat_rate',
+            for (const field of ['custom_norway_vat_delivery_date', 'custom_norway_vat_exchange_rate', 'custom_norway_vat_code', 'custom_norway_vat_rate',
                 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']) {
                 if (Object.hasOwn(row, field) && frappe.meta.get_docfield(current.doctype, field, frm.doc.name) &&
                     (current[field] || null) !== (row[field] || null)) {
@@ -53,7 +59,7 @@ async function norway_vat_preview(frm, options = {}) {
                 const { name, parent, parenttype, parentfield, idx, ...values } = tax;
                 frm.add_child('taxes', values);
             } else if (tax.custom_norway_vat_cost || tax.set_by_item_tax_template || current.row_id !== tax.row_id) {
-                for (const field of ['category', 'included_in_print_rate', 'add_deduct_tax', 'row_id']) {
+                for (const field of ['category', 'included_in_print_rate', 'add_deduct_tax', 'row_id', 'charge_type']) {
                     if (!frappe.meta.get_docfield(current.doctype, field, frm.doc.name)) continue;
                     if (current[field] !== tax[field]) {
                         await frappe.model.set_value(current.doctype, current.name, field, tax[field]);
@@ -79,6 +85,8 @@ frappe.ui.form.on(child, {
     custom_norway_deduction_percent: (frm, cdt, cdn) => norway_vat_preview(frm, {deduction_row: cdn}),
     item_tax_template: (frm, cdt, cdn) => norway_vat_preview(frm, {template_row: cdn}),
     expense_account: frm => norway_vat_preview(frm),
+    custom_norway_vat_delivery_date: frm => norway_vat_preview(frm),
+    custom_norway_vat_exchange_rate: frm => norway_vat_preview(frm),
 });
 }
 for (const child of ['Quotation Item', 'Sales Order Item', 'Delivery Note Item', 'Sales Invoice Item']) {
@@ -92,6 +100,9 @@ for (const parent of ['Purchase Invoice', 'Purchase Receipt']) {
     frappe.ui.form.on(parent, { refresh: frm => {
         if (!frm.doc.is_return || frm.doc.docstatus) return;
         if (parent !== 'Sales Invoice') frm.fields_dict.items.grid.update_docfield_property('custom_norway_deduction_percent', 'read_only', 1);
+        for (const field of ['custom_norway_vat_delivery_date', 'custom_norway_vat_exchange_rate']) {
+            if (frappe.meta.get_docfield(frm.fields_dict.items.df.options, field, frm.doc.name)) frm.fields_dict.items.grid.update_docfield_property(field, 'read_only', 1);
+        }
         const field = parent === 'Purchase Receipt' ? 'purchase_invoice' :
             parent === 'Purchase Invoice' ? 'purchase_receipt' : null;
         if (field) {

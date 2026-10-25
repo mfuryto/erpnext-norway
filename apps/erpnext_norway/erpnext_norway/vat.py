@@ -14,6 +14,8 @@ CONFIGURED = 'custom_norway_vat_configured'
 def configure():
     from erpnext_norway.vat_catalog import configure_fields
     configure_fields()
+    from erpnext_norway.vat_currency import configure as configure_currency
+    configure_currency()
     from erpnext_norway.vat_journal import configure_fields as configure_journal_fields
     configure_journal_fields()
     from erpnext_norway.vat_evidence import configure_fields as configure_evidence_fields

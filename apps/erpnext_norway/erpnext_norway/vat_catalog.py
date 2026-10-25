@@ -137,6 +137,9 @@ def prepare_items(doc, method=None):
         return
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
+    from erpnext_norway.vat_currency import prepare as prepare_currency
+    if doc.doctype in ('Purchase Invoice', 'Purchase Order'):
+        prepare_currency(doc)
     doc.flags.norway_vat_cost_inclusions = {}
     doc.flags.norway_removed_input_taxes = []
     sales = doc.doctype in SALES_DOCUMENTS
@@ -259,6 +262,8 @@ def append_native_rows(doc, item, template):
     from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, OUTPUT, INPUT
     sales = doc.doctype in SALES_DOCUMENTS
     reverse = not sales and template.get(PURCHASE_CODE) in REVERSE_CODES
+    from erpnext_norway.vat_currency import KIND, foreign
+    base_kind = KIND if reverse and foreign(doc) else 'On Net Total'
     prefix = '270' if sales else '271'
     included = next((tax.included_in_print_rate for tax in doc.taxes
                      if tax.account_head and frappe.get_cached_value('Account', tax.account_head,
@@ -281,7 +286,7 @@ def append_native_rows(doc, item, template):
                         frappe.throw(frappe._('Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.'))
                     existing_row.add_deduct_tax = direction
                     existing_row.category = 'Total'
-        percentage = ('On Net Total', 'On Previous Row Amount', 'On Previous Row Total')
+        percentage = ('On Net Total', 'On Previous Row Amount', 'On Previous Row Total', KIND)
         if expense:
             nominal_input = INPUT if reverse else next(input_ for rate, _, input_, _, _ in ORDINARY if rate == template.get(RATE))
             input_account = frappe.db.get_value('Account', {'company': doc.company, 'account_number': nominal_input})
@@ -290,16 +295,16 @@ def append_native_rows(doc, item, template):
                 frappe.throw(frappe._('Item-level VAT treatment requires native percentage VAT rows.'))
             # Mirror the native VAT bases, including VAT on freight/insurance.
             # Core calculates each percentage; this only configures counterpart rows.
-            bases = [(tax.charge_type, tax.get('row_id')) for tax in sources] or [('On Net Total', None)]
-            if sources and not any(tax.charge_type in ('On Net Total', 'On Previous Row Total') for tax in sources):
-                bases.append(('On Net Total', None))
+            bases = [(tax.charge_type, tax.get('row_id')) for tax in sources] or [(base_kind, None)]
+            if sources and not any(tax.charge_type in ('On Net Total', 'On Previous Row Total', KIND) for tax in sources):
+                bases.append((base_kind, None))
         else:
             existing = [tax for tax in doc.taxes if tax.account_head == account.name]
             if any(tax.charge_type not in percentage for tax in existing):
                 frappe.throw(frappe._('Item-level VAT treatment requires native percentage VAT rows.'))
-            if any(tax.charge_type in ('On Net Total', 'On Previous Row Total') for tax in existing):
+            if any(tax.charge_type in ('On Net Total', 'On Previous Row Total', KIND) for tax in existing):
                 continue  # Previous Row Total already includes the goods' net amount.
-            bases = [('On Net Total', None)]
+            bases = [(base_kind, None)]
         for kind, reference in bases:
             matching_basis = next((tax for tax in sources if tax.charge_type == kind and
                 (kind == 'On Net Total' or str(tax.get('row_id') or '') == str(reference or ''))), None) if expense else None
@@ -389,12 +394,22 @@ def preview_items(document, deduction_row=None, template_row=None):
             if doc.doctype == 'Purchase Invoice':
                 from erpnext_norway.vat_valuation import link_credit_receipts
                 link_credit_receipts(doc)
+    from erpnext_norway.vat_currency import foreign, reverse_item, DATE, EXCHANGE
+    if (not doc.get('is_return') and doc.doctype in ('Purchase Invoice', 'Purchase Order')
+            and foreign(doc) and any(reverse_item(doc, row) for row in doc.items)
+            and any(not reverse_item(doc, row) or not row.get(DATE) or not row.get(EXCHANGE)
+                    for row in doc.items)):
+        # Native item/price callbacks run while a new row is still incomplete.
+        # Defer the adapter until normal line selection is complete; save still
+        # validates every required source field through the ordinary event.
+        return {'items': [], 'taxes': [], 'pending_currency': True}
     prepare_items(doc)
     from erpnext_norway.vat_valuation import guard_configuration
     guard_configuration(doc)
     fields = ['item_tax_template', DEDUCTION]
     if doc.get('is_return'):
-        fields += [CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
+        from erpnext_norway.vat_currency import DATE, EXCHANGE
+        fields += [DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
     return {'removed_taxes': doc.flags.get('norway_removed_input_taxes') or [],
             'items': [{'name': row.name, **{field: row.get(field) for field in fields}}
                       for row in doc.items], 'taxes': [row.as_dict() for row in doc.taxes]}

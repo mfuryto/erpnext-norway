@@ -18,7 +18,8 @@ def guard_currency(doc, method=None):
     if any(abs(vat_amount(tax)) > 0.000001 and frappe.get_cached_value(
             'Account', tax.account_head, 'account_number') in (OUTPUT, INPUT)
             for tax in doc.taxes if tax.account_head):
-        frappe.throw(frappe._('Foreign-currency reverse-charge VAT requires a separately qualified NOK tax base. This flow is not yet supported.'))
+        from erpnext_norway.vat_currency import validate_rows
+        validate_rows(doc)
 
 
 def seed(company):
@@ -43,8 +44,7 @@ def seed(company):
 def validate(doc, item, template):
     from erpnext_norway.vat import effective
     company = frappe.get_cached_doc('Company', doc.company)
-    if (doc.doctype not in ('Purchase Invoice', 'Purchase Order') or
-            (doc.currency or company.default_currency) != 'NOK' or company.default_currency != 'NOK'):
+    if doc.doctype not in ('Purchase Invoice', 'Purchase Order') or company.default_currency != 'NOK':
         frappe.throw(frappe._('This reverse-charge item treatment currently requires a NOK service purchase invoice or order.'))
     if not effective(company, doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')):
         frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Non-registered quarterly treatment is not yet qualified.'))
