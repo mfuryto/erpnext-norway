@@ -407,3 +407,16 @@ Vanlig eier prøver tilbud → ordre → to delleveringer/delfakturaer med bland
 Samlet utgående 468 minus kreditert 117 gir 351. Nettleser og eksportert restore
 inngår i appprøven; se vat-sales-chain.md for avgrensninger. Ingen servertilgang.
 Ikke-registrert kvartalsbehandling, valuta og import er fortsatt åpne før SAF-T/ENK.
+
+## MVA: manuelle valutabilag må følge samme avgrensning
+
+App 0.4.11 retter et konkret hull: de eksisterende vareavgiftsmalene avviste
+valuta, men manuelle 2704/2714-rader kunne bokføres med grunnlag etter vanlig
+bokføringskurs. Native prøve: 100 EUR, bokføringskurs 10, fast MVA 27,50 EUR ga
+275 NOK MVA, men rapportgrunnlag 1 000 i stedet for 1 100 ved avgiftskurs 11.
+Samme avgrensning gjelder nå faktura, kreditnota, innkjøpsordre og rapport.
+Historiske beløp endres ikke. Vanlige valutabilag og NOK-flyten beholdes.
+Kjernen har allerede server-/nettleserresolvers for grunnlag; ingen ny adapter
+eller valutamotor er levert før presisjon og resten av flyten er kvalifisert.
+Se vat-currency.md. Kvartalsbehandling, valuta og import er fortsatt åpne før
+SAF-T og ENK. Serveroppdatering utføres fortsatt bare av brukeren.

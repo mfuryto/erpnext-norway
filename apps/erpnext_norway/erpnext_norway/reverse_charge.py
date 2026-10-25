@@ -6,6 +6,21 @@ OUTPUT, INPUT = '2704', '2714'
 CODES = {'86', '87'}
 
 
+def guard_currency(doc, method=None):
+    """Keep manual headers within the same qualified scope as item templates."""
+    from erpnext_norway.vat import vat_amount
+    if doc.doctype not in ('Purchase Invoice', 'Purchase Order') or not doc.company:
+        return
+    company = frappe.get_cached_doc('Company', doc.company)
+    if company.country != 'Norway' or (company.default_currency == 'NOK' and
+            (doc.currency or company.default_currency) == 'NOK'):
+        return
+    if any(abs(vat_amount(tax)) > 0.000001 and frappe.get_cached_value(
+            'Account', tax.account_head, 'account_number') in (OUTPUT, INPUT)
+            for tax in doc.taxes if tax.account_head):
+        frappe.throw(frappe._('Foreign-currency reverse-charge VAT requires a separately qualified NOK tax base. This flow is not yet supported.'))
+
+
 def seed(company):
     from erpnext_norway.vat import STATUS
     if company.country != 'Norway' or company.get(STATUS) != 'Registered':

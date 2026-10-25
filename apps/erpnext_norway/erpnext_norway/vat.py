@@ -173,6 +173,8 @@ def validate_invoice(doc, method=None):
     company = frappe.get_cached_doc('Company', doc.company)
     if company.country != 'Norway':
         return
+    from erpnext_norway.reverse_charge import guard_currency
+    guard_currency(doc)
     state = company.get(STATUS)
     if not state or state == 'Not configured':
         if method == 'before_submit' or doc.docstatus == 1:
