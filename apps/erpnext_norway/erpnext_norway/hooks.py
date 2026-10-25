@@ -21,8 +21,10 @@ extend_doctype_class = {
     **{name: ["erpnext_norway.preservation.RetainedDocumentMixin"] for name in _accounting},
 }
 doc_events = {
-    "Sales Order": {"before_validate": "erpnext_norway.vat.stamp_commercial_document"},
-    "Delivery Note": {"before_validate": "erpnext_norway.vat.stamp_commercial_document"},
+    "Sales Order": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
+        "erpnext_norway.vat_catalog.prepare_items"]},
+    "Delivery Note": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
+        "erpnext_norway.vat_catalog.prepare_items"]},
     "Purchase Order": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
         "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes",
         "erpnext_norway.vat_valuation.guard_configuration"]},
@@ -54,7 +56,8 @@ doc_events = {
         "before_validate": ["erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice", "erpnext_norway.vat_returns.prepare", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes"],
         "before_rename": "erpnext_norway.numbering.prevent_rename",
     },
-    "Quotation": {"before_validate": "erpnext_norway.vat.stamp_commercial_document",
+    "Quotation": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
+        "erpnext_norway.vat_catalog.prepare_items"],
         "on_submit": "erpnext_norway.printing.preserve_submission",
         "before_rename": "erpnext_norway.printing.guard_quotation_rename"},
     "Document Naming Rule": {
@@ -73,6 +76,7 @@ override_whitelisted_methods = {
 doctype_js = {"Company": "public/js/company.js",
     "Bank Reconciliation Tool": "public/js/bank_language.js",
     "Sales Invoice": "public/js/vat.js", "Purchase Invoice": "public/js/vat.js",
+    "Quotation": "public/js/vat.js", "Sales Order": "public/js/vat.js", "Delivery Note": "public/js/vat.js",
     "Purchase Order": "public/js/vat.js", "Purchase Receipt": "public/js/vat.js",
     "Journal Entry": "public/js/vat_journal.js"}
 

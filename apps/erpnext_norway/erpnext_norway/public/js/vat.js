@@ -18,6 +18,13 @@ async function norway_vat_preview(frm, options = {}) {
         // A user edit during the request wins over the older response.
         if (frm.__norway_vat_pending) return;
         frm.__norway_vat_applying = true;
+        for (const name of message.removed_taxes || []) {
+            const tax = frm.doc.taxes.find(row => row.name === name);
+            if (tax?.set_by_item_tax_template) {
+                frappe.model.clear_doc(tax.doctype, tax.name);
+                frm.dirty();
+            }
+        }
         for (const row of message.items) {
             const current = locals[frm.doc.items[0].doctype]?.[row.name];
             if (!current) continue;
@@ -38,15 +45,16 @@ async function norway_vat_preview(frm, options = {}) {
             }
         }
         for (const tax of message.taxes) {
-            const current = frm.doc.taxes.find(row => row.account_head === tax.account_head &&
+            const current = frm.doc.taxes.find(row => row.name === tax.name || row.account_head === tax.account_head &&
                 row.charge_type === tax.charge_type &&
                 (!tax.charge_type.startsWith('On Previous Row') ||
                     String(row.row_id || '') === String(tax.row_id || '')));
             if (!current) {
                 const { name, parent, parenttype, parentfield, idx, ...values } = tax;
                 frm.add_child('taxes', values);
-            } else if (tax.custom_norway_vat_cost || tax.set_by_item_tax_template) {
-                for (const field of ['category', 'included_in_print_rate', 'add_deduct_tax']) {
+            } else if (tax.custom_norway_vat_cost || tax.set_by_item_tax_template || current.row_id !== tax.row_id) {
+                for (const field of ['category', 'included_in_print_rate', 'add_deduct_tax', 'row_id']) {
+                    if (!frappe.meta.get_docfield(current.doctype, field, frm.doc.name)) continue;
                     if (current[field] !== tax[field]) {
                         await frappe.model.set_value(current.doctype, current.name, field, tax[field]);
                     }
@@ -73,9 +81,14 @@ frappe.ui.form.on(child, {
     expense_account: frm => norway_vat_preview(frm),
 });
 }
-frappe.ui.form.on('Sales Invoice Item', { item_tax_template: frm => norway_vat_preview(frm) });
+for (const child of ['Quotation Item', 'Sales Order Item', 'Delivery Note Item', 'Sales Invoice Item']) {
+    frappe.ui.form.on(child, { item_tax_template: frm => norway_vat_preview(frm) });
+}
 
-for (const parent of ['Sales Invoice', 'Purchase Invoice', 'Purchase Receipt']) {
+for (const parent of ['Quotation', 'Sales Order', 'Delivery Note', 'Sales Invoice']) {
+    frappe.ui.form.on(parent, { refresh: frm => norway_vat_preview(frm) });
+}
+for (const parent of ['Purchase Invoice', 'Purchase Receipt']) {
     frappe.ui.form.on(parent, { refresh: frm => {
         if (!frm.doc.is_return || frm.doc.docstatus) return;
         if (parent !== 'Sales Invoice') frm.fields_dict.items.grid.update_docfield_property('custom_norway_deduction_percent', 'read_only', 1);
@@ -153,6 +166,8 @@ frappe.ui.form.on('Purchase Invoice Item', {
     },
 });
 
-frappe.ui.form.on('Purchase Taxes and Charges', Object.fromEntries(
+for (const child of ['Sales Taxes and Charges', 'Purchase Taxes and Charges']) {
+frappe.ui.form.on(child, Object.fromEntries(
     ['charge_type', 'row_id', 'account_head', 'rate', 'tax_amount', 'included_in_print_rate']
         .map(field => [field, frm => norway_vat_preview(frm)])));
+}
