@@ -5302,3 +5302,16 @@ Desktop Icons,Skrivebordsikoner
 Desktop Settings,Skrivebordsinnstillinger
 Cancelled transactions cannot be deleted when Immutable Ledger is enabled.,Kansellerte bilag kan ikke slettes når uforanderlig hovedbok er aktivert.
 Immutable Ledger Enabled,Uforanderlig hovedbok er aktivert
+Merge rows with the same account head in the ledger for Journal Entries and Payment Entries only.,Slå sammen hovedbokslinjer med samme konto bare for regnskapsbilag og betalingsbilag.
+Create a record named after the file's value when the import runs.,Opprett en post med navnet fra filen når importen kjøres.
+Can Create,Kan opprette
+Additional Discount per Stock Unit,Ekstra rabatt per lagerenhet
+"Tax-exclusive additional discount carried from a source document, per stock unit.","Ekstra rabatt uten MVA overført fra et kildedokument, per lagerenhet."
+Print Format Editor,Redigering av utskriftsformat
+AI Agents,KI-agenter
+MCP Settings,MCP-innstillinger
+Enable MCP,Aktiver MCP
+Server Name,Servernavn
+Name shown to AI clients. Defaults to the site's host name.,Navnet som vises til KI-klienter. Nettstedets vertsnavn brukes som standard.
+Agent Instructions,Instruksjoner til agenter
+Tell AI agents what this site is for and how your team uses it. Agents receive this text when they connect.,Beskriv hva nettstedet brukes til og hvordan dere arbeider i det. KI-agenter mottar teksten når de kobler til.

@@ -20,6 +20,8 @@ controller-kjeden håndtere avvisningen. Appvernet behøves fortsatt når innsti
 er av, for nummererte fakturakladder og for tilbud. Det eksisterende filvernet
 dekker fortsatt frakobling, overskriving og kansellerte bilagsvedlegg.
 Ingen innstillinger slås automatisk på eller av. Kjernefilene endres ikke.
+Nye native tekster om import, rabatt, utskriftsformat og systeminnstillinger
+oversettes med ordinær nb.csv. Det tekniske verktøynavnet frappectl beholdes.
 
 ## Prøver før promotering
 
