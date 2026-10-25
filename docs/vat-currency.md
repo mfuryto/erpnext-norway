@@ -24,10 +24,8 @@ Ikke erstatt avgiftskursen med en justert prosentsats; det ville feilmerke satse
 Kjernen har allerede `erpnext_taxable_base_resolvers` på serveren og
 `erpnext.taxable_base_resolvers` i nettleseren. Begge beregningsfilene ble
 sammenlignet med det låste offisielle imaget og hadde identiske SHA256-hasher.
-Dette er førstevalget for videre grunnlagstilpasning. Det er ikke tillatelse
-til å åpne flyten før NOK-presisjon, kildedato, original kurs, delvis fradrag,
-kreditnota, betaling og rapport er prøvd samlet. Ingen ny avgiftsmotor eller
-grunnlagsadapter er levert i denne avgrensningen.
+App 0.4.12 bruker disse eksisterende krokene. Tilpasningen leverer bare
+linjegrunnlaget; kjernen beregner avgift, varefordeling, avrunding og hovedbok.
 
 ## Minste retting av eksisterende omgåelse
 
@@ -50,5 +48,82 @@ samme dokumentene. Manuelle prosent-/beløpsrader, innkjøpsordre og endret valu
 på kreditnota avvises. Native sperre mot endret tallkurs på kreditnota beholdes.
 En vanlig EUR-faktura med ordinær inngående MVA og en NOK-faktura med omvendt
 MVA bokføres fortsatt og avstemmes mot hovedbok gjennom eksisterende rapport.
-Alle prøvebilag rulles tilbake. Det er ingen ny valutakurskilde, nye felt eller
-endret presisjonsinnstilling. Den generelle valutabehandlingen er ikke fullført.
+Alle prøvebilag rulles tilbake. Dette var avgrensningen i 0.4.11; det kvalifiserte linjevalget i 0.4.12 er beskrevet nedenfor.
+
+## App 0.4.12: dokumentert kurs på den ordinære linjen
+
+Kjerneprøven med faktisk `erpnext_taxable_base_resolvers` og native Property
+Setter for transaksjonsfeltenes presisjon ga 1 101,37 NOK i grunnlag og 275,34
+NOK i MVA for 100 EUR, bokføringskurs 10 og avgiftskurs 11,0137. Leverandørgjelden
+forble 1 000 NOK. Det trengs ingen ny MVA-beregning eller ekstra journal.
+
+Det dokumenterte datagapet er to uavhengige opplysninger som standardlinjen ikke
+har: faktisk leveringsdato for avgiftskursen og NOK per valutaenhet etter den
+kursen. Native `conversion_rate` skal fortsatt være bokføringskurs. Ordinære
+File-vedlegg brukes for kursgrunnlag og leverandøroriginal. Tolletatens
+[daterte kurser og myntenheter](https://www.toll.no/no/verktoy/valutakurser/)
+brukes ved registreringen; en kurs for 100 enheter må oppgis per én enhet.
+Ingen egen kurstjeneste eller automatisk kildegjetting er innført.
+
+Adapteren leverer `item.net_amount * MVA-kurs / conversion_rate` til
+kjernens eksisterende grunnlagskrok. Native vareavgiftsmal bestemmer fortsatt
+prosent og fradrag. Kjernen fører Item Wise Tax Detail, hovedbok og betaling.
+Samme grunnlag leveres til nettleserens native krok. Native Property Setter
+på fem felt gir ni desimalers mellomregningspresisjon; NOK-feltene og ordinære
+dokumenttotaler beholder sin eksisterende presisjon. Eksplisitte brukervalg
+bevares; valutaflyten krever minst seks desimaler.
+
+Første omfang er registrert foretak, NOK-regnskap, tjenestelinjer med 25 %
+omvendt MVA og uten ekstra frakt-/avgiftsgrunnlag eller blandet innenlands
+behandling på samme valutabilag. Begge kursopplysningene følger native
+ordreoverføring og opprinnelig linje ved kreditnota, ikke kreditnotaens nye
+valutakurs. Ingen historiske bilag etterfylles automatisk. Den kjørbare appprøven dekker native lagring, bokføring, delvis fradrag, rabatt,
+kreditnota, betaling, periodelås, nettleser og eksportert backup/restore.
+
+Native satspresisjon må også dekke fradrag med desimaler: 33,33 % fradrag ved
+25 % MVA gir 8,3325 % inngående sats. Standard tre satsdesimaler avrunder dette
+før beregningen. Også satsfeltet konfigureres derfor med native Property Setter;
+ingen egen avrundings- eller fradragsberegning skal erstatte kjernen.
+
+Også avgiftsradens løpende `total` trenger mellomregningspresisjon. Ellers
+kan separate Add/Deduct-rader gi 100,01 EUR i stedet for 100 EUR før den siste
+dokumentavrundingen. Native dokumenttotal og NOK-hovedbok beholder to desimaler.
+
+## Regnskapsfasit og bruk
+
+Velg den eksisterende vareavgiftsmalen for tjenestekjøp fra utlandet på vanlig
+innkjøpsordre eller leverandørfaktura. På hver valutalinje fylles «Leveringsdato
+for MVA» og «MVA-kurs (NOK per valutaenhet)». Ordinær valutakurs beholdes som
+bokføringskurs. Dokumenter kurskilden med vanlig fakturavedlegg. Feltene er
+oversatt til norsk og følger kjernens ordreoverføring uten egen mapping.
+
+| Prøve: 100 EUR, bokføringskurs 10, MVA-kurs 11,0137 | Fullt fradrag | 60 % fradrag | Intet fradrag |
+| --- | ---: | ---: | ---: |
+| MVA-grunnlag NOK | 1 101,37 | 1 101,37 | 1 101,37 |
+| Utgående MVA NOK | 275,34 | 275,34 | 275,34 |
+| Inngående MVA NOK | 275,34 | 165,21 | 0 |
+| Kostnad NOK | 1 000 | 1 110,14 | 1 275,34 |
+| Leverandørgjeld EUR | 100 | 100 | 100 |
+
+Kjernen fører ett øre på ordinær avrundingskonto ved 60 %-prøven. En prøve med
+10 000 EUR og 33,33 % fradrag gir 9 177,17 NOK inngående MVA uten å endre
+leverandørbeløpet. To ordrelinjer med forskjellige leveringskurser og 10 % rabatt
+gir 1 035 NOK i samlet grunnlag og 258,75 NOK MVA på fakturaen.
+
+Delkreditnota i neste periode beholder opprinnelig leveringsdato og MVA-kurs.
+Dette følger [GBS 1 punkt 2.4, januar 2026](https://www.regnskapsstiftelsen.no/wp-content/uploads/2026/02/2026-01-GBS-1-Kreditnota-%E2%80%93-innhold-utstedelse-bokforing-og-oppbevaring-januar-2026.pdf).
+Senere endring av registreringsdato endrer verken rapporterte originaler eller
+kreditnotaens opprinnelige behandling; nye kjøp må fortsatt ha gyldig registrering.
+Native vern mot endring etter bokføring og lukket periode beholdes.
+
+Native betaling av samlet restgjeld 240 EUR med 2 520 NOK gir 120 NOK kurstap
+gjennom kjernens valutabilag. MVA forblir 671,76 utgående og 479,03 inngående,
+netto 192,73 NOK. Ingen MVA-justering lages ved betaling. Dokumentkoblinger,
+hovedbok og seks private PDF-originaler kontrolleres etter eksportert restore.
+
+Migrering oppretter to native Custom Fields på hver av de to varelinjetypene
+og Property Setters for avgiftsradene. Oppdateringsverktøyet tar backup før
+migrering. Bokførte eldre valutabilag etterfylles ikke og må fortsatt oppfylle
+rapportens dokumentasjonskrav. Ikke-registrert kvartal, levering før registrering,
+blandet innenlandsbehandling, ekstra frakt på valutabilaget og vareimport er
+fortsatt åpne omfang; dette fullfører ikke hele MVA-planen.

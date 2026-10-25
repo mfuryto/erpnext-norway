@@ -62,7 +62,7 @@ Blandet innenlands/omvendt behandling, vanlig native avgiftshode uten varemal,
 ordreoverføring og kansellering inngår også i prøven. Private leverandøroriginaler
 og regnskapsverdier sammenlignes igjen etter eksportert backup/restore.
 
-De nye linjevalgene avviser dato før gyldig registrering, valuta ulik NOK,
+De nye linjevalgene avviser dato før gyldig registrering,
 lagerførte varer og driftsmidler. De avviser også manuelt feil avgiftsretning
 og pris med inkludert omvendt MVA. Dette avgrenser den kvalifiserte flyten;
 ikke-registrert kvartalsbehandling er fortsatt neste del av samme MVA-punkt.
@@ -165,4 +165,7 @@ avgiftsgrunnlag, selv når det faste avgiftsbeløpet justeres. Se vat-currency.m
 for prøvetall, eksisterende grunnlagsutvidelsespunkt og presisjonsbegrensning.
 Leverandørfaktura, kreditnota, innkjøpsordre og rapport må bruke samme avgrensning.
 Eksisterende bokførte data endres ikke; ordinære valutabilag og kvalifisert NOK-
-behandling beholdes. Dette åpner ikke valuta eller ikke-registrert kvartalsflyt.
+behandling beholdes. App 0.4.12 åpner det avgrensede registrerte valutalinjevalget med egen
+leveringsdato og avgiftskurs gjennom kjernens grunnlagskrok; se vat-currency.md.
+Manuelle rader uten disse opplysningene forblir sperret. Ikke-registrert
+kvartalsflyt er fortsatt åpen.

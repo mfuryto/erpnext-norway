@@ -134,3 +134,11 @@ avrunding i fakturavaluta før NOK. Kjernen har allerede grunnlagsresolvers på
 server og i nettleser; disse er identiske med det låste offisielle imaget og
 skal undersøkes videre før egen tilpasning. Ingen egen valutakalkulator er lagt
 til. Native kreditnotas kurssperre brukes uendret. Se vat-currency.md.
+
+App 0.4.12 bruker de faktisk prøvde native grunnlagskrokene på server og i
+nettleser. Gapet er to manglende linjeopplysninger: leveringsdato og MVA-kurs.
+To Custom Fields på innkjøpsordre-/fakturalinjer dekker dette. Native Property
+Setter gir fem transaksjonsfelt ni desimaler; NOK og dokumenttotal beholder to.
+Kjernen beregner satser, avrunding, ordreoverføring, kreditnota, hovedbok og
+betalingsvalutadifferanse. Ingen ny avgiftsmotor, journal eller kurskilde.
+Se vat-currency.md for faktiske prøver og avgrenset registrert tjenesteflyt.

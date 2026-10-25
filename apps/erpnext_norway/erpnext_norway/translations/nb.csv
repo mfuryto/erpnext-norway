@@ -5328,3 +5328,18 @@ Enter a negative VAT base for the output VAT reversal.,Oppgi et negativt MVA-gru
 Use output VAT accounts on sales documents. Review the tax rows.,Bruk kontoer for utgående MVA i salgsdokumenter. Kontroller avgiftsradene.
 A sales tax row refers to an input VAT row. Review its native row reference.,En avgiftsrad i salgsdokumentet viser til inngående MVA. Kontroller radhenvisningen.
 Foreign-currency reverse-charge VAT requires a separately qualified NOK tax base. This flow is not yet supported.,Omvendt MVA i utenlandsk valuta krever et særskilt kvalifisert avgiftsgrunnlag i NOK. Denne flyten støttes ikke ennå.
+VAT delivery date,Leveringsdato for MVA
+VAT exchange rate (NOK per currency unit),MVA-kurs (NOK per valutaenhet)
+For reverse-charge services: actual delivery date used for the customs exchange rate.,For tjenester med omvendt MVA: faktisk leveringsdato som bestemmer kursen fra Tolletaten.
+"Use the customs rate valid on delivery, per one currency unit. Retain its source with the invoice attachments.","Bruk Tolletatens kurs ved levering, omregnet til én valutaenhet. Oppbevar kursgrunnlaget med fakturaens vedlegg."
+On Norwegian VAT Base,Etter norsk MVA-grunnlag
+Use a NOK accounting company and a service purchase invoice or order for this VAT basis.,Bruk et foretak med NOK som regnskapsvaluta og en leverandørfaktura eller innkjøpsordre for tjenester.
+Use only reverse-charge service lines on this foreign-currency invoice or order.,Bruk bare tjenestelinjer med omvendt MVA på denne valutafakturaen eller innkjøpsordren.
+Enter the VAT delivery date and a positive VAT exchange rate on every service line.,Oppgi leveringsdato for MVA og en positiv MVA-kurs på hver tjenestelinje.
+The VAT delivery date cannot be after the invoice posting date.,Leveringsdatoen for MVA kan ikke være etter fakturaens bokføringsdato.
+Delivery before VAT registration is not yet supported by this currency treatment.,Levering før MVA-registrering støttes ikke ennå av denne valutabehandlingen.
+This VAT basis requires at least six decimal places on the purchase tax transaction amount fields. Review the existing field precision settings.,Dette MVA-grunnlaget krever minst seks desimaler i avgiftsradenes beløpsfelt i fakturavaluta. Kontroller eksisterende feltpresisjon.
+Use the Norwegian VAT basis on the reverse-charge tax rows for this currency invoice.,Bruk norsk MVA-grunnlag på radene for omvendt MVA i denne valutafakturaen.
+Use only the Norwegian reverse-charge VAT basis without additional charges on this currency invoice.,Bruk bare norsk grunnlag for omvendt MVA uten ekstra avgifts- eller fraktrader på denne valutafakturaen.
+Use the Norwegian currency VAT basis only on foreign-currency purchases.,Bruk MVA-grunnlaget for valuta bare på kjøp i utenlandsk valuta.
+This VAT basis requires at least six decimal places on the purchase tax amount and rate fields. Review the existing field precision settings.,Dette MVA-grunnlaget krever minst seks desimaler i avgiftsradenes beløps- og satsfelt. Kontroller eksisterende feltpresisjon.

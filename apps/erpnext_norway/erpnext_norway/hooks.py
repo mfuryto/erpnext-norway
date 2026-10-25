@@ -5,6 +5,7 @@ app_description = "Minimal safeguards for native accounting documents"
 app_email = "maintainers@example.invalid"
 app_license = "GPL-3.0-only"
 required_apps = ["erpnext"]
+erpnext_taxable_base_resolvers = {"On Norwegian VAT Base": "erpnext_norway.vat_currency.basis"}
 app_include_js = ["/assets/erpnext_norway/js/locale.js"]
 
 after_install = "erpnext_norway.setup.configure"

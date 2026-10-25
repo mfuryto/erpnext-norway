@@ -102,7 +102,7 @@ try:
         header.cancel()
         print('PASS existing native header reverse-charge rows without an item template retain positive report base and balanced VAT')
         invalid=invoice();invalid.items[0].item_code='RUNTIME-VAT-SERVICE';invalid.currency='EUR';invalid.conversion_rate=10
-        rejected(invalid.insert, 'NOK service purchase')
+        rejected(invalid.insert, 'VAT delivery date')
         early=invoice(0,bill_date='2025-12-31')
         rejected(early.insert, 'effective VAT registration')
         wrong=invoice(taxes=[{'charge_type':'On Net Total','account_head':A['2704'],

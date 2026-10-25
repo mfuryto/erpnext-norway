@@ -420,3 +420,15 @@ Kjernen har allerede server-/nettleserresolvers for grunnlag; ingen ny adapter
 eller valutamotor er levert før presisjon og resten av flyten er kvalifisert.
 Se vat-currency.md. Kvartalsbehandling, valuta og import er fortsatt åpne før
 SAF-T og ENK. Serveroppdatering utføres fortsatt bare av brukeren.
+
+## MVA: registrerte utenlandske tjenester i valuta
+
+App 0.4.12 bruker kjernens eksisterende grunnlagsresolvers på server og i
+nettleser. To ordinære linjefelt dekker dokumentert leveringsdato og MVA-kurs;
+kjernen beholder beregning, ordreoverføring, kreditnota, hovedbok og betaling.
+Native Property Setters retter mellomregningspresisjon uten å endre NOK- eller
+dokumentavrunding. Prøvene dekker 100/60/0 og 33,33 % fradrag, to leveringskurser,
+rabatt, delkreditnota, endret registreringsdato, native valutabilag, periodelås,
+norsk nettleser og eksportert restore med private PDF-originaler.
+Se vat-currency.md. Ikke-registrert kvartal, registreringsovergang og import er
+fortsatt åpne før SAF-T og ENK. Serveren oppdateres fortsatt bare av brukeren.
