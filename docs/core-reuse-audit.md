@@ -105,3 +105,9 @@ Oppfølging ved ERPNext 16.52.1 / Frappe 16.53.0: native AccountsController
 avviser nå sletting av kansellerte bilag med Immutable Ledger aktivert. Fra
 app 0.4.7 brukes dette vernet direkte. Appvernet beholdes når innstillingen er
 av og for nummererte kladder/tilbud; filgapene består. Se core-update.md.
+
+App 0.4.8 viderefører native omvendt avgift gjennom samme fradragsadapter som
+innenlands. Tillegget konfigurerer 2704/2714, Add/Deduct og norske koder i
+Item Tax Template; kjernen beregner og fører alle beløp. Script Report leser
+kjøpsdetaljenes fortegn og avstemmer hovedboken. Ingen separat fradragsmotor,
+kvartalsmotor eller hovedbok er opprettet. Se vat-foreign-services.md.

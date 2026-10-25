@@ -5315,3 +5315,12 @@ Server Name,Servernavn
 Name shown to AI clients. Defaults to the site's host name.,Navnet som vises til KI-klienter. Nettstedets vertsnavn brukes som standard.
 Agent Instructions,Instruksjoner til agenter
 Tell AI agents what this site is for and how your team uses it. Agents receive this text when they connect.,Beskriv hva nettstedet brukes til og hvordan dere arbeider i det. KI-agenter mottar teksten når de kobler til.
+This reverse-charge item treatment currently requires a NOK service purchase invoice or order.,Denne behandlingen av omvendt avgiftsplikt støtter foreløpig bare tjenestekjøp i NOK på leverandørfaktura eller innkjøpsordre.
+This reverse-charge item treatment requires effective VAT registration. Non-registered quarterly treatment is not yet qualified.,Denne behandlingen av omvendt avgiftsplikt krever gyldig MVA-registrering. Kvartalsbehandling for ikke-registrerte foretak er ikke ferdig kvalifisert.
+Select a non-stock service item for this reverse-charge treatment.,Velg en tjenesteartikkel uten lagerføring for denne behandlingen av omvendt avgiftsplikt.
+The reverse-charge item template must use the qualified 25 percent output VAT account.,Vareavgiftsmalen for omvendt avgiftsplikt må bruke kvalifisert konto og sats for 25 prosent utgående MVA.
+The reverse-charge item template deduction does not match its native input VAT rate.,Fradraget i vareavgiftsmalen for omvendt avgiftsplikt stemmer ikke med satsen for inngående MVA.
+Select an existing full-deduction item tax template before changing deduction to 100 percent.,Velg en eksisterende vareavgiftsmal med fullt fradrag før fradraget endres til 100 prosent.
+The saved item tax template no longer matches the selected deduction. Review its native rates.,Den lagrede vareavgiftsmalen stemmer ikke lenger med valgt fradrag. Kontroller satsene i malen.
+Reverse-charge VAT must not be included in the supplier price.,MVA ved omvendt avgiftsplikt skal ikke være inkludert i leverandørprisen.
+Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.,"Utgående MVA ved omvendt avgiftsplikt skal trekkes fra, og inngående MVA skal legges til i avgiftsradene."

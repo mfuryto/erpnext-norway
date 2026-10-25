@@ -365,3 +365,13 @@ reservevernet beholdes for dokumenterte gjenværende tilfeller. Se
 [versjonsoppdateringen](core-update.md) for kildehenvisninger og kvalifisering.
 MVA-utland/import, SAF-T og ENK gjenstår i samme rekkefølge. Serveren oppdateres
 fortsatt bare av brukeren med gjeldende main og vanlig backup-/migreringsblokk.
+
+## MVA: registrert tjenestekjøp fra utlandet i NOK
+
+App 0.4.8 konfigurerer 25 % omvendt avgiftsplikt i eksisterende vareavgiftsmaler
+og gjenbruker fradragsadapteren. Native Add/Deduct, ordre/faktura/kreditnota,
+betaling, hovedbok og oppgjør beholdes. Rapporten leser signed kjøpsdetaljer
+korrekt og teller omvendt grunnlag én gang. Ingen egen avgiftsmotor, ny tabell
+eller ny arbeidsflate. Se vat-foreign-services.md for prøver og avgrensning.
+Hele MVA-planen er ikke ferdig: ikke-registrert kvartalsterskel/særskilt melding
+og valuta er neste deler før import, resterende MVA-flyt, SAF-T og ENK.

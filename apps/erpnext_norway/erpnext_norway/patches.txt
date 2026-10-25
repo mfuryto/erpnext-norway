@@ -2,3 +2,4 @@
 
 [post_model_sync]
 erpnext_norway.patches.v0_4_vat_catalog
+erpnext_norway.patches.v0_4_8_reverse_charge

@@ -45,8 +45,8 @@ async function norway_vat_preview(frm, options = {}) {
             if (!current) {
                 const { name, parent, parenttype, parentfield, idx, ...values } = tax;
                 frm.add_child('taxes', values);
-            } else if (tax.custom_norway_vat_cost) {
-                for (const field of ['category', 'included_in_print_rate']) {
+            } else if (tax.custom_norway_vat_cost || tax.set_by_item_tax_template) {
+                for (const field of ['category', 'included_in_print_rate', 'add_deduct_tax']) {
                     if (current[field] !== tax[field]) {
                         await frappe.model.set_value(current.doctype, current.name, field, tax[field]);
                     }
