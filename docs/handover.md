@@ -394,3 +394,16 @@ Ingen nye felt, tabeller, bilagstyper eller arbeidsflater. Prøven dekker vanlig
 eier, gjentatt lagring, kansellering, duplikatsperre, registreringsovergang,
 native periodelås og eksportert restore. Se vat-foreign-services.md.
 Dette fullfører ikke ikke-registrert kvartalsflyt eller MVA-planens punkt 8.
+
+
+## MVA: blandet sats gjennom den native salgskjeden
+
+App 0.4.10 gjenbruker eksisterende avgiftsradadapter i tilbud/salgsordre/levering.
+Kjerneprøven viste at delte vareavgiftsmaler automatisk la inn både inngående og
+utgående rader: 4 040 i stedet for 3 520. Native utgående rader alene beregner
+riktig; bare konfigurasjonsgapet er rettet. Ingen ny mapping eller avgiftsmotor.
+Vanlig eier prøver tilbud → ordre → to delleveringer/delfakturaer med blandede
+25/15/12/nullsatser og rabatt, delkreditnota neste periode og kundebetaling.
+Samlet utgående 468 minus kreditert 117 gir 351. Nettleser og eksportert restore
+inngår i appprøven; se vat-sales-chain.md for avgrensninger. Ingen servertilgang.
+Ikke-registrert kvartalsbehandling, valuta og import er fortsatt åpne før SAF-T/ENK.

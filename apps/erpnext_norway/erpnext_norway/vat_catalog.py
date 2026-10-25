@@ -12,6 +12,7 @@ SALES_CODE = 'custom_norway_sales_vat_code'
 PURCHASE_CODE = 'custom_norway_purchase_vat_code'
 RATE = 'custom_norway_vat_rate'
 DEDUCTION = 'custom_norway_deduction_percent'
+SALES_DOCUMENTS = ('Quotation', 'Sales Order', 'Delivery Note', 'Sales Invoice')
 ORDINARY = ((25, '2700', '2710', '3', '1'), (15, '2701', '2711', '31', '11'),
             (12, '2703', '2713', '33', '13'))
 
@@ -137,8 +138,13 @@ def prepare_items(doc, method=None):
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
     doc.flags.norway_vat_cost_inclusions = {}
+    doc.flags.norway_removed_input_taxes = []
+    sales = doc.doctype in SALES_DOCUMENTS
+    if sales and any(row.item_tax_template and frappe.get_cached_value(
+            'Item Tax Template', row.item_tax_template, SALES_CODE) for row in doc.items):
+        prepare_sales_rows(doc)
     for row in doc.items:
-        if not row.item_tax_template and doc.doctype != 'Sales Invoice' and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
+        if not row.item_tax_template and not sales and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
             category = doc.tax_category
             if not category and doc.taxes_and_charges:
                 category = frappe.db.get_value('Purchase Taxes and Charges Template',
@@ -152,7 +158,7 @@ def prepare_items(doc, method=None):
             continue
         template = frappe.get_cached_doc('Item Tax Template', row.item_tax_template)
         nominal = template.get(RATE)
-        if doc.doctype == 'Sales Invoice':
+        if sales:
             if nominal and template.get(SALES_CODE):
                 append_native_rows(doc, row, template)
             continue
@@ -219,12 +225,41 @@ def prepare_items(doc, method=None):
         append_native_rows(doc, row, chosen)
 
 
+def prepare_sales_rows(doc):
+    """Remove only native auto-input rows from shared Norwegian item templates."""
+    rows = list(doc.taxes)
+    remove = set()
+    for position, tax in enumerate(rows, 1):
+        number = frappe.get_cached_value('Account', tax.account_head, 'account_number') if tax.account_head else ''
+        if not (number or '').startswith('271'):
+            continue
+        if not (tax.get('set_by_item_tax_template') and tax.charge_type == 'On Net Total'
+                and not tax.rate and not tax.included_in_print_rate):
+            frappe.throw(frappe._('Use output VAT accounts on sales documents. Review the tax rows.'))
+        remove.add(position)
+    if not remove:
+        return
+    positions = {old: new for new, old in enumerate(
+        (position for position in range(1, len(rows) + 1) if position not in remove), 1)}
+    for position, tax in enumerate(rows, 1):
+        if position in remove:
+            doc.flags.norway_removed_input_taxes.append(tax.name)
+            doc.remove(tax)  # Native child removal retains ordinary row indexing.
+        elif (tax.charge_type or '').startswith('On Previous Row'):
+            reference = frappe.utils.cint(tax.row_id)
+            if reference in remove:
+                frappe.throw(frappe._('A sales tax row refers to an input VAT row. Review its native row reference.'))
+            if reference in positions:
+                tax.row_id = str(positions[reference])
+
+
 def append_native_rows(doc, item, template):
     """Use core's row creation; adapt only Norwegian direction/basis metadata."""
     from erpnext.controllers.accounts_controller import add_taxes_from_tax_template
     from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, OUTPUT, INPUT
-    reverse = doc.doctype != 'Sales Invoice' and template.get(PURCHASE_CODE) in REVERSE_CODES
-    prefix = '270' if doc.doctype == 'Sales Invoice' else '271'
+    sales = doc.doctype in SALES_DOCUMENTS
+    reverse = not sales and template.get(PURCHASE_CODE) in REVERSE_CODES
+    prefix = '270' if sales else '271'
     included = next((tax.included_in_print_rate for tax in doc.taxes
                      if tax.account_head and frappe.get_cached_value('Account', tax.account_head,
                          'account_type') == 'Tax'), 0)
@@ -232,7 +267,7 @@ def append_native_rows(doc, item, template):
         if not row.tax_rate:
             continue
         account = frappe.get_cached_doc('Account', row.tax_type)
-        expense = doc.doctype != 'Sales Invoice' and account.root_type == 'Expense'
+        expense = not sales and account.root_type == 'Expense'
         if not ((account.account_number or '').startswith(prefix) or expense or
                 (reverse and account.account_number == OUTPUT)):
             continue
@@ -287,7 +322,8 @@ def append_native_rows(doc, item, template):
                      'Inngående MVA 25 % – tjenestekjøp fra utlandet') if reverse else f'MVA {template.get(RATE):g} %'),
                 'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Deduct' if reverse and account.account_number == OUTPUT else 'Add',
                 'custom_norway_vat_cost': int(expense),
-                'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': basis_included,
+                'cost_center': item.get('cost_center') or doc.get('cost_center') or
+                    frappe.get_cached_value('Company', doc.company, 'cost_center'), 'included_in_print_rate': basis_included,
                 'set_by_item_tax_template': 1}
             if not any(tax.account_head == account.name for tax in doc.taxes):
                 # The shared Norwegian template contains both sales and purchase
@@ -330,14 +366,14 @@ def move_seed_dates(company, previous):
 def preview_items(document, deduction_row=None, template_row=None):
     """Prepare ordinary form choices; native browser controller calculates totals."""
     doc = frappe.get_doc(frappe.parse_json(document))
-    if doc.doctype not in ('Sales Invoice', 'Purchase Invoice', 'Purchase Order', 'Purchase Receipt'):
+    if doc.doctype not in (*SALES_DOCUMENTS, 'Purchase Invoice', 'Purchase Order', 'Purchase Receipt'):
         frappe.throw(frappe._('Invalid invoice type.'))
     doc.check_permission('create' if doc.is_new() else 'write')
     frappe.get_doc('Company', doc.company).check_permission('read')
     if doc.docstatus != 0:
         frappe.throw(frappe._('Only draft invoices can be changed.'))
     doc.flags.norway_vat_deduction_row = deduction_row
-    if doc.doctype != 'Sales Invoice' and template_row:
+    if doc.doctype not in SALES_DOCUMENTS and template_row:
         for row in doc.items:
             if row.name == template_row and row.item_tax_template:
                 percent = frappe.db.get_value('Item Tax Template', row.item_tax_template, DEDUCTION)
@@ -359,7 +395,8 @@ def preview_items(document, deduction_row=None, template_row=None):
     fields = ['item_tax_template', DEDUCTION]
     if doc.get('is_return'):
         fields += [CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
-    return {'items': [{'name': row.name, **{field: row.get(field) for field in fields}}
+    return {'removed_taxes': doc.flags.get('norway_removed_input_taxes') or [],
+            'items': [{'name': row.name, **{field: row.get(field) for field in fields}}
                       for row in doc.items], 'taxes': [row.as_dict() for row in doc.taxes]}
 
 

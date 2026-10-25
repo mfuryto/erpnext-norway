@@ -118,3 +118,11 @@ avviste negativ utgående MVA før registrering. Den ordinære valideringshendel
 retter bare samsvarende kopiert grunnlag og tillater dokumentert negativ
 utgående kode 87. Native beløp, kobling, hovedbok, kansellering, duplikatsperre og
 periodelås beholdes. Ingen ny reverseringsmotor eller klasseoverstyring.
+
+App 0.4.10 gjenbruker samme avgiftsradadapter i tilbud, salgsordre og levering.
+Faktisk native prøve med delte norske vareavgiftsmaler ga 4 040 i stedet for
+3 520 fordi begge avgiftsretninger ble tatt med. Bare utgående native rader ga
+riktig beløp gjennom hele kjeden uten ny beregning. Tillegget avgrenser derfor
+radkonfigurasjonen og fjerner bare automatisk inngående rader; eksplisitte rader
+avvises. Mapping, delmengder, rabatt, kreditnota, betaling og hovedbok er fortsatt
+kjernens. Ingen nye felt, mapperklasser eller beregningsmotor. Se vat-sales-chain.md.

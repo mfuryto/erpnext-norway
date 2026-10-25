@@ -117,6 +117,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-reverse.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-threshold-core.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-journal-reversal.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-sales-chain.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-portal-cycle.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-evidence.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-settlement-race.py"
@@ -130,6 +131,7 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-treatment-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-reverse-browser.cjs"
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-sales-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-valuation-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-freight-browser.cjs"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - desktop < "$root/tests/runtime-language-surfaces.py"
@@ -142,6 +144,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
     ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-return-sources-browser.cjs"
   fi
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - finish < "$root/tests/runtime-vat-return-sources.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - snapshot < "$root/tests/runtime-app.py"
 fi
 python3 "$fixture/scripts/backup-runtime.py" --name runtime-ci
 (cd "$fixture/backups/runtime-ci" && sha256sum --check SHA256SUMS)
@@ -174,6 +177,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-reverse.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-journal-reversal.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-sales-chain.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-valuation.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-freight.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-evidence.py"

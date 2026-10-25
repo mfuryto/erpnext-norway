@@ -47,6 +47,15 @@ try:
         rule.save()
         frappe.db.commit()
         print('PASS real app installation on empty registers; native rules and configurable starting counters')
+    elif sys.argv[1] == 'snapshot':
+        # Later scenarios legitimately allocate more native invoice numbers.
+        # Capture the final counter immediately before backup, retaining the
+        # exact equality check after restore and detecting a reset beforehand.
+        counter = frappe.db.get_value('Document Naming Rule', 'Norway Sales Invoice', 'counter')
+        assert counter >= int(frappe.db.get_default('runtime_app_counter'))
+        frappe.db.set_default('runtime_app_counter', counter)
+        frappe.db.commit()
+        print('PASS final native invoice counter retained for exact exported restore comparison')
     elif sys.argv[1] == 'verify':
         name = frappe.db.get_default('runtime_app_file')
         attachment = frappe.get_doc('File', name)
