@@ -77,8 +77,7 @@ def validate_document(doc):
             frappe.throw(frappe._('The VAT delivery date cannot be after the invoice posting date.'))
         if not original_treatment and getdate(item.get(DATE)) < getdate(company.get('custom_norway_vat_from')):
             frappe.throw(frappe._('Delivery before VAT registration is not yet supported by this currency treatment.'))
-        if not original_treatment and item.item_code and any(frappe.get_cached_value('Item', item.item_code, field)
-                for field in ('is_stock_item', 'is_fixed_asset')):
+        if not original_treatment and item.item_code and frappe.get_cached_value('Item', item.item_code, 'is_stock_item'):
             frappe.throw(frappe._('Select a non-stock service item for this reverse-charge treatment.'))
     if not published and any((frappe.new_doc('Purchase Taxes and Charges').precision(field) or 0) < 6
             for field in PRECISION_FIELDS):
@@ -137,5 +136,7 @@ def validate_rows(doc):
         if last_charge and cint(tax.row_id) < last_charge:
             frappe.throw(frappe._('Reference the native additional-charge row in the service VAT basis before submitting this invoice.'))
         expected = 'Deduct' if number in ('2704', '2709') else 'Add'
-        if tax.add_deduct_tax != expected or tax.category != 'Total':
+        valuation = (tax.get('custom_norway_vat_cost') and tax.category == 'Valuation and Total' and
+            frappe.get_cached_value('Account', tax.account_head, 'account_type') == 'Expenses Included In Valuation')
+        if tax.add_deduct_tax != expected or (tax.category != 'Total' and not valuation):
             frappe.throw(frappe._('Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.'))

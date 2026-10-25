@@ -58,8 +58,8 @@ def validate(doc, item, template):
     if not effective(company, doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')):
         frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Use the quarterly service purchase template before registration.'))
     if item.item_code:
-        stock, asset = frappe.get_cached_value('Item', item.item_code, ['is_stock_item', 'is_fixed_asset'])
-        if stock or (asset and doc.currency != 'NOK'):
+        stock = frappe.get_cached_value('Item', item.item_code, 'is_stock_item')
+        if stock:
             frappe.throw(frappe._('Select a non-stock service item for this reverse-charge treatment.'))
     nominal = template.get(RATE)
     output_number, input_number, _, _ = treatment(nominal)

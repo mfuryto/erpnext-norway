@@ -14,9 +14,9 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; blandet tjenestesalg gjennom tilbud/ordre/dellevering/faktura/kreditnota prøvd i 0.4.10 |
 | 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; tilbud/ordre/dellevering/delfaktura med salgsrabatt, inklusivt tilbud og frakthenvisning prøvd i 0.4.10; driftsmiddelfrakt og retur prøvd i 0.4.17; øvrige kombinasjoner avgrenses nedenfor |
-| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense og registreringsovergang prøvd i 0.4.14; 12 % og blandet kvartal, valutatillegg/rabatt og native oppgjør er kvalifisert i 0.4.16; resterende verdsettingskombinasjoner er åpne |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense og registreringsovergang prøvd i 0.4.14; 12 % og blandet kvartal, valutatillegg/rabatt og native oppgjør er kvalifisert i 0.4.16; kapitaliserte tjenester i NOK/EUR og kvartal er prøvd i 0.4.18; native status-/mottakskrav gjelder |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Native mottak/deklarasjonsbilag, periode, kode 85, toll/LCV, valutabetaling og eksportkjede med EUR-kreditnota/refusjon prøvd i 0.4.15; særskilte importprosedyrer er ikke kvalifisert |
-| 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
+| 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Kvartal/ordinær overgang, senere kreditnota, korreksjon av opprinnelig kvartal og dokumentert tilbakegående fradrag i registreringsterminen prøvd; særtilfeller bruker eksisterende ordinært Bilag |
 | 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport, leverandørens dokumentperiode og deklarasjonens ekspedisjonsperiode prøvd; utenlandske tjenester og kode 85 inngår i samme spor og hovedboksavstemming |
 | 12 | Oppgjørsføring, betaling/refusjon, korrigert melding, vedlagt melding/kvittering | Native oppgjør/betaling/refusjon/differanse og privat dokumentbevaring prøvd; portal først |
 
@@ -222,3 +222,30 @@ samme native bilag som lagerflyten. Registrert kapitalisert utenlandsk tjeneste
 i NOK er også prøvd med 100/60/0 % fradrag og delkreditnota. Se
 [gap og konkrete beløp](vat-valuation.md). Valuta og kvartalskapitalisering før
 registrering inngår ikke i denne utvidelsen og skal ikke omtales som ferdige.
+
+## Samlet registreringsvei
+
+1. Behold **Ikke registrert** til faktisk registrering er godkjent. Innenlands kjøp
+   beholder leverandørens MVA som kostnad. Fjernleverbare tjenestekjøp velger riktig
+   kvartalsmal; kjernen beregner avgift når samlet grunnlag overstiger 2 000.
+2. Fra godkjent virkningsdato brukes ordinære norske vareavgiftsmaler, inkludert
+   utlandsmaler etter faktisk transaksjon. Fradragsprosenten gjelder faktisk bruk.
+   Original behandling følger kreditnota, betaling og rapport uten historisk omskriving.
+3. Vareimport bruker deklarasjonens dokumenterte grunnlag, dato og referanse samt
+   native mottak, avgiftsbilag og eventuell kostnadsfordeling. Eksport bruker
+   standard salgs-/leveringskjede med dokumentert fritaksgrunnlag.
+4. Dokumenterte rettelser, tilbakegående fradrag og særtilfeller bruker ordinært
+   Bilag med MVA-kode, grunnlag, kildehenvisning og vedlegg. Registrer hele bilaget
+   der når det er primærregistreringen; opprett ikke også en faktura for samme kjøp.
+5. Velg riktig melding og faktisk periode i **Norsk MVA-spesifikasjon**, avstem
+   hovedboken og bevar grunnlaget. Lever i Skatteetatens portal. Legg ved faktisk
+   melding/kvittering, og bruk native oppgjør, betaling eller refusjon.
+
+0.4.18 samler kapitaliserte tjenester i den eksisterende flyten. Se
+[verdsetting](vat-valuation.md), [valuta og primære bilag](vat-currency.md) og
+[kvartal](vat-quarterly.md) for gap, prøver og grenser. Innlevering i portalen er
+brukerens handling; det er ingen direkte API-innsending eller simulert kvittering.
+Native periodestenging, mottakskrav og innsendte Asset skal fortsatt respekteres.
+Særskilte importprosedyrer og automatiske bransje-/kapitalvarejusteringer er ikke
+kvalifisert av normalflyten. Teknisk kvalifisering er ikke generell norsk
+regnskapsaksept eller verifisering av brukerens konkrete fradragsgrunnlag.

@@ -157,3 +157,33 @@ skal ikke automatisk halveres bare fordi antall varer halveres. Native betaling
 Kvartalsbehandling bruker begge satser med samlet terskel, se vat-quarterly.md.
 Tidligere avgrensninger om driftsmidler, blanding med andre valutabehandlinger
 og leveringsdato rundt registrering gjelder fortsatt inntil de er kvalifisert.
+
+## Kapitaliserte tjenester og ordinære bilag i 0.4.18
+
+Ikke-lagerførte anleggsmiddeltjenester er nå prøvd med 25/12 %, 100/60/0 %
+fradrag, leveringskurs, tillegg, delkreditnota og native kostnadsfordeling.
+Se [verdsettingsprøvene](vat-valuation.md). Lagerflagget er fortsatt en
+omfangsavgrensning for denne tjenestemalen; det er ikke en lovregel som avgjør
+om noe er en vare eller tjeneste. Faktisk vareinnførsel følger importflyten.
+
+Fakturamalens avgrensning for levering før godkjent virkningsdato eller etter
+fakturaens bokføringsdato er en begrensning i den kvalifiserte fakturaflyten,
+ikke et generelt lovforbud. Dokumenterte særtilfeller kan registreres samlet som
+et vanlig **Bilag** med leverandørlinje, valutakurs, kostnad, MVA-kode/-grunnlag og
+faktura-/kildehenvisning. Dette er en primærregistrering i kjernen; ikke en ekstra
+faktura og etterfølgende MVA-retting. Underlaget må dokumentere faktisk periode,
+leveringskurs og fradragsrett.
+
+Prøven bruker 100 EUR til bokføringskurs 10, dokumentert grunnlag 1 100, 275
+utgående, 165 inngående og 1 110 kostnad. En ordinær Payment Entry refererer til
+Journal Entry, betaler 1 050 NOK og gjør opp 100 EUR; kjernen fører kursdifferansen.
+Det er ingen ny betalings-/bilagsmotor. MVA-beløpene endres ikke ved betaling.
+
+[§ 15-9.2](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-15/M-15-9/M-15-9.2/)
+skiller dokumentasjonsperioden fra leveringen, med forbehold om for sen fakturering.
+[§ 4-12.3](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-4/M-4-12/M-4-12.3/)
+knytter MVA-kursen til leveringstidspunktet.
+[§ 8-6.2](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-8/M-8-6/M-8-6.2/)
+skiller kjøp i registreringsterminen fra tidligere kjøp med tilbakegående oppgjør.
+Ingen av disse bestemmelsene gir automatisk fradrag bare fordi en faktura er bokført
+i en registrert periode. Faktisk bruk, vilkår og dokumentasjon avgjør prosentvalget.

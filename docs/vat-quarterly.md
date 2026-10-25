@@ -111,3 +111,16 @@ Valutaprøven bruker 100 EUR + 10 EUR tillegg og 10 % rabatt på Grand Total:
 leverandør 99 EUR, MVA-grunnlag 1 089 NOK med leveringskurs 11 og 272,25 MVA.
 Et annet kjøp på 2 000 NOK i samme kvartal gir samlet grunnlag 3 089 og MVA 772,25.
 Normal eierflyt og norsk nettleser prøver også radhenvisning og vanlig lagring.
+
+## Kapitaliserte tjenester i 0.4.18
+
+Samme native kvartalsgrunnlag dekker nå ikke-lagerførte Asset-tjenester. MVA-kostnaden
+føres gjennom eksisterende verdsettingskonto og native Landed Cost Voucher til
+faktisk faktura/mottak. Ingen nye felt, egen Asset-tabell eller ny verdsettingsmotor.
+Se [konkrete beløp, retur, manuell oppretting og native statusvern](vat-valuation.md).
+
+Prøvd i både NOK og EUR, 25/12 %, felles terskel, senere kreditnota og registrering,
+korreksjon av opprinnelig kvartal og bevaring etter eksportert restore.
+Delretur som fjerner avgiftsplikten reverserer også den tidligere kapitaliserte
+MVA-kostnaden. Et innsendt Asset kan fortsatt stanse en kostnadsendring etter
+kjernens ordinære regler; tillegget lager ingen ny avskrivnings-/returlivssyklus.
