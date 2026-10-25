@@ -37,7 +37,8 @@ doc_events = {
         "before_cancel": "erpnext_norway.vat_valuation.cancel_adjustments"},
     "Journal Entry": {"validate": "erpnext_norway.vat_journal.validate",
         "before_submit": "erpnext_norway.vat_journal.validate",
-        "on_update_after_submit": "erpnext_norway.vat_journal.validate"},
+        "on_update_after_submit": "erpnext_norway.vat_journal.validate",
+        "before_cancel": "erpnext_norway.vat_quarterly.guard_cancel"},
     "Company": {
         "before_validate": ["erpnext_norway.chart.select_default", "erpnext_norway.vat.validate_company"],
         "on_update": "erpnext_norway.vat.configure_company",
@@ -46,7 +47,8 @@ doc_events = {
     "Purchase Invoice": {"before_validate": ["erpnext_norway.vat_returns.prepare", "erpnext_norway.vat_valuation.link_credit_receipts", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes", "erpnext_norway.vat_valuation.guard_configuration"],
         "validate": "erpnext_norway.vat.validate_invoice",
         "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes", "erpnext_norway.vat_valuation.lock_receipts"],
-        "on_submit": "erpnext_norway.vat_valuation.adjust_receipts",
+        "on_submit": ["erpnext_norway.vat_valuation.adjust_receipts", "erpnext_norway.vat_quarterly.update"],
+        "on_cancel": "erpnext_norway.vat_quarterly.update",
         "before_cancel": "erpnext_norway.vat_valuation.cancel_adjustments",
         "on_update_after_submit": "erpnext_norway.vat_catalog.validate_code_changes"},
     "Sales Invoice": {

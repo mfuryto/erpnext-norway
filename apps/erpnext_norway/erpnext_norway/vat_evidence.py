@@ -44,13 +44,13 @@ def retain(file, kind, from_date, to_date):
 
 
 @frappe.whitelist()
-def preserve_basis(company, from_date, to_date):
+def preserve_basis(company, from_date, to_date, return_type=None):
     from frappe.utils.file_manager import save_file, get_content_hash
     from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
     authorize(company, from_date, to_date)
-    rows = collect({'company': company, 'from_date': from_date, 'to_date': to_date})
+    rows = collect({'company': company, 'from_date': from_date, 'to_date': to_date, 'return_type': return_type})
     content = frappe.as_json({'format': 'erpnext-norway-vat-basis-1', 'company': company,
-        'from_date': str(getdate(from_date)), 'to_date': str(getdate(to_date)), 'rows': rows}).encode()
+        'from_date': str(getdate(from_date)), 'to_date': str(getdate(to_date)), 'return_type': return_type, 'rows': rows}).encode()
     for name in frappe.get_all('File', filters={'attached_to_doctype': 'Company',
             'attached_to_name': company, 'is_private': 1, RETAIN: 1, KIND: 'VAT basis',
             FROM: getdate(from_date), TO: getdate(to_date), 'content_hash': get_content_hash(content)}, pluck='name'):

@@ -453,3 +453,14 @@ men positivt kopiert grunnlag. Eksisterende fortegnsretting for kode 87 utvides
 med eksakt samsvar mot originalens konto, sats, valuta og motsatte beløp.
 Ingen nye felt, importmotor eller endring av kjernen. Se vat-import.md.
 Dette kvalifiserer dokumenterte hovedboksbilag, ikke full vareimportflyt.
+
+## MVA: kvartalsgrunnlag før registrering
+
+App 0.4.14 lukker det dokumenterte norske terskelgapet med ordinær vareavgiftsmal,
+kjernens beregning på en ulagret kopi og native Journal Entry-differanser.
+Kjøpsfaktura, leverandørgjeld, kreditnota, betaling og private vedlegg beholdes.
+Skatteetatens detaljerte meldingsregler avklarer negativt kvartal og skiller
+hel/delvis ordinær registrering; ingen videre regnskapsavklaring kreves fra brukeren.
+Se [kilder, arbeidsflyt og avgrensning](vat-quarterly.md). Hele MVA-planen er
+fortsatt åpen; lav sats, øvrige valutatillegg, vareimport/eksport og resterende
+registrerings-/verdsettingskombinasjoner skal sluttføres før SAF-T/ENK.

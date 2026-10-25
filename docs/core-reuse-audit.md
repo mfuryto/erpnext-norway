@@ -147,3 +147,15 @@ App 0.4.13 utvider samme metadataretting til native reversering av eksisterende
 importbilag på 81/82/83/84. Kjerneprøven viste riktige debet-/kreditbeløp og
 kopiert positivt grunnlag. Bare eksakt match mot originalen får snudd grunnlag;
 ingen ny import- eller reverseringsfunksjon. Se vat-import.md.
+
+## Kvartalsgrunnlag før registrering
+
+Tax Withholding er faktisk prøvd på tvers av leverandører og etter kreditnota:
+den gjelder per part, utløses ved likhet og trekker fra leverandørgjelden.
+Den dekker ikke norsk kvartalsplikt. App 0.4.14 bruker derfor native Item Tax
+Template og eksisterende beregner på en ulagret kopi til beregnede avgiftsdetaljer,
+og native Journal Entry for differansen i skyldig MVA. Ingen ny beregningsmotor,
+regnskapsregister, bekreftelsesflate, klasseoverstyring eller kjerneendring.
+Kjernens get_doc(for_update=True) laster allerede dokument og barn under lås;
+appens egen dupliserte innlasting ble fjernet før levering. Satsens eksisterende
+vern etter bokføring beholdes. Se vat-quarterly.md for dokumentert norsk gap.

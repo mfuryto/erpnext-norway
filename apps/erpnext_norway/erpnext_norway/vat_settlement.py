@@ -5,13 +5,14 @@ import frappe
 from frappe.utils import getdate, nowdate
 from erpnext_norway.vat import is_vat_account
 from erpnext_norway.vat_journal import SETTLEMENT, PERIOD_FROM, PERIOD_TO
+from erpnext_norway.vat_quarterly import JOURNAL, RETURN_TYPE, ORDINARY, QUARTERLY
 
 
 def money(value):
     return Decimal(str(value or 0)).quantize(Decimal('0.01'))
 
 
-def balances(company, from_date, to_date, lock=False):
+def balances(company, from_date, to_date, lock=False, return_type=ORDINARY):
     from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
     start, end = getdate(from_date), getdate(to_date)
     if lock:
@@ -20,15 +21,29 @@ def balances(company, from_date, to_date, lock=False):
     result = {}
     # Use the report's document dates and its reconciled native tax details.
     # A supplier bill posted in the following period still belongs to its bill date.
-    for row in collect({'company': company, 'from_date': start, 'to_date': end}):
+    for row in collect({'company': company, 'from_date': start, 'to_date': end, 'return_type': return_type}):
         for name, amount in row['vat_accounts'].items():
             result[name] = result.get(name, Decimal(0)) + money(amount)
+    if return_type == QUARTERLY and lock:
+        # Do not let a prior repeatable-read snapshot hide a quarter adjustment
+        # committed while this transaction waited on the native Company lock.
+        result = {}
+        for row in frappe.db.sql(f'''SELECT g.account,g.debit,g.credit
+                FROM `tabGL Entry` g JOIN `tabJournal Entry` j ON j.name=g.voucher_no
+                WHERE g.company=%s AND g.voucher_type='Journal Entry' AND g.is_cancelled=0
+                AND j.docstatus=1 AND j.`{RETURN_TYPE}`=%s AND j.`{SETTLEMENT}`=0
+                AND CASE WHEN j.`{JOURNAL}`=1 THEN COALESCE(j.bill_date,j.posting_date)
+                    ELSE j.posting_date END BETWEEN %s AND %s FOR UPDATE''',
+                (company, QUARTERLY, start, end), as_dict=True):
+            if is_vat_account(row.account):
+                result[row.account] = result.get(row.account, Decimal(0)) + money(row.credit) - money(row.debit)
     # A locking current read is essential at submit: a prior consistent-read
     # snapshot must not hide a settlement committed while this draft waited.
     settlements = frappe.db.sql(f'''SELECT name, `{PERIOD_FROM}`, `{PERIOD_TO}`
         FROM `tabJournal Entry` WHERE company=%s AND docstatus=1 AND `{SETTLEMENT}`=1
-        AND `{PERIOD_FROM}`<=%s AND `{PERIOD_TO}`>=%s''' + (' FOR UPDATE' if lock else ''),
-        (company, end, start), as_dict=True)
+        AND `{PERIOD_FROM}`<=%s AND `{PERIOD_TO}`>=%s
+        AND COALESCE(NULLIF(`{RETURN_TYPE}`,''),%s)=%s''' + (' FOR UPDATE' if lock else ''),
+        (company, end, start, ORDINARY, return_type), as_dict=True)
     for settlement in settlements:
         if getdate(settlement.get(PERIOD_FROM)) != start or getdate(settlement.get(PERIOD_TO)) != end:
             frappe.throw(frappe._('The selected VAT period overlaps another submitted settlement period.'))
@@ -57,7 +72,8 @@ def validate_settlement(doc):
     start, end = doc.get(PERIOD_FROM), doc.get(PERIOD_TO)
     if not start or not end or getdate(start) > getdate(end) or getdate(doc.posting_date) != getdate(end):
         frappe.throw(frappe._('The VAT settlement must use the selected period end as posting date.'))
-    wanted = balances(doc.company, start, end, lock=True)
+    kind = doc.get(RETURN_TYPE) or ORDINARY
+    wanted = balances(doc.company, start, end, lock=True, return_type=kind)
     collect({'company': doc.company, 'from_date': start, 'to_date': end})
     if not wanted:
         frappe.throw(frappe._('There are no VAT balances to settle. Preserve the VAT basis without a zero-value journal.'))
@@ -73,11 +89,18 @@ def validate_settlement(doc):
 
 
 @frappe.whitelist()
-def make_settlement(company, from_date, to_date):
+def make_settlement(company, from_date, to_date, return_type=ORDINARY):
     from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
     frappe.has_permission('Journal Entry', 'create', throw=True)
-    collect({'company': company, 'from_date': from_date, 'to_date': to_date})
-    values = balances(company, from_date, to_date)
+    if return_type not in (ORDINARY, QUARTERLY):
+        frappe.throw(frappe._('Select an ordinary or quarterly VAT return before creating the settlement.'))
+    if return_type == QUARTERLY:
+        from erpnext_norway.vat_quarterly import period, sync
+        if period(from_date) != (getdate(from_date), getdate(to_date)):
+            frappe.throw(frappe._('Select the complete calendar quarter for the quarterly VAT return.'))
+        sync(company, getdate(from_date), getdate(to_date))
+    collect({'company': company, 'from_date': from_date, 'to_date': to_date, 'return_type': return_type})
+    values = balances(company, from_date, to_date, lock=True, return_type=return_type)
     if not values:
         frappe.throw(frappe._('There are no VAT balances to settle. Preserve the VAT basis without a zero-value journal.'))
     net = sum(values.values(), Decimal(0))
@@ -85,7 +108,7 @@ def make_settlement(company, from_date, to_date):
         values[account(company, '2740' if net > 0 else '1640')] = -net
     cost_center = frappe.get_cached_value('Company', company, 'cost_center')
     doc = frappe.get_doc({'doctype': 'Journal Entry', 'company': company, 'voucher_type': 'Journal Entry',
-        'posting_date': getdate(to_date), SETTLEMENT: 1, PERIOD_FROM: getdate(from_date), PERIOD_TO: getdate(to_date),
+        'posting_date': getdate(to_date), SETTLEMENT: 1, RETURN_TYPE: return_type, PERIOD_FROM: getdate(from_date), PERIOD_TO: getdate(to_date),
         'user_remark': f'MVA-oppgjør {from_date} – {to_date}. Grunnlag: Norsk MVA-spesifikasjon.',
         'accounts': [{'account': name, 'debit_in_account_currency': float(max(amount, 0)),
                       'credit_in_account_currency': float(max(-amount, 0)), 'cost_center': cost_center}

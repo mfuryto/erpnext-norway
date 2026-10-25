@@ -5343,3 +5343,33 @@ Use the Norwegian VAT basis on the reverse-charge tax rows for this currency inv
 Use only the Norwegian reverse-charge VAT basis without additional charges on this currency invoice.,Bruk bare norsk grunnlag for omvendt MVA uten ekstra avgifts- eller fraktrader på denne valutafakturaen.
 Use the Norwegian currency VAT basis only on foreign-currency purchases.,Bruk MVA-grunnlaget for valuta bare på kjøp i utenlandsk valuta.
 This VAT basis requires at least six decimal places on the purchase tax amount and rate fields. Review the existing field precision settings.,Dette MVA-grunnlaget krever minst seks desimaler i avgiftsradenes beløps- og satsfelt. Kontroller eksisterende feltpresisjon.
+Foreign service purchase before VAT registration,Tjenestekjøp fra utlandet før MVA-registrering
+Include this service in the company-wide quarterly reverse-charge basis. Supplier payable is unchanged.,Ta med tjenesten i foretakets samlede kvartalsgrunnlag for omvendt avgiftsplikt. Leverandørgjelden endres ikke.
+Quarterly reverse-charge VAT adjustment,Kvartalsvis MVA på tjenestekjøp fra utlandet
+VAT return type,Type MVA-melding
+Ordinary VAT return,Ordinær MVA-melding
+Reverse-charge quarterly return,Kvartalsmelding for omvendt avgiftsplikt
+All VAT entries,Alle MVA-posteringer
+VAT return note,Merknad til MVA-meldingen
+Run the ordinary app migration to configure quarterly VAT calculation.,Kjør vanlig appmigrering for å sette opp kvartalsberegning av MVA.
+Review the existing native quarterly VAT calculation template; its qualified rate is 25 percent.,Kontroller den eksisterende avgiftsmalen for kvartalsberegning. Den kvalifiserte satsen er 25 prosent.
+Link the original purchase invoice before using quarterly treatment on a credit note.,Knytt kreditnotaen til den opprinnelige leverandørfakturaen før du bruker kvartalsbehandling.
+Quarterly reverse-charge treatment requires a Norwegian NOK accounting company.,Kvartalsbehandling av omvendt avgiftsplikt krever et norsk foretak med regnskap i NOK.
+Use the registered reverse-charge treatment from the approved VAT registration date.,Bruk behandlingen for registrerte foretak fra den godkjente datoen for MVA-registrering.
+Use an untaxed service line for the quarterly purchase basis.,Bruk en tjenestelinje uten MVA på leverandørfakturaen som kvartalsgrunnlag.
+Separate additional charges from this quarterly foreign-currency service invoice.,Før tilleggskostnader separat fra denne valutafakturaen med kvartalsbehandling av tjenestekjøp.
+Quarterly reverse-charge calculation,Kvartalsberegning av omvendt avgiftsplikt
+Use the complete calendar quarter and quarterly return type on this VAT adjustment.,Bruk hele kalenderkvartalet og kvartalsmelding som meldingstype på denne MVA-posteringen.
+Keep the original quarterly VAT adjustment classification.,Behold den opprinnelige klassifiseringen av den kvartalsvise MVA-posteringen.
+The quarterly VAT adjustment no longer matches its ordinary purchase sources.,Den kvartalsvise MVA-posteringen samsvarer ikke lenger med de ordinære kjøpsbilagene.
+Correct the source purchase or credit note to update its quarterly VAT adjustment.,Korriger kjøpet eller kreditnotaen for å oppdatere den tilhørende kvartalsvise MVA-posteringen.
+Select a valid VAT return type.,Velg en gyldig type MVA-melding.
+Select the complete calendar quarter for the quarterly VAT return.,Velg hele kalenderkvartalet for kvartalsmeldingen.
+Select an ordinary or quarterly VAT return before creating the settlement.,Velg ordinær MVA-melding eller kvartalsmelding før du oppretter MVA-oppgjøret.
+VAT adjustment for pre-registration services,MVA på tjenestekjøp fra før registrering
+Keep the source period and return type on this VAT adjustment.,Behold kildeperioden og meldingstypen på denne MVA-posteringen.
+This reverse-charge item treatment requires effective VAT registration. Use the quarterly service purchase template before registration.,Denne behandlingen av omvendt avgiftsplikt krever gyldig MVA-registrering. Bruk kvartalsmalen for tjenestekjøp før registrering.
+All VAT entries is an accounting overview. Select the ordinary or quarterly return to prepare a filing or settlement.,Alle MVA-posteringer er en regnskapsoversikt. Velg ordinær MVA-melding eller kvartalsmelding for å klargjøre innlevering eller oppgjør.
+Approved registration covers this entire quarter. Use the ordinary return; correct older source documents and any previous quarterly filing through the normal correction procedure.,Godkjent registrering gjelder hele kvartalet. Bruk ordinær MVA-melding. Korriger eldre kildebilag og eventuell tidligere kvartalsmelding gjennom vanlig korrigeringsflyt.
+Registration starts during this quarter. The quarterly and ordinary return bases are separate; post-registration credits retain their original VAT treatment in the ordinary return.,Registreringen starter i dette kvartalet. Grunnlag for kvartalsmelding og ordinær melding holdes adskilt. Kreditnotaer etter registrering beholder opprinnelig avgiftsbehandling i ordinær melding.
+Do not submit a first quarterly return with zero VAT. A correction of a previously submitted return is a different case; retain the basis and receipt.,Du skal ikke levere en førstegangsmelding for kvartalet med null MVA. Korrigering av en tidligere levert melding er et annet tilfelle. Bevar grunnlag og kvittering.

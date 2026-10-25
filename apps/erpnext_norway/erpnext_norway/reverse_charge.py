@@ -47,7 +47,7 @@ def validate(doc, item, template):
     if doc.doctype not in ('Purchase Invoice', 'Purchase Order') or company.default_currency != 'NOK':
         frappe.throw(frappe._('This reverse-charge item treatment currently requires a NOK service purchase invoice or order.'))
     if not effective(company, doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')):
-        frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Non-registered quarterly treatment is not yet qualified.'))
+        frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Use the quarterly service purchase template before registration.'))
     if item.item_code:
         stock, asset = frappe.get_cached_value('Item', item.item_code, ['is_stock_item', 'is_fixed_asset'])
         if stock or asset:

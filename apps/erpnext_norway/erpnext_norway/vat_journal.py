@@ -43,6 +43,12 @@ def validate(doc, method=None):
     company = frappe.get_cached_doc('Company', doc.company)
     if company.country != 'Norway' or doc.is_opening == 'Yes':
         return
+    from erpnext_norway.vat_quarterly import JOURNAL, RETURN_TYPE, ORDINARY, QUARTERLY, validate_journal
+    previous = doc.get_doc_before_save()
+    if not doc.get(RETURN_TYPE) and not (previous and previous.docstatus == 1):
+        doc.set(RETURN_TYPE, ORDINARY if effective(company, doc.posting_date) else QUARTERLY)
+    if doc.get(JOURNAL):
+        validate_journal(doc)
     if doc.get(SETTLEMENT):
         # A settlement is checked against the native source ledger before posting.
         from erpnext_norway.vat_settlement import validate_settlement
@@ -55,7 +61,7 @@ def validate(doc, method=None):
     for row in doc.accounts:
         original = old.get(row.name)
         if previous and previous.docstatus == 1 and original and all(
-                (row.get(field) or None) == (original.get(field) or None) for field in (CODE, RATE, BASE, SPEC)):
+                (row.get(field) or None) == (original.get(field) or None) for field in (CODE, RATE, BASE, SPEC, 'custom_norway_vat_note')):
             continue
         if not is_vat_account(row.account):
             continue
@@ -77,7 +83,7 @@ def validate(doc, method=None):
             # Output VAT reversals are not input VAT deductions. Keep this
             # extension to the qualified service-import code and signed basis.
             if row.get(CODE) == '87' and account_number == '2704' and row.debit > 0 and not row.credit:
-                if float(row.get(BASE) or 0) >= 0:
+                if float(row.get(BASE) or 0) >= 0 and not doc.get(JOURNAL):
                     frappe.throw(frappe._('Enter a negative VAT base for the output VAT reversal.'))
                 allowed = True
             if not allowed:
@@ -92,8 +98,14 @@ def prepare_reversal(doc):
         return
     source = frappe.get_doc('Journal Entry', doc.reversal_of)
     source.check_permission('read')
+    from erpnext_norway.vat_quarterly import JOURNAL, RETURN_TYPE, ORDINARY, QUARTERLY
+    if source.get(JOURNAL):
+        frappe.throw(frappe._('Correct the source purchase or credit note to update its quarterly VAT adjustment.'))
     if source.company != doc.company or source.docstatus != 1 or source.get(SETTLEMENT):
         return
+    from erpnext_norway.vat import effective
+    doc.set(RETURN_TYPE, ORDINARY if effective(frappe.get_cached_doc('Company', doc.company),
+        doc.posting_date) else QUARTERLY)
 
     def signature(row, reverse=False):
         amounts = (row.credit_in_account_currency, row.debit_in_account_currency) if reverse else (

@@ -107,7 +107,11 @@ def stamp_codes(doc, method=None):
     date = doc.get('posting_date') if sales else (doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date'))
     category_codes = {f'Norge MVA {rate} %': sale if sales else purchase
                       for rate, _, _, sale, purchase in ORDINARY}
+    from erpnext_norway.vat_quarterly import ITEM as QUARTERLY_ITEM
     for row in doc.items:
+        if row.get(QUARTERLY_ITEM):
+            row.set(CODE, '0'); row.set(RATE, 0)
+            continue
         if row.item_tax_template:
             template = frappe.get_cached_doc('Item Tax Template', row.item_tax_template)
             code = template.get(field)
@@ -126,6 +130,8 @@ def stamp_codes(doc, method=None):
         if not row.item_tax_template:
             rate = next((rate for rate, *_ in ORDINARY if doc.tax_category == f'Norge MVA {rate} %'), 0)
             row.set(RATE, rate)
+        if sales and not effective(company, date):
+            code = '7'
         row.set(CODE, code if code is not None else row.get(CODE))
 
 
@@ -137,6 +143,9 @@ def prepare_items(doc, method=None):
         return
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
+    from erpnext_norway.vat_quarterly import prepare as prepare_quarterly
+    if doc.doctype in ('Purchase Invoice', 'Purchase Order'):
+        prepare_quarterly(doc)
     from erpnext_norway.vat_currency import prepare as prepare_currency
     if doc.doctype in ('Purchase Invoice', 'Purchase Order'):
         prepare_currency(doc)
@@ -406,11 +415,12 @@ def preview_items(document, deduction_row=None, template_row=None):
     prepare_items(doc)
     from erpnext_norway.vat_valuation import guard_configuration
     guard_configuration(doc)
-    fields = ['item_tax_template', DEDUCTION]
+    fields = ['item_tax_template', DEDUCTION, 'custom_norway_quarterly_service']
     if doc.get('is_return'):
         from erpnext_norway.vat_currency import DATE, EXCHANGE
-        fields += [DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
-    return {'removed_taxes': doc.flags.get('norway_removed_input_taxes') or [],
+        fields += ['custom_norway_quarterly_service', DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
+    return {'return_type': doc.get('custom_norway_vat_return_type'),
+            'removed_taxes': doc.flags.get('norway_removed_input_taxes') or [],
             'items': [{'name': row.name, **{field: row.get(field) for field in fields}}
                       for row in doc.items], 'taxes': [row.as_dict() for row in doc.taxes]}
 
@@ -422,7 +432,13 @@ def validate_code_changes(doc, method=None):
     tax rows or original PDFs. Economic corrections still need native credit notes.
     """
     previous = doc.get_doc_before_save()
-    old = {row.name: row.get(CODE) for row in previous.items} if previous else {}
+    from erpnext_norway.vat_quarterly import ITEM as QUARTERLY_ITEM
+    old_rows = {row.name: row for row in previous.items} if previous else {}
+    for row in doc.items:
+        original = old_rows.get(row.name)
+        if original and original.get(QUARTERLY_ITEM) and (row.get(CODE) or None) != (original.get(CODE) or None):
+            frappe.throw(frappe._('Correct the source purchase or credit note to update its quarterly VAT adjustment.'))
+    old = {name: row.get(CODE) for name, row in old_rows.items()}
     for row in doc.items:
         if (row.get(CODE) or None) != (old.get(row.name) or None):
             check_metadata_period(doc)
@@ -444,14 +460,14 @@ def check_code(doc, item):
     memory = doc.get('_item_wise_tax_details') if not previous or previous.docstatus != 1 else None
     if memory:
         active = [detail.tax for detail in memory if detail.item is item
-                  and abs(float(detail.amount or 0)) > 0.000001
+                  and (abs(float(detail.amount or 0)) > 0.000001 or float(detail.rate or 0))
                   and is_vat_account(detail.tax.account_head)]
     else:
         details = frappe.get_all('Item Wise Tax Detail', filters={'parent': doc.name,
-            'parenttype': doc.doctype, 'item_row': item.name}, fields=['tax_row', 'amount'])
+            'parenttype': doc.doctype, 'item_row': item.name}, fields=['tax_row', 'amount', 'rate'])
         taxes = {tax.name: tax for tax in doc.taxes}
         active = [taxes[detail.tax_row] for detail in details if detail.tax_row in taxes
-                  and abs(float(detail.amount or 0)) > 0.000001
+                  and (abs(float(detail.amount or 0)) > 0.000001 or float(detail.rate or 0))
                   and is_vat_account(taxes[detail.tax_row].account_head)]
     numbers = {frappe.get_cached_value('Account', tax.account_head, 'account_number') for tax in active}
     valid = (not active) if code in zero_codes else (expected[code] in numbers)

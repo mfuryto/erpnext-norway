@@ -181,25 +181,18 @@ leveringsdato og avgiftskurs gjennom kjernens grunnlagskrok; se vat-currency.md.
 Manuelle rader uten disse opplysningene forblir sperret. Ikke-registrert
 kvartalsflyt er fortsatt åpen.
 
-## Avklaring som kreves før automatisk kvartalsbehandling
+## Videre kildeavklaring: kvartal og registrering
 
-Kildekontroll 25. oktober 2026 bekrefter grensen, kvartalet, innleveringsveien og
-leveringskursen. De gjennomgåtte offentlige kildene gir ikke en uttrykkelig
-løsning på disse kombinasjonene:
+De tidligere spørsmålene er undersøkt videre i Skatteetatens publiserte
+[maskinelle meldingsregler](https://skatteetaten.github.io/mva-meldingen/omvendt/forretningsregler/),
+sammenholdt med lovens terskel og dokumenttidfesting. R108/R117 beskriver
+negative grunnlag, R118/R119 skiller første nullmelding fra retting, og
+R121/R123 skiller registrering hele/deler av kvartalet. Det kreves ingen
+ytterligere regnskapsavklaring fra brukeren for disse prøvetilfellene.
 
-1. Opprinnelig kvartal har kjøp 2 100 og innrapportert MVA 525. En reell
-   leverandørkreditnota på 200 utstedes i neste kvartal. Hvordan påvirkes
-   terskelen, hvilken melding skal endres/leveres, og hvordan behandles et
-   krediteringskvartal uten andre kjøp? Skill opprinnelig feil fra senere
-   prisavslag/heving. Generell periodisering av kreditnota avklarer ikke alene
-   terskelvirkningen eller innleveringsveien.
-2. Foretaket har aktuelle kjøp før og etter godkjent registrering med virkning
-   midt i kvartalet. Hvordan avgrenses grunnlaget i særskilt melding mot første
-   ordinære melding? Hva gjelder hvis vedtaket får tilbakevirkende effekt etter
-   at særskilt melding er levert? Vurder også eventuell fradragsrett særskilt.
-
-Dette trenger dokumentert regnskapsmessig avklaring før automatikk implementeres.
-Dagens bilag og rapportgrunnlag skal ikke omskrives ved endring av Company.
-Kjernens kreditnota, dokumenterte korrigeringsbilag, periodelås, Journal Entry,
-bankbetaling og File-vedlegg skal fortsatt brukes. Ingen egen kvartalsmotor,
-innleveringsstatus eller parallell hovedbok er innført her.
+App 0.4.14 bruker ordinære kjøpslinjer, kjernens beregner og native Journal Entry
+til kvartalsgrunnlag og differanser. Se [arbeidsflyt, kilder og avgrensninger](vat-quarterly.md).
+En reell senere kreditnota beholder originalens avgiftsbehandling og kurs, men
+følger sin egen dokumentperiode og foretakets meldingskategori på dette tidspunktet.
+Retroaktiv datoendring krever vanlig dokumentretting og eventuelt korrigert
+portalinnlevering; bokførte originaler omskrives ikke av Company-innstillingen.
