@@ -45,7 +45,7 @@ try:
             assert hashlib.sha256(Path(frappe.get_doc('File',entry['file']).get_full_path()).read_bytes()).hexdigest()==entry['sha256']
         rows=collect({'company':C,'from_date':'2026-09-01','to_date':'2026-10-31'})
         equal(sum(r['output_vat'] for r in rows),375);equal(sum(r['input_vat'] for r in rows),200)
-        print('PASS restored reverse-charge invoice/credit ledger, 375 output / 250 input and private supplier PDF originals')
+        print('PASS restored reverse-charge invoice/credit ledger, 375 output / 200 input and private supplier PDF originals')
     else:
         c=frappe.get_doc({'doctype':'Company','company_name':C,'abbr':'RRS','country':'Norway',
             'default_currency':'NOK','tax_id':'999999991','enable_perpetual_inventory':0,
