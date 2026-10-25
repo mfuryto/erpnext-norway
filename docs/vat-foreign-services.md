@@ -156,3 +156,13 @@ eksportert backup/gjenoppretting i app-CI.
 Dette er retting av bilagsreversering, ikke avklaring av terskelvirkning for en
 leverandørkreditnota i et senere kvartal. Kvartalsautomatikk, fordeling mellom
 særskilt og ordinær melding ved registrering og ulik valutakurs er fortsatt åpne.
+
+## Valutaavgrensning også for manuelle rader
+
+App 0.4.11 lukker omgåelsen gjennom manuelle aktive 2704/2714-rader. Native
+prosent-/beløpsprøver viste at bokføringskursen fortsatt bestemmer lagret
+avgiftsgrunnlag, selv når det faste avgiftsbeløpet justeres. Se vat-currency.md
+for prøvetall, eksisterende grunnlagsutvidelsespunkt og presisjonsbegrensning.
+Leverandørfaktura, kreditnota, innkjøpsordre og rapport må bruke samme avgrensning.
+Eksisterende bokførte data endres ikke; ordinære valutabilag og kvalifisert NOK-
+behandling beholdes. Dette åpner ikke valuta eller ikke-registrert kvartalsflyt.

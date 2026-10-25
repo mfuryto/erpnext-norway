@@ -126,3 +126,11 @@ riktig beløp gjennom hele kjeden uten ny beregning. Tillegget avgrenser derfor
 radkonfigurasjonen og fjerner bare automatisk inngående rader; eksplisitte rader
 avvises. Mapping, delmengder, rabatt, kreditnota, betaling og hovedbok er fortsatt
 kjernens. Ingen nye felt, mapperklasser eller beregningsmotor. Se vat-sales-chain.md.
+
+App 0.4.11 avgrenser også manuelle 2704/2714-rader til det kvalifiserte NOK-
+omfanget. Faktiske native valutabilag viste riktig leverandørgjeld, men feil
+avgiftsgrunnlag ved annen avgiftskurs. Fast beløp løste ikke grunnlaget og viste
+avrunding i fakturavaluta før NOK. Kjernen har allerede grunnlagsresolvers på
+server og i nettleser; disse er identiske med det låste offisielle imaget og
+skal undersøkes videre før egen tilpasning. Ingen egen valutakalkulator er lagt
+til. Native kreditnotas kurssperre brukes uendret. Se vat-currency.md.

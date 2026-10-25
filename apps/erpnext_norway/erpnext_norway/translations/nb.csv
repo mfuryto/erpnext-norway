@@ -5327,3 +5327,4 @@ Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax 
 Enter a negative VAT base for the output VAT reversal.,Oppgi et negativt MVA-grunnlag ved tilbakeføring av utgående MVA.
 Use output VAT accounts on sales documents. Review the tax rows.,Bruk kontoer for utgående MVA i salgsdokumenter. Kontroller avgiftsradene.
 A sales tax row refers to an input VAT row. Review its native row reference.,En avgiftsrad i salgsdokumentet viser til inngående MVA. Kontroller radhenvisningen.
+Foreign-currency reverse-charge VAT requires a separately qualified NOK tax base. This flow is not yet supported.,Omvendt MVA i utenlandsk valuta krever et særskilt kvalifisert avgiftsgrunnlag i NOK. Denne flyten støttes ikke ennå.

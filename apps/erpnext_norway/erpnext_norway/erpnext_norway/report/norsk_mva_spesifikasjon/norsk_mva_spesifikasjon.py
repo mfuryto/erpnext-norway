@@ -40,6 +40,9 @@ def collect(filters):
                                or doc.posting_date)
             if not start <= vat_date <= end:
                 continue  # A documented timing difference, not an omitted GL source.
+            if doctype == 'Purchase Invoice':
+                from erpnext_norway.reverse_charge import guard_currency
+                guard_currency(doc)
             tax_rows = {row.name: row for row in doc.taxes}
             details = frappe.get_all('Item Wise Tax Detail', filters={'parent': doc.name,
                 'parenttype': doctype}, fields=['item_row', 'tax_row', 'amount', 'taxable_amount', 'rate'])
