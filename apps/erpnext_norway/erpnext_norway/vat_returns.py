@@ -89,7 +89,8 @@ def prepare(doc, method=None):
         if not source:
             frappe.throw(frappe._('Keep the native original invoice row reference on each credit note line.'))
         from erpnext_norway.vat_currency import DATE, EXCHANGE
-        for field in (CODE, RATE, DEDUCTION, DATE, EXCHANGE):
+        from erpnext_norway.vat_quarterly import ITEM
+        for field in (CODE, RATE, DEDUCTION, DATE, EXCHANGE, ITEM):
             if source.get(field) is not None and (field != CODE or source.get(field)):
                 item.set(field, source.get(field))
         apply_rates(doc, item, original, source)

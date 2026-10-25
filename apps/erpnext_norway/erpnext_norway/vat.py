@@ -16,6 +16,8 @@ def configure():
     configure_fields()
     from erpnext_norway.vat_currency import configure as configure_currency
     configure_currency()
+    from erpnext_norway.vat_quarterly import configure as configure_quarterly
+    configure_quarterly()
     from erpnext_norway.vat_journal import configure_fields as configure_journal_fields
     configure_journal_fields()
     from erpnext_norway.vat_evidence import configure_fields as configure_evidence_fields
@@ -63,6 +65,8 @@ def configure_company(doc, method=None):
     configure_names(doc.name)
     if doc.country != 'Norway' or doc.get(STATUS) not in ('Not registered', 'Registered'):
         return
+    from erpnext_norway.vat_quarterly import seed as seed_quarterly
+    seed_quarterly(doc)
     previous = doc.get_doc_before_save()
     first = not doc.get(CONFIGURED)
     if (not first and doc.get(STATUS) == 'Registered' and previous and previous.get(STATUS) == 'Registered'
@@ -177,6 +181,8 @@ def validate_invoice(doc, method=None):
         return
     from erpnext_norway.reverse_charge import guard_currency
     guard_currency(doc)
+    from erpnext_norway.vat_quarterly import prepare as prepare_quarterly
+    prepare_quarterly(doc)
     state = company.get(STATUS)
     if not state or state == 'Not configured':
         if method == 'before_submit' or doc.docstatus == 1:

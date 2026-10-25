@@ -2,7 +2,7 @@ frappe.query_reports['Norsk MVA-spesifikasjon'] = {
     onload(report) {
         const period = () => {
             const values = report.get_filter_values(true);
-            return {company:values.company,from_date:values.from_date,to_date:values.to_date};
+            return {company:values.company,from_date:values.from_date,to_date:values.to_date,return_type:values.return_type};
         };
         report.page.add_inner_button(__('Preserve VAT basis'), async () => {
             const {message} = await frappe.call({method:'erpnext_norway.vat_evidence.preserve_basis',args:period()});
@@ -19,7 +19,7 @@ frappe.query_reports['Norsk MVA-spesifikasjon'] = {
                 make_attachments_public:false,allow_toggle_private:false,allow_web_link:false,
                 on_success:async file => {
                     const {message} = await frappe.call({method:'erpnext_norway.vat_evidence.preserve_uploaded',
-                        args:{...values,file_name:file.name,kind}});
+                        args:{company:values.company,from_date:values.from_date,to_date:values.to_date,file_name:file.name,kind}});
                     frappe.set_route('Form','File',message.name);
                 },
             });
@@ -40,6 +40,21 @@ frappe.query_reports['Norsk MVA-spesifikasjon'] = {
             default:frappe.datetime.year_start()},
         {fieldname:'to_date',label:__('To Date'),fieldtype:'Date',reqd:1,
             default:frappe.datetime.get_today()},
+        {fieldname:'return_type',label:__('VAT return type'),fieldtype:'Select',
+            options:['Ordinary VAT return','Reverse-charge quarterly return','All VAT entries'],default:'All VAT entries',
+            on_change(report) {
+                if (report._no_refresh) return;
+                if (report.get_filter_value('return_type') === 'Reverse-charge quarterly return') {
+                    const date = moment(report.get_filter_value('to_date') || frappe.datetime.get_today());
+                    const from = date.clone().startOf('quarter').format('YYYY-MM-DD');
+                    const to = date.clone().endOf('quarter').format('YYYY-MM-DD');
+                    if (report.get_filter_value('from_date') !== from || report.get_filter_value('to_date') !== to) {
+                        report.set_filter_value({from_date:from,to_date:to});
+                        return;
+                    }
+                }
+                report.refresh();
+            }},
         {fieldname:'group_by_code',label:__('Group by Norwegian VAT code'),fieldtype:'Check',default:1},
     ],
 };

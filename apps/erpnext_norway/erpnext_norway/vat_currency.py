@@ -59,7 +59,7 @@ def validate_document(doc):
     published = issued(doc)
     original_treatment = published or doc.get('is_return')
     if not original_treatment and not effective(company, doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')):
-        frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Non-registered quarterly treatment is not yet qualified.'))
+        frappe.throw(frappe._('This reverse-charge item treatment requires effective VAT registration. Use the quarterly service purchase template before registration.'))
     for item in doc.items:
         if not reverse_item(doc, item, published):
             frappe.throw(frappe._('Use only reverse-charge service lines on this foreign-currency invoice or order.'))

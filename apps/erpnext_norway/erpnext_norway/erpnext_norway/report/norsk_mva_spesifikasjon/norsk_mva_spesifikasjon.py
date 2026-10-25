@@ -22,7 +22,14 @@ def collect(filters):
     company.check_permission('read')
     if company.country != 'Norway' or company.default_currency != 'NOK':
         frappe.throw(frappe._('This Norwegian VAT report requires a Norwegian company with NOK accounting currency.'))
+    from erpnext_norway import vat_quarterly as quarterly
+    scope = filters.get('return_type')
+    if scope not in (None, '', 'All VAT entries', quarterly.ORDINARY, quarterly.QUARTERLY):
+        frappe.throw(frappe._('Select a valid VAT return type.'))
+    if scope == quarterly.QUARTERLY and quarterly.period(start) != (start, end):
+        frappe.throw(frappe._('Select the complete calendar quarter for the quarterly VAT return.'))
     result = []
+    quarter_details = {}
     known = set()
     for doctype in ('Sales Invoice', 'Purchase Invoice'):
         frappe.has_permission(doctype, 'read', throw=True)
@@ -40,6 +47,9 @@ def collect(filters):
                                or doc.posting_date)
             if not start <= vat_date <= end:
                 continue  # A documented timing difference, not an omitted GL source.
+            if scope == quarterly.QUARTERLY and (not any(row.get(quarterly.ITEM) for row in doc.items)
+                    or quarterly.source_kind(doc) != quarterly.QUARTERLY):
+                continue
             if doctype == 'Purchase Invoice':
                 from erpnext_norway.reverse_charge import guard_currency
                 guard_currency(doc)
@@ -50,6 +60,10 @@ def collect(filters):
                 and is_vat_account(tax_rows[row.tax_row].account_head)]
             doc_total = Decimal(0)
             for item in doc.items:
+                quarterly_item = bool(item.get(quarterly.ITEM))
+                item_kind = quarterly.source_kind(doc) if quarterly_item else quarterly.ORDINARY
+                if scope in (quarterly.ORDINARY, quarterly.QUARTERLY) and scope != item_kind:
+                    continue
                 if not item.get(CODE):
                     frappe.throw(frappe._('Norwegian VAT code is missing on invoice {0}, row {1}.').format(doc.name, item.idx))
                 check_code(doc, item)
@@ -74,7 +88,7 @@ def collect(filters):
                     accounts[tax.account_head] = accounts.get(tax.account_head, Decimal(0)) + amount * direction
                 liability = output - deduction
                 doc_total += liability
-                active = [row for row in rows if money(row.amount)]
+                active = [row for row in rows if money(row.amount) or row.rate]
                 if active:
                     # Freight can have its own On Previous Row VAT in addition
                     # to the item's On Net Total VAT. Sum those native bases on
@@ -97,14 +111,24 @@ def collect(filters):
                         base += sum((money(row.amount) for row in details
                             if row.item_row == item.name and row.tax_row in tax_rows
                             and not is_vat_account(tax_rows[row.tax_row].account_head)), Decimal(0))
+                code, nominal = item.get(CODE), item.get(RATE) or (active[0].rate if active else 0)
+                if quarterly_item:
+                    first, last = quarterly.period(vat_date)
+                    if first not in quarter_details:
+                        quarter_details[first] = {row.name: (values[row.name][0], eligible)
+                            for source, values, eligible in quarterly.assess(company.name, first, last)
+                            for row in source.items if row.name in values}
+                    base, eligible = quarter_details[first][item.name]
+                    code, nominal = ('87', 25) if eligible else ('0', 0)
                 result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': doctype,
                     'voucher': doc.name, 'line': item.idx, 'item_code': item.item_code,
-                    'vat_code': item.get(CODE), 'vat_rate': item.get(RATE) or (active[0].rate if active else 0),
+                    'vat_code': code, 'vat_rate': nominal, 'quarterly_source': quarterly_item,
+                    'vat_note': 'Kreditnota' if doc.is_return else '',
                     'base_amount': float(base), 'output_vat': float(output),
                     'input_vat': float(deduction), 'net_vat': float(liability),
                     'specification': '', 'specification_label': '',
                     'vat_accounts': {name: float(amount) for name, amount in accounts.items()},
-                    'portal': item.get(CODE) not in {'0', '7', '20', '21', '22'}})
+                    'portal': code not in {'0', '7', '20', '21', '22'}})
             ledger = frappe.get_all('GL Entry', filters={'company': company.name,
                 'voucher_type': doctype, 'voucher_no': doc.name, 'is_cancelled': 0},
                 fields=['account', 'debit', 'credit'])
@@ -114,11 +138,18 @@ def collect(filters):
                 frappe.throw(frappe._('VAT details do not reconcile with the ledger for invoice {0}.').format(doc.name))
     from erpnext_norway.vat_journal import ACCOUNTS, BASE, SPEC, SETTLEMENT
     frappe.has_permission('Journal Entry', 'read', throw=True)
-    for journal in frappe.get_list('Journal Entry', filters={'company': company.name, 'docstatus': 1,
-            'posting_date': ['between', [start, end]]}, fields=['name'], limit_page_length=0):
+    for journal in frappe.get_list('Journal Entry', filters={'company': company.name, 'docstatus': 1},
+            or_filters={'posting_date': ['between', [start, end]], 'bill_date': ['between', [start, end]]},
+            fields=['name'], limit_page_length=0):
         doc = frappe.get_doc('Journal Entry', journal.name)
         known.add(('Journal Entry', doc.name))
         if doc.is_opening == 'Yes' or doc.get(SETTLEMENT):
+            continue
+        vat_date = getdate(doc.bill_date if doc.get(quarterly.JOURNAL) else doc.posting_date)
+        if not start <= vat_date <= end:
+            continue
+        kind = doc.get(quarterly.RETURN_TYPE) or quarterly.ORDINARY
+        if scope in (quarterly.ORDINARY, quarterly.QUARTERLY) and kind != scope:
             continue
         expected = Decimal(0)
         for item in doc.accounts:
@@ -132,11 +163,13 @@ def collect(filters):
             expected += amount
             output = amount if account_number.startswith('270') else Decimal(0)
             deduction = -amount if account_number.startswith('271') else Decimal(0)
-            if output and not item.get(BASE):
+            if output and not item.get(BASE) and not doc.get(quarterly.JOURNAL):
                 frappe.throw(frappe._('Enter the documented VAT base on journal {0}, row {1}.').format(doc.name, item.idx))
-            result.append({'posting_date': doc.posting_date, 'vat_date': doc.posting_date, 'voucher_type': 'Journal Entry',
+            result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': 'Journal Entry',
                 'voucher': doc.name, 'line': item.idx, 'item_code': None,
-                'vat_code': code, 'vat_rate': item.get(RATE), 'base_amount': float(money(item.get(BASE))),
+                'vat_code': code, 'vat_rate': item.get(RATE),
+                'base_amount': 0 if doc.get(quarterly.JOURNAL) else float(money(item.get(BASE))),
+                'vat_note': item.get(quarterly.NOTE) or ('Reversering av ' + doc.reversal_of if doc.reversal_of else ''),
                 'output_vat': float(output), 'input_vat': float(deduction), 'net_vat': float(amount),
                 'vat_accounts': {item.account: float(amount)},
                 'portal': True, 'specification': item.get(SPEC) or '',
@@ -166,6 +199,7 @@ def execute(filters=None):
         {'fieldname': 'item_code', 'label': frappe._('Item Code'), 'fieldtype': 'Link', 'options': 'Item', 'width': 140},
         {'fieldname': 'vat_code', 'label': frappe._('Norwegian VAT code'), 'fieldtype': 'Data', 'width': 90},
         {'fieldname': 'specification_label', 'label': frappe._('VAT specification'), 'fieldtype': 'Data', 'width': 160},
+        {'fieldname': 'vat_note', 'label': frappe._('VAT return note'), 'fieldtype': 'Data', 'width': 200},
         {'fieldname': 'vat_rate', 'label': frappe._('Norwegian VAT rate'), 'fieldtype': 'Float', 'width': 90},
         *[{'fieldname': key, 'label': frappe._(label), 'fieldtype': 'Currency', 'options': 'NOK', 'width': 125}
           for key, label in [('base_amount', 'VAT base'), ('output_vat', 'Output VAT'),
@@ -181,8 +215,11 @@ def execute(filters=None):
             if key not in grouped:
                 grouped[key] = {'vat_code': code, 'portal': row['portal'],
                     'specification': row.get('specification'), 'specification_label': row.get('specification_label'),
-                    'vat_rate': row['vat_rate'] if code in {'3', '31', '33'} else None,
+                    'vat_rate': row['vat_rate'] if code in {'3', '31', '33', '81', '82', '83', '84', '86', '87', '88', '89', '91', '92'} else None,
+                    'vat_note': '',
                     'base_amount': 0, 'output_vat': 0, 'input_vat': 0, 'net_vat': 0}
+            if row.get('vat_note') and row['vat_note'] not in grouped[key]['vat_note']:
+                grouped[key]['vat_note'] += ('; ' if grouped[key]['vat_note'] else '') + row['vat_note']
             for key in ('base_amount', 'output_vat', 'input_vat', 'net_vat'):
                 grouped[(code, row.get('specification') or '')][key] = float(
                     money(grouped[(code, row.get('specification') or '')][key]) + money(row[key]))
@@ -196,4 +233,20 @@ def execute(filters=None):
                 'label': frappe._(label), 'datatype': 'Currency', 'currency': 'NOK'}
                for key, label in [('output_vat', 'Output VAT'), ('input_vat', 'Input VAT'),
                                   ('net_vat', 'VAT payable or refundable')]]
-    return columns, data, None, None, summary
+    from erpnext_norway.vat_quarterly import ORDINARY, QUARTERLY
+    scope = (filters or {}).get('return_type')
+    message = None
+    if scope not in (ORDINARY, QUARTERLY):
+        message = frappe._('All VAT entries is an accounting overview. Select the ordinary or quarterly return to prepare a filing or settlement.')
+    elif scope == QUARTERLY:
+        company = frappe.get_cached_doc('Company', filters['company'])
+        date = company.get('custom_norway_vat_from')
+        if company.get('custom_norway_vat_status') == 'Registered' and date:
+            if getdate(date) <= getdate(filters['from_date']):
+                message = frappe._('Approved registration covers this entire quarter. Use the ordinary return; correct older source documents and any previous quarterly filing through the normal correction procedure.')
+            elif getdate(date) <= getdate(filters['to_date']):
+                message = frappe._('Registration starts during this quarter. The quarterly and ordinary return bases are separate; post-registration credits retain their original VAT treatment in the ordinary return.')
+        if not sum((money(row['net_vat']) for row in data), Decimal(0)):
+            nil = frappe._('Do not submit a first quarterly return with zero VAT. A correction of a previously submitted return is a different case; retain the basis and receipt.')
+            message = (message + ' ' if message else '') + nil
+    return columns, data, message, None, summary
