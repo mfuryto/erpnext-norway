@@ -69,10 +69,11 @@ Fasiten for 1 000 + 250 MVA med 60 % fradrag er 1 100 i lager-/driftsmiddelkost,
 150 inngående MVA og 1 250 leverandørgjeld. Native Asset kan fortsatt opprettes
 manuelt; appen slår ikke på automatisk oppretting mot brukerens valg.
 
-Ved endring av driftsmiddelverdsetting krever native kostnadsfordeling at de
-berørte Asset-dokumentene finnes og er kladder. Innsendte driftsmidler eller
-låste perioder omgås ikke. Regnskapsmessig og skattemessig avskrivning er fortsatt
-ulike spørsmål; dette er ikke skattemessig saldoregel eller årsgrunnlag.
+Ved endring av driftsmiddelverdsetting må eksisterende Asset-dokumenter være
+kladder. Ved uttrykkelig manuell oppretting kan kostnaden oppdateres før et Asset
+finnes; senere ordinær oppretting leser oppdatert kjøpspris. Innsendte driftsmidler
+og låste perioder omgås ikke. Avskrivning følger fortsatt kjernen; dette er ikke
+skattemessig saldoregel eller årsgrunnlag.
 
 Kjernen avviser flere fakturalinjer mot samme mottakslinje. Denne regelen
 beholdes. Ved flere returlinjer på samme returmottak kan kildelinjen velges
@@ -81,14 +82,10 @@ antall og opprinnelig MVA-fradrag. En eksplisitt ugyldig linje avvises; den
 skal ikke stille byttes til en annen mulig kilde.
 
 Flere lager-/tjenestelinjer med MVA på frakt via On Previous Row er prøvd i
-app 0.4.4. Kombinasjonen med driftsmidler er fortsatt sperret: native negativ
-kostnadsfordeling på retur krever et Asset-dokument på returdokumentet, som
-ikke opprettes i den ordinære returflyten. Dette gjelder også automatisk
-opprettede driftsmidler. Manuell oppretting og beskyttelse av innsendte
-driftsmidler omgås ikke.
-Utland/import og resten av [MVA-planen](vat-plan.md) er heller ikke ferdig med
-lagerdelen. Nettleser, backup/restore og CI kvalifiserer de beskrevne prøvene,
-ikke brukerens faktiske konto-/fradragsvalg eller generell norsk etterlevelse.
+app 0.4.4. App 0.4.17 utvider samme native kostnadsfordeling til driftsmidler,
+med ordinære retur- og Asset-koblinger, se nedenfor. Nettleser, backup/restore og
+CI kvalifiserer de beskrevne prøvene, ikke brukerens konto-/fradragsvalg eller
+generell norsk etterlevelse.
 
 ## Påvist gap og minste tilpasning
 
@@ -160,3 +157,35 @@ ved første fordeling. Dersom ulike satser har ulik MVA-inkludering på samme
 MVA-kostnadskonto og samme grunnlag, avvises kombinasjonen: én native avgiftsrad
 kan ikke ha to ulike inkluderingsinnstillinger. Innstillingen må være lik, eller
 kostnadskontoene må skilles gjennom ordinært kontooppsett.
+
+## Driftsmidler, frakt og retur i 0.4.17
+
+Påvist før tilpasning: native negativt kostnadsfordelingsbilag krevde et nytt Asset
+på returdokumentet, mens normal retur bruker originalens Asset. Positiv fordeling
+krevde også et Asset selv når varen uttrykkelig var satt til manuell oppretting.
+En kooperativ utvidelse begrenser unntaket til appens merkede fordeling, faktisk
+bokført retur eller uttrykkelig manuell oppretting uten eksisterende Asset.
+Vanlige fordelingsbilag og kontrollen av eksisterende/innsendte Asset beholdes.
+Ingen beløpsberegning, hovedboksføring eller Asset-livssyklus overstyres.
+
+Når siste tillegg går til null, hopper kjernen over sin Asset-oppdatering. En vanlig
+hendelse kaller samme native oppdateringsmetode også da. På anleggsmiddelretur har
+purchase_invoice dessuten betydning for kjernens bokføring. Originalreferansen
+beholdes; eksisterende purchase_invoice_item vises som «Fakturalinje for
+MVA-behandling» når fakturaens fradrag skal velges. Originalens Asset-flagg gjenbrukes
+før forhåndsberegningen; native returmapper kopierer ikke dette flagget.
+
+Prøvd med direkte kjøp, ordre/mottak/faktura, full/delvis retur og kansellering,
+60→60/100→60/60→100/60→30 % fradrag, automatisk og manuell Asset-oppretting.
+1 000 anleggsmiddel + 1 000 tjeneste + 100 frakt ved 25 % og 60 % fradrag gir
+1 105 anleggsmiddel, 1 105 tjenestekostnad, 100 fraktkostnad, 315 inngående MVA og
+2 625 gjeld. Halv retur gir gjenstående Asset-kjøpspris 552,50 og inngående MVA
+157,50. Frakten er valgt som kostnad i denne prøven; testen påstår ikke at selve
+fraktkostnaden er kapitalisert. Kjernens kladd-Asset kan ha avledede totalfelt lik
+null frem til ordinær aktivering; oppdatert net_purchase_amount er kjøpsgrunnlaget.
+
+Registrert utenlandsk tjenestekjøp i NOK kan kapitaliseres med vanlig ikke-lagerført
+Asset-vare. Prøvene med 100/60/0 % fradrag gir Asset-kostnad 1 000/1 100/1 250,
+utgående MVA 250, inngående 250/150/0 og uendret leverandørbeløp 1 000.
+Kjernen håndterer delkreditnota og tilhørende Asset-kjøpsgrunnlag. Dette utvider
+ikke valutabehandling eller kvartalskapitalisering før registrering.

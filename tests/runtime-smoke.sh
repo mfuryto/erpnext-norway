@@ -114,6 +114,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-valuation.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-valuation-race.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-freight.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-asset-freight.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-vat-reverse.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-threshold-core.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - < "$root/tests/runtime-vat-fx-core.py"
@@ -146,6 +147,7 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-sales-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-valuation-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-freight-browser.cjs"
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-asset-freight-browser.cjs"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - desktop < "$root/tests/runtime-language-surfaces.py"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-language-surfaces-browser.cjs"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - restore-desktop < "$root/tests/runtime-language-surfaces.py"
@@ -199,6 +201,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-service-rates.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-valuation.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-freight.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-asset-freight.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-vat-evidence.py"
 fi
 "${compose[@]}" up -d --wait --wait-timeout 300

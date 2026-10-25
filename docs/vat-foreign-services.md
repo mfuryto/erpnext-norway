@@ -62,10 +62,11 @@ Blandet innenlands/omvendt behandling, vanlig native avgiftshode uten varemal,
 ordreoverføring og kansellering inngår også i prøven. Private leverandøroriginaler
 og regnskapsverdier sammenlignes igjen etter eksportert backup/restore.
 
-De nye linjevalgene avviser dato før gyldig registrering,
-lagerførte varer og driftsmidler. De avviser også manuelt feil avgiftsretning
+Linjevalgene avviser dato før gyldig registrering, lagerførte varer og
+driftsmidler i valuta. Registrerte ikke-lagerførte driftsmidler i NOK er prøvd
+i 0.4.17. Valgene avviser også manuelt feil avgiftsretning
 og pris med inkludert omvendt MVA. Dette avgrenser den kvalifiserte flyten;
-ikke-registrert kvartalsbehandling er fortsatt neste del av samme MVA-punkt.
+ikke-registrert kvartalsbehandling er beskrevet i vat-quarterly.md.
 Eksisterende manuelt konfigurerte avgiftsrader endres ikke ved migrering.
 
 ## Ikke-registrert foretak: terskel og gjenbruksprøve

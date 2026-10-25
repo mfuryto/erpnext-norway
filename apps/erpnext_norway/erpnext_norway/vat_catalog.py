@@ -428,7 +428,7 @@ def preview_items(document, deduction_row=None, template_row=None):
         fields += [CODE, RATE]
     if doc.get('is_return'):
         from erpnext_norway.vat_currency import DATE, EXCHANGE
-        fields += ['custom_norway_quarterly_service', DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
+        fields += ['is_fixed_asset', 'custom_norway_quarterly_service', DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']
     return {'return_type': doc.get('custom_norway_vat_return_type'),
             'removed_taxes': doc.flags.get('norway_removed_input_taxes') or [],
             'items': [{'name': row.name, **{field: row.get(field) for field in fields}}

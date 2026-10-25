@@ -498,3 +498,14 @@ regresjoner og eksportert restore kreves fortsatt i CI før main-promotering.
 Se vat-currency.md/vat-quarterly.md. Resten av MVA-planen, herunder tidligere
 beskrevne driftsmiddel-/verdsettingskombinasjoner, er fortsatt åpen; ingen
 regnskapsavklaring skal etterspørres fra brukeren. Primærkilder undersøkes videre.
+
+## MVA: driftsmidler og native kostnadsfordeling, 0.4.17
+
+Samme native Landed Cost Voucher brukes nå på anleggsmiddel-/tjenestefrakt,
+retur og endret fradrag. Konkrete kjernebegrensninger er prøvd før en smal
+kooperativ valideringsutvidelse; beløp, hovedbok og Asset-livssyklus er kjernens.
+Manuelt opprettingsvalg og vern for innsendte Asset beholdes. Eksisterende
+fakturalinjefelt gir norsk returvalg uten å endre mottakets finansielle referanse.
+Registrert kapitalisert tjenestekjøp i NOK bruker også eksisterende Add/Deduct.
+Se vat-valuation.md for gap, prøver og avgrensninger. Valuta-/kvartalskombinasjoner
+for kapitaliserte tjenester er fortsatt åpne. Ingen faktisk serveroppdatering.
