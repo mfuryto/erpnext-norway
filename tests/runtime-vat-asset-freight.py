@@ -165,10 +165,13 @@ try:
     for row in manual_lcv.items:row.applicable_charges=10
     manual_lcv.insert();manual_lcv.submit();doc.reload()
     frappe.db.savepoint('manual_asset_lcv')
-    try:doc.cancel()
-    except frappe.ValidationError:frappe.db.rollback(save_point='manual_asset_lcv')
-    else:raise AssertionError('A manual native LCV did not block source cancellation')
-    assert frappe.db.get_value('Landed Cost Voucher',own,'docstatus')==1 and manual_lcv.reload().docstatus==1
+    from erpnext_norway.vat_valuation import cancel_adjustments
+    cancel_adjustments(doc)
+    assert frappe.db.get_value('Landed Cost Voucher',own,'docstatus')==2
+    assert manual_lcv.reload().docstatus==1
+    frappe.db.rollback(save_point='manual_asset_lcv')
+    assert frappe.db.get_value('Landed Cost Voucher',own,'docstatus')==1
+    assert manual_lcv.reload().docstatus==1
     manual_lcv.cancel();values([doc.name]);reset()
     doc=submit(mixed_asset());record=frappe.get_doc('Asset',assets_for(doc)[0].name)
     record.available_for_use_date=doc.posting_date;record.save();record.submit()
@@ -182,7 +185,7 @@ try:
     except frappe.ValidationError as error:assert 'submitted Assets' in str(error),str(error)
     else:raise AssertionError('Submitted Asset core guard was bypassed')
     reset()
-    print('PASS native manual LCV cancellation guard and submitted-Asset validation remain authoritative')
+    print('PASS app cancels only its own LCV, preserves manual allocation; native submitted-Asset validation remains authoritative')
     # Normal purchase order/receipt/invoice chain, including changed deduction.
     for received,billed in ((60,60),(100,60),(60,100),(60,30)):
         order=submit(mixed_asset('Purchase Order',received,qty=1))
