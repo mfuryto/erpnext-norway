@@ -122,6 +122,7 @@ def collect(filters):
                     code, nominal = ('87', 25) if eligible else ('0', 0)
                 result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': doctype,
                     'voucher': doc.name, 'line': item.idx, 'item_code': item.item_code,
+                    'source_reference': doc.get('bill_no') or '',
                     'vat_code': code, 'vat_rate': nominal, 'quarterly_source': quarterly_item,
                     'vat_note': 'Kreditnota' if doc.is_return else '',
                     'base_amount': float(base), 'output_vat': float(output),
@@ -136,6 +137,9 @@ def collect(filters):
                           if is_vat_account(row.account)), Decimal(0))
             if actual != doc_total:
                 frappe.throw(frappe._('VAT details do not reconcile with the ledger for invoice {0}.').format(doc.name))
+    from erpnext_norway.vat_import import journal_date, receipt_rows
+    if scope != quarterly.QUARTERLY:
+        result.extend(receipt_rows(company.name, start, end))
     from erpnext_norway.vat_journal import ACCOUNTS, BASE, SPEC, SETTLEMENT
     frappe.has_permission('Journal Entry', 'read', throw=True)
     for journal in frappe.get_list('Journal Entry', filters={'company': company.name, 'docstatus': 1},
@@ -145,7 +149,7 @@ def collect(filters):
         known.add(('Journal Entry', doc.name))
         if doc.is_opening == 'Yes' or doc.get(SETTLEMENT):
             continue
-        vat_date = getdate(doc.bill_date if doc.get(quarterly.JOURNAL) else doc.posting_date)
+        vat_date = journal_date(doc)
         if not start <= vat_date <= end:
             continue
         kind = doc.get(quarterly.RETURN_TYPE) or quarterly.ORDINARY
@@ -168,7 +172,8 @@ def collect(filters):
             result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': 'Journal Entry',
                 'voucher': doc.name, 'line': item.idx, 'item_code': None,
                 'vat_code': code, 'vat_rate': item.get(RATE),
-                'base_amount': 0 if doc.get(quarterly.JOURNAL) else float(money(item.get(BASE))),
+                'base_amount': 0 if doc.get(quarterly.JOURNAL) or account_number.startswith('271') else float(money(item.get(BASE))),
+                'source_reference': doc.bill_no or '',
                 'vat_note': item.get(quarterly.NOTE) or ('Reversering av ' + doc.reversal_of if doc.reversal_of else ''),
                 'output_vat': float(output), 'input_vat': float(deduction), 'net_vat': float(amount),
                 'vat_accounts': {item.account: float(amount)},
@@ -195,6 +200,7 @@ def execute(filters=None):
         {'fieldname': 'vat_date', 'label': frappe._('VAT period date'), 'fieldtype': 'Date', 'width': 110},
         {'fieldname': 'voucher_type', 'label': frappe._('Voucher Type'), 'fieldtype': 'Link', 'options': 'DocType', 'width': 130},
         {'fieldname': 'voucher', 'label': frappe._('Voucher No'), 'fieldtype': 'Dynamic Link', 'options': 'voucher_type', 'width': 130},
+        {'fieldname': 'source_reference', 'label': frappe._('Reference'), 'fieldtype': 'Data', 'width': 150},
         {'fieldname': 'line', 'label': frappe._('Row'), 'fieldtype': 'Int', 'width': 50},
         {'fieldname': 'item_code', 'label': frappe._('Item Code'), 'fieldtype': 'Link', 'options': 'Item', 'width': 140},
         {'fieldname': 'vat_code', 'label': frappe._('Norwegian VAT code'), 'fieldtype': 'Data', 'width': 90},
@@ -215,7 +221,7 @@ def execute(filters=None):
             if key not in grouped:
                 grouped[key] = {'vat_code': code, 'portal': row['portal'],
                     'specification': row.get('specification'), 'specification_label': row.get('specification_label'),
-                    'vat_rate': row['vat_rate'] if code in {'3', '31', '33', '81', '82', '83', '84', '86', '87', '88', '89', '91', '92'} else None,
+                    'vat_rate': row['vat_rate'] if code in {'3', '31', '33', '5', '6', '52', '85', '81', '82', '83', '84', '86', '87', '88', '89', '91', '92'} else None,
                     'vat_note': '',
                     'base_amount': 0, 'output_vat': 0, 'input_vat': 0, 'net_vat': 0}
             if row.get('vat_note') and row['vat_note'] not in grouped[key]['vat_note']:
@@ -228,7 +234,7 @@ def execute(filters=None):
             if row['vat_code'] in {'1', '11', '13', '14', '15'}:
                 row['base_amount'] = None  # The VAT return has no base/rate for input VAT.
         columns = [col for col in columns if col['fieldname'] not in
-                   {'posting_date', 'vat_date', 'voucher_type', 'voucher', 'line', 'item_code'}]
+                   {'posting_date', 'vat_date', 'voucher_type', 'voucher', 'source_reference', 'line', 'item_code'}]
     summary = [{'value': float(sum((money(row[key]) for row in data), Decimal(0))),
                 'label': frappe._(label), 'datatype': 'Currency', 'currency': 'NOK'}
                for key, label in [('output_vat', 'Output VAT'), ('input_vat', 'Input VAT'),

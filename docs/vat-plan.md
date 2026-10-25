@@ -194,3 +194,23 @@ Importavklaringen har en avgrenset retting i app 0.4.13: native reversering av
 klassifiserte deklarasjonsbilag får også negativt kopiert MVA-grunnlag på
 81/82/83/84. Kjernen fører fortsatt alle beløp. Full vareimportflyt og valg av
 deklarasjonsperiode er fortsatt åpne; se vat-import.md.
+
+
+## MVA: dokumentert innførsel og kjernebasert eksport, 0.4.15
+
+Deklarasjonsdato/-referanse bruker native Journal Entry-felt; kode 85 bruker
+faktisk Purchase Receipt med tre metadatafelt og private originalvedlegg.
+Varefaktura, toll-/kostnadsfaktura, Landed Cost Voucher, valutabetaling og
+MVA-oppgjør bruker standard ERPNext. Ingen importmotor, egen dokumenttype eller
+parallell hovedbok. Periode og rapportgrunnlag følger faktisk deklarasjon.
+Se [arbeidsflyt, kilder og avgrensninger](vat-import.md).
+
+Eksportprøven gjenbruker eksisterende avgiftsmal og native tilbud, ordre,
+levering, EUR-faktura, delkreditnota, betaling/refusjon og engelske PDF-originaler.
+Utenlandsk kundeadresse overstyrer ikke valgt innenlandsbehandling. Ingen ny
+eksportkode er nødvendig. Tilbakegående tjenestefradrag prøves med native
+bilag i registreringsterminen; tidligere faktura omskrives ikke.
+
+Hele MVA-planen er fortsatt åpen for lav sats på utenlandske tjenester,
+valutatillegg og resterende verdsettingskombinasjoner. Teknisk kvalifisering
+er ikke generell norsk regnskapsaksept eller faktisk portalinnsending.

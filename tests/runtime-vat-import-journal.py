@@ -54,13 +54,23 @@ try:
             if input_:rows.append({'account':a[in_account],'debit_in_account_currency':input_,CODE:code,RATE:rate})
             if output!=input_:rows.append({'account':a['4300'],'debit_in_account_currency':output-input_,'cost_center':c.cost_center})
             doc=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-09-20',
+                'bill_date':'2026-09-20','bill_no':'SYNTHETIC-IMPORT-'+str(len(evidence)),
                 'voucher_type':'Journal Entry','user_remark':'Synthetic documented customs declaration','accounts':rows}).insert();doc.submit()
+            frappe.db.savepoint('original_customs_period')
+            copied=make_reverse_journal_entry(doc.name);copied.posting_date='2026-10-20'
+            assert str(copied.bill_date)=='2026-09-20'
+            copied.insert();copied.submit()
+            copied_rows=[row for row in report('2026-09-01','2026-09-30') if row['voucher'] in (doc.name,copied.name)]
+            assert totals(copied_rows)==(0,0,0)
+            frappe.db.rollback(save_point='original_customs_period')
             native=make_reverse_journal_entry(doc.name);native.posting_date='2026-10-20'
+            # Explicit new expedition date is distinct from an original-period correction.
+            native.bill_date='2026-10-20';native.bill_no='SYNTHETIC-LATER-EXPEDITION-'+str(len(evidence))
             assert next(r.get(BASE) for r in native.accounts if r.get(BASE))==base
             native.insert();assert next(r.get(BASE) for r in native.accounts if r.get(BASE))==-base
             native.save();assert next(r.get(BASE) for r in native.accounts if r.get(BASE))==-base
             native.submit()
-            file=save_file('synthetic-customs-declaration.json',json.dumps({'synthetic':True,'basis':base,'code':code,'source':doc.name}).encode(),doc.doctype,doc.name,is_private=1)
+            file=save_file('synthetic-customs-declaration.json',json.dumps({'synthetic':True,'basis':base,'code':code,'source':doc.name,'expedition_date':str(doc.bill_date),'reference':doc.bill_no}).encode(),doc.doctype,doc.name,is_private=1)
             evidence.append({'source':doc.name,'reverse':native.name,'base':base,'ledger':ledger(doc.name),
                 'reverse_ledger':ledger(native.name),'file':file.name,
                 'sha256':hashlib.sha256(Path(file.get_full_path()).read_bytes()).hexdigest()})
