@@ -375,3 +375,11 @@ korrekt og teller omvendt grunnlag én gang. Ingen egen avgiftsmotor, ny tabell
 eller ny arbeidsflate. Se vat-foreign-services.md for prøver og avgrensning.
 Hele MVA-planen er ikke ferdig: ikke-registrert kvartalsterskel/særskilt melding
 og valuta er neste deler før import, resterende MVA-flyt, SAF-T og ENK.
+
+Ikke-registrert kvartalsbehandling er undersøkt videre mot native withholding.
+En transaksjonell prøve med ordinære bokførte fakturaer viser at to leverandører
+ikke summeres sammen, nøyaktig terskelbeløp utløser trekk, og trekket reduserer
+leverandørgjelden. Funksjonen kan derfor ikke tas i bruk uendret som norsk
+omvendt MVA. Prøven er med i app-CI, ruller tilbake egne data og oppretter ingen
+driftskonfigurasjon. Se vat-foreign-services.md for kilder, faktisk prøve og
+åpen akseptmatrise. Ingen ny kvartalsautomatikk eller appversjon er levert her.

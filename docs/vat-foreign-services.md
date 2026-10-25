@@ -67,3 +67,58 @@ lagerførte varer og driftsmidler. De avviser også manuelt feil avgiftsretning
 og pris med inkludert omvendt MVA. Dette avgrenser den kvalifiserte flyten;
 ikke-registrert kvartalsbehandling er fortsatt neste del av samme MVA-punkt.
 Eksisterende manuelt konfigurerte avgiftsrader endres ikke ved migrering.
+
+## Ikke-registrert foretak: terskel og gjenbruksprøve
+
+Samlet avgiftsgrunnlag må **overstige** 2 000 NOK per kalenderkvartal.
+Grensen gjelder foretakets aktuelle kjøp samlet, ikke hver leverandør. Det er
+ikke et fradrag på 2 000 NOK i grunnlaget. Skattleggingsperioden er januar–mars,
+april–juni, juli–september eller oktober–desember. Meldingen for omvendt
+avgiftsplikt er en annen innleveringsvei enn den ordinære meldingen for
+registrerte foretak. Det skal ikke leveres nullmelding for denne særskilte
+meldingen. Ordinær frist er én måned og ti dager etter kvartalet; kontroller
+den faktiske fristen i Skatteetatens innleveringsløsning.
+
+Kilder: [betalingsansvar og beløpsgrense](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-11/M-11-3/M-11-3.2/)
+og [Skatteforvaltningshåndboken § 8-3: særskilt periode og leveringsfrist](https://oppslag.rettskilder.skatteetaten.no/rettskilder2/type/handboker/skatteforvaltningshandboken/gjeldende/SKTFV2025_ID-8-0.001/SKTFV2025_ID-8-1.001).
+
+Kjernens **Tax Withholding Category** har allerede datointervall og kumulativ
+terskel. Den er derfor prøvd før eventuell tilleggskode. Den kjørbare prøven
+`tests/runtime-vat-threshold-core.py` bruker vanlige bokførte leverandørfakturaer,
+native historikk og samme kategori for to ulike leverandører. Ingen funksjoner
+mockes, og hele prøven rulles tilbake. Prøven bruker en ordinær gjeldskonto,
+ikke en MVA-konto: dette er en gjenbruksprøve, ikke anbefalt norsk behandling.
+
+| Prøve i samme kalenderkvartal | Faktisk native resultat | Norsk krav som ikke dekkes |
+| --- | --- | --- |
+| Leverandør A: 1 500; leverandør B: 600 | Intet trekk, selv om foretakets sum er 2 100 | Summering på tvers av leverandører |
+| Deretter A: 500; A har nå nøyaktig 2 000 | Trekk 500 på siste faktura | Grensen må overskrides, ikke bare nås |
+| Samme siste faktura, leverandørbeløp 500 | Leverandørgjeld blir 0 | Norsk omvendt MVA skal ikke trekkes fra leverandørens vederlag |
+
+Kildekontrollen av `TaxWithholdingController._base_threshold_query` viser
+filtrering på part eller skatte-ID. `_check_historical_threshold_status`
+beholder dessuten terskelpassering når tidligere historikk er «Settled».
+Dette siste er kildekontroll, ikke en kvalifisert norsk kreditnotaprøve.
+Felles, oppdiktet skatte-ID eller manuell terskeloverstyring skal ikke brukes
+for å få funksjonen til å se ut som norsk kvartalsbehandling. Native avgiftsregler
+velger fakturamaler; de løser heller ikke denne summeringen.
+
+### Aksept før kvartalsbehandlingen åpnes
+
+Følgende er åpne krav, ikke levert funksjonalitet:
+
+| Tilfelle | Avklaring eller prøve som kreves |
+| --- | --- |
+| 1 999,99 / 2 000 / 2 000,01 NOK | Riktig grense og hele avgiftsgrunnlaget, med native avrunding |
+| Flere leverandører, blandede tjenestelinjer | Bare aktuelle kjøp teller; vanlige innenlandskjøp og vareimport teller ikke |
+| Flere fakturaer og tilbakeføring | Etterfølgende terskelpassering må følge normal registrering uten omskriving av bokførte originaler |
+| Kreditnota i samme eller senere kvartal | Avklar terskelvirkning og rapportperiode; ikke anta at nettosummering alene er tilstrekkelig |
+| Senere eller tilbakedatert godkjent registrering | Skille særskilt og ordinær melding; bevare original behandling og dokumentasjon |
+| Låst eller allerede innlevert kvartal | Native periodelås og dokumentert korrigeringsvei, uten stille etterpostering |
+| Parallelle registreringer | Samlet grunnlag må ikke avhenge av hvilken faktura som lagres først |
+| Oppgjør, betaling og kvittering | Bruke eksisterende Journal Entry, bankflyt og private vedlegg; ingen parallell hovedbok |
+| Utenlandsk valuta | Leveringsdato og Tolletatens avgiftskurs må skilles fra handels-/bokføringskurs |
+
+Ingen egen terskelmotor, ny status eller ny arbeidsflate er innført gjennom
+denne gjenbruksprøven. Dagens linjevalg er fortsatt avgrenset til det registrerte
+NOK-omfanget ovenfor. Manuelle hovedboksbilag alene gjør ikke normalflyten ferdig.
