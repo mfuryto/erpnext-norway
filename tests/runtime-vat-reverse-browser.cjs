@@ -13,9 +13,11 @@ const assert=require('node:assert/strict');
   const response=await context.request.get(`/api/resource/Purchase%20Invoice?filters=${filters}&fields=${encodeURIComponent(JSON.stringify(['supplier']))}`);
   const supplier=(await response.json()).data[0].supplier;
   const page=await context.newPage();page.setDefaultTimeout(60000);
-  await page.goto('/app/purchase-invoice/new-purchase-invoice');
-  await page.waitForFunction(()=>window.cur_frm?.doctype==='Purchase Invoice');
-  await page.evaluate(()=>new Promise(resolve=>frappe.after_ajax(resolve)));
+  await page.goto('/desk/purchase-invoice/new-purchase-invoice');
+  // Poll readiness across native boot navigation; an evaluated after_ajax
+  // promise is destroyed if Desk replaces the document while it is pending.
+  await page.waitForFunction(()=>window.cur_frm?.doctype==='Purchase Invoice'&&
+   cur_frm.fields_dict?.items&&!frappe.request.ajax_count);
   await page.evaluate(async supplier=>{
    await cur_frm.set_value('company','Runtime Reverse Services');
    await cur_frm.set_value('supplier',supplier);
