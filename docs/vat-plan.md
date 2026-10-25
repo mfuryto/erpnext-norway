@@ -189,3 +189,8 @@ korrigert, med enkelt grunnlag og hovedboksavstemming. Se
 Registrert valutalinjeflyt bruker fra 0.4.12 kjernens grunnlagsresolvers, ordinære
 linjefelt og presisjonsinnstillinger; se vat-currency.md. Punkt 8 er fortsatt åpent
 for ikke-registrert kvartal, registreringsovergang og øvrig utlandsomfang.
+
+Importavklaringen har en avgrenset retting i app 0.4.13: native reversering av
+klassifiserte deklarasjonsbilag får også negativt kopiert MVA-grunnlag på
+81/82/83/84. Kjernen fører fortsatt alle beløp. Full vareimportflyt og valg av
+deklarasjonsperiode er fortsatt åpne; se vat-import.md.

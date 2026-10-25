@@ -142,3 +142,8 @@ Setter gir fem transaksjonsfelt ni desimaler; NOK og dokumenttotal beholder to.
 Kjernen beregner satser, avrunding, ordreoverføring, kreditnota, hovedbok og
 betalingsvalutadifferanse. Ingen ny avgiftsmotor, journal eller kurskilde.
 Se vat-currency.md for faktiske prøver og avgrenset registrert tjenesteflyt.
+
+App 0.4.13 utvider samme metadataretting til native reversering av eksisterende
+importbilag på 81/82/83/84. Kjerneprøven viste riktige debet-/kreditbeløp og
+kopiert positivt grunnlag. Bare eksakt match mot originalen får snudd grunnlag;
+ingen ny import- eller reverseringsfunksjon. Se vat-import.md.

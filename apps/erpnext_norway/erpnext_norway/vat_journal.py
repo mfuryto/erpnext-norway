@@ -87,7 +87,7 @@ def validate(doc, method=None):
 
 
 def prepare_reversal(doc):
-    """Native code-87 reversal maps amounts; sign only its copied VAT base."""
+    """Native reversal maps amounts; sign only the qualified copied VAT base."""
     if not doc.reversal_of:
         return
     source = frappe.get_doc('Journal Entry', doc.reversal_of)
@@ -103,8 +103,9 @@ def prepare_reversal(doc):
             float(row.get(RATE) or 0), row.get(SPEC) or '', float(row.get(BASE) or 0))
 
     originals = Counter(signature(row, reverse=True) for row in source.accounts
-        if row.get(CODE) == '87' and row.get(BASE) and
-        frappe.get_cached_value('Account', row.account, 'account_number') == '2704' and
+        if row.get(BASE) and frappe.get_cached_value('Account', row.account, 'account_number')
+        in {'87': ('2704',), '81': ('2705',), '82': ('2705',),
+            '83': ('2706',), '84': ('2706',)}.get(row.get(CODE), ()) and
         float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
     for row in doc.accounts:
         key = signature(row)

@@ -76,8 +76,13 @@ ikke et fradrag på 2 000 NOK i grunnlaget. Skattleggingsperioden er januar–ma
 april–juni, juli–september eller oktober–desember. Meldingen for omvendt
 avgiftsplikt er en annen innleveringsvei enn den ordinære meldingen for
 registrerte foretak. Det skal ikke leveres nullmelding for denne særskilte
-meldingen. Ordinær frist er én måned og ti dager etter kvartalet; kontroller
-den faktiske fristen i Skatteetatens innleveringsløsning.
+meldingen. Hovedfristen er én måned og ti dager etter kvartalet, men andre
+kvartal har sommerfrist 31. august. Utgangspunktet er dermed 10. mai,
+31. august, 10. november og 10. februar året etter. Kalenderjusteringer og den
+faktiske fristen kontrolleres i Skatteetatens innleveringsløsning.
+
+Kilde for sommerunntaket: [gjeldende § 8-3-10 første ledd, med omtale](https://www.skatteetaten.no/rettskilder/type/handboker/skatteforvaltningshandboken/gjeldende/kapittel-8-opplysningsplikt-for-skattepliktige-trekkpliktige-mv/ID-8-3.001/ID-8-3.027/).
+Eldre omtaler av 10. august skal ikke brukes som gjeldende sommerfrist.
 
 Kilder: [betalingsansvar og beløpsgrense](https://www.skatteetaten.no/rettskilder/type/handboker/merverdiavgiftshandboken/gjeldende/M-11/M-11-3/M-11-3.2/)
 og [Skatteforvaltningshåndboken § 8-3: særskilt periode og leveringsfrist](https://oppslag.rettskilder.skatteetaten.no/rettskilder2/type/handboker/skatteforvaltningshandboken/gjeldende/SKTFV2025_ID-8-0.001/SKTFV2025_ID-8-1.001).
@@ -98,7 +103,12 @@ ikke en MVA-konto: dette er en gjenbruksprøve, ikke anbefalt norsk behandling.
 Kildekontrollen av `TaxWithholdingController._base_threshold_query` viser
 filtrering på part eller skatte-ID. `_check_historical_threshold_status`
 beholder dessuten terskelpassering når tidligere historikk er «Settled».
-Dette siste er kildekontroll, ikke en kvalifisert norsk kreditnotaprøve.
+Dette er nå også prøvd med en faktisk native kreditnota: full kreditering av
+første A-faktura på 1 500 gir −375 i trekk og −1 125 i leverandørbeløp. Et nytt
+A-kjøp på 100 får deretter 25 i trekk og 75 i leverandørgjeld, selv om de samlede
+netto kjøpene hos A og B nå bare er 1 200. Originalen på 1 500 endres ikke.
+Dette dokumenterer hvordan kjernen virker; prøven fastsetter ikke den norske
+terskelregelen ved kreditnota eller åpner denne funksjonen som norsk MVA.
 Felles, oppdiktet skatte-ID eller manuell terskeloverstyring skal ikke brukes
 for å få funksjonen til å se ut som norsk kvartalsbehandling. Native avgiftsregler
 velger fakturamaler; de løser heller ikke denne summeringen.
@@ -120,8 +130,9 @@ Følgende er åpne krav, ikke levert funksjonalitet:
 | Utenlandsk valuta | Leveringsdato og Tolletatens avgiftskurs må skilles fra handels-/bokføringskurs |
 
 Ingen egen terskelmotor, ny status eller ny arbeidsflate er innført gjennom
-denne gjenbruksprøven. Dagens linjevalg er fortsatt avgrenset til det registrerte
-NOK-omfanget ovenfor. Manuelle hovedboksbilag alene gjør ikke normalflyten ferdig.
+denne gjenbruksprøven. Dagens linjevalg er fortsatt avgrenset til det
+registrerte NOK-/valutaomfanget beskrevet i vat-currency.md. Manuelle hovedboksbilag
+alene gjør ikke normalflyten ferdig.
 
 ## Dokumentert gap: reversering av klassifiserte hovedboksbilag
 
@@ -169,3 +180,26 @@ behandling beholdes. App 0.4.12 åpner det avgrensede registrerte valutalinjeval
 leveringsdato og avgiftskurs gjennom kjernens grunnlagskrok; se vat-currency.md.
 Manuelle rader uten disse opplysningene forblir sperret. Ikke-registrert
 kvartalsflyt er fortsatt åpen.
+
+## Avklaring som kreves før automatisk kvartalsbehandling
+
+Kildekontroll 25. oktober 2026 bekrefter grensen, kvartalet, innleveringsveien og
+leveringskursen. De gjennomgåtte offentlige kildene gir ikke en uttrykkelig
+løsning på disse kombinasjonene:
+
+1. Opprinnelig kvartal har kjøp 2 100 og innrapportert MVA 525. En reell
+   leverandørkreditnota på 200 utstedes i neste kvartal. Hvordan påvirkes
+   terskelen, hvilken melding skal endres/leveres, og hvordan behandles et
+   krediteringskvartal uten andre kjøp? Skill opprinnelig feil fra senere
+   prisavslag/heving. Generell periodisering av kreditnota avklarer ikke alene
+   terskelvirkningen eller innleveringsveien.
+2. Foretaket har aktuelle kjøp før og etter godkjent registrering med virkning
+   midt i kvartalet. Hvordan avgrenses grunnlaget i særskilt melding mot første
+   ordinære melding? Hva gjelder hvis vedtaket får tilbakevirkende effekt etter
+   at særskilt melding er levert? Vurder også eventuell fradragsrett særskilt.
+
+Dette trenger dokumentert regnskapsmessig avklaring før automatikk implementeres.
+Dagens bilag og rapportgrunnlag skal ikke omskrives ved endring av Company.
+Kjernens kreditnota, dokumenterte korrigeringsbilag, periodelås, Journal Entry,
+bankbetaling og File-vedlegg skal fortsatt brukes. Ingen egen kvartalsmotor,
+innleveringsstatus eller parallell hovedbok er innført her.
