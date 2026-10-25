@@ -484,3 +484,17 @@ bilag i registreringsterminen; tidligere faktura omskrives ikke.
 Hele MVA-planen er fortsatt åpen for lav sats på utenlandske tjenester,
 valutatillegg og resterende verdsettingskombinasjoner. Teknisk kvalifisering
 er ikke generell norsk regnskapsaksept eller faktisk portalinnsending.
+
+## MVA: lav sats og ordinære valutatillegg, 0.4.16
+
+Native 12-prosentberegning virket; egne 25-prosentbegrensninger i mal-/kontovalg
+var det dokumenterte gapet. Konfigurasjonen utvides til 12 % og kode 88/89,
+med samme fradragsfelt, kreditnota, hovedbok og oppgjør. Kvartal før registrering
+bruker felles terskel over begge satser. Native tidligere radgrunnlag dekker
+valutatillegg; kvartalskopien beholder native tillegg/rabatt og leverandørbeløp.
+
+Lokale native kjeder og norsk nettleser er prøvd. Fresh migrering, alle øvrige
+regresjoner og eksportert restore kreves fortsatt i CI før main-promotering.
+Se vat-currency.md/vat-quarterly.md. Resten av MVA-planen, herunder tidligere
+beskrevne driftsmiddel-/verdsettingskombinasjoner, er fortsatt åpen; ingen
+regnskapsavklaring skal etterspørres fra brukeren. Primærkilder undersøkes videre.

@@ -5384,3 +5384,12 @@ Use the ordinary VAT return for this VAT code.,Bruk ordinær MVA-melding for den
 Enter the customs expedition date and declaration reference in the native journal reference fields.,Oppgi ekspedisjonsdato og deklarasjonsreferanse i bilagets ordinære referansefelt.
 Import VAT before registration is paid to Customs or the forwarder. Record the actual invoice without self-assessed output VAT.,Innførsels-MVA før registrering betales til Tolletaten eller speditøren. Før den faktiske regningen uten egenberegnet utgående MVA.
 Read access to all code 85 import receipts in this company and period is required for a complete VAT basis.,Du må ha lesetilgang til alle varemottak med kode 85 i foretaket og perioden for å få et fullstendig MVA-grunnlag.
+Select a supported reverse-charge service VAT rate.,Velg en støttet MVA-sats for tjenestekjøp med omvendt avgiftsplikt.
+The reverse-charge item template must use the output VAT account for its selected nominal rate.,Vareavgiftsmalen for omvendt avgiftsplikt må bruke utgående MVA-konto for valgt sats.
+Review the existing native quarterly VAT calculation template for the selected rate.,Kontroller den eksisterende kvartalsberegningsmalen for valgt MVA-sats.
+Configure the native output VAT account for each selected service rate.,Konfigurer standardkontoen for utgående MVA for hver valgt tjenestesats.
+Select an earlier native charge row for the Norwegian VAT basis.,Velg en tidligere standard avgifts- eller tilleggsrad som norsk MVA-grunnlag.
+The referenced service amount must precede VAT and its cost allocation.,Henvisningen må gjelde tjenestebeløpet før MVA og fordeling av ikke-fradragsført MVA.
+Keep quarterly service charges referenced to native non-VAT charge rows.,La tillegg på kvartalsgrunnlaget henvise til standard tilleggsrader uten MVA.
+The native quarterly calculation no longer preserves the issued supplier amount. Review changed item tax templates or source charges.,Kvartalsberegningen bevarer ikke lenger det opprinnelige leverandørbeløpet. Kontroller endrede vareavgiftsmaler eller tillegg på kilden.
+Use the Norwegian service VAT basis on the VAT and non-deductible cost rows.,Bruk norsk tjenestegrunnlag på radene for MVA og ikke-fradragsført MVA.

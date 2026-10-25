@@ -119,7 +119,9 @@ def collect(filters):
                             for source, values, eligible in quarterly.assess(company.name, first, last)
                             for row in source.items if row.name in values}
                     base, eligible = quarter_details[first][item.name]
-                    code, nominal = ('87', 25) if eligible else ('0', 0)
+                    nominal = quarterly.nominal(item) if eligible else 0
+                    from erpnext_norway.reverse_charge import treatment
+                    code = treatment(nominal)[3] if eligible else '0'
                 result.append({'posting_date': doc.posting_date, 'vat_date': vat_date, 'voucher_type': doctype,
                     'voucher': doc.name, 'line': item.idx, 'item_code': item.item_code,
                     'source_reference': doc.get('bill_no') or '',

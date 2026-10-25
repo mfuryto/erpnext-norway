@@ -110,7 +110,7 @@ def stamp_codes(doc, method=None):
     from erpnext_norway.vat_quarterly import ITEM as QUARTERLY_ITEM
     for row in doc.items:
         if row.get(QUARTERLY_ITEM):
-            row.set(CODE, '0'); row.set(RATE, 0)
+            row.set(CODE, '0')
             continue
         if row.item_tax_template:
             template = frappe.get_cached_doc('Item Tax Template', row.item_tax_template)
@@ -159,6 +159,8 @@ def prepare_items(doc, method=None):
             'Item Tax Template', row.item_tax_template, SALES_CODE) for row in doc.items):
         prepare_sales_rows(doc)
     for row in doc.items:
+        if row.get('custom_norway_quarterly_service'):
+            continue  # Source supplier amount stays untaxed; only the calculation copy uses its nominal rate.
         if not row.item_tax_template and not sales and row.get(DEDUCTION) not in (None, '', 100, 100.0, '100'):
             category = doc.tax_category
             if not category and doc.taxes_and_charges:
@@ -190,14 +192,15 @@ def prepare_items(doc, method=None):
             row.set(DEDUCTION, percent)
         if not 0 <= percent <= 100:
             frappe.throw(frappe._('Input VAT deduction must be between 0 and 100 percent.'))
-        from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, INPUT, OUTPUT, validate as validate_reverse
+        from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, treatment, validate as validate_reverse
         reverse = template.get(PURCHASE_CODE) in REVERSE_CODES
         if reverse:
+            OUTPUT, INPUT, with_deduction, without = treatment(nominal)
             validate_reverse(doc, row, template)
         if percent == 100:
             if template.get(DEDUCTION) != 100:
                 base = frappe.db.get_value('Item Tax Template', {'company': doc.company,
-                    'title': ('Tjenestekjøp fra utlandet – MVA 25 % – 100 % fradrag' if reverse
+                    'title': (f'Tjenestekjøp fra utlandet – MVA {nominal:g} % – 100 % fradrag' if reverse
                               else f'MVA {nominal:g} % – varelinjer')}, 'name')
                 if not base:
                     frappe.throw(frappe._('Select an existing full-deduction item tax template before changing deduction to 100 percent.'))
@@ -215,7 +218,7 @@ def prepare_items(doc, method=None):
         if not account.account_type:
             account.account_type = 'Expense Account'
             account.save()
-        code = ('86' if percent else '87') if reverse else next((purchase for rate, _, _, _, purchase in ORDINARY if rate == nominal), None)
+        code = (with_deduction if percent else without) if reverse else next((purchase for rate, _, _, _, purchase in ORDINARY if rate == nominal), None)
         title = (f'Tjenestekjøp fra utlandet – MVA {nominal:g} %' if reverse else f'Inngående MVA {nominal:g} %') + f' – {percent:g} % fradrag – {account.account_number or account.account_name}'
         name = frappe.db.get_value('Item Tax Template', {'company': doc.company, 'title': title})
         if not name:
@@ -271,9 +274,10 @@ def prepare_sales_rows(doc):
 def append_native_rows(doc, item, template):
     """Use core's row creation; adapt only Norwegian direction/basis metadata."""
     from erpnext.controllers.accounts_controller import add_taxes_from_tax_template
-    from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, OUTPUT, INPUT
+    from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, treatment
     sales = doc.doctype in SALES_DOCUMENTS
     reverse = not sales and template.get(PURCHASE_CODE) in REVERSE_CODES
+    OUTPUT, INPUT = treatment(template.get(RATE))[:2] if reverse else (None, None)
     from erpnext_norway.vat_currency import KIND, foreign
     base_kind = KIND if reverse and foreign(doc) else 'On Net Total'
     prefix = '270' if sales else '271'
@@ -335,8 +339,8 @@ def append_native_rows(doc, item, template):
                 continue
             values = {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
                 'description': ('Ikke-fradragsberettiget MVA' if expense else
-                    ('Utgående MVA 25 % – omvendt avgiftsplikt' if account.account_number == OUTPUT else
-                     'Inngående MVA 25 % – tjenestekjøp fra utlandet') if reverse else f'MVA {template.get(RATE):g} %'),
+                    (f'Utgående MVA {template.get(RATE):g} % – omvendt avgiftsplikt' if account.account_number == OUTPUT else
+                     f'Inngående MVA {template.get(RATE):g} % – tjenestekjøp fra utlandet') if reverse else f'MVA {template.get(RATE):g} %'),
                 'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Deduct' if reverse and account.account_number == OUTPUT else 'Add',
                 'custom_norway_vat_cost': int(expense),
                 'cost_center': item.get('cost_center') or doc.get('cost_center') or

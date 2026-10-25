@@ -179,3 +179,13 @@ bilag i registreringsterminen; tidligere faktura omskrives ikke.
 Hele MVA-planen er fortsatt åpen for lav sats på utenlandske tjenester,
 valutatillegg og resterende verdsettingskombinasjoner. Teknisk kvalifisering
 er ikke generell norsk regnskapsaksept eller faktisk portalinnsending.
+
+## 0.4.16: satsvalg og eksisterende tilleggsgrunnlag
+
+Før tilpasning bestod faktisk native 12 % med fradrag og delkreditnota. Påvist
+gap var egne hardkodede 25-prosentkontoer/malnavn. Samme konfigurasjon bruker
+nå 25/12 og eksisterende kontoer/koder, også med samlet kvartalsgrense.
+Valutaadapteren leser kjernens eksisterende per-linje «previous row total» via
+standard radhenvisning. Kvartalskopien lar kjernen fordele opprinnelige tillegg
+og rabatt; ingen ny fraktfordeler, valutamotor, hovedbok eller arbeidsflate.
+Se vat-currency.md og vat-quarterly.md for prøvde beløp og gjenværende grenser.

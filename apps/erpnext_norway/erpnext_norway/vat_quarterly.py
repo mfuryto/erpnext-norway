@@ -12,6 +12,16 @@ RETURN_TYPE = 'custom_norway_vat_return_type'
 ORDINARY = 'Ordinary VAT return'
 QUARTERLY = 'Reverse-charge quarterly return'
 NOTE = 'custom_norway_vat_note'
+SOURCE_TITLE = 'Tjenestekjøp fra utlandet – kvartalsgrunnlag før MVA-registrering'
+CALC_TITLE = 'Kvartalsberegning – tjenestekjøp fra utlandet'
+
+
+def nominal(row):
+    return row.get('custom_norway_vat_rate') or 25
+
+
+def title(base, rate):
+    return base if rate == 25 else f'{base} – {rate:g} %'
 
 
 def money(value):
@@ -56,46 +66,52 @@ def configure():
 def seed(company):
     if company.country != 'Norway' or company.default_currency != 'NOK':
         return
-    output = frappe.db.get_value('Account', {'company': company.name, 'account_number': '2704'})
-    title = 'Kvartalsberegning – tjenestekjøp fra utlandet'
-    if output and not frappe.db.exists('Item Tax Template', {'company': company.name, 'title': title}):
-        frappe.get_doc({'doctype': 'Item Tax Template', 'company': company.name, 'title': title,
-            'taxes': [{'tax_type': output, 'tax_rate': 25}]}).insert(ignore_permissions=True)
-
-
     from erpnext_norway.vat_catalog import PURCHASE_CODE, RATE, DEDUCTION
-    source_title = 'Tjenestekjøp fra utlandet – kvartalsgrunnlag før MVA-registrering'
-    if output and not frappe.db.exists('Item Tax Template', {'company': company.name, 'title': source_title}):
-        accounts = frappe.get_all('Account', filters={'company': company.name, 'is_group': 0}, fields=['name', 'account_number'])
-        frappe.get_doc({'doctype': 'Item Tax Template', 'company': company.name, 'title': source_title,
-            PURCHASE_CODE: '0', RATE: 0, DEDUCTION: 0,
-            'taxes': [{'tax_type': row.name, 'tax_rate': 0} for row in accounts
-                if (row.account_number or '').startswith(('270', '271'))]}).insert(ignore_permissions=True)
+    from erpnext_norway.reverse_charge import TREATMENTS
+    accounts = frappe.get_all('Account', filters={'company': company.name, 'is_group': 0}, fields=['name', 'account_number'])
+    for rate, (output_number, *_) in TREATMENTS.items():
+        output = next((row.name for row in accounts if row.account_number == output_number), None)
+        if not output:
+            continue
+        calc_title = title(CALC_TITLE, rate)
+        if not frappe.db.exists('Item Tax Template', {'company': company.name, 'title': calc_title}):
+            frappe.get_doc({'doctype': 'Item Tax Template', 'company': company.name, 'title': calc_title,
+                'taxes': [{'tax_type': output, 'tax_rate': rate}]}).insert(ignore_permissions=True)
+        source_title = title(SOURCE_TITLE, rate)
+        if not frappe.db.exists('Item Tax Template', {'company': company.name, 'title': source_title}):
+            frappe.get_doc({'doctype': 'Item Tax Template', 'company': company.name, 'title': source_title,
+                PURCHASE_CODE: '0', RATE: rate, DEDUCTION: 0,
+                'taxes': [{'tax_type': row.name, 'tax_rate': 0} for row in accounts
+                    if (row.account_number or '').startswith(('270', '271'))]}).insert(ignore_permissions=True)
 
 
-def calculation_template(company, output):
+def calculation_template(company, output, rate):
     name = frappe.db.get_value('Item Tax Template', {'company': company,
-        'title': 'Kvartalsberegning – tjenestekjøp fra utlandet'}, 'name')
+        'title': title(CALC_TITLE, rate)}, 'name')
     if not name:
         frappe.throw(frappe._('Run the ordinary app migration to configure quarterly VAT calculation.'))
     template = frappe.get_cached_doc('Item Tax Template', name)
-    if template.disabled or len(template.taxes) != 1 or template.taxes[0].tax_type != output or template.taxes[0].tax_rate != 25:
-        frappe.throw(frappe._('Review the existing native quarterly VAT calculation template; its qualified rate is 25 percent.'))
+    if template.disabled or len(template.taxes) != 1 or template.taxes[0].tax_type != output or template.taxes[0].tax_rate != rate:
+        frappe.throw(frappe._('Review the existing native quarterly VAT calculation template for the selected rate.'))
     return name
 
 
 def prepare(doc, method=None):
     from erpnext_norway import vat
-    from erpnext_norway.vat_catalog import DEDUCTION
+    from erpnext_norway.vat_catalog import DEDUCTION, RATE
     from erpnext_norway.vat_currency import DATE, EXCHANGE
-    source_name = frappe.db.get_value('Item Tax Template', {'company': doc.company,
-        'title': 'Tjenestekjøp fra utlandet – kvartalsgrunnlag før MVA-registrering'})
+    from erpnext_norway.reverse_charge import TREATMENTS
+    source_names = {frappe.db.get_value('Item Tax Template', {'company': doc.company,
+        'title': title(SOURCE_TITLE, rate)}): rate for rate in TREATMENTS}
+    source_names.pop(None, None)
     if not doc.get('is_return'):
         for row in doc.items:
             if row.item_tax_template:
-                row.set(ITEM, int(row.item_tax_template == source_name))
+                row.set(ITEM, int(row.item_tax_template in source_names))
+                if row.get(ITEM):
+                    row.set(RATE, source_names[row.item_tax_template])
             elif row.get(ITEM):
-                row.item_tax_template = source_name
+                row.item_tax_template = next((name for name, rate in source_names.items() if rate == nominal(row)), None)
     rows = [row for row in doc.items if row.get(ITEM)]
     if doc.doctype == 'Purchase Invoice':
         doc.set(RETURN_TYPE, ORDINARY)
@@ -114,6 +130,8 @@ def prepare(doc, method=None):
         frappe.throw(frappe._('Use the registered reverse-charge treatment from the approved VAT registration date.'))
     from erpnext_norway.vat_catalog import PURCHASE_CODE
     for row in rows:
+        if nominal(row) not in TREATMENTS:
+            frappe.throw(frappe._('Select a supported reverse-charge service VAT rate.'))
         if row.item_tax_template and frappe.get_cached_value('Item Tax Template', row.item_tax_template, PURCHASE_CODE) not in (None, '', '0'):
             frappe.throw(frappe._('Use an untaxed service line for the quarterly purchase basis.'))
         if row.item_code and any(frappe.get_cached_value('Item', row.item_code, field)
@@ -131,37 +149,42 @@ def projected(doc, lock=False):
     """Read core-calculated tax details on an unsaved calculation copy only."""
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_currency import KIND
-    output = frappe.db.get_value('Account', {'company': doc.company, 'account_number': '2704'})
-    if not output:
-        frappe.throw(frappe._('Configure native account {0} before creating the VAT settlement.').format('2704'))
+    from erpnext_norway.reverse_charge import treatment
+    rates = {nominal(row) for row in doc.items if row.get(ITEM)}
+    outputs = {rate: frappe.db.get_value('Account', {'company': doc.company,
+        'account_number': treatment(rate)[0]}) for rate in rates}
+    if not all(outputs.values()):
+        frappe.throw(frappe._('Configure the native output VAT account for each selected service rate.'))
     copy = frappe.get_doc(doc.as_dict())
-    copy.set('items', [row.as_dict() for row in doc.items if row.get(ITEM)])
-    copy.set('taxes', [])
-    copy.apply_discount_on = 'Net Total'
-    copy.additional_discount_percentage = copy.discount_amount = 0
-    copy.shipping_rule = None
-    charges = {}
-    for detail in frappe.db.sql('SELECT item_row,tax_row,amount FROM `tabItem Wise Tax Detail` '
-            'WHERE parent=%s AND parenttype=%s' + (' FOR UPDATE' if lock else ''),
-            (doc.name, doc.doctype), as_dict=True):
-        tax = next((tax for tax in doc.taxes if tax.name == detail.tax_row), None)
-        if tax and not is_vat_account(tax.account_head):
-            charges[detail.item_row] = charges.get(detail.item_row, 0) + flt(detail.amount)
-    template = calculation_template(doc.company, output)
+    copy.shipping_rule = None  # Retain the issued charges, not today's Shipping Rule.
+    original_taxes = list(copy.taxes)
+    retained = [(index, tax) for index, tax in enumerate(original_taxes, 1) if not is_vat_account(tax.account_head)]
+    positions = {old: new for new, (old, _) in enumerate(retained, 1)}
+    copy.set('taxes', [tax.as_dict() for _, tax in retained])
+    for row in copy.taxes:
+        if (row.charge_type or '').startswith('On Previous Row'):
+            reference = int(row.row_id or 0)
+            if reference not in positions:
+                frappe.throw(frappe._('Keep quarterly service charges referenced to native non-VAT charge rows.'))
+            row.row_id = str(positions[reference])
+    reference = str(len(copy.taxes)) if copy.taxes else None
     for row in copy.items:
-        if doc.currency != 'NOK' and charges.get(row.name):
-            frappe.throw(frappe._('Separate additional charges from this quarterly foreign-currency service invoice.'))
-        net = flt(row.net_amount) + (charges.get(row.name, 0) if doc.currency == 'NOK' else 0)
-        row.qty = -1 if net < 0 else 1
-        row.rate = abs(net)
-        row.discount_percentage = row.discount_amount = row.distributed_discount_amount = 0
-        row.item_tax_template = template
-    tax = copy.append('taxes', {'charge_type': KIND if doc.currency != 'NOK' else 'On Net Total',
-        'account_head': output, 'rate': 0, 'category': 'Total', 'add_deduct_tax': 'Deduct',
-        'description': 'Quarterly reverse-charge calculation'})
+        if row.get(ITEM):
+            row.item_tax_template = calculation_template(doc.company, outputs[nominal(row)], nominal(row))
+    taxes = {}
+    for rate, output in sorted(outputs.items()):
+        values = {'charge_type': KIND if doc.currency != 'NOK' else ('On Previous Row Total' if reference else 'On Net Total'),
+            'row_id': reference, 'account_head': output, 'rate': 0, 'category': 'Total',
+            'description': 'Quarterly reverse-charge calculation'}
+        taxes[rate] = copy.append('taxes', {**values, 'add_deduct_tax': 'Deduct'})
+        # Neutral counterpart on the unsaved copy keeps the supplier total and
+        # native Grand Total discount allocation equal to the original source.
+        copy.append('taxes', {**values, 'add_deduct_tax': 'Add'})
     copy.calculate_taxes_and_totals()
+    if money(copy.grand_total) != money(doc.grand_total):
+        frappe.throw(frappe._('The native quarterly calculation no longer preserves the issued supplier amount. Review changed item tax templates or source charges.'))
     return {detail.item.name: (money(-detail.taxable_amount), money(-detail.amount))
-        for detail in copy._item_wise_tax_details if detail.tax is tax}
+        for detail in copy._item_wise_tax_details if detail.item.get(ITEM) and detail.tax is taxes[nominal(detail.item)]}
 
 
 def current_invoice(name, lock=True):
@@ -205,7 +228,7 @@ def assess(company, start, end, lock=False):
 
 
 def target(company, start, end, kind=QUARTERLY):
-    result, base_total = {}, Decimal(0)
+    result, base_total = {}, {}
     for doc, details, qualified in assess(company, start, end, lock=True):
         if not qualified or source_kind(doc) != kind:
             continue
@@ -213,26 +236,30 @@ def target(company, start, end, kind=QUARTERLY):
             if row.name not in details:
                 continue
             base, amount = details[row.name]
-            key = (row.expense_account, row.cost_center or doc.cost_center)
+            key = (row.expense_account, row.cost_center or doc.cost_center, nominal(row))
             result[key] = result.get(key, Decimal(0)) + amount
-            base_total += base
+            base_total[nominal(row)] = base_total.get(nominal(row), Decimal(0)) + base
     return {key: value for key, value in result.items() if value}, base_total
 
 
 def difference(company, start, end, kind=QUARTERLY):
     from erpnext_norway.vat_journal import PERIOD_FROM, PERIOD_TO, BASE
+    from erpnext_norway.vat_catalog import RATE
+    from erpnext_norway.reverse_charge import TREATMENTS
     expected, base = target(company, start, end, kind)
-    old = frappe.db.sql(f'''SELECT a.account,a.cost_center,a.debit,a.credit,a.`{BASE}`
+    old = frappe.db.sql(f'''SELECT a.account,a.cost_center,a.debit,a.credit,a.`{BASE}`,a.`{RATE}`
         FROM `tabJournal Entry` j JOIN `tabJournal Entry Account` a ON a.parent=j.name
         WHERE j.company=%s AND j.docstatus=1 AND j.`{JOURNAL}`=1
         AND j.`{PERIOD_FROM}`=%s AND j.`{PERIOD_TO}`=%s AND j.`{RETURN_TYPE}`=%s FOR UPDATE''',
         (company, start, end, kind), as_dict=True)
-    output = frappe.db.get_value('Account', {'company': company, 'account_number': '2704'})
+    outputs = {frappe.db.get_value('Account', {'company': company, 'account_number': values[0]}): rate
+        for rate, values in TREATMENTS.items()}
     for row in old:
-        if row.account == output:
-            base -= money(row.get(BASE))
+        if row.account in outputs:
+            rate = outputs[row.account]
+            base[rate] = base.get(rate, Decimal(0)) - money(row.get(BASE))
         else:
-            key = (row.account, row.cost_center)
+            key = (row.account, row.cost_center, nominal(row))
             expected[key] = expected.get(key, Decimal(0)) - money(row.debit) + money(row.credit)
     return {key: amount for key, amount in expected.items() if amount}, base
 
@@ -244,19 +271,23 @@ def sync(company, start, end, posting_date=None, kind=QUARTERLY):
     frappe.has_permission('Journal Entry', 'create', throw=True)
     frappe.db.get_value('Company', company, 'name', for_update=True)
     values, base = difference(company, start, end, kind)
-    amount = sum(values.values(), Decimal(0))
     if not values:
         return
     from erpnext_norway.vat_catalog import check_metadata_period
     check_metadata_period(frappe._dict(doctype='Journal Entry', company=company,
         posting_date=end, is_opening='No'))
-    output = frappe.db.get_value('Account', {'company': company, 'account_number': '2704'})
+    from erpnext_norway.reverse_charge import treatment
     cc = frappe.get_cached_value('Company', company, 'cost_center')
-    rows = [{'account': account, 'cost_center': cost_center,
+    rows = [{'account': account, 'cost_center': cost_center, RATE: rate,
         'debit_in_account_currency': float(max(value, 0)),
-        'credit_in_account_currency': float(max(-value, 0))} for (account, cost_center), value in sorted(values.items())]
-    if amount:
-        rows.append({'account': output, 'cost_center': cc, CODE: '87', RATE: 25, BASE: float(base),
+        'credit_in_account_currency': float(max(-value, 0))} for (account, cost_center, rate), value in sorted(values.items())]
+    for rate in sorted({key[2] for key in values}):
+        amount = sum((value for key, value in values.items() if key[2] == rate), Decimal(0))
+        if not amount:
+            continue
+        output_number, _, _, code = treatment(rate)
+        output = frappe.db.get_value('Account', {'company': company, 'account_number': output_number})
+        rows.append({'account': output, 'cost_center': cc, CODE: code, RATE: rate, BASE: float(base.get(rate, 0)),
             NOTE: 'Kreditnota eller korrigering av kvartalsgrunnlag' if amount < 0 else '',
             'debit_in_account_currency': float(max(-amount, 0)),
             'credit_in_account_currency': float(max(amount, 0))})
@@ -310,20 +341,27 @@ def validate_journal(doc):
         return  # Core allow-on-submit protects the ordinary financial fields.
     frappe.db.get_value('Company', doc.company, 'name', for_update=True)
     wanted, base = difference(doc.company, start, end, kind)
-    output = frappe.db.get_value('Account', {'company': doc.company, 'account_number': '2704'})
-    actual, tax_amount, tax_base = {}, Decimal(0), Decimal(0)
+    from erpnext_norway.reverse_charge import TREATMENTS
+    outputs = {frappe.db.get_value('Account', {'company': doc.company, 'account_number': values[0]}): (rate, values[3])
+        for rate, values in TREATMENTS.items()}
+    actual, tax_amounts, tax_bases = {}, {}, {}
     for row in doc.accounts:
         value = money(row.debit_in_account_currency) - money(row.credit_in_account_currency)
-        if row.account == output:
-            if row.get(CODE) != '87' or row.get(RATE) != 25:
+        if row.account in outputs:
+            rate, code = outputs[row.account]
+            if row.get(CODE) != code or row.get(RATE) != rate:
                 frappe.throw(frappe._('Keep the original quarterly VAT adjustment classification.'))
-            tax_amount -= value
-            tax_base += money(row.get(BASE))
+            tax_amounts[rate] = tax_amounts.get(rate, Decimal(0)) - value
+            tax_bases[rate] = tax_bases.get(rate, Decimal(0)) + money(row.get(BASE))
         else:
-            key = (row.account, row.cost_center)
+            key = (row.account, row.cost_center, nominal(row))
             actual[key] = actual.get(key, Decimal(0)) + value
     actual = {key: value for key, value in actual.items() if value}
-    if actual != wanted or tax_amount != sum(wanted.values(), Decimal(0)) or (tax_amount and tax_base != base):
+    expected_taxes = {rate: sum((value for key, value in wanted.items() if key[2] == rate), Decimal(0))
+        for rate in {key[2] for key in wanted}}
+    expected_taxes = {rate: value for rate, value in expected_taxes.items() if value}
+    if (actual != wanted or {rate: value for rate, value in tax_amounts.items() if value} != expected_taxes
+            or any(tax_bases.get(rate, Decimal(0)) != base.get(rate, Decimal(0)) for rate in expected_taxes)):
         frappe.throw(frappe._('The quarterly VAT adjustment no longer matches its ordinary purchase sources.'))
 
 
