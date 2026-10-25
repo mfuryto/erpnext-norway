@@ -73,7 +73,12 @@ class RetainedFileMixin:
 
 class RetainedDocumentMixin:
     def on_trash(self):
+        parent = getattr(super(), "on_trash", None)
+        if self.docstatus == 2 and self.doctype in ACCOUNTING and parent:
+            from erpnext.accounts.utils import is_immutable_ledger_enabled
+            if is_immutable_ledger_enabled():
+                # ERPNext 16.52 now protects these cancelled documents itself.
+                return parent()
         if self.docstatus in (1, 2) or self.doctype == "Sales Invoice":
             frappe.throw(_("Keep this accounting document to preserve its number and documentation. Use the standard cancellation or credit note when applicable."))
-        parent = getattr(super(), "on_trash", None)
         return parent() if parent else None

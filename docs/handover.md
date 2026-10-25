@@ -354,3 +354,14 @@ språkdata fra nettleserens Intl/CLDR i den eksisterende kontrollen. En uoversat
 lenkeparameter i bankverktøyets intro settes med native form-hook/set_intro.
 Engelsk økt og norsk/engelsk PDF beholdes. Se language.md for gap og avgrensning.
 Ingen serveroppdatering utføres av Codex; bruker kjører gjeldende main-blokk.
+
+## Kjerneoppdatering før videre MVA
+
+Brukeren varslet ERPNext 16.52.1 / Frappe 16.53.0 og godkjente videreføring av
+planen med kontrollert kjerneoppdatering først. App 0.4.7 låser det offisielle
+imaget og oppdateringsverktøyets versjonskontroll. Native vern mot sletting av
+kansellerte bilag med Immutable Ledger brukes der det nå dekker kravet;
+reservevernet beholdes for dokumenterte gjenværende tilfeller. Se
+[versjonsoppdateringen](core-update.md) for kildehenvisninger og kvalifisering.
+MVA-utland/import, SAF-T og ENK gjenstår i samme rekkefølge. Serveren oppdateres
+fortsatt bare av brukeren med gjeldende main og vanlig backup-/migreringsblokk.

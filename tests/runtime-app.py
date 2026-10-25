@@ -175,6 +175,23 @@ try:
         journal = frappe.copy_doc(frappe.get_doc('Journal Entry', {'company': company, 'docstatus': 1})).insert()
         journal.submit()
         journal.cancel()
+        from erpnext.accounts.utils import is_immutable_ledger_enabled
+        original_immutable = frappe.db.get_single_value('Accounts Settings', 'enable_immutable_ledger')
+        for enabled in (1, 0):
+            frappe.db.set_single_value('Accounts Settings', 'enable_immutable_ledger', enabled)
+            frappe.db.value_cache.clear()
+            assert bool(is_immutable_ledger_enabled()) == bool(enabled)
+            try:
+                # Invoke the real controller chain before any delete/link checks.
+                journal.run_method('on_trash')
+            except frappe.ValidationError as error:
+                expected = ('Cancelled transactions cannot be deleted' if enabled else
+                            'Keep this accounting document')
+                assert expected in str(error), str(error)
+            else:
+                raise AssertionError('Cancelled journal deletion was permitted')
+        frappe.db.set_single_value('Accounts Settings', 'enable_immutable_ledger', original_immutable)
+        frappe.db.value_cache.clear()
         rejected(lambda: frappe.delete_doc('Journal Entry', journal.name, force=True))
         journal_file = save_file('cancelled-journal.txt', b'Cancelled journal evidence', journal.doctype, journal.name, is_private=1)
         rejected(lambda: frappe.delete_doc('File', journal_file.name))

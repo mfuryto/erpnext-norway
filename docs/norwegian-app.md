@@ -1,6 +1,6 @@
 # Minimal norsk app: dokumentvern og native numre
 
-Appen `erpnext_norway` utvider ERPNext 16.51.1 / Frappe 16.52.0. Den har ingen nye
+Appen `erpnext_norway` utvider ERPNext 16.52.1 / Frappe 16.53.0. Den har ingen nye
 regnskapsregistre, nummermotor, filoppbevaring eller arbeidsflater. Hovedbok,
 kreditnota, kansellering, private vedlegg og nummerserier er de eksisterende.
 Norsk regnskapsmessig produksjonsaksept er fortsatt avgrenset av de øvrige gapene

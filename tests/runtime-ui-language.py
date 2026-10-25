@@ -242,7 +242,8 @@ TECHNICAL = ['# ###,##',
  'UPC',
  'UPC-A',
  'WeasyPrint',
- 'chrome']
+ 'chrome',
+ 'frappectl']
 
 os.chdir('/home/frappe/frappe-bench/sites')
 frappe.init(site='accounting', sites_path='/home/frappe/frappe-bench/sites')

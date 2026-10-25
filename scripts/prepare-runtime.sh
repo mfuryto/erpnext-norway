@@ -10,7 +10,7 @@ mkdir -p data/{database,sites,logs,redis-queue}
 # The official application user is uid/gid 1000. MariaDB/Redis initialise their own paths.
 docker run --rm --user 0 --entrypoint sh \
   -v "$PWD/data/sites:/sites" -v "$PWD/data/logs:/logs" \
-  frappe/erpnext:v16.51.1@sha256:a856e7f65c7bfc9cfa2e74f95b62e11d37190c380d958cbf3bea5d05e2ec9268 \
+  frappe/erpnext:v16.52.1@sha256:eb1c22d2bb926ed97352b63334507bf0297f1ca1244b406e3f30869ca5d0092b \
   -c 'chown 1000:1000 /sites /logs'
 "${compose[@]}" up -d --wait --wait-timeout 180 db redis-cache redis-queue
 "${compose[@]}" run --rm --no-deps configurator
