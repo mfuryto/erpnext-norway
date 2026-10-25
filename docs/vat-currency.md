@@ -143,7 +143,9 @@ Valutagrunnlaget kan derfor bruke standard radhenvisning for dokumentert frakt/
 tillegg før MVA. Ingen ny fordelingsmotor er nødvendig. En referanse etter en
 allerede beregnet MVA-/MVA-kostnadsrad avvises; en tidligere nullrad tilfører
 ikke MVA til grunnlaget. Standard radhenvisning vises også på norsk valutagrunnlag,
-med bevaring av eksisterende brukerdefinert Property Setter.
+med bevaring av eksisterende brukerdefinert Property Setter. Et faktisk tillegg
+uten henvisning i MVA-/MVA-kostnadsgrunnlaget avvises; det skal ikke falle
+stille utenfor tjenestens grunnlag.
 
 Prøve: 100 EUR tjeneste + 10 EUR tillegg, bokført til kurs 10 og MVA-kurs 11,
 gir 110 EUR leverandørgjeld og 1 210 NOK MVA-grunnlag. Ved 12 % og 60 % fradrag

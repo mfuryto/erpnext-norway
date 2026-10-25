@@ -121,8 +121,12 @@ def basis(calc, item, tax):
 def validate_rows(doc):
     from erpnext_norway.vat import vat_amount, is_vat_account
     validate_document(doc)
+    last_charge = max((tax.idx for tax in doc.taxes if tax.account_head and
+        not is_vat_account(tax.account_head) and not tax.get('custom_norway_vat_cost') and
+        abs(vat_amount(tax)) > 0.000001), default=0)
+    configured = {id(detail.tax) for detail in (doc.get('_item_wise_tax_details') or []) if detail.rate}
     for tax in doc.taxes:
-        if not abs(vat_amount(tax)) > 0.000001:
+        if not abs(vat_amount(tax)) > 0.000001 and id(tax) not in configured:
             continue
         number = frappe.get_cached_value('Account', tax.account_head, 'account_number')
         if not is_vat_account(tax.account_head) and not tax.get('custom_norway_vat_cost'):
@@ -130,6 +134,8 @@ def validate_rows(doc):
         if (tax.charge_type != KIND or tax.included_in_print_rate or
                 (number not in ('2704', '2714', '2709', '2718') and not tax.get('custom_norway_vat_cost'))):
             frappe.throw(frappe._('Use the Norwegian service VAT basis on the VAT and non-deductible cost rows.'))
+        if last_charge and cint(tax.row_id) < last_charge:
+            frappe.throw(frappe._('Reference the native additional-charge row in the service VAT basis before submitting this invoice.'))
         expected = 'Deduct' if number in ('2704', '2709') else 'Add'
         if tax.add_deduct_tax != expected or tax.category != 'Total':
             frappe.throw(frappe._('Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.'))

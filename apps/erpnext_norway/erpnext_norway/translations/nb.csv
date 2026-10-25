@@ -5393,3 +5393,4 @@ The referenced service amount must precede VAT and its cost allocation.,Henvisni
 Keep quarterly service charges referenced to native non-VAT charge rows.,La tillegg på kvartalsgrunnlaget henvise til standard tilleggsrader uten MVA.
 The native quarterly calculation no longer preserves the issued supplier amount. Review changed item tax templates or source charges.,Kvartalsberegningen bevarer ikke lenger det opprinnelige leverandørbeløpet. Kontroller endrede vareavgiftsmaler eller tillegg på kilden.
 Use the Norwegian service VAT basis on the VAT and non-deductible cost rows.,Bruk norsk tjenestegrunnlag på radene for MVA og ikke-fradragsført MVA.
+Reference the native additional-charge row in the service VAT basis before submitting this invoice.,La tjenestens MVA-grunnlag henvise til standard tilleggsrad før fakturaen bokføres.
