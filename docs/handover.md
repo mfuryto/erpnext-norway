@@ -432,3 +432,15 @@ rabatt, delkreditnota, endret registreringsdato, native valutabilag, periodelås
 norsk nettleser og eksportert restore med private PDF-originaler.
 Se vat-currency.md. Ikke-registrert kvartal, registreringsovergang og import er
 fortsatt åpne før SAF-T og ENK. Serveren oppdateres fortsatt bare av brukeren.
+
+## Kvartalsavklaring etter valutaflyten
+
+Videre kjerneprøve viser faktisk full kreditnota etter terskelpassering:
+Tax Withholding beholder settled historikk og trekker 25 fra neste 100 selv
+om samlede netto kjøp bare er 1 200. Den kan ikke brukes uendret som norsk
+kvartalsbehandling. Prøven ruller tilbake alt og konfigurerer ikke drift.
+Sommerfrist for særskilt melding er korrigert til 31. august etter gjeldende
+§ 8-3-10. Se vat-foreign-services.md for kilde og konkrete avklaringsspørsmål
+om kreditnota over kvartal og registreringsovergang. Brukeren har ikke slik avklaring;
+videre kildeavklaring ligger hos prosjektet. Ingen antatt regel eller ny
+kvartalsautomatikk er levert. Øvrig MVA-arbeid fortsetter mens dette er åpent.

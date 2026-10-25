@@ -61,6 +61,20 @@ try:
     assert withheld(boundary) == 500, withheld(boundary)
     assert boundary.grand_total == 0, boundary.grand_total
     print('PASS native withholding triggers at exactly 2000 for one supplier and deducts from supplier payable: not Norwegian reverse VAT')
+    # Actual native credit after threshold passage: history remains settled,
+    # so it cannot be reused as a company-wide quarterly VAT decision.
+    from erpnext.controllers.sales_and_purchase_return import make_return_doc
+    credit = make_return_doc('Purchase Invoice', first.name)
+    credit.posting_date = '2026-08-11'; credit.set_posting_time = 1
+    credit.bill_date = '2026-08-11'; credit.bill_no = 'SYNTHETIC-THRESHOLD-CREDIT'
+    credit.insert(); credit.submit()
+    assert withheld(credit) == -375 and credit.grand_total == -1125
+    later = invoice(suppliers[0], 100)
+    assert withheld(later) == 25 and later.grand_total == 75
+    # Native source base after the full first-invoice credit: A600 + B600.
+    assert sum(doc.base_net_total for doc in (first, other, boundary, credit, later)) == 1200
+    assert first.reload().grand_total == 1500  # No rewrite of original.
+    print('PASS native full credit leaves company base1200, but settled withholding history still deducts25 from next100: not a Norwegian quarterly decision')
 finally:
     frappe.db.rollback()
     frappe.destroy()
