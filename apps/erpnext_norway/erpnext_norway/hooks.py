@@ -20,8 +20,13 @@ extend_doctype_class = {
     "Company": ["erpnext_norway.chart.NorwegianCompanyMixin"],
     "Quotation": ["erpnext_norway.preservation.RetainedDocumentMixin"],
     **{name: ["erpnext_norway.preservation.RetainedDocumentMixin"] for name in _accounting},
+    "Landed Cost Voucher": ["erpnext_norway.preservation.RetainedDocumentMixin",
+        "erpnext_norway.vat_landed_cost.NorwegianLandedCostMixin"],
 }
 doc_events = {
+    "Landed Cost Voucher": {
+        "on_submit": "erpnext_norway.vat_landed_cost.refresh_zero_asset_values",
+        "on_cancel": "erpnext_norway.vat_landed_cost.refresh_zero_asset_values"},
     "Sales Order": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
         "erpnext_norway.vat_catalog.prepare_items"]},
     "Delivery Note": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",

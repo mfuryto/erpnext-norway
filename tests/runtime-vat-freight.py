@@ -239,17 +239,11 @@ try:
     reset()
     print('PASS direct native invoice cancel reverses its own automatic allocation')
 
-    invalid=mixed()
-    invalid.items[0].item_code=asset.name
-    invalid.items[0].expense_account=accounts['1250']
-    try:
-        invalid.insert()
-    except frappe.ValidationError as error:
-        assert 'fixed assets requires a qualified native allocation' in str(error),str(error)
-    else:
-        raise AssertionError('Unsupported native asset return allocation was opened')
+    asset_draft=mixed();asset_draft.items[0].item_code=asset.name
+    asset_draft.items[0].expense_account=accounts['1250'];asset_draft.insert()
+    assert asset_draft.grand_total==2625 and frappe.db.get_value('Item',asset.name,'auto_create_assets')==1
     reset()
-    print('PASS unsupported asset freight chain remains blocked without changing asset creation choices')
+    print('PASS asset freight uses the same native draft calculation and retains the Asset creation choice; full lifecycle qualified separately')
 
     order=submit(mixed('Purchase Order',55.54))
     receipt=make_purchase_receipt(order.name)

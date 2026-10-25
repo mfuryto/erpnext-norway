@@ -49,7 +49,7 @@ async function norway_vat_preview(frm, options = {}) {
                 await frappe.model.set_value(current.doctype, current.name, 'item_tax_template', row.item_tax_template);
             }
             for (const field of ['custom_norway_quarterly_service', 'custom_norway_vat_delivery_date', 'custom_norway_vat_exchange_rate', 'custom_norway_vat_code', 'custom_norway_vat_rate',
-                'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']) {
+                'is_fixed_asset', 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']) {
                 if (Object.hasOwn(row, field) && frappe.meta.get_docfield(current.doctype, field, frm.doc.name) &&
                     (current[field] || null) !== (row[field] || null)) {
                     await frappe.model.set_value(current.doctype, current.name, field, row[field]);
@@ -116,6 +116,13 @@ for (const parent of ['Purchase Invoice', 'Purchase Receipt']) {
         if (field) {
             const grid = frm.fields_dict.items.grid;
             grid.update_docfield_property(field, 'read_only', 0);
+            if (parent === 'Purchase Receipt') {
+                grid.update_docfield_property('purchase_invoice', 'read_only_depends_on', 'eval:doc.is_fixed_asset');
+                for (const [property, value] of Object.entries({fieldtype:'Autocomplete', hidden:0, read_only:0,
+                    depends_on:'eval:doc.is_fixed_asset', label:__('Invoice row for VAT treatment'), options:[]})) {
+                    grid.update_docfield_property('purchase_invoice_item', property, value);
+                }
+            }
             if (parent === 'Purchase Invoice') {
                 for (const [property, value] of Object.entries({fieldtype: 'Autocomplete', hidden: 0, read_only: 0, options: []})) {
                     grid.update_docfield_property('pr_detail', property, value);
@@ -190,3 +197,43 @@ frappe.ui.form.on(child, Object.fromEntries(
     ['charge_type', 'row_id', 'account_head', 'rate', 'tax_amount', 'included_in_print_rate']
         .map(field => [field, frm => norway_vat_preview(frm)])));
 }
+
+// An Asset receipt's purchase_invoice has financial meaning in core. Select
+// the billed VAT treatment with the existing invoice-row reference instead.
+async function norway_asset_bill_options(frm, cdt, cdn) {
+    if (!frm.doc.is_return || frm.doc.docstatus) return;
+    const item = locals[cdt][cdn];
+    if (!item.is_fixed_asset || !item.purchase_receipt_item) return;
+    const sourceRow = item.purchase_receipt_item;
+    await frappe.model.with_doc('Purchase Receipt', frm.doc.return_against);
+    const receiptItem = frappe.get_doc('Purchase Receipt', frm.doc.return_against).items.find(row=>row.name===sourceRow);
+    if (!receiptItem) return;
+    const bills = await frappe.db.get_list('Purchase Invoice', {fields:['name'],limit_page_length:0,filters:[
+        ['company','=',frm.doc.company],['supplier','=',frm.doc.supplier],['docstatus','=',1],['is_return','=',0],
+        ['Purchase Invoice Item','pr_detail','=',sourceRow],
+    ]});
+    const names = new Set(bills.map(row=>row.name));
+    if (receiptItem.purchase_invoice) names.add(receiptItem.purchase_invoice);
+    const options = [];
+    for (const name of names) {
+        await frappe.model.with_doc('Purchase Invoice', name);
+        const invoice = frappe.get_doc('Purchase Invoice', name);
+        if (invoice.company!==frm.doc.company || invoice.supplier!==frm.doc.supplier || invoice.docstatus!==1 || invoice.is_return) continue;
+        for (const row of invoice.items.filter(row=>row.pr_detail===sourceRow || row.name===receiptItem.purchase_invoice_item)) {
+            options.push({value:row.name,label:name+' – '+__('Source row {0}',[row.idx]),
+                description:__('Quantity: {0}; input VAT deduction: {1} %',[row.qty,row.custom_norway_deduction_percent??100])});
+        }
+    }
+    if (item.purchase_receipt_item!==sourceRow) return;
+    const gridRow=frm.fields_dict.items.grid.grid_rows_by_docname[cdn];
+    const definition=gridRow?.docfields.find(df=>df.fieldname==='purchase_invoice_item');
+    if (definition) definition.options=options;
+    const control=gridRow?.grid_form?.fields_dict.purchase_invoice_item;
+    if (control?.set_data) {control.set_data(options);control.refresh();}
+}
+frappe.ui.form.on('Purchase Receipt Item', {
+    form_render: norway_asset_bill_options,
+    purchase_invoice_item: frm=>{
+        if (frm.doc.is_return && !frm.__norway_vat_applying) return norway_vat_preview(frm);
+    },
+});

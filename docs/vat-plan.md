@@ -13,8 +13,8 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 4 | Separate valg for fritatt/nullsats, unntatt og uten MVA-behandling | Separate varelinjevalg prøvd; vilkårene avgjør faktisk bruk |
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; blandet tjenestesalg gjennom tilbud/ordre/dellevering/faktura/kreditnota prøvd i 0.4.10 |
-| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; tilbud/ordre/dellevering/delfaktura med salgsrabatt, inklusivt tilbud og frakthenvisning prøvd i 0.4.10; driftsmiddelfrakt og øvrige kombinasjoner gjenstår |
-| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense og registreringsovergang prøvd i 0.4.14; 12 % og blandet kvartal, valutatillegg/rabatt og native oppgjør er lokalt prøvd for 0.4.16; resterende verdsettingskombinasjoner er åpne |
+| 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; tilbud/ordre/dellevering/delfaktura med salgsrabatt, inklusivt tilbud og frakthenvisning prøvd i 0.4.10; driftsmiddelfrakt og retur prøvd i 0.4.17; øvrige kombinasjoner avgrenses nedenfor |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense og registreringsovergang prøvd i 0.4.14; 12 % og blandet kvartal, valutatillegg/rabatt og native oppgjør er kvalifisert i 0.4.16; resterende verdsettingskombinasjoner er åpne |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Native mottak/deklarasjonsbilag, periode, kode 85, toll/LCV, valutabetaling og eksportkjede med EUR-kreditnota/refusjon prøvd i 0.4.15; særskilte importprosedyrer er ikke kvalifisert |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
 | 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport, leverandørens dokumentperiode og deklarasjonens ekspedisjonsperiode prøvd; utenlandske tjenester og kode 85 inngår i samme spor og hovedboksavstemming |
@@ -171,9 +171,9 @@ justeringsbilag, delfakturering, retur og gjenstående fraktkombinasjoner.
 App 0.4.4 viderefører fraktgapet med native Total og Landed Cost Voucher for
 lager-/tjenestelinjer, inkludert mottakskjede, endret fradrag, delmengder og
 retur. Ingen egen avgiftsberegning eller postering. Inklusiv pris følger den
-native innstillingen per avgiftsgrunnlag. Driftsmiddelretur i denne kombinasjonen
-krever fortsatt en uavklart native Asset-kobling og forblir sperret; øvrig
-MVA-plan er fortsatt åpen. Se vat-valuation.md for prøver og presise avgrensninger.
+native innstillingen per avgiftsgrunnlag. Den daværende sperren for
+driftsmiddelretur er løst i 0.4.17 med originalens native Asset-/fakturakobling;
+øvrig MVA-plan er fortsatt åpen. Se vat-valuation.md for prøver og presise avgrensninger.
 
 Gjenbrukskontrollen i app 0.4.5 korrigerer ordinær radoppretting til kjernens
 `add_taxes_from_tax_template`. Innstillingen for automatisk tilføying av avgifter
@@ -214,3 +214,11 @@ bilag i registreringsterminen; tidligere faktura omskrives ikke.
 Hele MVA-planen er fortsatt åpen for lav sats på utenlandske tjenester,
 valutatillegg og resterende verdsettingskombinasjoner. Teknisk kvalifisering
 er ikke generell norsk regnskapsaksept eller faktisk portalinnsending.
+
+## Native driftsmiddelflyter i 0.4.17
+
+Anleggsmiddelfrakt, delretur, fradragsendring og manuelt opprettingsvalg bruker
+samme native bilag som lagerflyten. Registrert kapitalisert utenlandsk tjeneste
+i NOK er også prøvd med 100/60/0 % fradrag og delkreditnota. Se
+[gap og konkrete beløp](vat-valuation.md). Valuta og kvartalskapitalisering før
+registrering inngår ikke i denne utvidelsen og skal ikke omtales som ferdige.

@@ -79,14 +79,8 @@ def guard_configuration(doc, method=None):
     rows = [tax for tax in doc.taxes if tax.get(COST) and tax.category == 'Valuation and Total'
             and frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION]
     if rows and len(doc.items) > 1 and any(tax.charge_type.startswith('On Previous Row') for tax in rows):
-        if any(row.get('is_fixed_asset') or (row.item_code and
-                frappe.get_cached_value('Item', row.item_code, 'is_fixed_asset')) for row in doc.items):
-            frappe.throw(frappe._('VAT valuation on freight with fixed assets requires a qualified native allocation.'))
         for tax in rows:
             tax.category = 'Total'  # Native LCV, rather than the unsupported valuation spread.
-    if total_accounts(doc) and any(row.get('is_fixed_asset') or (row.item_code and
-            frappe.get_cached_value('Item', row.item_code, 'is_fixed_asset')) for row in doc.items):
-        frappe.throw(frappe._('VAT valuation on freight with fixed assets requires a qualified native allocation.'))
 
 
 def costs(doc, category=None):
@@ -250,6 +244,7 @@ def prepare_receipt_return(doc, method=None):
         receipt_item = originals.get(item.purchase_receipt_item)
         if not receipt_item:
             frappe.throw(frappe._('Keep the native submitted purchase receipt row reference.'))
+        item.is_fixed_asset = receipt_item.is_fixed_asset
         needed = abs(flt(item.qty) * flt(item.conversion_factor or 1))
         references = frappe.get_all('Purchase Invoice Item', filters={'pr_detail': receipt_item.name,
             'docstatus': 1}, fields=['name', 'parent'])
@@ -289,7 +284,7 @@ def prepare_receipt_return(doc, method=None):
         if invoice.company != doc.company:
             frappe.throw(frappe._('Keep the native submitted purchase receipt row reference.'))
         reserved[source.name] += needed
-        item.purchase_invoice = invoice.name
+        item.purchase_invoice = receipt_item.get('purchase_invoice') if item.is_fixed_asset else invoice.name
         item.purchase_invoice_item = source.name
         for field in (CODE, RATE, DEDUCTION):
             item.set(field, source.get(field))
