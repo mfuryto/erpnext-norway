@@ -509,3 +509,19 @@ fakturalinjefelt gir norsk returvalg uten å endre mottakets finansielle referan
 Registrert kapitalisert tjenestekjøp i NOK bruker også eksisterende Add/Deduct.
 Se vat-valuation.md for gap, prøver og avgrensninger. Valuta-/kvartalskombinasjoner
 for kapitaliserte tjenester er fortsatt åpne. Ingen faktisk serveroppdatering.
+
+## MVA: kapitaliserte tjenester og samlet kvalifisering, 0.4.18
+
+PR #31 er overført til main etter seks grønne kontroller, inkludert native
+oppdatering og eksportert restore. App 0.4.18 gjenbruker den prøvde verdsettingen
+på registrerte valutakjøp og kvartalsgrunnlag før registrering. Kjerneprøvene
+avklarte at egne omfangssperrer, manglende kvartalsmarkering gjennom mottak og
+originalantall i native Asset-kontroll var de konkrete gapene. Beløp, hovedbok,
+Asset og betaling forblir i kjernen. Ingen nye skjema-/historikkregistre.
+
+Norske skjermbilder, direkte kjøp, mottak, kreditering, endret kvartal/registrering,
+25/12 % NOK/EUR og manuell oppretting er prøvd lokalt. Ordinære Journal Entry og
+Payment Entry er også prøvd som samlet primærregistrering for dokumenterte
+særtilfeller; det bygges ingen ny datoveiviser eller bilagsmotor. Se vat-plan.md,
+vat-currency.md, vat-quarterly.md og vat-valuation.md. Fresh CI og eksportert
+restore kreves før promotering av denne revisjonen. Ingen serveroppdatering.

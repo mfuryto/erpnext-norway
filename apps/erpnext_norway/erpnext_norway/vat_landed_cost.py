@@ -8,7 +8,7 @@ import frappe
 
 class NorwegianLandedCostMixin:
     def validate_asset_qty_and_status(self, receipt_document_type, receipt_document):
-        from erpnext_norway.vat_valuation import ALLOCATION
+        from erpnext_norway.vat_valuation import ALLOCATION, SOURCE
         if (not self.get(ALLOCATION) or len(self.purchase_receipts) != 1 or
                 frappe.get_cached_value('Company', self.company, 'country') != 'Norway' or
                 receipt_document_type not in ('Purchase Invoice', 'Purchase Receipt') or
@@ -16,6 +16,7 @@ class NorwegianLandedCostMixin:
             return super().validate_asset_qty_and_status(receipt_document_type, receipt_document)
         link = 'purchase_invoice' if receipt_document_type == 'Purchase Invoice' else 'purchase_receipt'
         exceptions = []
+        adjusted = []
         for row in self.items:
             if (not row.is_fixed_asset or row.receipt_document_type != receipt_document_type or
                     row.receipt_document != receipt_document.name):
@@ -26,14 +27,39 @@ class NorwegianLandedCostMixin:
                 not frappe.db.exists('Asset', {link: receipt_document.name, 'item_code': row.item_code}))
             if returning or manual:
                 exceptions.append(row)
-        if not exceptions:
+            elif not receipt_document.is_return:
+                source = next((item for item in receipt_document.items if item.name == row.purchase_receipt_item), None)
+                quarterly = source and source.get('custom_norway_quarterly_service')
+                if source and receipt_document_type == 'Purchase Receipt' and self.get(SOURCE):
+                    bill = frappe.get_doc('Purchase Invoice', self.get(SOURCE))
+                    bill.check_permission('read')
+                    quarterly = any(item.get('custom_norway_quarterly_service') and
+                        item.purchase_receipt == receipt_document.name and item.pr_detail == source.name
+                        for item in bill.items)
+                if quarterly:
+                    from erpnext.controllers.sales_and_purchase_return import get_returned_qty_map_for_row
+                    from frappe.utils import flt
+                    returned = flt(get_returned_qty_map_for_row(receipt_document.name,
+                        receipt_document.supplier, source.name, receipt_document_type).get('qty'))
+                    if returned:
+                        remaining = max(0, flt(row.qty) - returned)
+                        if not remaining and not frappe.db.exists('Asset', {link: receipt_document.name,
+                                'item_code': row.item_code, 'docstatus': ['!=', 2]}):
+                            exceptions.append(row)
+                        else:
+                            adjusted.append((row, row.qty, remaining))
+        if not exceptions and not adjusted:
             return super().validate_asset_qty_and_status(receipt_document_type, receipt_document)
         original = self.items
         try:
+            for row, original_qty, remaining in adjusted:
+                row.qty = remaining
             self.items = [row for row in original if row not in exceptions]
             return super().validate_asset_qty_and_status(receipt_document_type, receipt_document)
         finally:
             self.items = original
+            for row, qty, remaining in adjusted:
+                row.qty = qty
 
 
 def refresh_zero_asset_values(voucher, method=None):

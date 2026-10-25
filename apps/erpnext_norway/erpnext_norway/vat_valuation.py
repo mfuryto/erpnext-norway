@@ -61,7 +61,7 @@ def configured(doc):
 
 def basis_key(tax):
     return (tax.charge_type, str(tax.get('row_id') or '')
-            if (tax.charge_type or '').startswith('On Previous Row') else '')
+            if (tax.charge_type or '').startswith('On Previous Row') or tax.charge_type == 'On Norwegian VAT Base' else '')
 
 
 def guard_configuration(doc, method=None):
@@ -73,12 +73,14 @@ def guard_configuration(doc, method=None):
         # Net is intrinsic, including zero deduction without an input VAT row.
         bases = {('On Net Total', '')} | {basis_key(tax) for tax in doc.taxes
                  if tax.account_head and (frappe.get_cached_value('Account', tax.account_head,
-                     'account_number') or '').startswith('271')}
+                     'account_number') or '').startswith('271') or
+                 tax.account_head and tax.charge_type == 'On Norwegian VAT Base' and
+                 frappe.get_cached_value('Account', tax.account_head, 'account_number') in ('2704', '2709')}
         if any(basis_key(tax) not in bases for tax in valuation_rows):
             frappe.throw(frappe._('Keep matching native VAT bases for automatic VAT cost rows.'))
     rows = [tax for tax in doc.taxes if tax.get(COST) and tax.category == 'Valuation and Total'
             and frappe.get_cached_value('Account', tax.account_head, 'account_type') == VALUATION]
-    if rows and len(doc.items) > 1 and any(tax.charge_type.startswith('On Previous Row') for tax in rows):
+    if rows and len(doc.items) > 1 and any(tax.charge_type.startswith('On Previous Row') or tax.charge_type == 'On Norwegian VAT Base' for tax in rows):
         for tax in rows:
             tax.category = 'Total'  # Native LCV, rather than the unsupported valuation spread.
 

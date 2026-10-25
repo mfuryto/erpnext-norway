@@ -147,7 +147,7 @@ def prepare_items(doc, method=None):
     if frappe.get_cached_value('Company', doc.company, 'country') != 'Norway':
         return
     from erpnext_norway.vat_quarterly import prepare as prepare_quarterly
-    if doc.doctype in ('Purchase Invoice', 'Purchase Order'):
+    if doc.doctype in ('Purchase Invoice', 'Purchase Order', 'Purchase Receipt'):
         prepare_quarterly(doc)
     from erpnext_norway.vat_currency import prepare as prepare_currency
     if doc.doctype in ('Purchase Invoice', 'Purchase Order'):

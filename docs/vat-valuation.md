@@ -189,3 +189,44 @@ Asset-vare. Prøvene med 100/60/0 % fradrag gir Asset-kostnad 1 000/1 100/1 250,
 utgående MVA 250, inngående 250/150/0 og uendret leverandørbeløp 1 000.
 Kjernen håndterer delkreditnota og tilhørende Asset-kjøpsgrunnlag. Dette utvider
 ikke valutabehandling eller kvartalskapitalisering før registrering.
+
+## Valuta og kvartalsgrunnlag i 0.4.18
+
+Påvist gap før endring: kjernen beregnet og kapitaliserte allerede MVA med
+leveringskurs på én Asset-linje. Tilleggets egne omfangssperrer stanset denne
+kombinasjonen. De fjernes for ikke-lagerførte anleggsmiddeltjenester. Ett grunnlag
+bruker native Valuation and Total; flere valutagrunnlag bruker samme Total og
+Landed Cost Voucher som fraktflyten. Radhenvisningen beholdes i grunnlagsnøkkelen,
+og null fradrag kan bruke utgående grunnlag når ingen inngående rad finnes.
+
+100 EUR, bokføringskurs 10 og MVA-kurs 11 gir grunnlag 1 100 og 275 utgående MVA.
+Med 100/60/0 % fradrag blir eiendelskostnaden 1 000/1 110/1 275 og inngående MVA
+275/165/0. Prøvene dekker også 12 %, delkreditnota, ulike leveringskurser per linje,
+tillegg, negativ fordeling og kansellering. Leverandørbeløpet forblir 100 EUR.
+
+Før registrering brukes eksisterende kvartalsberegning på en ulagret native kopi.
+Når samlet grunnlag overstiger 2 000, fører det ordinære kvartalsbilaget MVA-kostnaden
+på eksisterende verdsettingskonto. Native kostnadsfordeling flytter den til faktisk
+faktura/mottak og Asset. Grunnlaget oppretter ingen ny MVA-beregning eller hovedbok.
+En særskilt fordeling blir ikke blandet med manuelle bilag. Kvartalsmalen beholder
+null avgift på leverandørbeløpet gjennom ordinært varemottak.
+
+Ved delretur krever kjernens mengdekontroll ellers det opprinnelige antallet Asset,
+selv etter en faktisk bokført retur. Kun ved appens kvartalsfordeling brukes
+kjernens get_returned_qty_map_for_row til å kontrollere gjenstående antall.
+Originalt fordelingsantall gjenopprettes før verdsetting/bokføring; native kontroll
+av eksisterende innsendte Asset beholdes. Det opprettes ingen erstatnings-Asset
+ved retur eller kansellering.
+
+Prøvd: direkte kjøp, NOK ordre/mottak/faktura, terskelpassering og reversering,
+full/delvis retur, kreditnota i senere registrert periode, korreksjon av opprinnelig
+kvartal, 25/12 % i EUR, manuell oppretting og innsendt-Asset-vern. Et kjøp på 1 000
+pluss et annet kjøp på 1 100 gir 525 utgående MVA og Asset-kostnad 1 250. Når en
+halv anleggsmiddelretur senker grunnlaget til 1 600, blir gjenstående Asset 500,
+utgående MVA og verdsettingskonto null. Kilder, native bilagskoblinger, hele
+hovedboken og private PDF-/rapportgrunnlag inngår i eksportert restore-prøve.
+
+Kjernens LCV krever faktisk mottak eller direkte faktura med Oppdater lager.
+Faktura uten mottakskobling er ikke en slik verdsettingskilde. Innsendte Asset,
+lukkede perioder, eventuell senere Asset-oppretting og avskrivning følger vanlige
+ERPNext-krav. Disse kontrollene skal ikke omgås av MVA-tillegget.

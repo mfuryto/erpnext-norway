@@ -134,8 +134,7 @@ def prepare(doc, method=None):
             frappe.throw(frappe._('Select a supported reverse-charge service VAT rate.'))
         if row.item_tax_template and frappe.get_cached_value('Item Tax Template', row.item_tax_template, PURCHASE_CODE) not in (None, '', '0'):
             frappe.throw(frappe._('Use an untaxed service line for the quarterly purchase basis.'))
-        if row.item_code and any(frappe.get_cached_value('Item', row.item_code, field)
-                for field in ('is_stock_item', 'is_fixed_asset')):
+        if row.item_code and frappe.get_cached_value('Item', row.item_code, 'is_stock_item'):
             frappe.throw(frappe._('Select a non-stock service item for this reverse-charge treatment.'))
         row.set(DEDUCTION, 0)
         if doc.currency != 'NOK':
@@ -236,7 +235,9 @@ def target(company, start, end, kind=QUARTERLY):
             if row.name not in details:
                 continue
             base, amount = details[row.name]
-            key = (row.expense_account, row.cost_center or doc.cost_center, nominal(row))
+            from erpnext_norway.vat_valuation import capitalized, allocation_account
+            account = allocation_account(doc, row).name if capitalized(row) else row.expense_account
+            key = (account, row.cost_center or doc.cost_center, nominal(row))
             result[key] = result.get(key, Decimal(0)) + amount
             base_total[nominal(row)] = base_total.get(nominal(row), Decimal(0)) + base
     return {key: value for key, value in result.items() if value}, base_total
@@ -272,6 +273,7 @@ def sync(company, start, end, posting_date=None, kind=QUARTERLY):
     frappe.db.get_value('Company', company, 'name', for_update=True)
     values, base = difference(company, start, end, kind)
     if not values:
+        sync_valuations(company, start, end, kind)
         return
     from erpnext_norway.vat_catalog import check_metadata_period
     check_metadata_period(frappe._dict(doctype='Journal Entry', company=company,
@@ -297,7 +299,37 @@ def sync(company, start, end, posting_date=None, kind=QUARTERLY):
         'voucher_type': 'Journal Entry', 'user_remark': f'MVA på tjenestekjøp fra utlandet {start} – {end}',
         'accounts': rows}).insert()
     doc.submit()
+    sync_valuations(company, start, end, kind)
     return doc
+
+
+def sync_valuations(company, start, end, kind):
+    from collections import defaultdict
+    from erpnext_norway.vat_valuation import capitalized, allocation_account, create_allocation, SOURCE, ALLOCATION
+    if not any(item.get(ITEM) and item.is_fixed_asset
+            for source in sources(company, start, end, lock=True) for item in source.items):
+        return
+    for source, details, qualified in assess(company, start, end, lock=True):
+        if source_kind(source) != kind:
+            continue
+        previous = defaultdict(float)
+        for name in frappe.get_all('Landed Cost Voucher', filters={SOURCE: source.name, ALLOCATION: 1, 'docstatus': 1}, pluck='name'):
+            voucher = frappe.get_doc('Landed Cost Voucher', name)
+            for row in voucher.items:
+                previous[(row.receipt_document_type, row.receipt_document, row.purchase_receipt_item)] += row.applicable_charges
+        groups = defaultdict(dict)
+        for item in source.items:
+            if item.name not in details or not capitalized(item):
+                continue
+            receipt_type = 'Purchase Receipt' if item.purchase_receipt else 'Purchase Invoice'
+            receipt = item.purchase_receipt or source.name
+            receipt_item = item.pr_detail if item.purchase_receipt else item.name
+            amount = flt((details[item.name][1] if qualified else 0) - money(previous[(receipt_type, receipt, receipt_item)]), 2)
+            if amount:
+                account = allocation_account(source, item).name
+                groups[(receipt_type, receipt, account, amount > 0)][receipt_item] = amount
+        for (receipt_type, receipt, account, positive), amounts in groups.items():
+            create_allocation(source, receipt_type, receipt, account, amounts, source.name)
 
 
 def update(doc, method=None):
