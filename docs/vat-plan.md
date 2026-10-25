@@ -5,7 +5,7 @@ Bestilling 19. oktober 2026: fullfør hele MVA-planen, deretter hovedplanens pun
 ERPNexts maler, vareavgifter, regler, beregning, kreditnotaer og bokføring brukes.
 Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regnskapsresultat.
 
-| Rekkefølge | Leveranse | Status ved samlet bestilling |
+| Rekkefølge | Leveranse | Status |
 | --- | --- | --- |
 | 1 | Ikke registrert/registrert, virkningsdato, MVA-merking og historiske bilag | Prøvd i app 0.3.0 |
 | 2 | Norske navn, inngående/utgående MVA og forståelige beskrivelser | Prøvd i app 0.3.1 |
@@ -14,10 +14,10 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; blandet tjenestesalg gjennom tilbud/ordre/dellevering/faktura/kreditnota prøvd i 0.4.10 |
 | 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; tilbud/ordre/dellevering/delfaktura med salgsrabatt, inklusivt tilbud og frakthenvisning prøvd i 0.4.10; driftsmiddelfrakt og øvrige kombinasjoner gjenstår |
-| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense før registrering, særskilt meldingsgrunnlag, kreditnota og registreringsovergang prøves i 0.4.14; øvrig utlandsomfang gjenstår |
-| 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; registrert valutalinjeflyt med leveringskurs, fradrag, kreditnota og native betaling i 0.4.12; 25 % kvartalsgrense og registreringsovergang prøvd i 0.4.14; 12 % og blandet kvartal, valutatillegg/rabatt og native oppgjør er lokalt prøvd for 0.4.16; resterende verdsettingskombinasjoner er åpne |
+| 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Native mottak/deklarasjonsbilag, periode, kode 85, toll/LCV, valutabetaling og eksportkjede med EUR-kreditnota/refusjon prøvd i 0.4.15; særskilte importprosedyrer er ikke kvalifisert |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
-| 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport og leverandørens dokumentperiode prøvd; utland/import gjenstår |
+| 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport, leverandørens dokumentperiode og deklarasjonens ekspedisjonsperiode prøvd; utenlandske tjenester og kode 85 inngår i samme spor og hovedboksavstemming |
 | 12 | Oppgjørsføring, betaling/refusjon, korrigert melding, vedlagt melding/kvittering | Native oppgjør/betaling/refusjon/differanse og privat dokumentbevaring prøvd; portal først |
 
 Navn alene betyr ikke kvalifisert behandling. En eksisterende 12 %-standardmal

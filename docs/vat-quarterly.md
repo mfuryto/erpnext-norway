@@ -88,3 +88,26 @@ Kjernens satsvern og vanlige transaksjonelle tilbakerulling brukes uendret.
 Denne leveransen gjelder 25 % tjenester før registrering. Lav sats, tillegg på
 valutakjøp og de øvrige åpne delene av vat-plan.md er ikke samlet kvalifisert av
 kvartalsprøvene. Ingen faktisk innlevering eller oppdatering av drift er utført.
+
+## Blandet sats og native tillegg i 0.4.16
+
+25 og 12 % bruker samme foretaksomfattende grense, ikke hver sin grense.
+Kjernen beregner hver linje med sin sats. Eksisterende kildefaktura, opprinnelig
+fradragsvalg og leverandørgjeld beholdes. Eldre kvartalslinjer uten lagret
+nominell sats tolkes som den tidligere kvalifiserte 25-prosentbehandlingen.
+
+Faktisk prøve: 1 000 til 25 % og 1 000 til 12 % gir ingen MVA. Ytterligere 100
+til 12 % gir 250 + 132 i utgående MVA. Kreditnota tilbake til 2 000 reverserer
+begge satser. Senere økning til 2 300 gir 406 MVA, fordelt på kode 87/89.
+
+Tillegg og rabatt bruker hele den ulagrede native beregningskopien. Et nøytralt
+Add/Deduct-par på kopien bevarer leverandørbeløpet og kjernens rabattfordeling;
+kopien bokføres aldri. Dette erstatter den tidligere lesingen/omfordelingen av
+avrundede NOK-tillegg. Lagrede tilleggsrader beholdes; dagens Shipping Rule kjøres
+ikke på nytt. Beregningen må bevare det opprinnelige leverandørbeløpet, også når
+andre vareavgiftsmaler på et blandet kildedokument er endret senere.
+
+Valutaprøven bruker 100 EUR + 10 EUR tillegg og 10 % rabatt på Grand Total:
+leverandør 99 EUR, MVA-grunnlag 1 089 NOK med leveringskurs 11 og 272,25 MVA.
+Et annet kjøp på 2 000 NOK i samme kvartal gir samlet grunnlag 3 089 og MVA 772,25.
+Normal eierflyt og norsk nettleser prøver også radhenvisning og vanlig lagring.

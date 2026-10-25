@@ -127,3 +127,33 @@ migrering. Bokførte eldre valutabilag etterfylles ikke og må fortsatt oppfylle
 rapportens dokumentasjonskrav. Ikke-registrert kvartal, levering før registrering,
 blandet innenlandsbehandling, ekstra frakt på valutabilaget og vareimport er
 fortsatt åpne omfang; dette fullfører ikke hele MVA-planen.
+
+## Native sats og tilleggsgrunnlag i 0.4.16
+
+Påvist gap før endring: kjernen beregnet 12 % med native Add/Deduct og delvis
+fradrag korrekt, men tillegget var hardkodet til 25 %. Samme mal-/kontokonfigurasjon
+utvides til 2709/2718 og kode 88/89. Satsen velges etter tjenestens art;
+utenlandsk leverandør er ikke i seg selv grunnlag for lav sats. Se
+[gjeldende håndbok om formidling av persontransport](https://oppslag.rettskilder.skatteetaten.no/rettskilder2/type/handboker/merverdiavgiftshandboken/gjeldende/MVA2025_M-5).
+Eksisterende maler overskrives ikke. Migreringen tilføyer bare manglende
+12-prosentvalg til registrerte foretak, uten å gjenopprette slettede 25-prosentmaler.
+
+Kjernen har allerede per-varelinjegrunnlaget fra en tidligere avgiftsrad.
+Valutagrunnlaget kan derfor bruke standard radhenvisning for dokumentert frakt/
+tillegg før MVA. Ingen ny fordelingsmotor er nødvendig. En referanse etter en
+allerede beregnet MVA-/MVA-kostnadsrad avvises; en tidligere nullrad tilfører
+ikke MVA til grunnlaget. Standard radhenvisning vises også på norsk valutagrunnlag,
+med bevaring av eksisterende brukerdefinert Property Setter. Et faktisk tillegg
+uten henvisning i MVA-/MVA-kostnadsgrunnlaget avvises; det skal ikke falle
+stille utenfor tjenestens grunnlag.
+
+Prøve: 100 EUR tjeneste + 10 EUR tillegg, bokført til kurs 10 og MVA-kurs 11,
+gir 110 EUR leverandørgjeld og 1 210 NOK MVA-grunnlag. Ved 12 % og 60 % fradrag
+fører kjernen 145,20 utgående, 87,12 inngående, 58,08 MVA-kostnad og 100 frakt.
+Delkreditnota bruker faktisk kreditert tillegg (5 EUR i prøven); en Actual-rad
+skal ikke automatisk halveres bare fordi antall varer halveres. Native betaling
+1 155 NOK og refusjon 577,50 NOK til kurs 10,5 endrer ikke MVA-grunnlaget.
+
+Kvartalsbehandling bruker begge satser med samlet terskel, se vat-quarterly.md.
+Tidligere avgrensninger om driftsmidler, blanding med andre valutabehandlinger
+og leveringsdato rundt registrering gjelder fortsatt inntil de er kvalifisert.

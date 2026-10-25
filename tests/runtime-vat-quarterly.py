@@ -180,7 +180,7 @@ try:
         frappe.db.rollback(save_point='quarter_retrospective')
         print('PASS native separately qualified50 retrospective service deduction in the first July-August registration term, code86, note, no new output tax and unchanged original purchase')
         # The native calculator allocates Actual charges and header discount;
-        # the quarterly adapter consumes its saved per-item amounts.
+        # the quarterly adapter preserves them on an unsaved native calculation copy.
         from erpnext_norway.vat_quarterly import projected
         for mixed in (False,True):
             frappe.db.savepoint('quarter_freight_discount')

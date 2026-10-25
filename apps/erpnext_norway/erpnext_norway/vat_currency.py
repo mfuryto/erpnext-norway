@@ -2,7 +2,7 @@
 import math
 
 import frappe
-from frappe.utils import flt, getdate
+from frappe.utils import cint, flt, getdate
 
 KIND = 'On Norwegian VAT Base'
 DATE = 'custom_norway_vat_delivery_date'
@@ -27,6 +27,14 @@ def configure():
     options = frappe.get_meta(doctype).get_field('charge_type').options
     if KIND not in options.split('\n'):
         make_property_setter(doctype, 'charge_type', 'options', options + '\n' + KIND, 'Text')
+    if not frappe.db.exists('Property Setter', {'doc_type': doctype, 'field_name': 'row_id', 'property': 'depends_on'}):
+        reference = frappe.get_meta(doctype).get_field('row_id').depends_on or ''
+        if reference.startswith('eval:'):
+            reference = reference[5:]
+        elif reference:
+            reference = f'doc.{reference}'
+        make_property_setter(doctype, 'row_id', 'depends_on',
+            f'eval:({reference or "false"}) || doc.charge_type === "{KIND}"', 'Data')
     for field in PRECISION_FIELDS:
         if not frappe.db.exists('Property Setter', {'doc_type': doctype,
                 'field_name': field, 'property': 'precision'}):
@@ -45,9 +53,9 @@ def issued(doc):
 def reverse_item(doc, item, published=None):
     from erpnext_norway.vat_catalog import CODE, PURCHASE_CODE
     if doc.get('is_return') or (issued(doc) if published is None else published):
-        return item.get(CODE) in ('86', '87')
+        return item.get(CODE) in ('86', '87', '88', '89')
     return bool(item.item_tax_template and frappe.get_cached_value(
-        'Item Tax Template', item.item_tax_template, PURCHASE_CODE) in ('86', '87'))
+        'Item Tax Template', item.item_tax_template, PURCHASE_CODE) in ('86', '87', '88', '89'))
 
 
 def validate_document(doc):
@@ -83,10 +91,10 @@ def prepare(doc):
     validate_document(doc)
     for tax in doc.taxes:
         number = frappe.get_cached_value('Account', tax.account_head, 'account_number') if tax.account_head else ''
-        if number in ('2704', '2714') or tax.get('custom_norway_vat_cost'):
+        if number in ('2704', '2714', '2709', '2718') or tax.get('custom_norway_vat_cost'):
             if tax.charge_type == KIND:
                 continue
-            if tax.get('set_by_item_tax_template') and tax.charge_type == 'On Net Total':
+            if tax.charge_type == 'On Previous Row Total' or (tax.get('set_by_item_tax_template') and tax.charge_type == 'On Net Total'):
                 tax.charge_type = KIND
             else:
                 frappe.throw(frappe._('Use the Norwegian VAT basis on the reverse-charge tax rows for this currency invoice.'))
@@ -96,19 +104,38 @@ def basis(calc, item, tax):
     """Return only the transaction-currency basis to the native calculator."""
     if not foreign(calc.doc):
         frappe.throw(frappe._('Use the Norwegian currency VAT basis only on foreign-currency purchases.'))
-    return flt(item.net_amount) * flt(item.get(EXCHANGE)) / flt(calc.doc.conversion_rate)
+    reference = cint(tax.row_id)
+    if reference:
+        if reference < 1 or reference >= tax.idx or reference > len(calc.doc.taxes):
+            frappe.throw(frappe._('Select an earlier native charge row for the Norwegian VAT basis.'))
+        from erpnext_norway.vat import is_vat_account
+        if any((is_vat_account(row.account_head) or row.get('custom_norway_vat_cost'))
+                and abs(flt(row.tax_amount_for_current_item)) > 0.000000001 for row in calc.doc.taxes[:reference]):
+            frappe.throw(frappe._('The referenced service amount must precede VAT and its cost allocation.'))
+        net = calc.doc.taxes[reference - 1].grand_total_for_current_item
+    else:
+        net = item.net_amount
+    return flt(net) * flt(item.get(EXCHANGE)) / flt(calc.doc.conversion_rate)
 
 
 def validate_rows(doc):
-    from erpnext_norway.vat import vat_amount
+    from erpnext_norway.vat import vat_amount, is_vat_account
     validate_document(doc)
+    last_charge = max((tax.idx for tax in doc.taxes if tax.account_head and
+        not is_vat_account(tax.account_head) and not tax.get('custom_norway_vat_cost') and
+        abs(vat_amount(tax)) > 0.000001), default=0)
+    configured = {id(detail.tax) for detail in (doc.get('_item_wise_tax_details') or []) if detail.rate}
     for tax in doc.taxes:
-        if not abs(vat_amount(tax)) > 0.000001:
+        if not abs(vat_amount(tax)) > 0.000001 and id(tax) not in configured:
             continue
         number = frappe.get_cached_value('Account', tax.account_head, 'account_number')
+        if not is_vat_account(tax.account_head) and not tax.get('custom_norway_vat_cost'):
+            continue  # Core retains ordinary freight/fees and their item allocation.
         if (tax.charge_type != KIND or tax.included_in_print_rate or
-                (number not in ('2704', '2714') and not tax.get('custom_norway_vat_cost'))):
-            frappe.throw(frappe._('Use only the Norwegian reverse-charge VAT basis without additional charges on this currency invoice.'))
-        expected = 'Deduct' if number == '2704' else 'Add'
+                (number not in ('2704', '2714', '2709', '2718') and not tax.get('custom_norway_vat_cost'))):
+            frappe.throw(frappe._('Use the Norwegian service VAT basis on the VAT and non-deductible cost rows.'))
+        if last_charge and cint(tax.row_id) < last_charge:
+            frappe.throw(frappe._('Reference the native additional-charge row in the service VAT basis before submitting this invoice.'))
+        expected = 'Deduct' if number in ('2704', '2709') else 'Add'
         if tax.add_deduct_tax != expected or tax.category != 'Total':
             frappe.throw(frappe._('Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.'))

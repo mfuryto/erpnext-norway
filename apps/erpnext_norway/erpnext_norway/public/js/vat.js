@@ -1,7 +1,10 @@
 // Core resolver: provide a basis, leave rates/rounding/totals to ERPNext.
 erpnext.taxable_base_resolvers = erpnext.taxable_base_resolvers || {};
-erpnext.taxable_base_resolvers['On Norwegian VAT Base'] = (calc, item) =>
-    flt(item.net_amount) * flt(item.custom_norway_vat_exchange_rate) / flt(calc.frm.doc.conversion_rate);
+erpnext.taxable_base_resolvers['On Norwegian VAT Base'] = (calc, item, tax) => {
+    const reference = cint(tax.row_id);
+    const net = reference ? calc.frm.doc.taxes[reference - 1].grand_total_for_current_item : item.net_amount;
+    return flt(net) * flt(item.custom_norway_vat_exchange_rate) / flt(calc.frm.doc.conversion_rate);
+};
 
 // Configure native item tax templates/rows; native controller calculates all amounts.
 async function norway_vat_preview(frm, options = {}) {
