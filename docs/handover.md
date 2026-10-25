@@ -464,3 +464,23 @@ hel/delvis ordinær registrering; ingen videre regnskapsavklaring kreves fra bru
 Se [kilder, arbeidsflyt og avgrensning](vat-quarterly.md). Hele MVA-planen er
 fortsatt åpen; lav sats, øvrige valutatillegg, vareimport/eksport og resterende
 registrerings-/verdsettingskombinasjoner skal sluttføres før SAF-T/ENK.
+
+
+## MVA: dokumentert innførsel og kjernebasert eksport, 0.4.15
+
+Deklarasjonsdato/-referanse bruker native Journal Entry-felt; kode 85 bruker
+faktisk Purchase Receipt med tre metadatafelt og private originalvedlegg.
+Varefaktura, toll-/kostnadsfaktura, Landed Cost Voucher, valutabetaling og
+MVA-oppgjør bruker standard ERPNext. Ingen importmotor, egen dokumenttype eller
+parallell hovedbok. Periode og rapportgrunnlag følger faktisk deklarasjon.
+Se [arbeidsflyt, kilder og avgrensninger](vat-import.md).
+
+Eksportprøven gjenbruker eksisterende avgiftsmal og native tilbud, ordre,
+levering, EUR-faktura, delkreditnota, betaling/refusjon og engelske PDF-originaler.
+Utenlandsk kundeadresse overstyrer ikke valgt innenlandsbehandling. Ingen ny
+eksportkode er nødvendig. Tilbakegående tjenestefradrag prøves med native
+bilag i registreringsterminen; tidligere faktura omskrives ikke.
+
+Hele MVA-planen er fortsatt åpen for lav sats på utenlandske tjenester,
+valutatillegg og resterende verdsettingskombinasjoner. Teknisk kvalifisering
+er ikke generell norsk regnskapsaksept eller faktisk portalinnsending.

@@ -18,6 +18,8 @@ def configure():
     configure_currency()
     from erpnext_norway.vat_quarterly import configure as configure_quarterly
     configure_quarterly()
+    from erpnext_norway.vat_import import configure as configure_import
+    configure_import()
     from erpnext_norway.vat_journal import configure_fields as configure_journal_fields
     configure_journal_fields()
     from erpnext_norway.vat_evidence import configure_fields as configure_evidence_fields
@@ -67,6 +69,8 @@ def configure_company(doc, method=None):
         return
     from erpnext_norway.vat_quarterly import seed as seed_quarterly
     seed_quarterly(doc)
+    from erpnext_norway.vat_import import seed as seed_import
+    seed_import(doc)
     previous = doc.get_doc_before_save()
     first = not doc.get(CONFIGURED)
     if (not first and doc.get(STATUS) == 'Registered' and previous and previous.get(STATUS) == 'Registered'

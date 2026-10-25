@@ -89,6 +89,7 @@ frappe.ui.form.on(child, {
     item_tax_template: (frm, cdt, cdn) => norway_vat_preview(frm, {template_row: cdn}),
     expense_account: frm => norway_vat_preview(frm),
     custom_norway_quarterly_service: frm => norway_vat_preview(frm),
+    custom_norway_import_date: frm => norway_vat_preview(frm),
     custom_norway_vat_delivery_date: frm => norway_vat_preview(frm),
     custom_norway_vat_exchange_rate: frm => norway_vat_preview(frm),
 });

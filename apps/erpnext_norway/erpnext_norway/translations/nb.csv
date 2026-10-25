@@ -5373,3 +5373,14 @@ All VAT entries is an accounting overview. Select the ordinary or quarterly retu
 Approved registration covers this entire quarter. Use the ordinary return; correct older source documents and any previous quarterly filing through the normal correction procedure.,Godkjent registrering gjelder hele kvartalet. Bruk ordinær MVA-melding. Korriger eldre kildebilag og eventuell tidligere kvartalsmelding gjennom vanlig korrigeringsflyt.
 Registration starts during this quarter. The quarterly and ordinary return bases are separate; post-registration credits retain their original VAT treatment in the ordinary return.,Registreringen starter i dette kvartalet. Grunnlag for kvartalsmelding og ordinær melding holdes adskilt. Kreditnotaer etter registrering beholder opprinnelig avgiftsbehandling i ordinær melding.
 Do not submit a first quarterly return with zero VAT. A correction of a previously submitted return is a different case; retain the basis and receipt.,Du skal ikke levere en førstegangsmelding for kvartalet med null MVA. Korrigering av en tidligere levert melding er et annet tilfelle. Bevar grunnlag og kvittering.
+Customs declaration basis (NOK),Deklarasjonsgrunnlag (NOK)
+Customs expedition date,Ekspedisjonsdato
+Customs declaration reference,Deklarasjonsreferanse
+"For code 85: documented customs value, not automatically the supplier price.",For kode 85: dokumentert deklarasjonsverdi og ikke automatisk leverandørens pris.
+Retain the declaration as a private receipt attachment. A goods return does not cancel the original import declaration.,Bevar deklarasjonen som privat vedlegg til varemottaket. En vareretur opphever ikke den opprinnelige innførselsdeklarasjonen.
+"Enter the documented customs basis, expedition date and declaration reference on each code 85 receipt line.","Oppgi dokumentert deklarasjonsgrunnlag, ekspedisjonsdato og deklarasjonsreferanse på hver mottakslinje med kode 85."
+Use code 85 only for imports within the approved VAT registration period.,Bruk kode 85 bare for innførsel i perioden som omfattes av godkjent MVA-registrering.
+Use the ordinary VAT return for this VAT code.,Bruk ordinær MVA-melding for denne MVA-koden.
+Enter the customs expedition date and declaration reference in the native journal reference fields.,Oppgi ekspedisjonsdato og deklarasjonsreferanse i bilagets ordinære referansefelt.
+Import VAT before registration is paid to Customs or the forwarder. Record the actual invoice without self-assessed output VAT.,Innførsels-MVA før registrering betales til Tolletaten eller speditøren. Før den faktiske regningen uten egenberegnet utgående MVA.
+Read access to all code 85 import receipts in this company and period is required for a complete VAT basis.,Du må ha lesetilgang til alle varemottak med kode 85 i foretaket og perioden for å få et fullstendig MVA-grunnlag.

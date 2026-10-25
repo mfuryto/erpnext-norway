@@ -29,7 +29,7 @@ def configure_fields():
          'insert_after': RATE, 'read_only': 1},
     ], **{doctype: [
         {'fieldname': CODE, 'label': 'Norwegian VAT code', 'fieldtype': 'Data',
-         'insert_after': 'item_tax_template', 'read_only': 0, 'allow_on_submit': int(doctype in ('Sales Invoice Item', 'Purchase Invoice Item')), 'no_copy': 0, 'print_hide': 1},
+         'insert_after': 'item_tax_template', 'read_only': 0, 'allow_on_submit': int(doctype in ('Sales Invoice Item', 'Purchase Invoice Item', 'Purchase Receipt Item')), 'no_copy': 0, 'print_hide': 1},
         {'fieldname': RATE, 'label': 'Norwegian VAT rate', 'fieldtype': 'Float',
          'insert_after': CODE, 'read_only': 1, 'no_copy': 0, 'print_hide': 1},
     ] for doctype in ('Sales Invoice Item', 'Purchase Invoice Item', 'Purchase Order Item', 'Purchase Receipt Item')}})
@@ -130,6 +130,9 @@ def stamp_codes(doc, method=None):
         if not row.item_tax_template:
             rate = next((rate for rate, *_ in ORDINARY if doc.tax_category == f'Norge MVA {rate} %'), 0)
             row.set(RATE, rate)
+        if code == '85' and (doc.doctype != 'Purchase Receipt' or not effective(
+                company, row.get('custom_norway_import_date') or date)):
+            code = '20'  # Commercial cost is separate from the customs declaration basis.
         if sales and not effective(company, date):
             code = '7'
         row.set(CODE, code if code is not None else row.get(CODE))
@@ -416,6 +419,9 @@ def preview_items(document, deduction_row=None, template_row=None):
     from erpnext_norway.vat_valuation import guard_configuration
     guard_configuration(doc)
     fields = ['item_tax_template', DEDUCTION, 'custom_norway_quarterly_service']
+    if doc.doctype == 'Purchase Receipt':
+        stamp_codes(doc)
+        fields += [CODE, RATE]
     if doc.get('is_return'):
         from erpnext_norway.vat_currency import DATE, EXCHANGE
         fields += ['custom_norway_quarterly_service', DATE, EXCHANGE, CODE, RATE, 'purchase_invoice', 'purchase_invoice_item', 'purchase_receipt', 'pr_detail']

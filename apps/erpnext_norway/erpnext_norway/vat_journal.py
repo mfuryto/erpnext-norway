@@ -44,9 +44,15 @@ def validate(doc, method=None):
     if company.country != 'Norway' or doc.is_opening == 'Yes':
         return
     from erpnext_norway.vat_quarterly import JOURNAL, RETURN_TYPE, ORDINARY, QUARTERLY, validate_journal
+    from erpnext_norway.vat_import import journal_date
+    tax_date = journal_date(doc)
     previous = doc.get_doc_before_save()
+    if (doc.docstatus == 1 and not (previous and previous.docstatus == 1)
+            and any(row.get(CODE) in {'81', '82', '83', '84'} for row in doc.accounts)
+            and (not doc.bill_date or not str(doc.bill_no or '').strip())):
+        frappe.throw(frappe._('Enter the customs expedition date and declaration reference in the native journal reference fields.'))
     if not doc.get(RETURN_TYPE) and not (previous and previous.docstatus == 1):
-        doc.set(RETURN_TYPE, ORDINARY if effective(company, doc.posting_date) else QUARTERLY)
+        doc.set(RETURN_TYPE, ORDINARY if effective(company, tax_date) else QUARTERLY)
     if doc.get(JOURNAL):
         validate_journal(doc)
     if doc.get(SETTLEMENT):
@@ -67,7 +73,8 @@ def validate(doc, method=None):
             continue
         if previous and previous.docstatus == 1:
             from erpnext_norway.vat_catalog import check_metadata_period
-            check_metadata_period(doc)
+            check_metadata_period(frappe._dict(doctype=doc.doctype, company=doc.company,
+                posting_date=tax_date, is_opening=doc.is_opening))
         if not row.get(CODE):
             if doc.docstatus == 1:
                 frappe.throw(frappe._('Select a Norwegian VAT code on each journal VAT line before submission.'))
@@ -77,17 +84,21 @@ def validate(doc, method=None):
             frappe.throw(frappe._('The journal VAT code does not match its VAT account.'))
         if company.get(STATUS) not in ('Registered', 'Not registered'):
             frappe.throw(frappe._('Set Norwegian VAT registration on the Company before submitting the invoice.'))
-        if not effective(company, doc.posting_date):
-            allowed = (row.get(CODE) in {'87', '89', '82', '84'} and
+        if not effective(company, tax_date):
+            if row.get(CODE) in {'81', '82', '83', '84'}:
+                frappe.throw(frappe._('Import VAT before registration is paid to Customs or the forwarder. Record the actual invoice without self-assessed output VAT.'))
+            allowed = (row.get(CODE) in {'87', '89'} and
                 (account_number or '').startswith('270') and float(row.credit or 0) > 0 and not row.debit)
             # Output VAT reversals are not input VAT deductions. Keep this
-            # extension to the qualified service-import code and signed basis.
-            if row.get(CODE) == '87' and account_number == '2704' and row.debit > 0 and not row.credit:
+            # extension to service-import output accounts and signed basis.
+            if row.get(CODE) in {'87', '89'} and account_number in {'2704', '2709'} and row.debit > 0 and not row.credit:
                 if float(row.get(BASE) or 0) >= 0 and not doc.get(JOURNAL):
                     frappe.throw(frappe._('Enter a negative VAT base for the output VAT reversal.'))
                 allowed = True
             if not allowed:
                 frappe.throw(frappe._('VAT on sales or input VAT deduction requires approved registration effective for this invoice.'))
+        if doc.get(RETURN_TYPE) == QUARTERLY and row.get(CODE) not in {'87', '89'}:
+            frappe.throw(frappe._('Use the ordinary VAT return for this VAT code.'))
         if row.get(SPEC) and row.get(CODE) not in {'1', '11', '13', '81'}:
             frappe.throw(frappe._('This VAT specification is not supported for the selected VAT code.'))
 
@@ -104,8 +115,9 @@ def prepare_reversal(doc):
     if source.company != doc.company or source.docstatus != 1 or source.get(SETTLEMENT):
         return
     from erpnext_norway.vat import effective
+    from erpnext_norway.vat_import import journal_date
     doc.set(RETURN_TYPE, ORDINARY if effective(frappe.get_cached_doc('Company', doc.company),
-        doc.posting_date) else QUARTERLY)
+        journal_date(doc)) else QUARTERLY)
 
     def signature(row, reverse=False):
         amounts = (row.credit_in_account_currency, row.debit_in_account_currency) if reverse else (
@@ -116,8 +128,7 @@ def prepare_reversal(doc):
 
     originals = Counter(signature(row, reverse=True) for row in source.accounts
         if row.get(BASE) and frappe.get_cached_value('Account', row.account, 'account_number')
-        in {'87': ('2704',), '81': ('2705',), '82': ('2705',),
-            '83': ('2706',), '84': ('2706',)}.get(row.get(CODE), ()) and
+        in tuple(number for number in ACCOUNTS.get(row.get(CODE), ()) if number.startswith('270')) and
         float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
     for row in doc.accounts:
         key = signature(row)

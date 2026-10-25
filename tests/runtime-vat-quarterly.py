@@ -162,6 +162,23 @@ try:
         frappe.db.rollback(save_point='quarter_prereg_sale')
         print('PASS an explicit zero-rate sales template before registration keeps the no-VAT code outside the portal basis')
         rejected(lambda:collect({**Q3,'to_date':'2026-08-31'}),'complete calendar quarter')
+        # A separately qualified §8-6 claim belongs to the registration term,
+        # not a later arbitrary period, and does not rewrite the earlier purchase.
+        frappe.db.savepoint('quarter_retrospective')
+        prior=next(source for source in sources if source.currency=='NOK' and source.grand_total==200 and not source.is_return)
+        unchanged=prior.reload().as_dict()
+        retro=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-08-31',
+            'bill_date':prior.bill_date,'bill_no':prior.bill_no,'voucher_type':'Journal Entry',
+            'user_remark':'Synthetic separately qualified pre-registration service; source '+prior.name,
+            'accounts':[{'account':a['2714'],'debit_in_account_currency':50,CODE:'86','custom_norway_vat_rate':25,
+                'custom_norway_vat_note':'Anskaffelser foretatt før mva-registrering; dokumentert tidligere kvartalsavgift',
+                'cost_center':c.cost_center},
+                {'account':a['4500'],'credit_in_account_currency':50,'cost_center':c.cost_center}]}).insert();retro.submit()
+        assert retro.get(RETURN_TYPE)==ORDINARY
+        assert totals({'company':C,'from_date':'2026-08-31','to_date':'2026-08-31','return_type':ORDINARY})==(0,0,50)
+        assert prior.reload().as_dict()==unchanged
+        frappe.db.rollback(save_point='quarter_retrospective')
+        print('PASS native separately qualified50 retrospective service deduction in the first July-August registration term, code86, note, no new output tax and unchanged original purchase')
         # The native calculator allocates Actual charges and header discount;
         # the quarterly adapter consumes its saved per-item amounts.
         from erpnext_norway.vat_quarterly import projected
