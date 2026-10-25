@@ -235,8 +235,8 @@ def target(company, start, end, kind=QUARTERLY):
             if row.name not in details:
                 continue
             base, amount = details[row.name]
-            from erpnext_norway.vat_valuation import capitalized, allocation_account
-            account = allocation_account(doc, row).name if capitalized(row) else row.expense_account
+            from erpnext_norway.vat_valuation import allocation_account
+            account = allocation_account(doc, row).name if row.is_fixed_asset else row.expense_account
             key = (account, row.cost_center or doc.cost_center, nominal(row))
             result[key] = result.get(key, Decimal(0)) + amount
             base_total[nominal(row)] = base_total.get(nominal(row), Decimal(0)) + base
@@ -305,7 +305,7 @@ def sync(company, start, end, posting_date=None, kind=QUARTERLY):
 
 def sync_valuations(company, start, end, kind):
     from collections import defaultdict
-    from erpnext_norway.vat_valuation import capitalized, allocation_account, create_allocation, SOURCE, ALLOCATION
+    from erpnext_norway.vat_valuation import allocation_account, create_allocation, SOURCE, ALLOCATION
     if not any(item.get(ITEM) and item.is_fixed_asset
             for source in sources(company, start, end, lock=True) for item in source.items):
         return
@@ -319,7 +319,7 @@ def sync_valuations(company, start, end, kind):
                 previous[(row.receipt_document_type, row.receipt_document, row.purchase_receipt_item)] += row.applicable_charges
         groups = defaultdict(dict)
         for item in source.items:
-            if item.name not in details or not capitalized(item):
+            if item.name not in details or not item.is_fixed_asset:
                 continue
             receipt_type = 'Purchase Receipt' if item.purchase_receipt else 'Purchase Invoice'
             receipt = item.purchase_receipt or source.name
