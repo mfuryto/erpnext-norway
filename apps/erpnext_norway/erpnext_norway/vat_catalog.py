@@ -90,6 +90,9 @@ def seed(company, upgrade=False):
                 'taxes': [{'tax_type': account, 'tax_rate': 0} for account in accounts.values()],
             }).insert(ignore_permissions=True)
 
+    from erpnext_norway.reverse_charge import seed as seed_reverse_charge
+    seed_reverse_charge(company)
+
 
 def stamp_codes(doc, method=None):
     from erpnext_norway.vat import posted_update, effective
@@ -166,13 +169,19 @@ def prepare_items(doc, method=None):
             row.set(DEDUCTION, percent)
         if not 0 <= percent <= 100:
             frappe.throw(frappe._('Input VAT deduction must be between 0 and 100 percent.'))
+        from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, INPUT, OUTPUT, validate as validate_reverse
+        reverse = template.get(PURCHASE_CODE) in REVERSE_CODES
+        if reverse:
+            validate_reverse(doc, row, template)
         if percent == 100:
             if template.get(DEDUCTION) != 100:
                 base = frappe.db.get_value('Item Tax Template', {'company': doc.company,
-                    'title': f'MVA {nominal:g} % – varelinjer'}, 'name')
-                if base:
-                    row.item_tax_template = base
-                    template = frappe.get_cached_doc('Item Tax Template', base)
+                    'title': ('Tjenestekjøp fra utlandet – MVA 25 % – 100 % fradrag' if reverse
+                              else f'MVA {nominal:g} % – varelinjer')}, 'name')
+                if not base:
+                    frappe.throw(frappe._('Select an existing full-deduction item tax template before changing deduction to 100 percent.'))
+                row.item_tax_template = base
+                template = frappe.get_cached_doc('Item Tax Template', base)
             append_native_rows(doc, row, template)
             continue
         from erpnext_norway.vat_valuation import allocation_account
@@ -185,26 +194,36 @@ def prepare_items(doc, method=None):
         if not account.account_type:
             account.account_type = 'Expense Account'
             account.save()
-        code = next((purchase for rate, _, _, _, purchase in ORDINARY if rate == nominal), None)
-        title = f'Inngående MVA {nominal:g} % – {percent:g} % fradrag – {account.account_number or account.account_name}'
+        code = ('86' if percent else '87') if reverse else next((purchase for rate, _, _, _, purchase in ORDINARY if rate == nominal), None)
+        title = (f'Tjenestekjøp fra utlandet – MVA {nominal:g} %' if reverse else f'Inngående MVA {nominal:g} %') + f' – {percent:g} % fradrag – {account.account_number or account.account_name}'
         name = frappe.db.get_value('Item Tax Template', {'company': doc.company, 'title': title})
         if not name:
             rates = {tax.tax_type: 0 for tax in template.taxes}
             vat_account = frappe.db.get_value('Account', {'company': doc.company,
-                'account_number': next(input_ for rate, _, input_, _, _ in ORDINARY if rate == nominal)})
+                'account_number': INPUT if reverse else next(input_ for rate, _, input_, _, _ in ORDINARY if rate == nominal)})
+            if reverse:
+                output = frappe.db.get_value('Account', {'company': doc.company, 'account_number': OUTPUT})
+                rates[output] = nominal
             rates[vat_account] = nominal * percent / 100
             rates[account.name] = nominal * (100 - percent) / 100
             name = frappe.get_doc({'doctype': 'Item Tax Template', 'company': doc.company,
-                'title': title, PURCHASE_CODE: code if percent else '0', RATE: nominal, DEDUCTION: percent,
+                'title': title, PURCHASE_CODE: code if percent or reverse else '0', RATE: nominal, DEDUCTION: percent,
                 'taxes': [{'tax_type': key, 'tax_rate': value} for key, value in rates.items()],
             }).insert().name
         row.item_tax_template = name
-        append_native_rows(doc, row, frappe.get_cached_doc('Item Tax Template', name))
+        chosen = frappe.get_cached_doc('Item Tax Template', name)
+        if reverse:
+            validate_reverse(doc, row, chosen)
+            if chosen.get(DEDUCTION) != percent:
+                frappe.throw(frappe._('The saved item tax template no longer matches the selected deduction. Review its native rates.'))
+        append_native_rows(doc, row, chosen)
 
 
 def append_native_rows(doc, item, template):
     """Use core's row creation; adapt only Norwegian direction/basis metadata."""
     from erpnext.controllers.accounts_controller import add_taxes_from_tax_template
+    from erpnext_norway.reverse_charge import CODES as REVERSE_CODES, OUTPUT, INPUT
+    reverse = doc.doctype != 'Sales Invoice' and template.get(PURCHASE_CODE) in REVERSE_CODES
     prefix = '270' if doc.doctype == 'Sales Invoice' else '271'
     included = next((tax.included_in_print_rate for tax in doc.taxes
                      if tax.account_head and frappe.get_cached_value('Account', tax.account_head,
@@ -214,11 +233,22 @@ def append_native_rows(doc, item, template):
             continue
         account = frappe.get_cached_doc('Account', row.tax_type)
         expense = doc.doctype != 'Sales Invoice' and account.root_type == 'Expense'
-        if not ((account.account_number or '').startswith(prefix) or expense):
+        if not ((account.account_number or '').startswith(prefix) or expense or
+                (reverse and account.account_number == OUTPUT)):
             continue
+        if reverse and any(tax.included_in_print_rate for tax in doc.taxes):
+            frappe.throw(frappe._('Reverse-charge VAT must not be included in the supplier price.'))
+        if reverse and account.account_number in (OUTPUT, INPUT):
+            direction = 'Deduct' if account.account_number == OUTPUT else 'Add'
+            for existing_row in (tax for tax in doc.taxes if tax.account_head == account.name):
+                if existing_row.add_deduct_tax != direction or existing_row.category != 'Total':
+                    if not existing_row.get('set_by_item_tax_template'):
+                        frappe.throw(frappe._('Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.'))
+                    existing_row.add_deduct_tax = direction
+                    existing_row.category = 'Total'
         percentage = ('On Net Total', 'On Previous Row Amount', 'On Previous Row Total')
         if expense:
-            nominal_input = next(input_ for rate, _, input_, _, _ in ORDINARY if rate == template.get(RATE))
+            nominal_input = INPUT if reverse else next(input_ for rate, _, input_, _, _ in ORDINARY if rate == template.get(RATE))
             input_account = frappe.db.get_value('Account', {'company': doc.company, 'account_number': nominal_input})
             sources = [tax for tax in doc.taxes if tax.account_head == input_account]
             if any(tax.charge_type not in percentage for tax in sources):
@@ -252,8 +282,10 @@ def append_native_rows(doc, item, template):
                     existing_row.included_in_print_rate = basis_included
                 continue
             values = {'charge_type': kind, 'row_id': reference, 'account_head': account.name,
-                'description': 'Ikke-fradragsberettiget MVA' if expense else f'MVA {template.get(RATE):g} %',
-                'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Add',
+                'description': ('Ikke-fradragsberettiget MVA' if expense else
+                    ('Utgående MVA 25 % – omvendt avgiftsplikt' if account.account_number == OUTPUT else
+                     'Inngående MVA 25 % – tjenestekjøp fra utlandet') if reverse else f'MVA {template.get(RATE):g} %'),
+                'rate': 0, 'category': 'Valuation and Total' if account.account_type == 'Expenses Included In Valuation' else 'Total', 'add_deduct_tax': 'Deduct' if reverse and account.account_number == OUTPUT else 'Add',
                 'custom_norway_vat_cost': int(expense),
                 'cost_center': item.cost_center or doc.cost_center, 'included_in_print_rate': basis_included,
                 'set_by_item_tax_template': 1}
@@ -375,9 +407,9 @@ def check_code(doc, item):
         valid = numbers == {expected[code]}
     input_accounts = {'86': '2714', '88': '2718', '81': '2715', '83': '2716'}
     if code in input_accounts:
-        valid = valid and input_accounts[code] in numbers
+        valid = numbers == {expected[code], input_accounts[code]}
     if code in {'87', '89', '82', '84'}:
-        valid = valid and not any((number or '').startswith('271') for number in numbers)
+        valid = numbers == {expected[code]}
     if not valid and not active and not float(item.base_net_amount or 0):
         valid = True  # Zero-price lines may still have a taxable classification.
     if not valid:

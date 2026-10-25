@@ -56,9 +56,15 @@ def collect(filters):
                 for row in rows:
                     tax = tax_rows[row.tax_row]
                     amount = money(row.amount)
-                    if doctype == 'Sales Invoice' or tax.get('add_deduct_tax') == 'Deduct':
+                    if doctype == 'Sales Invoice':
                         output += amount
                         direction = 1
+                    elif (frappe.get_cached_value('Account', tax.account_head,
+                            'account_number') or '').startswith('270'):
+                        # Purchase details are signed Add/Deduct amounts.
+                        # Output VAT is the credit side, input VAT the debit side.
+                        output -= amount
+                        direction = -1
                     else:
                         deduction += amount
                         direction = -1
@@ -77,7 +83,8 @@ def collect(filters):
                         tax_rows[active[0].tax_row].account_head)
                     base = sum((money(item.base_net_amount) if not row.taxable_amount
                         and tax_rows[row.tax_row].charge_type == 'On Net Total'
-                        else money(row.taxable_amount) for row in active
+                        else money(row.taxable_amount) * (-1 if doctype == 'Purchase Invoice' and
+                            tax_rows[row.tax_row].get('add_deduct_tax') == 'Deduct' else 1) for row in active
                         if tax_rows[row.tax_row].account_head == basis_account), Decimal(0))
                 else:
                     base = money(item.base_net_amount)

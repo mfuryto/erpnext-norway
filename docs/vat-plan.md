@@ -14,7 +14,7 @@ Krav → prøvd kjerne → faktisk gap → minste tilpasning → forventet regns
 | 5 | Fullt, delvis og intet fradrag; kostnad/eiendel får ikke-fradragsført MVA | Kostnad, lager og driftsmiddel prøvd; se avgrenset mottaks-/returflyt i vat-valuation.md |
 | 6 | Blandet behandling/sats per linje, varestandard og overstyring | Native fakturalinjer, kjøpsskjerm og innkjøpsordre/mottak prøvd; salgsordrekjede gjenstår |
 | 7 | Tilbud/ordre/faktura/kjøp/kreditnota, rabatt/frakt, pris inkl./ekskl. MVA, avrunding | Blandede satser, rabatt, lager-/tjenestefrakt med mottak/retur, delfakturering og inklusiv kjøpspris prøvd; driftsmiddelfrakt og øvrige kombinasjoner gjenstår |
-| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Bare teknisk posteringstilfelle prøvd |
+| 8 | Utenlandske tjenester, omvendt avgiftsplikt, valuta og fradrag, også før registrering | Registrert 25 % NOK med fradrag, ordre, kreditnota og rapport prøvd i 0.4.8; kvartalsgrense før registrering, særskilt melding og valuta gjenstår |
 | 9 | Vareimport, deklarasjonsgrunnlag/avstemming, eksport og utenlandssalg | Gjenstår |
 | 10 | Registreringsovergang, tidligere kjøp og kontrollerte rettelser/kreditnota | Grunnleggende overgang/kreditnota prøvd |
 | 11 | Spesifikasjon per kode/periode, bilagsspor, hovedboksavstemming og portalgrunnlag | Native faktura-/journalrapport og leverandørens dokumentperiode prøvd; utland/import gjenstår |
@@ -180,3 +180,10 @@ Gjenbrukskontrollen i app 0.4.5 korrigerer ordinær radoppretting til kjernens
 fra vareavgiftsmal respekteres; ved avslått automatikk må nødvendige rader finnes
 eksplisitt. Flere grunnlag på samme konto krever fortsatt adapteren fordi kjernen
 finner rader etter konto alene. Se [samlet gjennomgang](core-reuse-audit.md).
+
+Registrert 25 % tjenestekjøp i NOK følger fra app 0.4.8 de eksisterende
+vareavgiftsmalene og fradragsadapteren, native Add/Deduct og ordinær
+kreditnota/betaling/oppgjør. Rapportens lesing av signed Deduct-detaljer er
+korrigert, med enkelt grunnlag og hovedboksavstemming. Se
+[tjenestekjøp fra utlandet](vat-foreign-services.md) for nøyaktig omfang.
+Punkt 8 er fortsatt åpent til ikke-registrert kvartal og valuta er kvalifisert.
