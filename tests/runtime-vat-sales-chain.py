@@ -44,12 +44,17 @@ try:
             assert doc.docstatus==1
             for field,value in entry.get('links',{}).items():
                 assert [row.get(field) for row in doc.items]==value
-            if doc.doctype=='Sales Invoice': assert ledger(doc)==entry['ledger']
+            if doc.doctype=='Sales Invoice':
+                assert ledger(doc)==entry['ledger']
+                if not doc.is_return: equal(doc.outstanding_amount,0)
         for file in evidence['files']:
             path=frappe.get_doc('File',file['name']).get_full_path()
             assert hashlib.sha256(Path(path).read_bytes()).hexdigest()==file['sha256']
         equal(sum(row['output_vat'] for row in basis()),351)
         equal(sum(row['input_vat'] for row in basis()),0)
+        receivable=frappe.db.get_value('Account',{'company':C,'account_number':'1500'},'name')
+        equal(sum(row.debit-row.credit for row in frappe.get_all('GL Entry',filters={
+            'company':C,'account':receivable,'is_cancelled':0},fields=['debit','credit'])),0)
         print('PASS restored native sales-chain links, 351 output VAT, receivables and NB/EN PDF original bytes')
     else:
         c=frappe.get_doc({'doctype':'Company','company_name':C,'abbr':'SCV','country':'Norway',
