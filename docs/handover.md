@@ -383,3 +383,14 @@ leverandørgjelden. Funksjonen kan derfor ikke tas i bruk uendret som norsk
 omvendt MVA. Prøven er med i app-CI, ruller tilbake egne data og oppretter ingen
 driftskonfigurasjon. Se vat-foreign-services.md for kilder, faktisk prøve og
 åpen akseptmatrise. Ingen ny kvartalsautomatikk eller appversjon er levert her.
+
+## Native reversering av dokumentert kode 87-bilag
+
+App 0.4.9 retter to konkrete gap ved ERPNexts eksisterende «Reverser bilag»:
+kopiert positivt MVA-grunnlag får motsatt fortegn ved samsvar med originalens
+native MVA-linje, og negativ utgående kode 87 på 2704 tillates før registrering
+uten å åpne inngående fradrag. Kjernen lager og fører fortsatt reverseringen.
+Ingen nye felt, tabeller, bilagstyper eller arbeidsflater. Prøven dekker vanlig
+eier, gjentatt lagring, kansellering, duplikatsperre, registreringsovergang,
+native periodelås og eksportert restore. Se vat-foreign-services.md.
+Dette fullfører ikke ikke-registrert kvartalsflyt eller MVA-planens punkt 8.

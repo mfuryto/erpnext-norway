@@ -111,3 +111,10 @@ innenlands. Tillegget konfigurerer 2704/2714, Add/Deduct og norske koder i
 Item Tax Template; kjernen beregner og fører alle beløp. Script Report leser
 kjøpsdetaljenes fortegn og avstemmer hovedboken. Ingen separat fradragsmotor,
 kvartalsmotor eller hovedbok er opprettet. Se vat-foreign-services.md.
+
+App 0.4.9 bruker native `make_reverse_journal_entry` for kode 87. Faktisk prøve
+viste at kjernen kopierer vårt grunnlag uten fortegnsendring, mens appvernet
+avviste negativ utgående MVA før registrering. Den ordinære valideringshendelsen
+retter bare samsvarende kopiert grunnlag og tillater dokumentert negativ
+utgående kode 87. Native beløp, kobling, hovedbok, kansellering, duplikatsperre og
+periodelås beholdes. Ingen ny reverseringsmotor eller klasseoverstyring.

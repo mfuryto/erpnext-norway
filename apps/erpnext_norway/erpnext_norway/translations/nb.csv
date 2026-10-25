@@ -5324,3 +5324,4 @@ Select an existing full-deduction item tax template before changing deduction to
 The saved item tax template no longer matches the selected deduction. Review its native rates.,Den lagrede vareavgiftsmalen stemmer ikke lenger med valgt fradrag. Kontroller satsene i malen.
 Reverse-charge VAT must not be included in the supplier price.,MVA ved omvendt avgiftsplikt skal ikke være inkludert i leverandørprisen.
 Keep output reverse-charge VAT as Deduct and input VAT as Add in the native tax rows.,"Utgående MVA ved omvendt avgiftsplikt skal trekkes fra, og inngående MVA skal legges til i avgiftsradene."
+Enter a negative VAT base for the output VAT reversal.,Oppgi et negativt MVA-grunnlag ved tilbakeføring av utgående MVA.

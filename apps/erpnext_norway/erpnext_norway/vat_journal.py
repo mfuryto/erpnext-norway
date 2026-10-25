@@ -1,5 +1,6 @@
 """Classification on native journals for documented VAT adjustments/settlement."""
 import frappe
+from collections import Counter
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.utils import getdate
 
@@ -48,6 +49,8 @@ def validate(doc, method=None):
         validate_settlement(doc)
         return
     previous = doc.get_doc_before_save()
+    if not previous or previous.docstatus != 1:
+        prepare_reversal(doc)
     old = {row.name: row for row in previous.accounts} if previous else {}
     for row in doc.accounts:
         original = old.get(row.name)
@@ -71,7 +74,40 @@ def validate(doc, method=None):
         if not effective(company, doc.posting_date):
             allowed = (row.get(CODE) in {'87', '89', '82', '84'} and
                 (account_number or '').startswith('270') and float(row.credit or 0) > 0 and not row.debit)
+            # Output VAT reversals are not input VAT deductions. Keep this
+            # extension to the qualified service-import code and signed basis.
+            if row.get(CODE) == '87' and account_number == '2704' and row.debit > 0 and not row.credit:
+                if float(row.get(BASE) or 0) >= 0:
+                    frappe.throw(frappe._('Enter a negative VAT base for the output VAT reversal.'))
+                allowed = True
             if not allowed:
                 frappe.throw(frappe._('VAT on sales or input VAT deduction requires approved registration effective for this invoice.'))
         if row.get(SPEC) and row.get(CODE) not in {'1', '11', '13', '81'}:
             frappe.throw(frappe._('This VAT specification is not supported for the selected VAT code.'))
+
+
+def prepare_reversal(doc):
+    """Native code-87 reversal maps amounts; sign only its copied VAT base."""
+    if not doc.reversal_of:
+        return
+    source = frappe.get_doc('Journal Entry', doc.reversal_of)
+    source.check_permission('read')
+    if source.company != doc.company or source.docstatus != 1 or source.get(SETTLEMENT):
+        return
+
+    def signature(row, reverse=False):
+        amounts = (row.credit_in_account_currency, row.debit_in_account_currency) if reverse else (
+            row.debit_in_account_currency, row.credit_in_account_currency)
+        return (row.account, row.account_currency, float(row.exchange_rate or 0),
+            *map(lambda value: float(value or 0), amounts), row.get(CODE),
+            float(row.get(RATE) or 0), row.get(SPEC) or '', float(row.get(BASE) or 0))
+
+    originals = Counter(signature(row, reverse=True) for row in source.accounts
+        if row.get(CODE) == '87' and row.get(BASE) and
+        frappe.get_cached_value('Account', row.account, 'account_number') == '2704' and
+        float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
+    for row in doc.accounts:
+        key = signature(row)
+        if originals[key]:
+            row.set(BASE, -float(row.get(BASE)))
+            originals[key] -= 1

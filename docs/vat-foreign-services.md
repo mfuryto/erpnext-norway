@@ -122,3 +122,37 @@ Følgende er åpne krav, ikke levert funksjonalitet:
 Ingen egen terskelmotor, ny status eller ny arbeidsflate er innført gjennom
 denne gjenbruksprøven. Dagens linjevalg er fortsatt avgrenset til det registrerte
 NOK-omfanget ovenfor. Manuelle hovedboksbilag alene gjør ikke normalflyten ferdig.
+
+## Dokumentert gap: reversering av klassifiserte hovedboksbilag
+
+ERPNexts ordinære `make_reverse_journal_entry` bytter debet/kredit, beholder
+native `reversal_of` og kopierer de norske klassifiseringsfeltene. En faktisk
+prøve med kode 87, grunnlag 1 000 og utgående MVA 250 viser to gap: kopiert
+grunnlag blir fortsatt positivt, og appens registreringsvern avviser debet på
+utgående MVA før registrering. Dette gjelder tilbakeføring av et dokumentert
+hovedboksbilag, ikke beregning av kvartalsterskelen eller valg av melding.
+
+Minste tilpasning skal bruke den eksisterende reverseringsfunksjonen, snu
+grunnlagsmetadata bare ved samsvar med originalens motsatte MVA-linje og tillate
+dokumentert negativ utgående kode 87 uten å åpne inngående fradrag. Beløp,
+kobling, hovedbok, periodevern og kansellering skal fortsatt følge kjernen.
+Ingen ny bilagstype, tabell eller reverseringsfunksjon trengs.
+
+App 0.4.9 retter dette for **nye kode 87-reverseringer på 2704**. Ved ordinær
+lagring matches konto, valuta/kurs, motsatte native beløp, kode, sats,
+spesifikasjon og kopiert grunnlag mot det bokførte originalbilaget. Bare ved
+samsvar snus det kopierte grunnlaget. Gjentatt lagring snur ikke fortegnet igjen.
+Endrede beløp eller andre koder får ingen automatisk grunnlagsberegning.
+Eksisterende bokførte metadata endres ikke automatisk.
+
+Vanlig eier uten System Manager er prøvd med grunnlag 3 000 og utgående 750:
+native reversering gir grunnlag −3 000, utgående −750 og intet inngående fradrag.
+Kansellering, ny reversering etter kansellering, kjernens duplikatsperre,
+godkjent registrering mellom original og reversering, fortsatt fradragssperre
+før virkningsdato og native lukket regnskapsperiode inngår i prøven.
+Rapporten avstemmer mot hovedbok; samme koblinger og fortegn kontrolleres etter
+eksportert backup/gjenoppretting i app-CI.
+
+Dette er retting av bilagsreversering, ikke avklaring av terskelvirkning for en
+leverandørkreditnota i et senere kvartal. Kvartalsautomatikk, fordeling mellom
+særskilt og ordinær melding ved registrering og ulik valutakurs er fortsatt åpne.
