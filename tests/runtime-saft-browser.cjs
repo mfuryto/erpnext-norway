@@ -16,12 +16,23 @@ const assert=require('node:assert/strict');
   await page.getByRole('dialog').getByText('Til dato',{exact:true}).waitFor();
   const query=new URLSearchParams({company:'Runtime Norwegian Example',from_date:'2026-01-01',to_date:'2026-12-31'});
   const url='/api/method/erpnext_norway.saft.download?'+query.toString();
-  const response=await context.request.get(url);assert.equal(response.status(),200,await response.text());
-  assert.match(response.headers()['content-disposition'],/attachment;.*SAF-T_Financial_/);
-  const body=await response.text();assert.match(body,/<AuditFile/);assert.match(body,/<AuditFileVersion>1.40<\/AuditFileVersion>/);
+  await page.waitForFunction(()=>window.cur_dialog?.fields_dict?.from_date);
+  await page.evaluate(()=>cur_dialog.set_values({from_date:'2026-01-01',to_date:'2026-12-31'}));
+  const downloading=page.waitForEvent('download');
+  await page.getByRole('dialog').getByRole('button',{name:'Last ned',exact:true}).click();
+  const download=await downloading;
+  assert.match(download.suggestedFilename(),/^SAF-T_Financial_/);
+  const body=require('node:fs').readFileSync(await download.path(),'utf8');
+  assert.match(body,/<AuditFile/);assert.match(body,/<AuditFileVersion>1.40<\/AuditFileVersion>/);
   assert.match(body,/<TaxCode>0<\/TaxCode>/);
+  // An unsupported year stays on the Company form and uses native error UI.
+  await page.getByRole('button',{name:'Last ned SAF-T',exact:true}).click();
+  await page.waitForFunction(()=>window.cur_dialog?.fields_dict?.from_date);
+  await page.evaluate(()=>cur_dialog.set_values({from_date:'2027-01-01',to_date:'2027-12-31'}));
+  await page.getByRole('dialog').getByRole('button',{name:'Last ned',exact:true}).click();
+  await page.getByText('SAF-T-eksporten er foreløpig kvalifisert for regnskapsåret 2026.',{exact:true}).waitFor();
   const guest=await browser.newContext({baseURL:base});
   assert.equal((await guest.request.get(url)).status(),403);
-  console.log('PASS ordinary owner Norwegian Company SAF-T button/date dialog, authenticated XML attachment and guest rejection');
+  console.log('PASS ordinary owner Norwegian Company/date dialog, actual XML download, native in-form year error and guest rejection');
  } finally {await browser.close();}
 })().catch(error=>{console.error(error);process.exit(1);});

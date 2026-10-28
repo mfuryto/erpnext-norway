@@ -5401,3 +5401,5 @@ Invoice row for VAT treatment,Fakturalinje for MVA-behandling
 "Grouping code","Grupperingskode"
 "Year-specific grouping from the official income statement code list.","Årsspesifikk gruppering fra den offisielle kodelisten for næringsspesifikasjonen."
 "Norwegian SAF-T Mapping","Norsk SAF-T-kontokobling"
+"Download","Last ned","Norway SAF-T"
+"Unable to download SAF-T.","Kan ikke laste ned SAF-T."
