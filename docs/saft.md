@@ -86,6 +86,10 @@ ikke en tildeling av globale Customer-eksportrettigheter som snarvei.
 
 ## Prøvd funksjonsomfang i 0.4.19
 
+Første utgave støtter faktura/kreditnota, betalingsbilag og ordinære bilag
+uten MVA. Periodens andre bilagstyper avvises frem til eksportmappingen
+er kvalifisert, også når hovedboksposteringen ikke har et MVA-beløp.
+
 - Konto-/partreferanser og alle valgte native GL-ID-er; hovedbok, reskontrosaldo,
   åpning og slutt hentes fra samme bokførte kilde. Originaler og motposter ved
   kansellering er med. Native åpningsposter er saldo, ikke periodebevegelse.

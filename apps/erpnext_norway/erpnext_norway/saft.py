@@ -174,6 +174,8 @@ def build(company, from_date, to_date):
         sources[key] = source
         if not any(start <= r.posting_date <= end and r.is_opening != 'Yes' for r in entries):
             continue  # Historical sources still contribute opening balances; not period VAT.
+        if source.doctype not in ('Sales Invoice', 'Purchase Invoice', 'Journal Entry', 'Payment Entry'):
+            unsupported(source, 'Bilagstypens eksportmapping er ikke kvalifisert.')
         if source.doctype in ('Sales Invoice', 'Purchase Invoice'):
             info, maps = invoice_taxes(source, entries)
             tax_info.update(info)
