@@ -1,0 +1,36 @@
+{
+ "doctype": "DocType",
+ "name": "Norwegian SAF-T Mapping",
+ "module": "ERPNext Norway",
+ "istable": 1,
+ "editable_grid": 1,
+ "field_order": [
+  "year",
+  "category",
+  "code"
+ ],
+ "fields": [
+  {
+   "fieldname": "year",
+   "label": "Year",
+   "fieldtype": "Int",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "category",
+   "label": "Grouping category",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "code",
+   "label": "Grouping code",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  }
+ ],
+ "permissions": []
+}

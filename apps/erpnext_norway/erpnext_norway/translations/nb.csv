@@ -5395,3 +5395,9 @@ The native quarterly calculation no longer preserves the issued supplier amount.
 Use the Norwegian service VAT basis on the VAT and non-deductible cost rows.,Bruk norsk tjenestegrunnlag på radene for MVA og ikke-fradragsført MVA.
 Reference the native additional-charge row in the service VAT basis before submitting this invoice.,La tjenestens MVA-grunnlag henvise til standard tilleggsrad før fakturaen bokføres.
 Invoice row for VAT treatment,Fakturalinje for MVA-behandling
+"Download SAF-T","Last ned SAF-T"
+"Norwegian SAF-T mapping","Norsk SAF-T-kontokobling"
+"Grouping category","Grupperingskategori"
+"Grouping code","Grupperingskode"
+"Year-specific grouping from the official income statement code list.","Årsspesifikk gruppering fra den offisielle kodelisten for næringsspesifikasjonen."
+"Norwegian SAF-T Mapping","Norsk SAF-T-kontokobling"
