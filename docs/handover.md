@@ -541,3 +541,17 @@ eksport/radutvalg inngår både før og etter backup/restore i Compose-testene.
 Peppyrus-grensesnitt og krav til faktisk levering, status, feil og kvitteringer.
 EHF er uttrykkelig med videre. Ingen ny EHF-/SAF-T-motor eller ekstra app er
 innført i denne arbeidspakken. Serveren er ikke kontaktet eller endret.
+
+## Videreføring: første SAF-T-nedlasting i app 0.4.19
+
+[SAF-T-beskrivelsen](saft.md) angir første kvalifiserte nedlasting fra Foretak,
+med native GL-/part-/bilagskilder, årskoblinger på Konto, offisiell XSD 1.40
+og selektiv MIT-gjenbruk av den prøvde byggeren. Ordinære innenlandske satser,
+fullt/delvis/intet fradrag, kreditnota/kansellering, åpning, kostnadssted og
+valutabeløp uten MVA inngår i prøvene. Ingen kjernefiler eller bokføring endres.
+
+Hovedplanens punkt 6 er fortsatt åpent: spesialbehandling, avgiftsført valuta,
+lager/driftsmiddel/frakt, øvrige dimensjoner/bøker, periodestenging og full
+regnskapsaksept skal kvalifiseres. Ukvalifiserte periodetransaksjoner avvises
+med referanse, ikke utelates fra filen. EHF er fortsatt uttrykkelig videreført
+etter SAF-T og ENK/årsavslutning, inklusive faktisk levering/kvittering.

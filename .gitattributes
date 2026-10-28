@@ -1,0 +1,2 @@
+# Preserve the exact published normative schema, including upstream whitespace.
+apps/erpnext_norway/erpnext_norway/saft_data/Norwegian_SAF-T_Financial_Schema_v_1.40.xsd whitespace=-blank-at-eol

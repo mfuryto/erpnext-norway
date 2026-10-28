@@ -1,8 +1,9 @@
-# SAF-T: gjenbruk og gjenstående eksport
+# SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-Status 28. oktober 2026: datakildene er prøvd i ERPNext 16.52.1 / Frappe
-16.53.0. Norsk SAF-T-nedlasting er **ikke levert**. Eksporten skal bruke den
-bokførte hovedboken og eksisterende bilags-/partregistre, uten egen hovedbok.
+App 0.4.19 inneholder første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
+uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
+Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
 
 ## Format og årsversjon
 
@@ -60,26 +61,95 @@ Hele appen installeres ikke av den grunn. Frappe-adapteren leser egne
 `enk_norge`-innstillinger og egne avgiftsbehandlinger og filtrerer på
 `is_cancelled=0`. Den er ikke dermed kvalifisert for denne appens varelinjekoder,
 import, kvartalsbilag, valuta og oppgjør. Fem byggetester viser heller ikke
-korrekt årsgruppering eller full transaksjonsdekning. Ingen kode fra kandidaten
-er kopiert inn eller blitt en produktavhengighet i denne arbeidspakken.
+korrekt årsgruppering eller full transaksjonsdekning. I app 0.4.19 er bare den databasefrie byggetjenesten gjenbrukt og tilpasset,
+med MIT-lisens, opphavsrett og låst proveniens i `saft_data/NOTICE.md`.
+ENK Norge er ikke installert og er ikke en appavhengighet.
 
-## Neste implementasjon og aksept
+## Oppsett og bruk
 
-1. Utvid den beståtte lokale prøven av eksisterende bygger fra ikke-registrert
-   grunnflyt til den norske appens MVA-/valutafasiter. Velg dokumentert gjenbruk
-   og bevar lisens/proveniens der den passer.
-2. Kvalifiser fullstendig hovedboksutvalg: åpning, ordinære og kansellerte bilag,
-   motposter, periodestenging, standard/alternative avskrivningsbøker og delår.
-3. Koble kontoer til årsspesifikk gruppering og dokumenterte MVA-koder til riktig
-   TaxTable/TaxInformation. Gjenbruk den leverte MVA-kildelesingen; ikke beregn
-   avgiften en gang til eller gi alle kontoer en gjettet gruppering.
-4. Eksporter foretak, kontoer, kunder/leverandører, åpning/slutt og transaksjoner
-   med kilde-/betalingsreferanser. Prøv åpne poster og utenlandsk faktura/oppgjør.
-5. Valider med offisiell XSD og kontroller referanser, bilagsbalanse, saldoer og
-   avgiftsgrunnlag mot native rapporter. Et XSD-godkjent dokument alene er ikke
-   tilstrekkelig regnskapsaksept.
-6. Legg nedlastingen på naturlig regnskapssted, med norsk tekst og ordinære
-   rettigheter. Prøv vanlig eier, avvisning av annet foretak og gjenoppretting.
+1. Bruk eksisterende foretaksfelt for organisasjonsnummer, telefon og adresse.
+2. På hver brukt **Konto**, fyll **Norsk SAF-T-kontokobling** med år 2026,
+   grupperingskategori og grupperingskode fra den offisielle listen. Brukte
+   kontoer og kontoer med inngående saldo må ha én gyldig kobling for året.
+   Dette er engangs konfigurasjon av kontoplanen, ikke etterbehandling av bilag.
+   Ingen kontogruppering gjettes fra et firesifret nummer alene.
+   Kontonummer brukes som ID når det finnes; ellers beholdes kjernens
+   entydige kontonøkkel. Ekstra valutakontoer trenger ikke et påfunnet nummer.
+3. Åpne foretaket som regnskapsansvarlig (**Accounts Manager**), velg
+   **Last ned SAF-T** og angi datoer innenfor 2026. Feil ved kontokobling
+   lenker direkte til det aktuelle kontokortet.
+4. Filen XSD-valideres før nedlasting. Native Access Log registrerer eksporten.
+   Eksporten endrer ikke bilag, betaling, nummerserier eller hovedbok. Den
+   oppretter ikke et eget eksportarkiv eller en ny hovedbok.
+
+Andre foretaks data og gjestetilgang avvises. Regnskapsansvarlig må ha lesetilgang
+til alle valgte hovedboksposter, kildebilag og masterregistre. Eksporten bruker
+ikke en tildeling av globale Customer-eksportrettigheter som snarvei.
+
+## Prøvd funksjonsomfang i 0.4.19
+
+Første utgave støtter faktura/kreditnota, betalingsbilag og ordinære bilag
+uten MVA. Periodens andre bilagstyper avvises frem til eksportmappingen
+er kvalifisert, også når hovedboksposteringen ikke har et MVA-beløp.
+
+- Konto-/partreferanser og alle valgte native GL-ID-er; hovedbok, reskontrosaldo,
+  åpning og slutt hentes fra samme bokførte kilde. Originaler og motposter ved
+  kansellering er med. Native åpningsposter er saldo, ikke periodebevegelse.
+- Faktiske fra-/til-datoer, også midt i en måned, i SelectionCriteria.
+- Innenlandsk salg/kostnadskjøp med 25/15/12 prosent, fullt, 60 prosent og
+  intet fradrag, kreditnota og kansellering. Avgiftskode, grunnlag og faktisk
+  MVA-beløp leses fra eksisterende varelinjer og Item Wise Tax Detail. Ingen
+  ny avgiftsberegning. Opplysningene legges på grunnlagslinjen og avstemmes
+  mot native MVA-posteringer; kode 0 får null grunnlag og null MVA.
+- Norsk/utenlandsk adresse, native kostnadssteder og NOK/EUR-beløp uten
+  beregnet MVA. Ingen ny valutaberegning. Postenes native prosjektfelt kan
+  også gjengis som dimensjon når brukeren har tilgang til masterregisteret.
+- Norsk knapp og datodialog, autentisert XML-vedlegg og avvisning av gjest.
+  Kilde-ID-er, kontokoblinger og en privat syntetisk XML-fil prøves etter
+  eksportert backup/gjenoppretting i Compose.
+
+Ti databasefrie byggetester, herunder de fem opprinnelige MIT-testvektorene,
+prøver også nullbeløp, flere BaseRate-verdier, åpning og valutapresisjon.
+Den norske adapteren kontrollerer fullstendig radtilgang, årsliste,
+kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
+
+## Gjenstår i hovedplanens SAF-T-punkt
+
+Utvid eksportmappingen til import, omvendt avgiftsplikt, kvartalsbilag,
+andre klassifiserte MVA-bilag, avgiftsført valuta, lager/driftsmidler og frakt.
+Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
+De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
+Alternative regnskaps-/avskrivningsbøker og øvrige brukte dimensjoner må også
+kvalifiseres, sammen med flere åpne reskontrokontoer og periodestenging.
+Eksport for 2027 krever kvalifisering av riktig årsliste; 2026-listen brukes
+ikke automatisk videre. Deretter følger samlet regnskapsaksept av filene.
+
+Historiske poster før fra-dato beholdes i inngående saldo; periodens
+avgiftsklassifisering brukes på periodens bevegelser. En ukvalifisert
+post **innenfor den valgte perioden** avvises med bilagsreferanse. Den
+utelates aldri stille for at eksporten skal se komplett ut.
 
 Deretter følger [ENK og årsavslutning](handover.md#hovedplan-avtalt-søndag-18-oktober-kl-1844)
-og [EHF](ehf.md). Hele hovedplanen er ikke ferdig med denne kildeprøven.
+og [EHF med faktisk levering og kvitteringer](ehf.md).
+
+## Implementasjonsgap før første nedlasting
+
+Den prøvde MIT-byggeren gjenbrukes selektivt, uten ENK Norges innstillinger
+eller Frappe-adapter. Nødvendige endringer er nullbeløp, flere fradragsandeler
+i TaxTable, native åpningsbilag, valutabeløp og entydige transaksjonsreferanser.
+Norsk adapter skal legge avgiftsopplysninger på grunnlagslinjen og kontrollere
+kontokoblinger mot offisiell årsliste. Se Skatteetatens generelle dokumentasjon
+1.8, side 31–34. Native bokføring og avgiftsberegning endres ikke.
+
+Første kvalifisering av nedlastingen avgrenses til 2026, NOK-hovedbok, ordinært
+salg og kostnadskjøp med innenlandske satser/fullt/delvis/intet fradrag, samt
+nullavgift og valutaposter uten beregnet MVA. Spesialbehandling, avgiftsført
+valuta, lager-/driftsmiddelgrunnlag, frakt og alternative avskrivningsbøker
+skal avvises konkret inntil eksportmappingen er kvalifisert. Disse postene
+skal aldri forsvinne stille fra filen. Hele hovedplanens SAF-T-punkt er dermed
+fortsatt åpent etter en slik første funksjonsleveranse.
+
+Kjernen bruker kostnadssted og eventuelt prosjekt på hovedbokslinjer. Den
+gjenbrukte byggeren manglet dette feltet; Analysis/AnalysisTypeTable skal derfor
+få de faktiske native dimensjonene og beløpene. Andre brukte dimensjoner
+avvises inntil de er kvalifisert, fremfor å fjernes fra eksporten.
