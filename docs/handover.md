@@ -93,8 +93,10 @@ Ikke utvid automatisk til AS-årsregnskap, lønn, utenlandske forbrukerregler el
 ## Hovedplan: avtalt søndag 18. oktober kl. 18.44
 
 Nummereringen under er den bruker viser til. Bestilling 19. oktober: sluttfør
-punkt 5–7, med hele MVA-planen først. Integrasjoner/EHF er punkt 8 og inngår
-ikke i denne bestillingen. Tidligere annen nummerering er erstattet her.
+punkt 5–7, med hele MVA-planen først. Integrasjoner/EHF er punkt 8.
+Brukeren videreførte uttrykkelig EHF 28. oktober: SAF-T → ENK/årsavslutning
+→ EHF med faktisk levering/kvittering → samlet sluttkontroll. Tidligere annen
+nummerering er erstattet her.
 
 1. **Minimal norsk app og trygg oppdatering.** Native nummerserier/filer,
    dokumentbevaring, oppdatering, migrering og gjenoppretting.
@@ -525,3 +527,17 @@ Payment Entry er også prøvd som samlet primærregistrering for dokumenterte
 særtilfeller; det bygges ingen ny datoveiviser eller bilagsmotor. Se vat-plan.md,
 vat-currency.md, vat-quarterly.md og vat-valuation.md. Fresh CI og eksportert
 restore kreves før promotering av denne revisjonen. Ingen serveroppdatering.
+
+## Videreføring 28. oktober: SAF-T-kilder og EHF
+
+MVA-normalflyten i app 0.4.18 er overført via PR #32. Neste arbeid er punkt 6,
+med [prøvde native SAF-T-datakilder og konkret eksportgap](saft.md). Native
+Data Export og hovedbok er faktisk prøvd med vanlig eier; en eksisterende norsk
+1.40-XML-bygger har bestått sine fem byggetester mot gjeldende offisiell XSD.
+Dette er grunnlag for gjenbruk, ikke ferdig SAF-T-nedlasting. Prøven for native
+eksport/radutvalg inngår både før og etter backup/restore i Compose-testene.
+
+[EHF-videreføringen](ehf.md) samler oppdatert format, undersøkte tillegg,
+Peppyrus-grensesnitt og krav til faktisk levering, status, feil og kvitteringer.
+EHF er uttrykkelig med videre. Ingen ny EHF-/SAF-T-motor eller ekstra app er
+innført i denne arbeidspakken. Serveren er ikke kontaktet eller endret.
