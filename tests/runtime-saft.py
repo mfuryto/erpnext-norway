@@ -116,7 +116,7 @@ try:
                 {'account':bank,'debit_in_account_currency':17},
                 {'account':equity,'credit_in_account_currency':17}]}).insert();cancelled.submit();cancelled.cancel()
         euro=frappe.get_doc({'doctype':'Account','company':C,'account_name':'Synthetic SAF-T EUR bank',
-            'account_number':'1921','parent_account':frappe.db.get_value('Account',bank,'parent_account'),
+            'parent_account':frappe.db.get_value('Account',bank,'parent_account'),
             'account_type':'Bank','account_currency':'EUR',saft.MAPPING:[{'year':2026,
                 'category':'balanseverdiForOmloepsmiddel','code':'1920'}]}).insert()
         foreign=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-10-18','multi_currency':1,
@@ -131,7 +131,7 @@ try:
         assert probe.xpath('string(.//s:Header/s:Company/s:Address/s:StreetName)',namespaces=NS)=='Example street 10'
         assert probe.xpath('string(.//s:Header/s:Company/s:Address/s:Country)',namespaces=NS)=='SE'
         assert probe.xpath('string(.//s:Customers/s:Customer/s:Address/s:Country)',namespaces=NS)=='SE'
-        foreign_line=probe.xpath('.//s:Line[s:SourceDocumentID="'+foreign.name+'" and s:AccountID="1921"]',namespaces=NS)[0]
+        foreign_line=probe.xpath('.//s:Line[s:SourceDocumentID="'+foreign.name+'" and s:AccountID="'+euro.name+'"]',namespaces=NS)[0]
         assert foreign_line.xpath('string(s:DebitAmount/s:CurrencyCode)',namespaces=NS)=='EUR'
         assert Decimal(foreign_line.xpath('string(s:DebitAmount/s:CurrencyAmount)',namespaces=NS))==100
         assert Decimal(foreign_line.xpath('string(s:DebitAmount/s:Amount)',namespaces=NS))==1000

@@ -73,6 +73,8 @@ ENK Norge er ikke installert og er ikke en appavhengighet.
    kontoer og kontoer med inngående saldo må ha én gyldig kobling for året.
    Dette er engangs konfigurasjon av kontoplanen, ikke etterbehandling av bilag.
    Ingen kontogruppering gjettes fra et firesifret nummer alene.
+   Kontonummer brukes som ID når det finnes; ellers beholdes kjernens
+   entydige kontonøkkel. Ekstra valutakontoer trenger ikke et påfunnet nummer.
 3. Åpne foretaket som regnskapsansvarlig (**Accounts Manager**), velg
    **Last ned SAF-T** og angi datoer innenfor 2026. Feil ved kontokobling
    lenker direkte til det aktuelle kontokortet.

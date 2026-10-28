@@ -149,10 +149,10 @@ def build(company, from_date, to_date):
             acc = frappe.get_doc('Account', row.account)
             acc.check_permission('read')
             selected = [r for r in acc.get(MAPPING) or [] if r.year == start.year]
-            if len(selected) != 1 or (selected[0].category, selected[0].code) not in valid or not acc.account_number:
+            if len(selected) != 1 or (selected[0].category, selected[0].code) not in valid:
                 frappe.throw('SAF-T: Velg én gyldig kontokobling for {0} i {1} på kontokortet.'.format(get_link_to_form('Account', acc.name), start.year))
             accounts[acc.name] = xml.AccountData(acc.name, acc.account_name, getdate(acc.creation))
-            mapping[acc.name] = xml.AccountMapping(acc.account_number, selected[0].category, selected[0].code)
+            mapping[acc.name] = xml.AccountMapping(acc.account_number or acc.name, selected[0].category, selected[0].code)
         if row.party:
             if row.party_type not in ('Customer', 'Supplier'):
                 frappe.throw('SAF-T: Denne partstypen er ikke kvalifisert: ' + row.party_type)
