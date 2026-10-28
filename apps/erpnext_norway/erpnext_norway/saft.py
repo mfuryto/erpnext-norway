@@ -208,6 +208,7 @@ def build(company, from_date, to_date):
     addr = address('Company', company)
     return xml.build_saf_t(xml.SaftExportData(company=xml.CompanyData(org, doc.company_name, doc.phone_no,
         addr.address_line1 if addr else None, addr.pincode if addr else None, addr.city if addr else None,
+        country=(frappe.get_cached_value('Country', addr.country, 'code') or '').upper() if addr else 'NO',
         address_line2=addr.address_line2 if addr else None,
         vat_registration_number=org if doc.get('custom_norway_vat_status') == 'Registered' else None,
         vat_registration_date=getdate(doc.get('custom_norway_vat_from')) if doc.get('custom_norway_vat_from') else None),

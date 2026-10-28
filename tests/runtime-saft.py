@@ -122,13 +122,14 @@ try:
         foreign=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-10-18','multi_currency':1,
             'accounts':[{'account':euro.name,'account_currency':'EUR','exchange_rate':10,'debit_in_account_currency':100},
                         {'account':equity,'credit_in_account_currency':1000}]}).insert();foreign.submit()
-        for kind, name, country in [('Company', C, 'Norway'), ('Customer',
+        for kind, name, country in [('Company', C, 'Sweden'), ('Customer',
                 frappe.db.get_value('Customer',{'customer_name':'Runtime Norwegian Customer'}),'Sweden')]:
             frappe.get_doc({'doctype':'Address','address_title':'AAA Synthetic SAF-T '+kind,'address_type':'Billing',
                 'address_line1':'Example street 10','address_line2':'Unit 2','city':'Oslo','pincode':'0001',
                 'country':country,'is_primary_address':1,'links':[{'link_doctype':kind,'link_name':name}]}).insert()
         _, probe=exported()
         assert probe.xpath('string(.//s:Header/s:Company/s:Address/s:StreetName)',namespaces=NS)=='Example street 10'
+        assert probe.xpath('string(.//s:Header/s:Company/s:Address/s:Country)',namespaces=NS)=='SE'
         assert probe.xpath('string(.//s:Customers/s:Customer/s:Address/s:Country)',namespaces=NS)=='SE'
         foreign_line=probe.xpath('.//s:Line[s:SourceDocumentID="'+foreign.name+'" and s:AccountID="1921"]',namespaces=NS)[0]
         assert foreign_line.xpath('string(s:DebitAmount/s:CurrencyCode)',namespaces=NS)=='EUR'
