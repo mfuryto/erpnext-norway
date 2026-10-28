@@ -102,6 +102,8 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
 fi
 "${compose[@]}" run --rm --no-deps -T create-site env/bin/python - \
   < "$root/tests/runtime-core-accounting.py"
+"${compose[@]}" run --rm --no-deps -T backend env/bin/python - \
+  < "$root/tests/runtime-export-core.py"
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - probe < "$root/tests/runtime-app.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-language.py"
@@ -189,6 +191,8 @@ docker cp "$fixture/backups/runtime-ci/native/." \
   bench --site accounting migrate
 '
 runtime_python verify
+"${compose[@]}" run --rm --no-deps -T backend env/bin/python - \
+  < "$root/tests/runtime-export-core.py"
 if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-app.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-language.py"
