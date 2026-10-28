@@ -48,6 +48,14 @@ bilag, manglende mapping og duplikat konto-ID. Dette er en faktisk prøve av
 mulig gjenbruk; det skal ikke skrives en konkurrerende XML-bygger før denne
 kandidaten er ferdig vurdert.
 
+Byggeren er også prøvd direkte mot den eksisterende, bokførte ikke-registrerte
+Compose-fasiten: 16 native hovedbokslinjer, åtte bilag, kunde/leverandør og
+bankens sluttverdi 275. Sju uttrykkelig angitte prøveklassifiseringer er
+kontrollert mot den offisielle næringsspesifikasjonslisten for 2025–2026, og
+XML-filen bestod XSD 1.40. Dette var en lokal, lesende prototype med syntetiske
+foretaksopplysninger, ikke en installert eksport eller ferdig mapping av alle
+745 kontoer. Den prøver ikke den norske appens avgiftsuttrekk.
+
 Hele appen installeres ikke av den grunn. Frappe-adapteren leser egne
 `enk_norge`-innstillinger og egne avgiftsbehandlinger og filtrerer på
 `is_cancelled=0`. Den er ikke dermed kvalifisert for denne appens varelinjekoder,
@@ -57,8 +65,9 @@ er kopiert inn eller blitt en produktavhengighet i denne arbeidspakken.
 
 ## Neste implementasjon og aksept
 
-1. Prøv eksisterende bygger mot faktiske syntetiske ERPNext-uttrekk og gjeldende
-   mapping. Velg dokumentert gjenbruk og bevar lisens/proveniens der den passer.
+1. Utvid den beståtte lokale prøven av eksisterende bygger fra ikke-registrert
+   grunnflyt til den norske appens MVA-/valutafasiter. Velg dokumentert gjenbruk
+   og bevar lisens/proveniens der den passer.
 2. Kvalifiser fullstendig hovedboksutvalg: åpning, ordinære og kansellerte bilag,
    motposter, periodestenging, standard/alternative avskrivningsbøker og delår.
 3. Koble kontoer til årsspesifikk gruppering og dokumenterte MVA-koder til riktig
