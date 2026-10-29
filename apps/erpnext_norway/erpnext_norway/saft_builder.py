@@ -98,6 +98,7 @@ class TaxInformation:
 	code: str
 	tax_base: Decimal | None = None
 	tax_amount: Decimal | None = None
+	tax_credit: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -308,7 +309,8 @@ def _add_tax_information(line: etree._Element, entry: LedgerEntry, information: 
 	if information.tax_base is not None:
 		_element(tax, "TaxBase", information.tax_base)
 	amount = information.tax_amount if information.tax_amount is not None else (_money(entry.debit) if _money(entry.debit) else _money(entry.credit))
-	amount_element = etree.SubElement(tax, f"{{{NS}}}{'DebitTaxAmount' if _money(entry.debit) else 'CreditTaxAmount'}")
+	credit = information.tax_credit if information.tax_credit is not None else not bool(_money(entry.debit))
+	amount_element = etree.SubElement(tax, f"{{{NS}}}{'CreditTaxAmount' if credit else 'DebitTaxAmount'}")
 	_element(amount_element, "Amount", amount)
 
 
