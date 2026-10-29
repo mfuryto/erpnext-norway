@@ -169,3 +169,17 @@ Dette erstatter ikke brukerens navn eller fritekst, tekniske identifikatorer,
 produktnavn eller innhold fra eksterne tjenester. En rå dokumenttype i enkelte
 native feilmeldingsparametere kan fortsatt være engelsk; ingen egen feil- eller
 oversettelsesmotor innføres for å skjule slike begrensninger.
+
+## Etiketter under ikonene i venstre applinje (0.4.21)
+
+Brukeren fant engelske Setup, Accounts, Selling og Buying i venstre applinje.
+Katalogen inneholdt allerede Regnskap/Salg/Kjøp. Kjerneprøven fant at den låste
+`Sidebar.dock_entry` returnerer lagret etikett uten `__`, og `Dock` viser den
+direkte. CSV alene dekker dermed ikke denne visningen. Den norske appen bruker
+ordinært `extend_bootinfo` og native oversettelsesoppslag til å oversette
+kopier av titlene i øktens `app_data` og `dock`. Lagret eller bufret
+menyoppsett endres ikke. Setup får Oppsett
+i samme katalog. Ingen DOM-tekstbytter, ny meny eller endret kjernefil.
+Modulnøkler, ruter, ikoner, rekkefølge og brukerens egne navn beholdes.
+Kjernens JavaScript-resolver og renderer brukes uendret i begge språk. Nettleserprøven kontrollerer
+faktisk tekst, navigasjon og egne etiketter i den native applinjen.
