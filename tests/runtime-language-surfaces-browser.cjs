@@ -33,6 +33,31 @@ const assert = require('node:assert/strict');
         await page.keyboard.press('Escape');
         console.log('PASS native All apps icon grid and ERPNext-folder buttons in NB; stored module identities retained');
 
+        await page.goto('/app/accounting');
+        const dock = page.locator('#desk-dock .dock-items');
+        for (const text of ['Oppsett','Regnskap','Salg','Kjøp','Lager','Produksjon','Prosjekter','Eiendeler','Kvalitet']) {
+            await dock.locator('.dock-item-label').filter({hasText:new RegExp('^'+text+'$')}).waitFor({state:'attached'});
+        }
+        await dock.getByRole('button',{name:'Oppsett',exact:true}).hover();
+        await page.locator('.es-tooltip--plain').filter({hasText:/^Oppsett$/}).waitFor();
+        const dockLabels = await dock.locator('.dock-item-label').allTextContents();
+        for (const text of ['Setup','Accounts','Selling','Buying']) assert(!dockLabels.includes(text),dockLabels);
+        const customEntry = await page.evaluate(() => {
+            const sidebar = frappe.app.sidebar;
+            const app = sidebar.get_sidebar_app();
+            const row = app.dock.find(row => sidebar.dock_entry(row));
+            const custom = {...row,title:'Min egen meny'};
+            const entry = sidebar.dock_entry(custom);
+            return {label:entry.label,link:entry.link_to,source:row.link_to,title:custom.title};
+        });
+        assert.equal(customEntry.label,'Min egen meny');
+        assert.equal(customEntry.link,customEntry.source);
+        assert.equal(customEntry.title,'Min egen meny');
+        await dock.getByRole('button',{name:'Salg',exact:true}).click();
+        await page.waitForFunction(() => frappe.app.sidebar.current_module === 'Selling');
+        await page.screenshot({path:`${output}/dock-nb.png`,fullPage:true});
+        console.log('PASS actual left dock: Oppsett/Regnskap/Salg/Kjøp and native Selling navigation');
+
         for (const [route,expected,english] of [
             ['home',['Bli kjent med ERPNext','Inviter medarbeidere'],['Get to know ERPNext','Invite your team']],
             ['accounting',['Gjør regnskapet klart','Registre og lønnsomhet','Fordringer og gjeld'],['Get your books ready','Registers & Profitability','Receivables & Payables']],
@@ -94,6 +119,11 @@ const assert = require('node:assert/strict');
             assert.equal(await page.evaluate(() => frappe.boot.lang),'en');
             assert.equal(await page.evaluate(() => !!$.fn.datepicker.language.nb),false);
             assert.equal(await page.evaluate(() => __('Annual Sales')),'Annual Sales');
+            await page.goto('/app/accounting');
+            for (const text of ['Setup','Accounts','Selling','Buying']) {
+                await page.locator('#desk-dock .dock-item-label').filter({hasText:new RegExp('^'+text+'$')}).waitFor({state:'attached'});
+            }
+
         } finally {
             await page.evaluate(language => frappe.db.set_value('User',frappe.session.user,'language',language),previousLanguage);
         }

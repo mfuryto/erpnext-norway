@@ -569,3 +569,13 @@ prøvene før promotering. Se saft.md for dokumentert gap og avgrensning.
 Avgiftsført valuta, kvartalsbilag, import og kapitalisering er fortsatt åpne
 i SAF-T; eksisterende MVA-bokføring endres ikke. ENK/årsavslutning og EHF med
 faktisk levering, status, feil og kvitteringer følger fortsatt videre.
+
+## Venstre applinje på bokmål, 0.4.21
+
+Brukeren fant Setup/Accounts/Selling/Buying under ikonene helt til venstre.
+Den låste kjernen oversetter ikke etiketten som returneres fra dock_entry,
+selv om katalogen allerede har Regnskap/Salg/Kjøp. Appen gjenbruker resolveren
+og native __ for bare den returnerte visningsteksten i bokmålsøkter; Setup
+får Oppsett i nb.csv. Ingen lagrede moduler, ruter, ikoner eller brukeroppsett
+endres. Se language.md. Faktisk venstre applinje, navigasjon, egen etikett
+og engelsk økt inngår i nettleserprøven før promotering.
