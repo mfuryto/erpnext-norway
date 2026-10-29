@@ -555,3 +555,17 @@ lager/driftsmiddel/frakt, øvrige dimensjoner/bøker, periodestenging og full
 regnskapsaksept skal kvalifiseres. Ukvalifiserte periodetransaksjoner avvises
 med referanse, ikke utelates fra filen. EHF er fortsatt uttrykkelig videreført
 etter SAF-T og ENK/årsavslutning, inklusive faktisk levering/kvittering.
+
+## Videreføring: SAF-T for omvendt avgiftsplikt i NOK, 0.4.20
+
+Eksisterende eksportadapter utvides til tjenestekjøp med kode 86/87/88/89,
+25/12 prosent og fullt/delvis/intet fradrag. Native avgiftsdetaljer og hovedbok
+beholdes; netto avgiftsbeløp på kostnadsgrunnlaget følger Skatteetatens eksempel.
+Begge MVA-kontoer avstemmes separat. Den gjenbrukte byggeren trenger bare et
+valgfritt retningsfelt for avgiftsbeløpet. Ingen ny avgiftsmotor eller postering.
+
+Native faktura, delkreditnota, kansellering og eksportert restore inngår i
+prøvene før promotering. Se saft.md for dokumentert gap og avgrensning.
+Avgiftsført valuta, kvartalsbilag, import og kapitalisering er fortsatt åpne
+i SAF-T; eksisterende MVA-bokføring endres ikke. ENK/årsavslutning og EHF med
+faktisk levering, status, feil og kvitteringer følger fortsatt videre.

@@ -162,6 +162,17 @@ class TestNorwegianBuilderExtensions(TestCase):
             build_saf_t(replace(data,entries=entries))
 
 
+    def test_reverse_charge_tax_direction_can_differ_from_basis(self):
+        from erpnext_norway.saft_builder import TaxInformation
+        data=self.export_data()
+        for credit, direction in [(True, "CreditTaxAmount"), (False, "DebitTaxAmount")]:
+            entries=tuple(replace(r,tax_information=(TaxInformation("86",Decimal("1250"),Decimal("100"),credit),))
+                if r.record_id=="GL-1" else r for r in data.entries)
+            root=etree.fromstring(build_saf_t(replace(data,entries=entries,
+                tax_mappings={"86":TaxMapping("86",Decimal(25),"86",(Decimal(60),))})))
+            self.assertEqual(root.xpath("string(.//s:TaxInformation/s:"+direction+"/s:Amount)",namespaces={"s":NS}),"100.00")
+
+
 if __name__ == '__main__':
     import unittest
     unittest.main()

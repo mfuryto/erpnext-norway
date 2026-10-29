@@ -12,7 +12,7 @@ from erpnext_norway import saft_builder as xml
 
 MAPPING = 'custom_norway_saft_mapping'
 SALES = {'3':25, '31':15, '33':12, '5':0, '6':0, '7':0, '52':0}
-PURCHASES = {'1':25, '11':15, '13':12, '0':0}
+PURCHASES = {'1':25, '11':15, '13':12, '0':0, '86':25, '87':25, '88':12, '89':12}
 
 
 def groups(year):
@@ -49,6 +49,7 @@ def invoice_taxes(doc, rows):
     details = frappe.get_all('Item Wise Tax Detail', filters={'parenttype': doc.doctype, 'parent': doc.name},
         fields=['item_row', 'tax_row', 'amount', 'taxable_amount', 'rate'])
     result, mappings = defaultdict(list), {}
+    expected_vat = defaultdict(lambda: [Decimal(), Decimal()])
     for item in doc.items:
         code = item.get(CODE)
         expected = SALES if doc.doctype == 'Sales Invoice' else PURCHASES
@@ -56,6 +57,8 @@ def invoice_taxes(doc, rows):
             unsupported(doc)
         values = [r for r in details if r.item_row == item.name and r.tax_row in taxes]
         vat = [r for r in values if is_vat_account(taxes[r.tax_row].account_head)]
+        if expected[code] == 0 and any(xml._money(r.amount) for r in vat):
+            unsupported(doc, 'Bokført MVA mangler en kvalifisert avgiftskode.')
         if doc.currency != 'NOK' and any(xml._money(r.amount) for r in vat):
             unsupported(doc, 'Avgiftsført valuta er ikke kvalifisert.')
         # Use the posted native expense/income account; do not consult today's Item defaults.
@@ -76,20 +79,33 @@ def invoice_taxes(doc, rows):
             unsupported(doc, 'Fradragsandelen må ligge mellom 0 og 100.')
         mappings[code] = xml.TaxMapping(code, rate, code,
             tuple(sorted(set(mappings[code].base_rates if code in mappings else ()) | {deduction})))
-        amount = abs(sum((xml._money(r.amount) for r in vat), Decimal()))
+        amount = sum((abs(xml._money(r.amount)) * (-1 if taxes[r.tax_row].get('add_deduct_tax') == 'Deduct' else 1) for r in vat), Decimal())
         # No-treatment code0 has no VAT base. With partial deduction use the native
         # expense including non-deductible VAT (Skatteetaten documentation example1).
         basis = abs(xml._money(item.base_net_amount) + sum((xml._money(r.amount) for r in values
             if taxes[r.tax_row].get(COST)), Decimal())) if code != '0' else Decimal(0)
         for row in candidates:
-            result[row.name].append(xml.TaxInformation(code, basis, amount))
-    actual = sum((xml._money(r.credit) - xml._money(r.debit) for r in rows if is_vat_account(r.account)), Decimal())
-    represented = sum((value.tax_amount * (1 if r.credit else -1)
-        for r in rows for value in result.get(r.name, ())), Decimal())
-    gross_actual = sum((abs(xml._money(r.credit) - xml._money(r.debit)) for r in rows if is_vat_account(r.account)), Decimal())
-    gross_represented = sum((v.tax_amount for values in result.values() for v in values), Decimal())
-    if actual != represented or gross_actual != gross_represented:
-        unsupported(doc)
+            direction = 1 if row.debit else -1
+            result[row.name].append(xml.TaxInformation(code, basis, abs(amount),
+                tax_credit=direction * amount < 0 if amount else None))
+            # Reconcile input and output separately, including cancellation rows.
+            # Net zero in XML must not hide omitted or wrong reverse-charge VAT.
+            for value in vat:
+                tax = taxes[value.tax_row]
+                signed = abs(xml._money(value.amount)) * direction
+                if tax.get('add_deduct_tax') == 'Deduct':
+                    signed = -signed
+                expected_vat[tax.account_head][0] += signed
+                expected_vat[tax.account_head][1] += abs(signed)
+    actual_vat = defaultdict(lambda: [Decimal(), Decimal()])
+    for row in rows:
+        if is_vat_account(row.account):
+            amount = xml._money(row.debit) - xml._money(row.credit)
+            actual_vat[row.account][0] += amount
+            actual_vat[row.account][1] += abs(amount)
+    for account in set(actual_vat) | set(expected_vat):
+        if actual_vat[account] != expected_vat[account]:
+            unsupported(doc, 'Avgiftsdetaljene stemmer ikke med hovedbokens MVA-kontoer.')
     return result, mappings
 
 

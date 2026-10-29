@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.19 inneholder første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.20 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -115,7 +115,7 @@ kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 
 ## Gjenstår i hovedplanens SAF-T-punkt
 
-Utvid eksportmappingen til import, omvendt avgiftsplikt, kvartalsbilag,
+Utvid eksportmappingen til import, kvartalsbilag,
 andre klassifiserte MVA-bilag, avgiftsført valuta, lager/driftsmidler og frakt.
 Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
 De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
@@ -153,3 +153,21 @@ Kjernen bruker kostnadssted og eventuelt prosjekt på hovedbokslinjer. Den
 gjenbrukte byggeren manglet dette feltet; Analysis/AnalysisTypeTable skal derfor
 få de faktiske native dimensjonene og beløpene. Andre brukte dimensjoner
 avvises inntil de er kvalifisert, fremfor å fjernes fra eksporten.
+
+## Omvendt avgiftsplikt på tjenester i 0.4.20
+
+Kjernen og appens eksisterende vareavgiftsmaler fører allerede utgående og
+inngående MVA ved tjenestekjøp fra utlandet. Første SAF-T-adapter avviste
+kode 86/87/88/89; ingen ny beregning eller bokføring trengs. Adapteren leser
+de samme native Item Wise Tax Detail-radene, kontrollerer begge MVA-kontoer
+og plasserer netto avgiftsbeløp på kostnadsgrunnlaget. Ved fullt fradrag er
+netto null, slik [Skatteetatens eksempel på side 34](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---documentation-1.40.pdf)
+viser. Ved delvis/intet fradrag kan avgiftsbeløpets kredit-/debetretning
+avvike fra kostnadslinjens retning. Den gjenbrukte byggeren manglet dette
+valget og har fått et valgfritt avgiftsretningsfelt. Dette er et XML-mappinggap;
+kjernens beløp og avgiftsbehandling beholdes.
+Native prøver dekker NOK-tjenestekjøp med 25/12 prosent, 100/60/0 % fradrag,
+delkreditnota og kansellering. Begge MVA-kontoer kontrolleres hver for seg,
+og feil i et avgiftsgrunnlag avvises selv om netto MVA er null. Prøvene
+omfatter samme kontokoblinger, GL-ID-er og privat XML-bevis etter eksportert
+gjenoppretting. Avgiftsført valuta, kvartalsbilag og kapitaliserte tjenester beholdes sperret i denne leveransen.
