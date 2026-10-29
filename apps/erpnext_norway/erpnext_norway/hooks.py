@@ -6,8 +6,8 @@ app_email = "maintainers@example.invalid"
 app_license = "GPL-3.0-only"
 required_apps = ["erpnext"]
 erpnext_taxable_base_resolvers = {"On Norwegian VAT Base": "erpnext_norway.vat_currency.basis"}
-app_include_js = ["/assets/erpnext_norway/js/locale.js",
-    "/assets/erpnext_norway/js/dock_language.js"]
+app_include_js = ["/assets/erpnext_norway/js/locale.js"]
+extend_bootinfo = "erpnext_norway.navigation.localize_dock"
 
 after_install = "erpnext_norway.setup.configure"
 after_migrate = "erpnext_norway.setup.configure"

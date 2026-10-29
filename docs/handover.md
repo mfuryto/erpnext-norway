@@ -574,8 +574,8 @@ faktisk levering, status, feil og kvitteringer følger fortsatt videre.
 
 Brukeren fant Setup/Accounts/Selling/Buying under ikonene helt til venstre.
 Den låste kjernen oversetter ikke etiketten som returneres fra dock_entry,
-selv om katalogen allerede har Regnskap/Salg/Kjøp. Appen gjenbruker resolveren
-og native __ for bare den returnerte visningsteksten i bokmålsøkter; Setup
+selv om katalogen allerede har Regnskap/Salg/Kjøp. Appen bruker ordinært extend_bootinfo
+og native oversettelse på kopier av øktens dock-titler i bokmålsøkter; Setup
 får Oppsett i nb.csv. Ingen lagrede moduler, ruter, ikoner eller brukeroppsett
 endres. Se language.md. Faktisk venstre applinje, navigasjon, egen etikett
 og engelsk økt inngår i nettleserprøven før promotering.

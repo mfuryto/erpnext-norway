@@ -175,10 +175,11 @@ oversettelsesmotor innføres for å skjule slike begrensninger.
 Brukeren fant engelske Setup, Accounts, Selling og Buying i venstre applinje.
 Katalogen inneholdt allerede Regnskap/Salg/Kjøp. Kjerneprøven fant at den låste
 `Sidebar.dock_entry` returnerer lagret etikett uten `__`, og `Dock` viser den
-direkte. CSV alene dekker dermed ikke denne visningen. Den norske appen lar
-kjernens eksisterende etikettresolver kjøre først og oversetter bare den
-returnerte visningsteksten med native `__` i bokmålsøkter. Setup får Oppsett
+direkte. CSV alene dekker dermed ikke denne visningen. Den norske appen bruker
+ordinært `extend_bootinfo` og native oversettelsesoppslag til å oversette
+kopier av titlene i øktens `app_data` og `dock`. Lagret eller bufret
+menyoppsett endres ikke. Setup får Oppsett
 i samme katalog. Ingen DOM-tekstbytter, ny meny eller endret kjernefil.
 Modulnøkler, ruter, ikoner, rekkefølge og brukerens egne navn beholdes.
-Engelske økter bruker kjernens uendrede resolver. Nettleserprøven kontrollerer
+Kjernens JavaScript-resolver og renderer brukes uendret i begge språk. Nettleserprøven kontrollerer
 faktisk tekst, navigasjon og egne etiketter i den native applinjen.
