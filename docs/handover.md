@@ -579,3 +579,16 @@ og native oversettelse på kopier av øktens dock-titler i bokmålsøkter; Setup
 får Oppsett i nb.csv. Ingen lagrede moduler, ruter, ikoner eller brukeroppsett
 endres. Se language.md. Faktisk venstre applinje, navigasjon, egen etikett
 og engelsk økt inngår i nettleserprøven før promotering.
+
+## SAF-T: registrerte tjenestekjøp i valuta, 0.4.22
+
+Kjerneprøven viser at Item Wise Tax Detail allerede lagrer NOK-beløp og
+NOK-grunnlag med native kumulativ avrunding. Adapteren bruker disse verdiene
+for utenlandske tjenester med kode 86/87/88/89, inklusive delvis fradrag og
+kreditnota. Ingen ny valutaberegning, avgiftsmotor eller bokføring.
+Faktisk avgiftsgrunnlag holdes adskilt fra regnskapskostnad når kursene avviker.
+Se saft.md for kilder, prøver og fortsatt avgrensning. Native betalings-/
+valutabilag og alle GL-ID-er følger filen. Frakt, kvartal, import og
+kapitalisering er fortsatt åpne eksportgap; fullstendige konto-/koderegistre
+og årsgrunnlag må også kvalifiseres før samlet SAF-T-aksept. EHF følger fortsatt
+etter SAF-T og ENK/årsavslutning med faktisk levering, status og kvittering.
