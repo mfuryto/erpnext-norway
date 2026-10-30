@@ -79,7 +79,10 @@ innførsel. Ingen summer fra leverandørfakturaen gjettes som deklarasjonsgrunnl
 2. Behold deklarasjonen som privat vedlegg. For innførsel med MVA brukes
    ordinært Journal Entry: native fakturadato/-referanse merkes som
    ekspedisjonsdato/deklarasjonsreferanse når 81/82/83/84 velges. Dokumentert
-   grunnlag føres på utgående linje; inngående fradrag er separat.
+   grunnlag bokføres med balanserende debet-/kreditlinjer på grunnlagskontoen.
+   Kode og sats beholdes på disse linjene. Grunnlaget registreres også på
+   utgående MVA-linje for perioderapporten; inngående fradrag er separat.
+   Se det konkrete bilagseksemplet nedenfor.
 3. For kode 85 registreres dokumentert grunnlag, dato og referanse direkte
    på varemottaket. Kladd kan fullføres senere. Bokføring krever utfylte felt.
 4. Bruk vanlig Landed Cost Voucher til toll/frakt og ikke-fradragsført MVA
@@ -117,7 +120,53 @@ importgrunnlaget som metadata på MVA-linjen, uten egne grunnlagsføringer.
 [Skatteetatens importveiledning](https://www.skatteetaten.no/bedrift-og-organisasjon/avgifter/mva/utland/import/beregne/)
 beskriver at grunnlaget skal bokføres. Tidligere grønn MVA-spesifikasjon er
 derfor ikke tilstrekkelig til å erklære hele importflyten ferdig. Ordinære
-Journal Entry med balanserende grunnlagsføringer skal prøves før 81–84 åpnes
-i SAF-T. Eksisterende bilag skal ikke få konstruerte eksportposteringer eller
+Journal Entry med balanserende grunnlagsføringer er nå prøvd som beskrevet
+nedenfor. Eksportmappingen for 81–84 er fortsatt ikke åpnet i SAF-T. Eksisterende bilag skal ikke få konstruerte eksportposteringer eller
 omskrives ved oppdatering. Direkteført inngående import-MVA 14/15 er et annet,
 uttrykkelig unntak i formatet; se saft.md.
+
+## Bokført deklarasjonsgrunnlag med ordinært bilag
+
+Videre kjerneprøve viser at ordinære bilagslinjer dekker grunnlagsføringen.
+Det kreves ingen ny dokumenttype, beregning eller automatisk grunnlagsmotor.
+Metadata på MVA-linjen er fortsatt nødvendig for perioderapporten, men erstatter
+ikke grunnlagsposteringene. Trinn 2 ovenfor er presisert tilsvarende. [Skatteetatens importveiledning](https://www.skatteetaten.no/bedrift-og-organisasjon/avgifter/mva/utland/import/beregne/)
+og [SAF-T-eksemplet, side 34](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---documentation-1.40.pdf)
+er grunnlaget for prøven.
+
+Eksempel: deklarasjonsgrunnlag 4 700, beregnet innførsels-MVA 1 175 og
+fradragsberettiget inngående MVA 705 (60 prosent):
+
+| Konto | Debet | Kredit | Opplysning |
+| --- | ---: | ---: | --- |
+| 4300 | 4 700 | | Deklarasjonsgrunnlag, kode 81, sats 25 % |
+| 4300 | | 4 700 | Balanserende grunnlagsføring, kode 81, sats 25 % |
+| 2705 | | 1 175 | Utgående innførsels-MVA, kode 81, sats 25 %, grunnlag 4 700 |
+| 2715 | 705 | | Inngående innførsels-MVA, kode 81, sats 25 % |
+| 4300 | 470 | | Ikke-fradragsberettiget MVA; kostnad uten ny MVA-behandling |
+
+Dette er deklarasjonsbilaget i tillegg til leverandørfakturaen. De to
+4 700-føringene gir ingen ny netto varekostnad. Bruk samme faktiske kostnadssted
+på grunnlagsføringen og motføringen. Konto og videre kostnadsbehandling må følge
+anskaffelsen; tabellen er et utprøvd kostnadseksempel. Ved lagerføring kan
+ikke-fradragsført MVA føres mot den ordinære verdsettingsmotkontoen og tas med
+én gang gjennom Landed Cost Voucher. Prøven av den eksisterende varekjeden
+beholder lager 5 200, verdsettingsmotkonto null og MVA 1 250/750, med 5 000
+faktisk bokført på hver side av grunnlagskontoen.
+
+Native sammenslåing av like kontolinjer kan vise grunnlag og motføring som én
+hovedboksrad med begge beløpsretninger. Innstillingen skal beholdes. Prøvene
+kontrollerer begge innstillinger, kode 81/82/83/84, 25/15 prosent, fullt/delvis/
+intet fradrag og samme grunnlag/beløp ved ordinær reversering. Kansellering
+kontrolleres mot kjernens faktiske motposter; disse kan være nettoført selv om
+originalen hadde begge beløpsretninger. MVA-spesifikasjonen skal ikke telle
+kostnads-/grunnlagslinjene en gang til eller ta med kansellerte bilag.
+
+Dette beskriver manuell standardføring, ikke automatisk import av en deklarasjon.
+Eksisterende bilag omskrives ikke. Grunnlagsposteringene, native GL-ID-er,
+reversering/kansellering og private deklarasjonsbytes kontrolleres også etter
+backup/gjenoppretting før promotering. SAF-T-mappingen for 81–84 er fortsatt
+sperret: den må plassere inngående og utgående avgiftsopplysninger på riktig
+bokført grunnlag, håndtere native kansellering og bevare dokumentert
+fradragsandel i TaxTable. Det er et separat eksportgap, ikke behov for en ny
+import- eller avgiftsmotor.

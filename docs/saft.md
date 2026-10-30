@@ -225,9 +225,9 @@ De tidligere importprøvene bokfører MVA, men lagrer selve deklarasjonsgrunnlag
 som metadata på MVA-linjen. Det kvalifiserer ikke alene grunnlagsføringen eller
 SAF-T-eksemplet på side 34. Dette er et gjenåpnet kvalifiseringsgap i importflyten,
 ikke grunnlag for å lage kunstige GL-poster bare i eksportfilen. Historiske
-bilag endres ikke ved oppdatering. Neste importarbeid skal prøve ordinære
-Journal Entry med faktiske grunnlagsføringer og native dimensjoner, og avklare
-normalføringen før eksportmappingen åpnes for 81–84. Kvartalsbilagenes
+bilag endres ikke ved oppdatering. Videre importprøve bruker ordinære Journal
+Entry med faktiske grunnlagsføringer og native dimensjoner; se vat-import.md
+og videreføringen nederst. Eksportmappingen for 81–84 er fortsatt åpen. Kvartalsbilagenes
 avgiftsgrunnlag og avrundingskorreksjoner må kvalifiseres separat.
 
 
@@ -254,3 +254,12 @@ Negative eller tomme kildelinjer godtas ikke. Dette åpner ikke importkodene
 Native sammenslåing, reversering, kansellering, kostnadssted, bruttosummer,
 saldo og referanser prøves igjen etter eksportert gjenoppretting. Brukerens
 Accounts Settings endres ikke av eksport eller oppdatering.
+
+Videre kjerneprøve er nå gjort permanent i importtestene: ordinære bilag fører
+faktisk grunnlag og motføring, med uendret netto kostnad/lager. Se vat-import.md.
+Begge native sammenslåingsvalg, fradrag, reversering og kansellering inngår.
+Dette lukker prøvegapet for den dokumenterte grunnlagsføringen; det åpner ikke
+81–84 i eksportadapteren. Særlig skal inngående og utgående TaxInformation ikke
+nettes bort, og kjernens nettomotpost ved kansellering skal ikke erstattes med
+oppdiktede bruttoposteringer. Obligatorisk BaseRate må bygge på dokumentert
+fradragsandel, ikke en prosent utledet fra avrundede MVA-beløp.
