@@ -109,3 +109,15 @@ hovedbok, versjonering/periodelås, 25/15-prosentbilag, korreksjonsdato, rollekr
 valutabetaling, LCV og oppgjør. Faktisk innsending i Skatteetatens portal og
 særskilte importprosedyrer er ikke kvalifisert. Automatisk deklarasjonsinnlesing
 er ikke nødvendig for denne manuelle dokumentbaserte standardflyten.
+
+## Gjenåpnet kvalifisering: grunnlagsføring ved SAF-T
+
+SAF-T-gjennomgangen i 0.4.23 påviste at prøvene ovenfor har selve
+importgrunnlaget som metadata på MVA-linjen, uten egne grunnlagsføringer.
+[Skatteetatens importveiledning](https://www.skatteetaten.no/bedrift-og-organisasjon/avgifter/mva/utland/import/beregne/)
+beskriver at grunnlaget skal bokføres. Tidligere grønn MVA-spesifikasjon er
+derfor ikke tilstrekkelig til å erklære hele importflyten ferdig. Ordinære
+Journal Entry med balanserende grunnlagsføringer skal prøves før 81–84 åpnes
+i SAF-T. Eksisterende bilag skal ikke få konstruerte eksportposteringer eller
+omskrives ved oppdatering. Direkteført inngående import-MVA 14/15 er et annet,
+uttrykkelig unntak i formatet; se saft.md.

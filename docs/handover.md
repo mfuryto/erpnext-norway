@@ -592,3 +592,19 @@ valutabilag og alle GL-ID-er følger filen. Frakt, kvartal, import og
 kapitalisering er fortsatt åpne eksportgap; fullstendige konto-/koderegistre
 og årsgrunnlag må også kvalifiseres før samlet SAF-T-aksept. EHF følger fortsatt
 etter SAF-T og ENK/årsavslutning med faktisk levering, status og kvittering.
+
+## SAF-T: direkteført inngående import-MVA, 0.4.23
+
+Kode 14/15 gjenbruker native Journal Entry og bokførte MVA-linjer med retning,
+reversering og kansellering. Offisiell dokumentasjon har uttrykkelig unntak for
+plasseringen på MVA-kontoen. Adapteren trenger ingen ny beregning eller skjema.
+Native eksport/GL-avstemming, feiltilfeller og privat XML prøves igjen etter
+restore. Full SAF-T er fortsatt åpent, inklusive kvartal/importgrunnlag,
+fullstendige registre, lager/frakt/driftsmidler og årsavslutning. EHF følger
+videre med faktisk levering, status, feil og kvittering.
+
+Importkvalifiseringen er gjenåpnet: de tidligere bilagsprøvene lagrer grunnlag
+som metadata uten egne grunnlagsposteringer. Skatteetatens importveiledning
+krever bokført grunnlag. Se vat-import.md og saft.md. Prøv ordinære native
+Journal Entry før eventuell tilpasning; ikke konstruer GL-poster i eksporten
+eller endre historiske bilag ved oppdatering. Dette gapet er ikke løst i 0.4.23.
