@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.20 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.22 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -116,7 +116,7 @@ kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 ## Gjenstår i hovedplanens SAF-T-punkt
 
 Utvid eksportmappingen til import, kvartalsbilag,
-andre klassifiserte MVA-bilag, avgiftsført valuta, lager/driftsmidler og frakt.
+andre klassifiserte MVA-bilag, øvrig avgiftsført valuta, lager/driftsmidler og frakt.
 Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
 De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
 Alternative regnskaps-/avskrivningsbøker og øvrige brukte dimensjoner må også
@@ -171,3 +171,31 @@ delkreditnota og kansellering. Begge MVA-kontoer kontrolleres hver for seg,
 og feil i et avgiftsgrunnlag avvises selv om netto MVA er null. Prøvene
 omfatter samme kontokoblinger, GL-ID-er og privat XML-bevis etter eksportert
 gjenoppretting. Avgiftsført valuta, kvartalsbilag og kapitaliserte tjenester beholdes sperret i denne leveransen.
+
+## Avgiftsført valuta i 0.4.22
+
+Første adapter avviser avgiftsført valuta, men den låste kjernens
+`taxes_and_totals.set_item_wise_tax` lagrer allerede `amount` og
+`taxable_amount` i foretakets hovedvaluta, med kjernens kumulative avrunding.
+En ny valutaberegning er derfor unødvendig. Registrerte utenlandske tjenester
+eksporteres med disse NOK-verdiene, mens hovedbokens native valutabeløp
+beholdes separat. Ved forskjellig bokførings- og MVA-kurs brukes lagret
+`taxable_amount` på utgående side én gang, ikke fakturabeløp ganger en ny kurs.
+Dette følger [TaxInformationStructure, side 57–60](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---technical-description-1.4.pdf).
+TaxAmount er netto av faktisk inngående/utgående MVA, avstemt hver for seg
+mot hovedboken, også ved fradrag og avrunding. TaxAmount vises i NOK, som
+er eksportens hovedvaluta; ekstra NOKTaxAmount brukes bare når TaxAmount
+er uttrykt i en annen hovedvaluta. Kvartalsbilag, frakt og kapitalisering
+er separate, fortsatt ukvalifiserte eksportgap.
+
+Prøvene bruker faktisk bokførte EUR-tjenestekjøp med 25/12 prosent og
+100/60/0 prosent fradrag, ulike bokførings-/leveringskurser, delkreditnota,
+kansellering, to linjekurser med rabatt og native betaling/valutabilag.
+Regnskapskostnad 1 110,14 beholdes ved siden av faktisk avgiftsgrunnlag
+1 101,37; eksporten avleder ikke grunnlaget fra kostnaden. Frakt, øvrig
+MVA-valuta og kapitalisering er fortsatt sperret inntil mappingen er prøvd.
+
+Samlet SAF-T-sluttføring må også kvalifisere fullstendige konto- og
+avgiftsregistre, inklusive ubrukte/historiske konti og koder. Teknisk
+beskrivelse side 9 krever dette ved utlevering til Skatteetaten; første
+begrensede utgave med brukte konti er ikke tilstrekkelig for samlet aksept.

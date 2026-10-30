@@ -59,8 +59,12 @@ def invoice_taxes(doc, rows):
         vat = [r for r in values if is_vat_account(taxes[r.tax_row].account_head)]
         if expected[code] == 0 and any(xml._money(r.amount) for r in vat):
             unsupported(doc, 'Bokført MVA mangler en kvalifisert avgiftskode.')
-        if doc.currency != 'NOK' and any(xml._money(r.amount) for r in vat):
-            unsupported(doc, 'Avgiftsført valuta er ikke kvalifisert.')
+        foreign_vat = doc.currency != 'NOK' and any(xml._money(r.amount) for r in vat)
+        if foreign_vat:
+            from erpnext_norway.vat_currency import KIND
+            if doc.doctype != 'Purchase Invoice' or code not in {'86', '87', '88', '89'} or any(
+                    taxes[r.tax_row].charge_type != KIND for r in vat if xml._money(r.amount)):
+                unsupported(doc, 'Denne valutabehandlingens eksportmapping er ikke kvalifisert.')
         # Use the posted native expense/income account; do not consult today's Item defaults.
         account = item.income_account if doc.doctype == 'Sales Invoice' else item.expense_account
         if doc.doctype == 'Purchase Invoice' and frappe.get_cached_value('Account', account, 'root_type') != 'Expense':
@@ -84,6 +88,14 @@ def invoice_taxes(doc, rows):
         # expense including non-deductible VAT (Skatteetaten documentation example1).
         basis = abs(xml._money(item.base_net_amount) + sum((xml._money(r.amount) for r in values
             if taxes[r.tax_row].get(COST)), Decimal())) if code != '0' else Decimal(0)
+        if foreign_vat:
+            # Native detail values are already NOK. Output and input share the
+            # same VAT base; retain the stored output base once, without FX math.
+            output = [r for r in vat if xml._money(r.amount) and
+                taxes[r.tax_row].get('add_deduct_tax') == 'Deduct']
+            if len(output) != 1 or not xml._money(output[0].taxable_amount):
+                unsupported(doc, 'Entydig bokført MVA-grunnlag mangler for valutalinjen.')
+            basis = abs(xml._money(output[0].taxable_amount))
         for row in candidates:
             direction = 1 if row.debit else -1
             result[row.name].append(xml.TaxInformation(code, basis, abs(amount),
