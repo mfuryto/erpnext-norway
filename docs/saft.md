@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.23 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.24 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -229,3 +229,28 @@ bilag endres ikke ved oppdatering. Neste importarbeid skal prøve ordinære
 Journal Entry med faktiske grunnlagsføringer og native dimensjoner, og avklare
 normalføringen før eksportmappingen åpnes for 81–84. Kvartalsbilagenes
 avgiftsgrunnlag og avrundingskorreksjoner må kvalifiseres separat.
+
+
+## Samlet debet og kredit fra kjernen, 0.4.24
+
+Ordinær Journal Entry med kjernens innstilling for sammenslåing av like kontolinjer
+kan lagre både debet og kredit på samme GL Entry. Faktisk prøve med samme konto
+viste separate 4 700-posteringer når innstillingen er av, og én rad med både
+4 700 debet og 4 700 kredit når den er på. Den gjenbrukte byggeren avviste slike
+rader. Det er et formatgap i eksporten; regnskapet og brukerens innstilling skal
+beholdes.
+
+[Skatteetatens tekniske beskrivelse, side 32–33](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---technical-description-1.4.pdf)
+definerer RecordID som spor til bilagslinje/posteringsreferanse og krever valg
+mellom debet og kredit per XML-linje. Byggeren gjengir derfor hver bokført side
+på egen XML-linje med samme native GL-ID. Den avregner ikke til netto og lager
+ikke nye posteringer eller ID-er. Dimensjonsbeløpet følger hver sides faktisk
+bokførte beløp; totalsummer og saldo bruker de opprinnelige kildedataene.
+
+Første kvalifisering av dette formatgapet gjelder NOK-rader uten tilknyttede
+avgiftsopplysninger. Samlet valuta og fordeling av TaxInformation avvises fortsatt.
+Negative eller tomme kildelinjer godtas ikke. Dette åpner ikke importkodene
+81–84 eller kvartalsbilag: deres grunnlags-/avgiftsmapping må kvalifiseres separat.
+Native sammenslåing, reversering, kansellering, kostnadssted, bruttosummer,
+saldo og referanser prøves igjen etter eksportert gjenoppretting. Brukerens
+Accounts Settings endres ikke av eksport eller oppdatering.

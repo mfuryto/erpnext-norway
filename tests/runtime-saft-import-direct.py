@@ -44,6 +44,19 @@ def check(root, evidence):
     assert set(root.xpath('.//s:Line/s:RecordID/text()',namespaces=NS))=={r.name for r in native}
     for side in ('debit','credit'):
         assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=NS))==sum((xml._money(r[side]) for r in native),Decimal())
+        assert sum((Decimal(v) for v in root.xpath('.//s:Line/s:'+side.title()+'Amount/s:Amount/text()',namespaces=NS)),Decimal())==sum((xml._money(r[side]) for r in native),Decimal())
+    merged=[r for r in native if r.debit and r.credit]
+    # Core keeps the original/correcting merged rows, but cancellation posts
+    # its counter-entry as a net amount. Export that actual counter unchanged.
+    assert len(merged)==3,[(r.name,r.debit,r.credit) for r in merged]
+    for row in merged:
+        lines=root.xpath('.//s:Line[s:RecordID="'+row.name+'"]',namespaces=NS)
+        assert len(lines)==2 and not any(line.xpath('s:TaxInformation',namespaces=NS) for line in lines)
+        for side in ('debit','credit'):
+            line=[v for v in lines if v.xpath('s:'+side.title()+'Amount',namespaces=NS)]
+            assert len(line)==1
+            assert Decimal(line[0].xpath('string(s:'+side.title()+'Amount/s:Amount)',namespaces=NS))==xml._money(row[side])
+            assert Decimal(line[0].xpath('string(s:Analysis/s:'+side.title()+'AnalysisAmount/s:Amount)',namespaces=NS))==xml._money(row[side])
 
 
 try:
@@ -52,7 +65,7 @@ try:
         frappe.set_user(OWNER); _,root=export(); check(root,e)
         proof=frappe.get_doc('File',e['file'])
         assert proof.is_private and hashlib.sha256(Path(proof.get_full_path()).read_bytes()).hexdigest()==e['sha256']
-        print('PASS restored SAF-T direct import14/15, native reversal/cancellation, exact GL IDs/totals and private XML')
+        print('PASS restored SAF-T direct import14/15, native merged GL/reversal/cancellation, exact GL IDs/gross totals/dimensions and private XML')
     else:
         company=frappe.get_doc({'doctype':'Company','company_name':C,'abbr':'SDI','country':'Norway',
             'default_currency':'NOK','tax_id':'999999987','phone_no':'90000000','enable_perpetual_inventory':0,
@@ -80,6 +93,20 @@ try:
             cancelled=frappe.copy_doc(doc); cancelled.bill_no='SYNTHETIC-CANCEL-'+code
             cancelled.insert(); cancelled.submit(); cancelled.cancel()
             evidence['documents'].append([cancelled.name,code,f'{amount:.2f}',False,2])
+        # Exercise the native merge setting; restore it before other fixtures run.
+        frappe.set_user('Administrator')
+        merge=frappe.db.get_single_value('Accounts Settings','merge_similar_account_heads')
+        frappe.db.set_single_value('Accounts Settings','merge_similar_account_heads',1)
+        frappe.set_user(OWNER)
+        merged=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-09-20','accounts':[
+            {'account':accounts['1920'],'debit_in_account_currency':100,'cost_center':company.cost_center},
+            {'account':accounts['1920'],'credit_in_account_currency':40,'cost_center':company.cost_center},
+            {'account':accounts['2070'],'credit_in_account_currency':60,'cost_center':company.cost_center}]}).insert(); merged.submit()
+        reverse=make_reverse_journal_entry(merged.name);reverse.posting_date='2026-10-20';reverse.insert();reverse.submit()
+        cancelled=frappe.copy_doc(merged);cancelled.insert();cancelled.submit();cancelled.cancel()
+        frappe.set_user('Administrator')
+        frappe.db.set_single_value('Accounts Settings','merge_similar_account_heads',merge)
+        frappe.set_user(OWNER)
         data,root=export(); check(root,evidence)
         _,opening=export('2026-11-01')
         assert not opening.xpath('.//s:TaxInformation',namespaces=NS)
@@ -112,6 +139,6 @@ try:
         proof=save_file('synthetic-saft-direct-import.xml',data,'Company',C,is_private=1)
         evidence.update(file=proof.name,sha256=hashlib.sha256(data).hexdigest())
         frappe.db.set_default('runtime_saft_direct_import',json.dumps(evidence)); frappe.db.commit()
-        print('PASS SAF-T import14/15 on native VAT lines, no fabricated base, source/reversal/cancellation and unsupported metadata rejection')
+        print('PASS SAF-T import14/15 and native merged GL debit/credit, source/reversal/cancellation, exact gross totals/dimensions and unsupported metadata rejection')
 finally:
     frappe.destroy()

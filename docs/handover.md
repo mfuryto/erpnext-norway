@@ -608,3 +608,19 @@ som metadata uten egne grunnlagsposteringer. Skatteetatens importveiledning
 krever bokført grunnlag. Se vat-import.md og saft.md. Prøv ordinære native
 Journal Entry før eventuell tilpasning; ikke konstruer GL-poster i eksporten
 eller endre historiske bilag ved oppdatering. Dette gapet er ikke løst i 0.4.23.
+
+
+## SAF-T: kjerneposteringer med begge beløpsretninger, 0.4.24
+
+Kjernens ordinære sammenslåing av like kontolinjer kan gi én GL-rad med både
+debet og kredit. Den gjenbrukte XML-byggeren måtte tilpasses SAF-Ts valg av
+beløpsretning per linje. Begge bokførte sider gjengis med samme native GL-ID,
+uten nettoberegning, nye posteringer eller endring av Accounts Settings.
+NOK uten TaxInformation kvalifiseres først; import/kvartal og samlet valuta
+krever fortsatt egen mapping. Se saft.md og native restore-prøven.
+
+SendRegning er valgt EHF-leverandør. Se ehf.md for skillet mellom faktura-API
+og mulig transport av ferdig EHF, samt den nyere EDocument-generatoren som
+allerede håndterer betalt beløp og kreditnotareferanse i faktisk kjerneprøve.
+Disse funksjonene skal gjenbrukes; ingen ny faktura-/UBL-motor er bestilt.
+Faktisk SendRegning-grensesnitt og levering/status/kvittering er fortsatt åpne.
