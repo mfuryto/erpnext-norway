@@ -246,6 +246,10 @@ registrering inngår ikke i denne utvidelsen og skal ikke omtales som ferdige.
 [kvartal](vat-quarterly.md) for gap, prøver og grenser. Innlevering i portalen er
 brukerens handling; det er ingen direkte API-innsending eller simulert kvittering.
 Native periodestenging, mottakskrav og innsendte Asset skal fortsatt respekteres.
+SAF-T-gjennomgangen i 0.4.23 gjenåpner kvalifisering av selve grunnlagsføringen
+for vareimport: tidligere prøver lagrer deklarasjonsgrunnlag som metadata,
+uten egne grunnlagsposteringer. Se [importgapet](vat-import.md#gjenåpnet-kvalifisering-grunnlagsføring-ved-saf-t).
+Rapportavstemming alene lukker ikke dette gapet.
 Særskilte importprosedyrer og automatiske bransje-/kapitalvarejusteringer er ikke
 kvalifisert av normalflyten. Teknisk kvalifisering er ikke generell norsk
 regnskapsaksept eller verifisering av brukerens konkrete fradragsgrunnlag.

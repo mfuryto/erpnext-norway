@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.22 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.23 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -199,3 +199,33 @@ Samlet SAF-T-sluttføring må også kvalifisere fullstendige konto- og
 avgiftsregistre, inklusive ubrukte/historiske konti og koder. Teknisk
 beskrivelse side 9 krever dette ved utlevering til Skatteetaten; første
 begrensede utgave med brukte konti er ikke tilstrekkelig for samlet aksept.
+
+## Direkteført inngående import-MVA, 0.4.23
+
+Kjernen har allerede ordinære Journal Entry og appen lagrer kode 14/15 på
+inngående import-MVA. Eksportadapteren avviste likevel alle slike bilag.
+[Skatteetatens generelle dokumentasjon, side 31](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---documentation-1.40.pdf)
+gjør uttrykkelig unntak for disse to kodene: avgiftsopplysningene skal på
+MVA-posteringen. Dette konkrete mappinggapet lukkes ved å lese bokført beløp
+og retning fra GL, kontrollert mot bilagslinjen og kode/sats/konto. Det lages
+ikke et beregnet grunnlag. Kode 14 bruker 2715/25 prosent, kode 15 bruker
+2716/15 prosent. Valutabilag, andre koder og tvetydige linjer holdes sperret.
+Dette endrer ikke når direkteføring er regnskapsmessig riktig å bruke.
+
+Prøven dekker ordinær bruker, begge koder, native reversering, kansellering,
+inngående saldo, XSD, eksakte GL-ID-er og summer samt privat XML etter
+backup/gjenoppretting. Feil sats, feil kode, uavklart grunnlag og avvik mellom
+bilagslinje og GL avvises med bilagsreferanse. Ingen bokførings-/skjemaendring.
+
+## Påvist restgap: bokført importgrunnlag
+
+[Skatteetatens importveiledning](https://www.skatteetaten.no/bedrift-og-organisasjon/avgifter/mva/utland/import/beregne/)
+krever at også grunnlaget bokføres; balanserende grunnlagsføringer er beskrevet.
+De tidligere importprøvene bokfører MVA, men lagrer selve deklarasjonsgrunnlaget
+som metadata på MVA-linjen. Det kvalifiserer ikke alene grunnlagsføringen eller
+SAF-T-eksemplet på side 34. Dette er et gjenåpnet kvalifiseringsgap i importflyten,
+ikke grunnlag for å lage kunstige GL-poster bare i eksportfilen. Historiske
+bilag endres ikke ved oppdatering. Neste importarbeid skal prøve ordinære
+Journal Entry med faktiske grunnlagsføringer og native dimensjoner, og avklare
+normalføringen før eksportmappingen åpnes for 81–84. Kvartalsbilagenes
+avgiftsgrunnlag og avrundingskorreksjoner må kvalifiseres separat.

@@ -121,6 +121,48 @@ def invoice_taxes(doc, rows):
     return result, mappings
 
 
+def journal_taxes(doc, rows):
+    """Codes 14/15 are explicitly reported on the posted VAT account itself."""
+    from erpnext_norway.vat import is_vat_account
+    from erpnext_norway.vat_catalog import CODE, RATE
+    from erpnext_norway.vat_journal import BASE, SPEC
+    from erpnext_norway.vat_quarterly import JOURNAL
+    if doc.doctype != 'Journal Entry' or doc.get(JOURNAL) or doc.multi_currency:
+        unsupported(doc)
+    result, mappings = {}, {}
+    details = {}
+    for item in doc.accounts:
+        if not is_vat_account(item.account):
+            if item.get(CODE) not in (None, '', '0'):
+                unsupported(doc)
+            continue
+        code = item.get(CODE)
+        expected = {'14': ('2715', 25), '15': ('2716', 15)}.get(code)
+        if (not expected or item.account in details or item.get(BASE) or item.get(SPEC)
+                or item.account_currency != 'NOK'
+                or frappe.get_cached_value('Account', item.account, 'account_number') != expected[0]
+                or Decimal(str(item.get(RATE) or 0)) != expected[1]):
+            unsupported(doc, 'Bare entydig direkteført inngående import-MVA med kode 14/15 er kvalifisert her.')
+        details[item.account] = item
+        mappings[code] = xml.TaxMapping(code, Decimal(expected[1]), code)
+    seen = set()
+    for row in rows:
+        if not is_vat_account(row.account):
+            continue
+        item = details.get(row.account)
+        amount = xml._money(row.debit) - xml._money(row.credit)
+        posted = xml._money(item.debit) - xml._money(item.credit) if item else Decimal()
+        signature = (row.account, row.posting_date, amount > 0, bool(row.is_cancelled))
+        if (not item or not amount or abs(amount) != abs(posted) or signature in seen
+                or (not row.is_cancelled and amount != posted)):
+            unsupported(doc, 'Avgiftsdetaljene stemmer ikke med hovedbokens MVA-kontoer.')
+        seen.add(signature)
+        result[row.name] = [xml.TaxInformation(item.get(CODE), tax_amount=abs(amount), tax_credit=amount < 0)]
+    if {key[0] for key in seen} != set(details):
+        unsupported(doc, 'Avgiftsdetaljene stemmer ikke med hovedbokens MVA-kontoer.')
+    return result, mappings
+
+
 def address(doctype, name):
     links = frappe.get_all('Dynamic Link', filters={'parenttype': 'Address',
         'link_doctype': doctype, 'link_name': name}, pluck='parent')
@@ -196,6 +238,7 @@ def build(company, from_date, to_date):
     tax_info, tax_mapping, sources = {}, {}, {}
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_journal import SETTLEMENT
+    from erpnext_norway.vat_catalog import CODE
     for key, entries in vouchers.items():
         source = frappe.get_doc(*key)
         source.check_permission('read')
@@ -204,8 +247,14 @@ def build(company, from_date, to_date):
             continue  # Historical sources still contribute opening balances; not period VAT.
         if source.doctype not in ('Sales Invoice', 'Purchase Invoice', 'Journal Entry', 'Payment Entry'):
             unsupported(source, 'Bilagstypens eksportmapping er ikke kvalifisert.')
+        info, maps = {}, {}
         if source.doctype in ('Sales Invoice', 'Purchase Invoice'):
             info, maps = invoice_taxes(source, entries)
+        elif not source.get(SETTLEMENT) and (
+                any(is_vat_account(r.account) and (r.debit or r.credit) for r in entries)
+                or (source.doctype == 'Journal Entry' and any(r.get(CODE) not in (None, '', '0') for r in source.accounts))):
+            info, maps = journal_taxes(source, entries)
+        if maps:
             tax_info.update(info)
             for code, value in maps.items():
                 previous = tax_mapping.get(code)
@@ -213,8 +262,6 @@ def build(company, from_date, to_date):
                     unsupported(source)
                 tax_mapping[code] = xml.TaxMapping(code, value.percentage, code,
                     tuple(sorted(set(previous.base_rates if previous else ()) | set(value.base_rates))))
-        elif any(is_vat_account(r.account) and (r.debit or r.credit) for r in entries) and not source.get(SETTLEMENT):
-            unsupported(source)
     converted = []
     for row in rows:
         source = sources[(row.voucher_type, row.voucher_no)]
