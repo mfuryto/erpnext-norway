@@ -238,6 +238,7 @@ def build(company, from_date, to_date):
     tax_info, tax_mapping, sources = {}, {}, {}
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_journal import SETTLEMENT
+    from erpnext_norway.vat_catalog import CODE
     for key, entries in vouchers.items():
         source = frappe.get_doc(*key)
         source.check_permission('read')
@@ -249,7 +250,9 @@ def build(company, from_date, to_date):
         info, maps = {}, {}
         if source.doctype in ('Sales Invoice', 'Purchase Invoice'):
             info, maps = invoice_taxes(source, entries)
-        elif any(is_vat_account(r.account) and (r.debit or r.credit) for r in entries) and not source.get(SETTLEMENT):
+        elif not source.get(SETTLEMENT) and (
+                any(is_vat_account(r.account) and (r.debit or r.credit) for r in entries)
+                or (source.doctype == 'Journal Entry' and any(r.get(CODE) not in (None, '', '0') for r in source.accounts))):
             info, maps = journal_taxes(source, entries)
         if maps:
             tax_info.update(info)

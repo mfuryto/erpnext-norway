@@ -58,10 +58,11 @@ try:
             'default_currency':'NOK','tax_id':'999999987','phone_no':'90000000','enable_perpetual_inventory':0,
             'create_chart_of_accounts_based_on':'Standard Template',vat.STATUS:'Registered',vat.FROM:'2026-01-01'}).insert()
         accounts={r.account_number:r.name for r in frappe.get_all('Account',filters={'company':C},fields=['name','account_number'])}
-        for number in ('1920','2715','2716','2705'):
+        for number in ('1920','2715','2716','2705','2070'):
             acc=frappe.get_doc('Account',accounts[number])
-            acc.append(saft.MAPPING,{'year':2026,'category':'balanseverdiForOmloepsmiddel' if number=='1920' else 'kortsiktigGjeld',
-                'code':'1920' if number=='1920' else '2740'}); acc.save()
+            category,group = ('balanseverdiForOmloepsmiddel','1920') if number=='1920' else (
+                ('egenkapital','2050') if number=='2070' else ('kortsiktigGjeld','2740'))
+            acc.append(saft.MAPPING,{'year':2026,'category':category,'code':group}); acc.save()
         frappe.get_doc({'doctype':'User','email':OWNER,'first_name':'Synthetic SAF-T import',
             'send_welcome_email':0,'roles':[{'role':'Accounts Manager'},{'role':'Accounts User'}]}).insert()
         frappe.get_doc({'doctype':'User Permission','user':OWNER,'allow':'Company','for_value':C,'apply_to_all_doctypes':1}).insert()
@@ -99,6 +100,15 @@ try:
         except frappe.ValidationError as error: assert original.name in str(error)
         else: raise AssertionError('Mismatched VAT GL exported')
         frappe.db.rollback(save_point='direct_import_wrong_gl')
+        # A stored VAT code must not disappear merely because its account was wrong.
+        frappe.db.savepoint('direct_import_wrong_account')
+        wrong=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-09-20','accounts':[
+            {'account':accounts['1920'],'debit_in_account_currency':17,CODE:'14',RATE:25},
+            {'account':accounts['2070'],'credit_in_account_currency':17}]}).insert(); wrong.submit()
+        try: export()
+        except frappe.ValidationError as error: assert wrong.name in str(error)
+        else: raise AssertionError('Stored VAT code silently omitted on a non-VAT account')
+        frappe.db.rollback(save_point='direct_import_wrong_account')
         proof=save_file('synthetic-saft-direct-import.xml',data,'Company',C,is_private=1)
         evidence.update(file=proof.name,sha256=hashlib.sha256(data).hexdigest())
         frappe.db.set_default('runtime_saft_direct_import',json.dumps(evidence)); frappe.db.commit()
