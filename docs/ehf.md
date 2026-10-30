@@ -21,28 +21,64 @@ Disse eksisterende tilleggene undersøkes før eventuell ny adapter:
 
 | Kandidat | Undersøkt støtte | Åpent før valg |
 | --- | --- | --- |
-| [Peppol 4 ERPNext](https://github.com/Grynn-GmbH/peppol_4_erpnext/tree/9efe16be5ab5d2a338fe3612ecfc02344b45f382) | Integrasjonsflagg og eksternt opplegg for overføring. | Faktisk format, transportavhengigheter, Peppyrus-støtte og v16-prøve. Et flagg er ikke levert dokument. |
-| [Peppol Connect](https://github.com/maasanto/peppol-connect/tree/3bd618b237bfad1cf659c5445eeccb34b829076c) | Generisk leverandørgrensesnitt, asynkron sending, status og webhooks; Recommand-adapter. | Ingen Peppyrus-adapter funnet i denne revisjonen. Sending importerer `get_einvoice` fra eu_einvoice; format og avhengighetsversjon må prøves samlet. |
+| [Peppol 4 ERPNext](https://github.com/Grynn-GmbH/peppol_4_erpnext/tree/9efe16be5ab5d2a338fe3612ecfc02344b45f382) | Integrasjonsflagg og eksternt opplegg for overføring. | Faktisk format, transportavhengigheter, SendRegning-støtte og v16-prøve. Et flagg er ikke levert dokument. |
+| [Peppol Connect](https://github.com/maasanto/peppol-connect/tree/3bd618b237bfad1cf659c5445eeccb34b829076c) | Generisk leverandørgrensesnitt, asynkron sending, status og webhooks; Recommand-adapter. | Ingen SendRegning-adapter funnet i denne revisjonen. Sending importerer `get_einvoice` fra eu_einvoice; format og avhengighetsversjon må prøves samlet. |
 | [European e-Invoice](https://github.com/alyf-de/eu_einvoice/tree/b4b66b468bf32371c2f5d7be9b28a738d0ba94d7) | README avgrenser til CII/Factur-X/ZUGFeRD, også XRechnung. | UBL og Peppol-transport er uttrykkelig utenfor omfanget i denne revisjonen. Det kan ikke uten videre installeres som norsk EHF-løsning. |
 | [European e-Invoice Peppol-fork](https://github.com/prilk-consulting/eu_einvoice_peppol/tree/eff09ff5e4b4cb80b026a093cf42f03bfaa40276) | Oppgir UBL 2.1 for Peppol, og har UBL-skjemaer; appmetadata tillater Frappe/ERPNext 15–16. | Faktisk v16-/Python 3.14-installasjon, vedlikehold, låste avhengigheter, kreditnota og norske valideringer må prøves. Dette er en konkret gjenbrukskandidat før en ny UBL-bygger vurderes. |
 
 Dette er kildeundersøkelse, ikke full installasjons-/nettverksprøve av tilleggene.
 Ingen er innført som produktavhengighet, og det er ikke laget en ny UBL-motor.
 
-## Peppyrus og forskjellen mellom sendt og mottatt
+## SendRegning og transport av ferdig EHF
 
-Peppyrus har separat [test-API og OpenAPI-beskrivelse](https://api.test.peppyrus.be/v1).
-Undersøkt 28. oktober 2026, API 1.0.0:
+**SendRegning er valgt EHF-leverandør.** ERPNext skal fortsatt utstede faktura,
+kreditnota og nummer og føre regnskapet. Bruk SendRegning til levering av de
+ferdige dokumentene når et egnet grensesnitt er kvalifisert.
 
-- `POST /message` tar avsender, mottaker, prosess, dokumenttype og base64-fil.
-- `GET /message/{id}` gir melding, retning, mappe og feltet `confirmed`.
-- `GET /message/{id}/report` gir validerings-/overføringsopplysninger.
-- Deltakeroppslag finnes i `/peppol/lookup` og `/peppol/bestMatch`.
+[SendRegnings integrasjonsside](https://www.sendregning.no/tjenester/integrere-fakturasystem/)
+viser til deres [API-dokumentasjon](https://sendregning.github.io/).
+Det ordinære [faktura-API-et](https://sendregning.github.io/api/invoices/issue-and-send/)
+oppretter faktura, tildeler eget fakturanummer og oppretter reskontroposter.
+Det er derfor ikke kvalifisert som ren overføring av allerede bokførte ERPNext-
+fakturaer. Eksisterende F/K-nummer, beløp og originaler må bevares i hele kjeden.
 
-Disse endepunktene er dokumenterte muligheter, ikke bevis på vellykket levering
-eller avklart betydning av alle statusfelt. Tidligere kontoprøve ga HTTP 200,
-men deltakerprøve ga HTTP 500. Den feilen og faktisk ende-til-ende-levering står
-fortsatt åpne. API-nøkkel holdes privat og tas aldri inn i Git, tester eller logger.
+Et mulig separat transportgrensesnitt er [SREST](https://ap.unit4.com/rest.html),
+med [SendRegning som oppgitt kontakt for produksjonstilgang](https://ap.unit4.com/connect.html).
+Det beskriver opplasting av ferdig XML, mottakeroppslag og senere status med
+leveringstidspunkt og transport-ID. Dokumentasjonen for aksesspunktet angir eget
+testnettverk; det ordinære faktura-API-et angir at det ikke har testmiljø.
+Aktuelt tjenestetilbud, endepunkt og kontotilgang må bekreftes før tilkobling.
+En vanlig SendRegning-konto er ikke i seg selv dokumentasjon på SREST-tilgang.
+Ingen sending, kontooppdatering eller faktisk levering er prøvd.
+Tilgangsopplysninger skal forbli private og ikke legges i Git, chat eller logger.
+
+## Nyere UBL-gjenbruk prøvd før egen kode
+
+[EDocument](https://github.com/prilk-consulting/edocument/tree/d77529b20e49d0dec5491d53ef7bd39f0e7d570d)
+og [EDocument Integration](https://github.com/prilk-consulting/edocument_integration/tree/44e959a82071a04a3127be84364320eb0e4b5316)
+er nyere GPL-3.0-kandidater fra samme utvikler som Peppol-forken. Metadata og
+README omfatter ERPNext 16/Python 3.14. Det er ikke ferdig installasjonsaksept.
+Integration har leverandørgrensesnitt; SendRegning-støtte er ikke funnet i den
+undersøkte revisjonen. Ingen av appene er innført som produktavhengighet.
+
+Den nyere eksisterende generatoren er faktisk prøvd direkte mot native,
+syntetisk faktura på 1 250, native betaling og native kreditnota. Den gjengir
+allerede betalt beløp 1 250 / til betaling 0, positiv kreditnota 1 250 og
+originalreferanse. Disse funksjonene skal gjenbrukes fremfor å skrives på nytt.
+Med komplett adresse-/deltakeroppsett, eksplisitt mottakerreferanse og tilpasset
+MVA-identifikator på en lesekopi består prøvefilene UBL XSD og CEN-reglene;
+Peppol-kontrollen gir bare varselet om Foretaksregisteret. Det varselet skal
+vurderes etter foretaksform, ikke legges blindt til alle ENK.
+
+Påvist norsk adaptergap: registrert `company_tax_id` for skjerm/PDF inneholder
+organisasjonsnummer og MVA-merking, mens EHF trenger identifikator med norsk
+landprefiks. Native kreditnotakopiering bevarer heller ikke automatisk `po_no`;
+den nyere kandidaten bruker dette feltet som referanse. Normal mottakerreferanse,
+norsk avgiftsmapping og betalingskonto må derfor kvalifiseres før integrasjon.
+Alle beløp og bokføring i prøven kom fra ERPNext; ingen faktisk nettverkssending.
+Full appinstallasjon, øvrige MVA-satser/fritak, valuta, rabatter/frakt og
+rettigheter/gjenoppretting gjenstår. UBL-prøvene er grunnlag for gjenbruk,
+ikke ferdig EHF-leveranse.
 
 En transportkvittering fra aksesspunktet må skilles fra mottakers eventuelle
 forretningsmessige svar. Peppol-utgaven har en valgfri faktura-med-svar-profil,

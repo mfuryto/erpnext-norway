@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Iterable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, datetime
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
@@ -204,7 +204,10 @@ def _validate_input(data: SaftExportData) -> None:
 		_require(mapping.grouping_code, f"Mangler SAF-T grouping code for {entry.account}.")
 		debit, credit = _money(entry.debit), _money(entry.credit)
 		_require(entry.debit == debit and entry.credit == credit, "SAF-T krever hovedboksbeløp i hele øre; kildedata blir ikke avrundet ved eksport.")
-		_require((debit > 0) != (credit > 0), f"Bilagslinje {entry.record_id} må ha enten debet eller kredit.")
+		_require(debit >= 0 and credit >= 0 and bool(debit or credit), f"Bilagslinje {entry.record_id} må ha et positivt debet-/kreditbeløp.")
+		if debit and credit:
+			_require(not entry.currency_code and entry.currency_amount is None and not entry.tax_code and not entry.tax_information,
+				f"Bilagslinje {entry.record_id}: Samlet debet/kredit er foreløpig kvalifisert bare i NOK uten avgiftsopplysninger.")
 		if entry.party_type or entry.party:
 			_require(
 				entry.party_type in ("Customer", "Supplier") and bool(entry.party),
@@ -243,6 +246,16 @@ def _group_vouchers(entries: Iterable[LedgerEntry]) -> dict[tuple[str, str, date
 	for entry in entries:
 		vouchers[(entry.voucher_type, entry.voucher_no, entry.posting_date)].append(entry)
 	return vouchers
+
+
+def _transaction_lines(entries: Iterable[LedgerEntry]) -> Iterable[LedgerEntry]:
+	"""Represent both booked amounts; retain the native posting reference on each side."""
+	for entry in entries:
+		if entry.debit and entry.credit:
+			yield replace(entry, credit=Decimal())
+			yield replace(entry, debit=Decimal())
+		else:
+			yield entry
 
 
 def _add_company(parent: etree._Element, company: CompanyData) -> None:
@@ -417,7 +430,7 @@ def build_saf_t(data: SaftExportData) -> bytes:
 		_element(transaction, "GLPostingDate", posting_date)
 		if voucher_entries[0].modified_date:
 			_element(transaction, "ModificationDate", voucher_entries[0].modified_date)
-		for entry in voucher_entries:
+		for entry in _transaction_lines(voucher_entries):
 			line = etree.SubElement(transaction, f"{{{NS}}}Line")
 			_element(line, "RecordID", entry.record_id)
 			_element(line, "AccountID", data.account_mappings[entry.account].account_id)

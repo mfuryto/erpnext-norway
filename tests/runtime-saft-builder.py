@@ -115,6 +115,34 @@ class TestSaftBuilder(TestCase):
 
 class TestNorwegianBuilderExtensions(TestCase):
     export_data = TestSaftBuilder.export_data
+    def test_both_booked_sides_keep_source_id_totals_and_dimensions(self):
+        data=self.export_data()
+        entries=(LedgerEntry('GL-BOTH','Bank',Decimal(100),Decimal(40),date(2026,1,15),'Journal Entry','BOTH',
+                    analyses=(("CC","Main"),)),
+                 LedgerEntry('GL-OTHER','Revenue',Decimal(),Decimal(60),date(2026,1,15),'Journal Entry','BOTH'))
+        root=etree.fromstring(build_saf_t(replace(data,entries=entries,
+            analysis_catalog={("CC","Main"):("Kostnadssted","Main")})))
+        ns={"s":NS}
+        lines=root.xpath('.//s:Line[s:RecordID="GL-BOTH"]',namespaces=ns)
+        self.assertEqual(len(lines),2)
+        self.assertEqual(lines[0].xpath('s:DebitAmount/s:Amount/text()',namespaces=ns),['100.00'])
+        self.assertEqual(lines[1].xpath('s:CreditAmount/s:Amount/text()',namespaces=ns),['40.00'])
+        self.assertEqual(lines[0].xpath('s:Analysis/s:DebitAnalysisAmount/s:Amount/text()',namespaces=ns),['100.00'])
+        self.assertEqual(lines[1].xpath('s:Analysis/s:CreditAnalysisAmount/s:Amount/text()',namespaces=ns),['40.00'])
+        self.assertEqual(root.xpath('string(.//s:TotalDebit)',namespaces=ns),'100.00')
+        self.assertEqual(root.xpath('string(.//s:TotalCredit)',namespaces=ns),'100.00')
+        self.assertEqual(root.xpath('string(.//s:Account[s:AccountID="1920"]/s:ClosingDebitBalance)',namespaces=ns),'60.00')
+
+    def test_both_sides_reject_unqualified_tax_currency_and_negative_amounts(self):
+        from erpnext_norway.saft_builder import TaxInformation
+        data=self.export_data()
+        first=replace(data.entries[2],debit=Decimal(100),credit=Decimal(40))
+        for extra in ({'currency_code':'EUR','currency_amount':Decimal(60)},
+                      {'tax_information':(TaxInformation('1',Decimal(100),Decimal(25)),)},
+                      {'tax_code':'1'}, {'debit':Decimal(-100)}):
+            with self.subTest(extra=extra), self.assertRaises(SaftExportError):
+                build_saf_t(replace(data,entries=(replace(first,**extra),)))
+
     def test_native_opening_excluded_from_movements(self):
         data = self.export_data()
         entries = tuple(replace(r, posting_date=date(2026, 1, 1), is_opening=True)
