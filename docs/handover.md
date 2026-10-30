@@ -134,11 +134,12 @@ Dette endrer ikke en kjørende server og kvalifiserer ikke den fremtidige norske
 
 ## EHF som må videreføres
 
-Peppyrus-testkonto og API-nøkkel er opprettet av eieren. Nøkkelen skal legges privat
-på serveren, aldri i chat eller Git. Tidligere prøve ga konto HTTP 200 og deltaker
-HTTP 500; dette er ikke bevist vellykket levering. Faktura og kreditnota skal gjennom
-faktisk testnettverk. Ingen modulavgift var valgt; tjenesteleverandørens vilkår må
-likevel undersøkes. Prosess/dokumenttyper skal følge aktuell Peppol BIS Billing.
+SendRegning er valgt leverandør etter brukerens korrigering 30. oktober.
+Se [EHF-planen](ehf.md) for undersøkte standardtillegg og skillet mellom å utstede
+en faktura og å transportere ferdig EHF. ERPNext beholder nummerering, beløp og
+regnskapsføring. Faktisk levering av faktura/kreditnota, status, feil og kvitteringer
+gjenstår. Tidligere Peppyrus-prøver er ikke grunnlag for videre leverandørvalg.
+Hemmeligheter skal aldri legges i chat eller Git.
 
 ## Første beskjed i den nye samtalen
 
@@ -538,7 +539,8 @@ Dette er grunnlag for gjenbruk, ikke ferdig SAF-T-nedlasting. Prøven for native
 eksport/radutvalg inngår både før og etter backup/restore i Compose-testene.
 
 [EHF-videreføringen](ehf.md) samler oppdatert format, undersøkte tillegg,
-Peppyrus-grensesnitt og krav til faktisk levering, status, feil og kvitteringer.
+leverandørgrensesnitt og krav til faktisk levering, status, feil og kvitteringer.
+Leverandørvalget er senere endret til SendRegning; se gjeldende EHF-plan.
 EHF er uttrykkelig med videre. Ingen ny EHF-/SAF-T-motor eller ekstra app er
 innført i denne arbeidspakken. Serveren er ikke kontaktet eller endret.
 
@@ -624,3 +626,16 @@ og mulig transport av ferdig EHF, samt den nyere EDocument-generatoren som
 allerede håndterer betalt beløp og kreditnotareferanse i faktisk kjerneprøve.
 Disse funksjonene skal gjenbrukes; ingen ny faktura-/UBL-motor er bestilt.
 Faktisk SendRegning-grensesnitt og levering/status/kvittering er fortsatt åpne.
+
+## Importgrunnlag: ordinær kjerneføring
+
+Kjerneprøven for import er utvidet med faktiske, balanserende grunnlagsføringer
+på ordinær Journal Entry. Kostnadseksempler for 81–84 prøves med sammenslåing av
+kontolinjer både av og på, 25/15 prosent og fullt/delvis/intet fradrag.
+Original, native reversering og kansellering beholder faktiske hovedboksrader;
+MVA-grunnlaget dobbelttelles ikke. Den eksisterende EUR-vare-/LCV-kjeden får
+også bokført deklarasjonsgrunnlaget uten å endre netto lagerkost eller MVA.
+Se vat-import.md for korrekt normalføring og avgrensning. Ingen produktkode,
+nye felt, avgiftsberegning eller historiske bilag endres av denne kvalifiseringen.
+SAF-T 81–84 krever fortsatt eksportmapping av begge avgiftssider, dokumentert
+fradragsandel og native kansellering; ikke konstruer posteringer i eksporten.

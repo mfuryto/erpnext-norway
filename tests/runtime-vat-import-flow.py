@@ -34,6 +34,10 @@ try:
         evidence=json.loads(frappe.db.get_default('runtime_import_flow'))
         assert ledger()==[tuple(r) for r in evidence['ledger']]
         assert portal()==(6300,1250,750)
+        declaration=frappe.get_doc('Journal Entry',next(r['name'] for r in evidence['documents'] if r['doctype']=='Journal Entry'))
+        expense=frappe.db.get_value('Account',{'company':C,'account_number':'4300'},'name')
+        bases=[r for r in ledger() if r[-1]==declaration.name and r[0]==expense]
+        assert sum(r[1] for r in bases)==sum(r[2] for r in bases)==5000
         for entry in evidence['documents']:
             doc=frappe.get_doc(entry['doctype'],entry['name']);assert doc.docstatus==1
             assert doc.get('grand_total')==entry['total']
@@ -92,9 +96,13 @@ try:
         declaration=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-10-20','bill_date':'2026-09-20',
             'bill_no':'SYNTHETIC-IMPORT-DECLARATION','voucher_type':'Journal Entry',
             'user_remark':'Synthetic declaration; goods '+goods.name+'; duty '+fees.name,
-            'accounts':[{'account':a['2705'],'credit_in_account_currency':1250,CODE:'81',RATE:25,BASE:5000},
+            'accounts':[{'account':a['4300'],'debit_in_account_currency':5000,'cost_center':c.cost_center,CODE:'81',RATE:25},
+                {'account':a['4300'],'credit_in_account_currency':5000,'cost_center':c.cost_center,CODE:'81',RATE:25},
+                {'account':a['2705'],'credit_in_account_currency':1250,CODE:'81',RATE:25,BASE:5000},
                 {'account':a['2715'],'debit_in_account_currency':750,CODE:'81',RATE:25},
                 {'account':a['4998'],'debit_in_account_currency':500,'cost_center':c.cost_center}]}).insert();declaration.submit()
+        basis_rows=[r for r in ledger() if r[-1]==declaration.name and r[0]==a['4300']]
+        assert sum(r[1] for r in basis_rows)==sum(r[2] for r in basis_rows)==5000
         nondeductible=landed(500)
         rows=[r for r in ledger() if r[-1] in (goods.name,fees.name,declaration.name)]
         for number,wanted in [('1460',5200),('4998',0),('2705',-1250),('2715',750),('2400',-1700)]:
@@ -122,12 +130,12 @@ try:
         frappe.set_user(OWNER);closed=frappe.get_doc('Purchase Receipt',zero.name);closed.items[0].set(BASE,1400);closed.items[0].set(DATE,'2026-10-01')
         rejected(closed.save,kind='ClosedAccountingPeriod');frappe.db.rollback(save_point='import_source_lock')
         print('PASS native non-stock goods receipt1300 statistical zero-import basis, ordinary1000 supplier invoice excluded from portal, native Version correction and closed-source-period guard')
-        declaration.reload();declaration.accounts[1].set(BASE,5000);declaration.save()
+        declaration.reload();next(row for row in declaration.accounts if row.account==a['2715']).set(BASE,5000);declaration.save()
         assert portal()==(6300,1250,750)  # An input-row basis must not double output basis.
         frappe.db.savepoint('import_journal_lock');frappe.set_user('Administrator')
         frappe.get_doc({'doctype':'Accounting Period','company':C,'period_name':'Synthetic customs VAT closure',
             'start_date':'2026-09-01','end_date':'2026-09-30','closed_documents':[{'document_type':'Journal Entry','closed':1}]}).insert()
-        frappe.set_user(OWNER);closed=frappe.get_doc('Journal Entry',declaration.name);closed.accounts[0].set(BASE,5001)
+        frappe.set_user(OWNER);closed=frappe.get_doc('Journal Entry',declaration.name);next(row for row in closed.accounts if row.account==a['2705']).set(BASE,5001)
         rejected(closed.save,kind='ClosedAccountingPeriod');frappe.db.rollback(save_point='import_journal_lock')
         def missing_reference():
             draft=frappe.copy_doc(declaration);draft.bill_date=None;draft.bill_no=None;draft.insert();draft.submit()
