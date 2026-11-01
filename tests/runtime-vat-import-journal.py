@@ -6,7 +6,7 @@ os.chdir('/home/frappe/frappe-bench/sites')
 frappe.init(site='accounting',sites_path='/home/frappe/frappe-bench/sites');frappe.connect()
 frappe.set_user('Administrator')
 from erpnext_norway import vat
-from erpnext_norway.vat_catalog import CODE,RATE
+from erpnext_norway.vat_catalog import CODE,RATE,DEDUCTION
 from erpnext_norway.vat_journal import BASE
 from erpnext.accounts.doctype.journal_entry.journal_entry import make_reverse_journal_entry
 from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
@@ -83,7 +83,7 @@ try:
                     ('84',15,2000,300,0,'2706','2716')]:
                 rows=[{'account':a['4300'],'debit_in_account_currency':base,'cost_center':c.cost_center,CODE:code,RATE:rate},
                     {'account':a['4300'],'credit_in_account_currency':base,'cost_center':c.cost_center,CODE:code,RATE:rate},
-                    {'account':a[out_account],'credit_in_account_currency':output,CODE:code,RATE:rate,BASE:base}]
+                    {'account':a[out_account],'credit_in_account_currency':output,CODE:code,RATE:rate,BASE:base,DEDUCTION:(60 if input_==705 else 100 if input_ else 0)}]
                 if input_:rows.append({'account':a[in_account],'debit_in_account_currency':input_,CODE:code,RATE:rate})
                 if output!=input_:rows.append({'account':a['4300'],'debit_in_account_currency':output-input_,'cost_center':c.cost_center})
                 doc=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-09-20',

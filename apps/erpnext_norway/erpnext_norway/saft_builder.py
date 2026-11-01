@@ -99,6 +99,7 @@ class TaxInformation:
 	tax_base: Decimal | None = None
 	tax_amount: Decimal | None = None
 	tax_credit: bool | None = None
+	line_credit: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -206,8 +207,10 @@ def _validate_input(data: SaftExportData) -> None:
 		_require(entry.debit == debit and entry.credit == credit, "SAF-T krever hovedboksbeløp i hele øre; kildedata blir ikke avrundet ved eksport.")
 		_require(debit >= 0 and credit >= 0 and bool(debit or credit), f"Bilagslinje {entry.record_id} må ha et positivt debet-/kreditbeløp.")
 		if debit and credit:
-			_require(not entry.currency_code and entry.currency_amount is None and not entry.tax_code and not entry.tax_information,
-				f"Bilagslinje {entry.record_id}: Samlet debet/kredit er foreløpig kvalifisert bare i NOK uten avgiftsopplysninger.")
+			_require(not entry.currency_code and entry.currency_amount is None and not entry.tax_code,
+				f"Bilagslinje {entry.record_id}: Samlet debet/kredit er foreløpig kvalifisert bare i NOK med uttrykkelig avgiftsside.")
+			_require(all(isinstance(info.line_credit, bool) for info in entry.tax_information),
+				f"Bilagslinje {entry.record_id}: Velg bokført side for hver avgiftsopplysning på samlet debet/kredit.")
 		if entry.party_type or entry.party:
 			_require(
 				entry.party_type in ("Customer", "Supplier") and bool(entry.party),
@@ -220,6 +223,10 @@ def _validate_input(data: SaftExportData) -> None:
 		for analysis in entry.analyses:
 			_require(analysis in data.analysis_catalog, f"Mangler dimensjonsdata for {analysis}.")
 		for tax_information in entry.tax_information or ((TaxInformation(entry.tax_code, entry.tax_base),) if entry.tax_code else ()):
+			if tax_information.line_credit is not None:
+				_require(isinstance(tax_information.line_credit, bool) and
+					bool(credit if tax_information.line_credit else debit),
+					f"Bilagslinje {entry.record_id}: Avgiftsopplysningen viser til en side uten bokført beløp.")
 			_require(tax_information.code in data.tax_mappings, f"Mangler SAF-T MVA-mapping for {tax_information.code}.")
 			if tax_information.tax_amount is not None:
 				_require(tax_information.tax_amount >= 0, f"MVA-beløp må være null eller positivt for {tax_information.code}.")
@@ -252,8 +259,10 @@ def _transaction_lines(entries: Iterable[LedgerEntry]) -> Iterable[LedgerEntry]:
 	"""Represent both booked amounts; retain the native posting reference on each side."""
 	for entry in entries:
 		if entry.debit and entry.credit:
-			yield replace(entry, credit=Decimal())
-			yield replace(entry, debit=Decimal())
+			yield replace(entry, credit=Decimal(), tax_information=tuple(
+				info for info in entry.tax_information if info.line_credit is False))
+			yield replace(entry, debit=Decimal(), tax_information=tuple(
+				info for info in entry.tax_information if info.line_credit is True))
 		else:
 			yield entry
 

@@ -5404,3 +5404,6 @@ Invoice row for VAT treatment,Fakturalinje for MVA-behandling
 "Download","Last ned","Norway SAF-T"
 "Unable to download SAF-T.","Kan ikke laste ned SAF-T."
 Setup,Oppsett
+Record the documented deduction percent on the output import VAT line. Journal amounts are not calculated.,Registrer dokumentert fradragsandel på linjen for utgående innførsels-MVA. Bilagsbeløpene beregnes ikke.
+Enter an input VAT deduction percent between 0 and 100 on the output import VAT line only.,Oppgi fradragsandel mellom 0 og 100 bare på linjen for utgående innførsels-MVA.
+Record the documented deduction percent before submitting import VAT. Use zero for codes 82/84.,Registrer dokumentert fradragsandel før innførsels-MVA bokføres. Bruk null for kode 82/84.

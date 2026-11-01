@@ -11,7 +11,7 @@ os.chdir('/home/frappe/frappe-bench/sites')
 frappe.init(site='accounting', sites_path='/home/frappe/frappe-bench/sites')
 frappe.connect(); frappe.set_user('Administrator')
 from erpnext_norway import saft, saft_builder as xml, vat
-from erpnext_norway.vat_catalog import CODE, RATE
+from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
 from erpnext_norway.vat_journal import BASE
 from erpnext.accounts.doctype.journal_entry.journal_entry import make_reverse_journal_entry
 from frappe.utils.file_manager import save_file
@@ -113,7 +113,7 @@ try:
         # Reject wrong stored rate/base and unsupported self-assessed codes.
         original=frappe.get_doc('Journal Entry',evidence['documents'][0][0])
         item=original.accounts[0]
-        for field,value in [(RATE,15),(BASE,500),(CODE,'81')]:
+        for field,value in [(RATE,15),(BASE,500),(DEDUCTION,100),(CODE,'81')]:
             frappe.db.savepoint('direct_import_bad_metadata')
             frappe.db.set_value('Journal Entry Account',item.name,field,value)
             try: export()

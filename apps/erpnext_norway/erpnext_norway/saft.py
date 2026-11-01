@@ -124,11 +124,14 @@ def invoice_taxes(doc, rows):
 def journal_taxes(doc, rows):
     """Codes 14/15 are explicitly reported on the posted VAT account itself."""
     from erpnext_norway.vat import is_vat_account
-    from erpnext_norway.vat_catalog import CODE, RATE
+    from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
     from erpnext_norway.vat_journal import BASE, SPEC
     from erpnext_norway.vat_quarterly import JOURNAL
     if doc.doctype != 'Journal Entry' or doc.get(JOURNAL) or doc.multi_currency:
         unsupported(doc)
+    if any(item.get(CODE) in {'81', '82', '83', '84'} for item in doc.accounts):
+        from erpnext_norway.saft_import import journal_taxes as import_taxes
+        return import_taxes(doc, rows)
     result, mappings = {}, {}
     details = {}
     for item in doc.accounts:
@@ -138,7 +141,7 @@ def journal_taxes(doc, rows):
             continue
         code = item.get(CODE)
         expected = {'14': ('2715', 25), '15': ('2716', 15)}.get(code)
-        if (not expected or item.account in details or item.get(BASE) or item.get(SPEC)
+        if (not expected or item.account in details or item.get(BASE) or item.get(SPEC) or item.get(DEDUCTION)
                 or item.account_currency != 'NOK'
                 or frappe.get_cached_value('Account', item.account, 'account_number') != expected[0]
                 or Decimal(str(item.get(RATE) or 0)) != expected[1]):

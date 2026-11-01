@@ -639,3 +639,25 @@ Se vat-import.md for korrekt normalføring og avgrensning. Ingen produktkode,
 nye felt, avgiftsberegning eller historiske bilag endres av denne kvalifiseringen.
 SAF-T 81–84 krever fortsatt eksportmapping av begge avgiftssider, dokumentert
 fradragsandel og native kansellering; ikke konstruer posteringer i eksporten.
+
+
+## SAF-T: innførsels-MVA 81–84, 0.4.25
+
+Kjernens ordinære bilag beholder grunnlag og begge avgiftsbeløp; gapet var
+SAF-T-plassering på riktig bokført side og dokumentert fradragsandel i BaseRate.
+Eksisterende prosentmetadata gjenbrukes nå på Journal Entry Account sin utgående
+innførsels-MVA-linje, uten ny beregning. Eldre andeler gjettes ikke. Eksakt native
+reversering av eldre bilag med ukjent andel beholdes, men perioden kan ikke
+SAF-T-eksporteres før nødvendige metadata er dokumentert og registrert.
+
+Kvalifiseringen gjelder NOK-kostnadsbilag med én grunnlagskonto, 25/15 prosent,
+fullt/delvis/intet fradrag, begge sammenslåingsvalg og native reversering/kansellering.
+Vanlig Journal Entry-kansellering bygger brutto motposter fra bilagslinjene;
+originalens sammenslåtte GL-rad medfører ikke i seg selv et manglende grunnlag.
+Faktisk manglende grunnlag avvises uten erstatningsposteringer. Eksportert restore
+skal kontrollere XML, GL-ID-er, bruttobeløp, dimensjoner og metadata igjen.
+
+Se saft.md og vat-import.md. Øvrig import/lager/LCV/flere grunnlagskonti/valuta,
+kvartalsbilag, fullstendige masterregistre, driftsmidler/frakt/årsavslutning og
+2027-kvalifisering gjenstår før samlet SAF-T-aksept. ENK/årsgrunnlag og faktisk
+SendRegning EHF-levering, status, feil og kvitteringer følger videre.

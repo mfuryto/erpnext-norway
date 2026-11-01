@@ -200,6 +200,41 @@ class TestNorwegianBuilderExtensions(TestCase):
                 tax_mappings={"86":TaxMapping("86",Decimal(25),"86",(Decimal(60),))})))
             self.assertEqual(root.xpath("string(.//s:TaxInformation/s:"+direction+"/s:Amount)",namespaces={"s":NS}),"100.00")
 
+    def test_merged_tax_information_stays_on_its_booked_side(self):
+        from erpnext_norway.saft_builder import TaxInformation
+        data=self.export_data()
+        entry=LedgerEntry('GL-IMPORT','Bank',Decimal(5170),Decimal(4700),date(2026,1,15),
+            'Journal Entry','IMPORT',analyses=(("CC","Main"),),tax_information=(
+                TaxInformation('81',Decimal(4700),Decimal(705),False,False),
+                TaxInformation('81',Decimal(4700),Decimal(1175),True,True)))
+        other=LedgerEntry('GL-TAX','Revenue',Decimal(),Decimal(470),date(2026,1,15),'Journal Entry','IMPORT')
+        data=replace(data,entries=(entry,other),tax_mappings={'81':TaxMapping('81',Decimal(25),'81',(Decimal(60),))},
+            analysis_catalog={("CC","Main"):("Kostnadssted","Main")})
+        payload=build_saf_t(data);validate_saf_t(payload);root=etree.fromstring(payload);ns={'s':NS}
+        lines=root.xpath('.//s:Line[s:RecordID="GL-IMPORT"]',namespaces=ns)
+        self.assertEqual(len(lines),2)
+        self.assertEqual(lines[0].xpath('s:TaxInformation/s:DebitTaxAmount/s:Amount/text()',namespaces=ns),['705.00'])
+        self.assertEqual(lines[1].xpath('s:TaxInformation/s:CreditTaxAmount/s:Amount/text()',namespaces=ns),['1175.00'])
+        self.assertEqual(lines[0].xpath('s:TaxInformation/s:CreditTaxAmount',namespaces=ns),[])
+        self.assertEqual(lines[1].xpath('s:TaxInformation/s:DebitTaxAmount',namespaces=ns),[])
+        self.assertEqual(root.xpath('string(.//s:TotalDebit)',namespaces=ns),'5170.00')
+        self.assertEqual(root.xpath('string(.//s:TotalCredit)',namespaces=ns),'5170.00')
+        self.assertEqual(lines[0].xpath('string(s:Analysis/s:DebitAnalysisAmount/s:Amount)',namespaces=ns),'5170.00')
+        self.assertEqual(lines[1].xpath('string(s:Analysis/s:CreditAnalysisAmount/s:Amount)',namespaces=ns),'4700.00')
+        for binding in (None,'credit',1):
+            bad=replace(entry,tax_information=(TaxInformation('81',Decimal(4700),Decimal(705),False,binding),))
+            with self.subTest(binding=binding),self.assertRaises(SaftExportError):
+                build_saf_t(replace(data,entries=(bad,other)))
+
+    def test_tax_information_cannot_bind_to_an_unbooked_side(self):
+        from erpnext_norway.saft_builder import TaxInformation
+        data=self.export_data()
+        first=LedgerEntry('GL-A','Bank',Decimal(100),Decimal(),date(2026,1,15),'Journal Entry','ONE',
+            tax_information=(TaxInformation('81',Decimal(100),Decimal(25),True,True),))
+        second=LedgerEntry('GL-B','Revenue',Decimal(),Decimal(100),date(2026,1,15),'Journal Entry','ONE')
+        with self.assertRaisesRegex(SaftExportError,'side uten bokført'):
+            build_saf_t(replace(data,entries=(first,second),tax_mappings={'81':TaxMapping('81',Decimal(25),'81')}))
+
 
 if __name__ == '__main__':
     import unittest

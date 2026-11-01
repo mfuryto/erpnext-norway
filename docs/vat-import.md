@@ -81,7 +81,10 @@ innførsel. Ingen summer fra leverandørfakturaen gjettes som deklarasjonsgrunnl
    ekspedisjonsdato/deklarasjonsreferanse når 81/82/83/84 velges. Dokumentert
    grunnlag bokføres med balanserende debet-/kreditlinjer på grunnlagskontoen.
    Kode og sats beholdes på disse linjene. Grunnlaget registreres også på
-   utgående MVA-linje for perioderapporten; inngående fradrag er separat.
+   utgående MVA-linje for perioderapporten. Fra 0.4.25 registreres også
+   **MVA-fradrag i prosent** på denne linjen: dokumentert andel
+   for 81/83 og null for 82/84. Inngående fradragsbeløp føres separat; feltet
+   beregner ingen bilagsbeløp.
    Se det konkrete bilagseksemplet nedenfor.
 3. For kode 85 registreres dokumentert grunnlag, dato og referanse direkte
    på varemottaket. Kladd kan fullføres senere. Bokføring krever utfylte felt.
@@ -165,8 +168,15 @@ kostnads-/grunnlagslinjene en gang til eller ta med kansellerte bilag.
 Dette beskriver manuell standardføring, ikke automatisk import av en deklarasjon.
 Eksisterende bilag omskrives ikke. Grunnlagsposteringene, native GL-ID-er,
 reversering/kansellering og private deklarasjonsbytes kontrolleres også etter
-backup/gjenoppretting før promotering. SAF-T-mappingen for 81–84 er fortsatt
-sperret: den må plassere inngående og utgående avgiftsopplysninger på riktig
-bokført grunnlag, håndtere native kansellering og bevare dokumentert
-fradragsandel i TaxTable. Det er et separat eksportgap, ikke behov for en ny
-import- eller avgiftsmotor.
+backup/gjenoppretting før promotering. Fra 0.4.25 støtter SAF-T entydige
+kostnadsbilag med 81–84 på én grunnlagskonto i NOK, inklusive native reversering
+og kansellering med begge sammenslåingsvalg. Se [eksportomfanget](saft.md).
+Lager/LCV, flere grunnlagskonti og valuta krever egen eksportkvalifisering.
+
+Eldre bilag har ikke registrert fradragsandel på bilagslinjen. Oppdatering skal
+ikke gjette andelen fra avrundede MVA-beløp eller skrive om hovedboken. Ordinær
+native reversering av et slikt bilag bevarer ukjent andel. Før SAF-T-eksport må
+regnskapsansvarlig registrere dokumentert andel på utgående innførsels-MVA-linje;
+endringen bruker eksisterende metadata- og periodekontroll. En sperret periode
+skal ikke omgås. Dette er en korreksjon av historiske metadata, ikke et ekstra
+steg i normalflyten for nye bilag.
