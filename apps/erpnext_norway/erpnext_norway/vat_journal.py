@@ -2,9 +2,9 @@
 import frappe
 from collections import Counter
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
-from frappe.utils import getdate
+from frappe.utils import getdate, flt
 
-from erpnext_norway.vat_catalog import CODE, RATE
+from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
 BASE = 'custom_norway_vat_base'
 SPEC = 'custom_norway_vat_specification'
 SETTLEMENT = 'custom_norway_vat_settlement'
@@ -25,8 +25,12 @@ def configure_fields():
          'insert_after': CODE, 'allow_on_submit': 1, 'print_hide': 1},
         {'fieldname': BASE, 'label': 'VAT base', 'fieldtype': 'Currency',
          'insert_after': RATE, 'allow_on_submit': 1, 'print_hide': 1},
+        {'fieldname': DEDUCTION, 'label': 'Input VAT deduction percent', 'fieldtype': 'Percent',
+         'insert_after': BASE, 'allow_on_submit': 1, 'print_hide': 1, 'no_copy': 0,
+         'depends_on': 'eval:["81","82","83","84"].includes(doc.custom_norway_vat_code) && !!doc.custom_norway_vat_base',
+         'description': 'Record the documented deduction percent on the output import VAT line. Journal amounts are not calculated.'},
         {'fieldname': SPEC, 'label': 'VAT specification', 'fieldtype': 'Select',
-         'insert_after': BASE, 'allow_on_submit': 1, 'print_hide': 1,
+         'insert_after': DEDUCTION, 'allow_on_submit': 1, 'print_hide': 1,
          'options': '\nBad debt\nCapital goods adjustment\nCapital goods reversal'},
     ], 'Journal Entry': [
         {'fieldname': SETTLEMENT, 'label': 'Norwegian VAT settlement', 'fieldtype': 'Check',
@@ -61,14 +65,24 @@ def validate(doc, method=None):
         validate_settlement(doc)
         return
     previous = doc.get_doc_before_save()
+    legacy_unknown_share = set()
     if not previous or previous.docstatus != 1:
-        prepare_reversal(doc)
+        legacy_unknown_share = prepare_reversal(doc) or set()
     old = {row.name: row for row in previous.accounts} if previous else {}
     for row in doc.accounts:
         original = old.get(row.name)
         if previous and previous.docstatus == 1 and original and all(
-                (row.get(field) or None) == (original.get(field) or None) for field in (CODE, RATE, BASE, SPEC, 'custom_norway_vat_note')):
+                (row.get(field) or None) == (original.get(field) or None) for field in (CODE, RATE, BASE, SPEC, DEDUCTION, 'custom_norway_vat_note')):
             continue
+        account_number = frappe.get_cached_value('Account', row.account, 'account_number')
+        deduction = flt(row.get(DEDUCTION))
+        import_output = row.get(CODE) in {'81', '82', '83', '84'} and account_number in {'2705', '2706'}
+        if not 0 <= deduction <= 100 or (deduction and not import_output):
+            frappe.throw(frappe._('Enter an input VAT deduction percent between 0 and 100 on the output import VAT line only.'))
+        if import_output and ((row.get(CODE) in {'82', '84'} and deduction) or
+                (doc.docstatus == 1 and row.get(CODE) in {'81', '83'} and not deduction
+                 and row.idx not in legacy_unknown_share)):
+            frappe.throw(frappe._('Record the documented deduction percent before submitting import VAT. Use zero for codes 82/84.'))
         if not is_vat_account(row.account):
             continue
         if previous and previous.docstatus == 1:
@@ -79,7 +93,6 @@ def validate(doc, method=None):
             if doc.docstatus == 1:
                 frappe.throw(frappe._('Select a Norwegian VAT code on each journal VAT line before submission.'))
             continue
-        account_number = frappe.get_cached_value('Account', row.account, 'account_number')
         if account_number not in ACCOUNTS.get(row.get(CODE), ()):
             frappe.throw(frappe._('The journal VAT code does not match its VAT account.'))
         if company.get(STATUS) not in ('Registered', 'Not registered'):
@@ -124,14 +137,28 @@ def prepare_reversal(doc):
             row.debit_in_account_currency, row.credit_in_account_currency)
         return (row.account, row.account_currency, float(row.exchange_rate or 0),
             *map(lambda value: float(value or 0), amounts), row.get(CODE),
-            float(row.get(RATE) or 0), row.get(SPEC) or '', float(row.get(BASE) or 0))
+            float(row.get(RATE) or 0), row.get(SPEC) or '', float(row.get(BASE) or 0),
+            float(row.get(DEDUCTION) or 0))
 
     originals = Counter(signature(row, reverse=True) for row in source.accounts
         if row.get(BASE) and frappe.get_cached_value('Account', row.account, 'account_number')
         in tuple(number for number in ACCOUNTS.get(row.get(CODE), ()) if number.startswith('270')) and
         float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
+    unknown = Counter(signature(row, reverse=True) for row in source.accounts
+        if row.get(CODE) in {'81', '83'} and not row.get(DEDUCTION) and row.get(BASE)
+        and frappe.get_cached_value('Account', row.account, 'account_number') in {'2705', '2706'}
+        and float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
+    eligible = set()
     for row in doc.accounts:
         key = signature(row)
         if originals[key]:
             row.set(BASE, -float(row.get(BASE)))
             originals[key] -= 1
+        # Exact native reversals of legacy data may retain an unknown share.
+        # Repeated save/submit sees the already signed basis; never infer 100%.
+        signed = signature(row)
+        unsigned = (*signed[:-2], -signed[-2], signed[-1])
+        if unknown[unsigned]:
+            eligible.add(row.idx)
+            unknown[unsigned] -= 1
+    return eligible

@@ -4,7 +4,7 @@ from pathlib import Path
 import frappe
 os.chdir('/home/frappe/frappe-bench/sites');frappe.init(site='accounting',sites_path='/home/frappe/frappe-bench/sites');frappe.connect();frappe.set_user('Administrator');frappe.conf.host_name='http://frontend:8080'
 from erpnext_norway import vat
-from erpnext_norway.vat_catalog import CODE,RATE
+from erpnext_norway.vat_catalog import CODE,RATE,DEDUCTION
 from erpnext_norway.vat_journal import BASE
 from erpnext_norway.vat_import import DATE,REFERENCE
 from erpnext_norway.vat_quarterly import ORDINARY,RETURN_TYPE
@@ -98,7 +98,7 @@ try:
             'user_remark':'Synthetic declaration; goods '+goods.name+'; duty '+fees.name,
             'accounts':[{'account':a['4300'],'debit_in_account_currency':5000,'cost_center':c.cost_center,CODE:'81',RATE:25},
                 {'account':a['4300'],'credit_in_account_currency':5000,'cost_center':c.cost_center,CODE:'81',RATE:25},
-                {'account':a['2705'],'credit_in_account_currency':1250,CODE:'81',RATE:25,BASE:5000},
+                {'account':a['2705'],'credit_in_account_currency':1250,CODE:'81',RATE:25,BASE:5000,DEDUCTION:60},
                 {'account':a['2715'],'debit_in_account_currency':750,CODE:'81',RATE:25},
                 {'account':a['4998'],'debit_in_account_currency':500,'cost_center':c.cost_center}]}).insert();declaration.submit()
         basis_rows=[r for r in ledger() if r[-1]==declaration.name and r[0]==a['4300']]

@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.24 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.25 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -115,7 +115,7 @@ kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 
 ## Gjenstår i hovedplanens SAF-T-punkt
 
-Utvid eksportmappingen til import, kvartalsbilag,
+Utvid eksportmappingen til øvrig import, kvartalsbilag,
 andre klassifiserte MVA-bilag, øvrig avgiftsført valuta, lager/driftsmidler og frakt.
 Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
 De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
@@ -227,7 +227,7 @@ SAF-T-eksemplet på side 34. Dette er et gjenåpnet kvalifiseringsgap i importfl
 ikke grunnlag for å lage kunstige GL-poster bare i eksportfilen. Historiske
 bilag endres ikke ved oppdatering. Videre importprøve bruker ordinære Journal
 Entry med faktiske grunnlagsføringer og native dimensjoner; se vat-import.md
-og videreføringen nederst. Eksportmappingen for 81–84 er fortsatt åpen. Kvartalsbilagenes
+og videreføringen nederst. Eksportmappingen for 81–84 ble videreført i 0.4.25 som beskrevet nedenfor. Kvartalsbilagenes
 avgiftsgrunnlag og avrundingskorreksjoner må kvalifiseres separat.
 
 
@@ -248,8 +248,8 @@ ikke nye posteringer eller ID-er. Dimensjonsbeløpet følger hver sides faktisk
 bokførte beløp; totalsummer og saldo bruker de opprinnelige kildedataene.
 
 Første kvalifisering av dette formatgapet gjelder NOK-rader uten tilknyttede
-avgiftsopplysninger. Samlet valuta og fordeling av TaxInformation avvises fortsatt.
-Negative eller tomme kildelinjer godtas ikke. Dette åpner ikke importkodene
+avgiftsopplysninger. Samlet valuta avvises fortsatt; fordeling av TaxInformation for import følger i 0.4.25.
+Negative eller tomme kildelinjer godtas ikke. Dette åpnet i 0.4.24 ikke importkodene
 81–84 eller kvartalsbilag: deres grunnlags-/avgiftsmapping må kvalifiseres separat.
 Native sammenslåing, reversering, kansellering, kostnadssted, bruttosummer,
 saldo og referanser prøves igjen etter eksportert gjenoppretting. Brukerens
@@ -258,8 +258,59 @@ Accounts Settings endres ikke av eksport eller oppdatering.
 Videre kjerneprøve er nå gjort permanent i importtestene: ordinære bilag fører
 faktisk grunnlag og motføring, med uendret netto kostnad/lager. Se vat-import.md.
 Begge native sammenslåingsvalg, fradrag, reversering og kansellering inngår.
-Dette lukker prøvegapet for den dokumenterte grunnlagsføringen; det åpner ikke
-81–84 i eksportadapteren. Særlig skal inngående og utgående TaxInformation ikke
-nettes bort, og kjernens nettomotpost ved kansellering skal ikke erstattes med
+Dette lukket prøvegapet for grunnlagsføringen før eksportmappingen i 0.4.25. Særlig skal inngående og utgående TaxInformation ikke
+nettes bort, og eventuelt manglende grunnlag ved kansellering skal ikke erstattes med
 oppdiktede bruttoposteringer. Obligatorisk BaseRate må bygge på dokumentert
 fradragsandel, ikke en prosent utledet fra avrundede MVA-beløp.
+
+## Importmapping: dokumentert fradrag og avgiftsside
+
+Før videre implementasjon er disse gapene påvist mot den låste kjernen:
+
+- Journal Entry Account har ikke et felt for fradragsandel for inngående MVA.
+  Bilagets faktisk førte MVA er ikke nok til å bevare nominell fradragsandel
+  når beløp er avrundet. SAF-Ts obligatoriske BaseRate må komme fra dokumentert
+  fradragsandel. Gjenbruk det norske prosentfeltet fra varelinjene på bilagslinjen
+  med utgående innførsels-MVA; dette er metadata og beregner ikke bilagsbeløp.
+- Ved sammenslått debet/kredit må TaxInformation knyttes uttrykkelig til riktig
+  bokført side. Begge sider skal beholde native GL-ID og egne avgiftsbeløp.
+  Det trengs et valgfritt sidevalg i den gjenbrukte byggeren, ikke nye posteringer.
+- Native kansellering merker motpostene med «On cancellation of …». Når den
+  opprinnelige grunnlagsraden har begge beløpsretninger, må eksporten likevel
+  kontrollere de faktiske motpostene. Ved vanlig Journal Entry-kansellering
+  bygger kjernen dem fra kildebilagets separate linjer, slik at brutto grunnlag
+  beholdes. Hvis faktisk brutto grunnlag mangler, skal eksporten avvise dette
+  konkret. Innstillinger og historiske bilag skal ikke endres automatisk.
+
+Første mapping gjelder entydige NOK-kostnadsbilag med kode 81–84, balanserende
+føringer på én kostnadskonto og bevart dokumentert fradragsandel. Begge MVA-kontoer,
+grunnlagsføringer og dimensjoner må stemme med de faktiske bilags-/hovedboksradene.
+Native reversering og kansellering kan bare eksporteres når de nødvendige
+bokførte grunnlagsføringene finnes. Lager/LCV, flere grunnlagskonti, valuta og
+nettet kanselleringsgrunnlag holdes sperret inntil egen kvalifisering.
+
+Kilder: [generell beskrivelse, side 32–34](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---documentation-1.40.pdf)
+og [teknisk beskrivelse, TaxInformation](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---technical-description-1.4.pdf).
+
+## Kvalifisert importeksport i 0.4.25
+
+`tests/runtime-saft-import.py` bokfører ordinære kostnadsbilag med kode 81–84,
+25/15 prosent og fullt/delvis/intet fradrag (100/60/0 prosent). Vanlig eier
+bruker native reversering og kansellering med sammenslåing både av og på.
+Begge avgiftssider ligger på faktisk bokført grunnlag, med samme GL-ID-er,
+bruttobeløp og kostnadssted. Ved vanlig kansellering bevares brutto motføringer
+fra kildebilaget, også når originalens GL-rad var sammenslått. Manglende
+bruttogrunnlag avvises; eksporten konstruerer ingen erstatning.
+
+Fradragsandelen registreres før bokføring på utgående innførsels-MVA-linje.
+Nye 81/83-bilag krever dokumentert andel over null; 82/84 bruker null. Feltet
+beregner ikke inngående avgiftsbeløp. Gamle bilag gis ingen antatt 100-prosentandel.
+De kan fortsatt reverseres med kjernens funksjon, men eksport av perioden krever
+at nødvendig fradragsandel er dokumentert og registrert. Endring av metadata
+følger eksisterende periodelås. Se [normal bilagsføring](vat-import.md).
+
+Regresjonsprøven avviser feil sats, fradrag, grunnlag, MVA-/grunnlagsføringer og
+endring i lukket periode. XML-validering, avstemming og private filbytes prøves
+igjen etter eksportert backup/gjenoppretting. Flere grunnlagskonti, lager/LCV,
+valuta og kvartalsbilag er fortsatt åpne eksportgap. Dette er ikke samlet
+SAF-T- eller regnskapsmessig aksept.
