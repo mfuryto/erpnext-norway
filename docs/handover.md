@@ -661,3 +661,24 @@ Se saft.md og vat-import.md. Øvrig import/lager/LCV/flere grunnlagskonti/valuta
 kvartalsbilag, fullstendige masterregistre, driftsmidler/frakt/årsavslutning og
 2027-kvalifisering gjenstår før samlet SAF-T-aksept. ENK/årsgrunnlag og faktisk
 SendRegning EHF-levering, status, feil og kvitteringer følger videre.
+
+
+## SAF-T: fullstendig kontoregister, 0.4.26
+
+Native Account og Data Export inneholder allerede hele kontoplanen. Adapteren
+og den gjenbrukte byggeren filtrerte tidligere masterregisteret til kontoer med
+hovedboksposter. Rettelsen leser hele foretakets ordinære kontoregister med
+native tilgangskontroll, inklusive grupper og ubrukte/deaktiverte/historiske
+kontoer. Ingen ny kontoplan, felt, saldo- eller posteringsmotor.
+
+Ubrukte kontoer uten årskobling gjengis med NA/NA og nullsaldo. Oppgitte koblinger
+kontrolleres, og kontoer i hovedbokskilden krever fortsatt gyldig årskobling.
+Duplikate ID-er eller tilgang til bare deler av kontoplanen skal ikke gi en
+ufullstendig eksport. Native eierprøve, hovedboksavstemming og eksportert restore
+inngår i kvalifiseringen. Se saft.md og runtime-saft-accounts.py.
+
+Fullstendig avgiftsregister kvalifiseres som neste del, ut fra lagrede maler og
+historiske koder uten antatte satser/fradragsandeler. Øvrige import-/kvartals-/
+lager-/frakt-/driftsmiddel-/års- og 2027-gap gjenstår før samlet SAF-T-aksept.
+ENK/årsgrunnlag og SendRegning EHF med faktisk levering, status, feil og kvittering
+følger videre etter planen.

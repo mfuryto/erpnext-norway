@@ -196,13 +196,18 @@ def _validate_input(data: SaftExportData) -> None:
 	_require(data.company.telephone, "SAF-T 1.40 krever telefonnummer for foretaket.")
 	_require(data.company.currency == "NOK", "Denne eksporten støtter foreløpig bare NOK som hovedvaluta.")
 
+	used = {entry.account for entry in data.entries}
+	for account in data.accounts:
+		mapping = data.account_mappings.get(account)
+		_require(mapping is not None, f"Mangler SAF-T-mapping for konto {account}.")
+		_require(mapping.account_id, f"Mangler SAF-T-konto-ID for {account}.")
+		_require(mapping.grouping_category, f"Mangler SAF-T grouping category for {account}.")
+		_require(mapping.grouping_code, f"Mangler SAF-T grouping code for {account}.")
+		if 'NA' in (mapping.grouping_category, mapping.grouping_code):
+			_require(account not in used and (mapping.grouping_category, mapping.grouping_code) == ('NA', 'NA'),
+				f"Konto {account}: NA-gruppering er bare kvalifisert for ubrukte kontoer.")
 	for entry in data.entries:
 		_require(entry.account in data.accounts, f"Mangler kontodata for {entry.account}.")
-		mapping = data.account_mappings.get(entry.account)
-		_require(mapping is not None, f"Mangler SAF-T-mapping for konto {entry.account}.")
-		_require(mapping.account_id, f"Mangler SAF-T-konto-ID for {entry.account}.")
-		_require(mapping.grouping_category, f"Mangler SAF-T grouping category for {entry.account}.")
-		_require(mapping.grouping_code, f"Mangler SAF-T grouping code for {entry.account}.")
 		debit, credit = _money(entry.debit), _money(entry.credit)
 		_require(entry.debit == debit and entry.credit == credit, "SAF-T krever hovedboksbeløp i hele øre; kildedata blir ikke avrundet ved eksport.")
 		_require(debit >= 0 and credit >= 0 and bool(debit or credit), f"Bilagslinje {entry.record_id} må ha et positivt debet-/kreditbeløp.")
@@ -233,12 +238,12 @@ def _validate_input(data: SaftExportData) -> None:
 	for mapping in data.tax_mappings.values():
 		_require(mapping.code, "En SAF-T MVA-mapping mangler avgiftskode.")
 		_require(mapping.standard_tax_code, f"MVA-mapping {mapping.code} mangler standard avgiftskode.")
-	used_account_ids = [
+	account_ids = [
 		data.account_mappings[account].account_id
-		for account in {entry.account for entry in data.entries}
+		for account in data.accounts
 	]
 	_require(
-		len(used_account_ids) == len(set(used_account_ids)),
+		len(account_ids) == len(set(account_ids)),
 		"SAF-T-konto-ID må være unik. Bruk ERPNext-kontonummeret, ikke en delt standardkonto.",
 	)
 
@@ -340,7 +345,7 @@ def build_saf_t(data: SaftExportData) -> bytes:
 	"""Bygg og XSD-valider en SAF-T Financial 1.40-fil."""
 	_validate_input(data)
 	period_entries = tuple(entry for entry in data.entries if not entry.is_opening and data.period_start <= entry.posting_date <= data.period_end)
-	used_accounts = sorted({entry.account for entry in data.entries})
+	catalog_accounts = sorted(data.accounts)
 
 	root = etree.Element(
 		f"{{{NS}}}AuditFile",
@@ -363,9 +368,9 @@ def build_saf_t(data: SaftExportData) -> bytes:
 	_element(header, "TaxAccountingBasis", "A")
 
 	master_files = etree.SubElement(root, f"{{{NS}}}MasterFiles")
-	if used_accounts:
+	if catalog_accounts:
 		accounts = etree.SubElement(master_files, f"{{{NS}}}GeneralLedgerAccounts")
-		for account_name in used_accounts:
+		for account_name in catalog_accounts:
 			account_data = data.accounts[account_name]
 			mapping = data.account_mappings[account_name]
 			account = etree.SubElement(accounts, f"{{{NS}}}Account")
