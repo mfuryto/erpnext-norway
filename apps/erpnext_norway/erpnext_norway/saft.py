@@ -178,6 +178,36 @@ def address(doctype, name):
     return frappe.get_doc('Address', permitted[0].name)
 
 
+def account_catalog(company, year, used, valid):
+    """Read the complete permitted native chart, including groups/disabled accounts."""
+    filters = {'company': company}
+    rows = frappe.get_list('Account', filters=filters,
+        fields=['name', 'account_name', 'account_number', 'creation'], limit_page_length=0)
+    if len(rows) != frappe.db.count('Account', filters) or not used <= {r.name for r in rows}:
+        frappe.throw('SAF-T krever tilgang til hele kontoplanen for det valgte foretaket.', frappe.PermissionError)
+    names = [r.name for r in rows]
+    selected = defaultdict(list)
+    # Child rows are scoped to the complete, permission-checked parent selection.
+    if names:
+        for row in frappe.get_all('Norwegian SAF-T Mapping',
+                filters={'parent': ['in', names], 'parenttype': 'Account', 'parentfield': MAPPING, 'year': year},
+                fields=['parent', 'category', 'code'], limit_page_length=0):
+            selected[row.parent].append(row)
+    accounts, mapping = {}, {}
+    for row in rows:
+        choices = selected[row.name]
+        if not choices and row.name not in used:
+            category, code = 'NA', 'NA'
+        elif len(choices) == 1 and (choices[0].category, choices[0].code) in valid:
+            category, code = choices[0].category, choices[0].code
+        else:
+            frappe.throw('SAF-T: Velg én gyldig kontokobling for {0} i {1} på kontokortet.'.format(
+                get_link_to_form('Account', row.name), year))
+        accounts[row.name] = xml.AccountData(row.name, row.account_name, getdate(row.creation))
+        mapping[row.name] = xml.AccountMapping(row.account_number or row.name, category, code)
+    return accounts, mapping
+
+
 def build(company, from_date, to_date):
     frappe.only_for('Accounts Manager')
     for doctype in ('Company', 'Account', 'GL Entry'):
@@ -210,7 +240,8 @@ def build(company, from_date, to_date):
     dimensions = (('CC','Cost Center','cost_center','cost_center_name','Kostnadssted'),
                   ('PROJECT','Project','project','project_name','Prosjekt'))
     analysis_catalog = {}
-    accounts, mapping, parties, vouchers = {}, {}, {}, defaultdict(list)
+    accounts, mapping = account_catalog(company, start.year, {row.account for row in rows}, valid)
+    parties, vouchers = {}, defaultdict(list)
     for row in rows:
         vouchers[(row.voucher_type, row.voucher_no)].append(row)
         for kind, doctype, field, description, label in dimensions:
@@ -218,14 +249,6 @@ def build(company, from_date, to_date):
                 entity = frappe.get_doc(doctype, row[field])
                 entity.check_permission('read')
                 analysis_catalog[kind, row[field]] = label, entity.get(description) or row[field]
-        if row.account not in accounts:
-            acc = frappe.get_doc('Account', row.account)
-            acc.check_permission('read')
-            selected = [r for r in acc.get(MAPPING) or [] if r.year == start.year]
-            if len(selected) != 1 or (selected[0].category, selected[0].code) not in valid:
-                frappe.throw('SAF-T: Velg én gyldig kontokobling for {0} i {1} på kontokortet.'.format(get_link_to_form('Account', acc.name), start.year))
-            accounts[acc.name] = xml.AccountData(acc.name, acc.account_name, getdate(acc.creation))
-            mapping[acc.name] = xml.AccountMapping(acc.account_number or acc.name, selected[0].category, selected[0].code)
         if row.party:
             if row.party_type not in ('Customer', 'Supplier'):
                 frappe.throw('SAF-T: Denne partstypen er ikke kvalifisert: ' + row.party_type)

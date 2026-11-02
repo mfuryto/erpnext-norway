@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.25 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.26 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -314,3 +314,41 @@ endring i lukket periode. XML-validering, avstemming og private filbytes prøves
 igjen etter eksportert backup/gjenoppretting. Flere grunnlagskonti, lager/LCV,
 valuta og kvartalsbilag er fortsatt åpne eksportgap. Dette er ikke samlet
 SAF-T- eller regnskapsmessig aksept.
+
+
+## Påvist kontoregistergap før 0.4.26
+
+Native Account og Data Export inneholder allerede hele foretakets kontoplan,
+inklusive kontogrupper og deaktiverte kontoer. Eksportadapteren hentet bare
+kontoer som forekom i valgt hovedbok, og den gjenbrukte byggeren filtrerte også
+masterregisteret til disse kontoene. Det er et uttrekks-/formatgap; ingen ny
+kontoplan eller bokføring trengs.
+
+[Skatteetatens tekniske beskrivelse, side 9](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---technical-description-1.4.pdf)
+krever hele kontoplanen, også historiske kontoer. Generell beskrivelse side 16
+avgrenser obligatorisk gruppering til kontoer med bevegelser eller saldo.
+Obligatoriske tekstfelt uten verdi bruker NA. Minste endring er å lese hele
+native kontoregisteret med foretakets ordinære leserettigheter og gjengi det i
+samme XML-masterregister. Ubrukte kontoer uten årskobling bruker NA/NA og null
+saldo; eksisterende koblinger bevares. Kontoer som finnes i valgt hovedbok
+beholder streng kontroll av gyldig årskobling. Manglende tilgang, tvetydige
+koblinger og duplikate konto-ID-er skal avvises, ikke skjules.
+
+Avgiftsregisterets fullstendighet kvalifiseres separat; denne kontorettingen
+åpner ingen nye transaksjons- eller avgiftsbehandlinger.
+
+
+I 0.4.26 gjengis hele kontoplanen fra Account, også grupper, ubrukte og
+deaktiverte/historiske kontoer. Det opprettes ingen hovedboksposter for ubrukte
+kontoer, og nullsaldoene er ikke summer av underkontoer. Ubrukte kontoer uten
+årskobling vises med NA/NA; de krever ingen manuell konfigurasjon bare for å
+komme med i filen. Oppgitte ugyldige koblinger avvises også på ubrukte kontoer.
+En konto som finnes i den valgte hovedbokskilden beholder kontrollen av gyldig
+årskobling, selv om saldoen nå er null eller kontoen er deaktivert.
+
+Prøven bruker vanlig eier uten System Manager, kontrollerer native Account Data
+Export før SAF-T, sammenligner alle konto-ID-er med foretakets register og
+avstemmer GL-ID-er/bruttobeløp. Begrenset kontotilgang, manglende brukt kobling,
+ugyldig ubrukt kobling og duplikate konto-ID-er avvises. Samme register, saldoer,
+referanser og private XML-bytes kontrolleres etter eksportert gjenoppretting.
+Dette lukker kontoregistergapet; fullstendig TaxTable og øvrige SAF-T-gap gjenstår.

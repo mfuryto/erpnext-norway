@@ -235,6 +235,29 @@ class TestNorwegianBuilderExtensions(TestCase):
         with self.assertRaisesRegex(SaftExportError,'side uten bokført'):
             build_saf_t(replace(data,entries=(first,second),tax_mappings={'81':TaxMapping('81',Decimal(25),'81')}))
 
+    def test_complete_account_catalog_with_unused_zero_balances(self):
+        data=self.export_data()
+        data=replace(data,accounts={**data.accounts,'Unused':AccountData('Unused','Ubrukt konto')},
+            account_mappings={**data.account_mappings,'Unused':AccountMapping('9990','NA','NA')})
+        root=etree.fromstring(build_saf_t(data));ns={'s':NS}
+        node=root.xpath('.//s:Account[s:AccountID="9990"]',namespaces=ns)[0]
+        self.assertEqual(node.xpath('s:GroupingCategory/text()|s:GroupingCode/text()',namespaces=ns),['NA','NA'])
+        self.assertEqual(node.xpath('s:OpeningDebitBalance/text()|s:ClosingDebitBalance/text()',namespaces=ns),['0.00','0.00'])
+        self.assertEqual(len(root.xpath('.//s:GeneralLedgerAccounts/s:Account',namespaces=ns)),4)
+        empty=etree.fromstring(build_saf_t(replace(data,entries=(),parties={})))
+        self.assertEqual(len(empty.xpath('.//s:GeneralLedgerAccounts/s:Account',namespaces=ns)),4)
+        self.assertFalse(empty.xpath('.//s:GeneralLedgerEntries',namespaces=ns))
+
+    def test_unused_account_ids_and_mapping_are_validated(self):
+        data=self.export_data()
+        for mapping in (AccountMapping('1920','NA','NA'),AccountMapping('9990','',''),
+                        AccountMapping('9990','NA','4500')):
+            with self.assertRaises(SaftExportError):
+                build_saf_t(replace(data,accounts={**data.accounts,'Unused':AccountData('Unused','Ubrukt')},
+                    account_mappings={**data.account_mappings,'Unused':mapping}))
+        with self.assertRaisesRegex(SaftExportError,'ubrukte'):
+            build_saf_t(replace(data,account_mappings={**data.account_mappings,'Bank':AccountMapping('1920','NA','NA')}))
+
 
 if __name__ == '__main__':
     import unittest

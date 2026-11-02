@@ -5,8 +5,10 @@ XML-byggeren i `../saft_builder.py` gjenbruker den databasefrie delen av
 revisjon `94406e542ed991a8de237b9de44b8d1dd576b566`. Copyright (c) 2026 Haakon
 Fornes, MIT. Uendret lisens følger i LICENSE.enk-norge. Den gamle Frappe-adapteren
 og innstillingene er utelatt. Lokale endringer støtter null avgiftsbeløp, flere
-BaseRate-verdier, native åpningsposter, valutabeløp, eksakte utvalgsdatoer, native dimensjoner og entydige bilagsreferanser. Samlet debet/kredit gjengis med samme native
-RecordID på hver bokført side; avgiftsopplysninger kan bindes uttrykkelig til siden.
+BaseRate-verdier, native åpningsposter, valutabeløp, eksakte utvalgsdatoer,
+native dimensjoner og entydige bilagsreferanser. Samlet debet/kredit gjengis
+med samme native RecordID på hver bokført side; avgiftsopplysninger kan bindes
+uttrykkelig til siden. Hele det leverte kontoregisteret gjengis, også uten bevegelser.
 
 Det offisielle XSD 1.40 og næringsspesifikasjonslisten 2025–2026 er hentet uendret
 fra [Skatteetaten/saf-t](https://github.com/Skatteetaten/saf-t/tree/10c8fd82a6ff47e53385bc33c7638c5fde239a4f),
