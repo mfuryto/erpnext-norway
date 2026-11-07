@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.27 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.28 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -427,3 +427,29 @@ kostnad og dokumentert MVA-grunnlag være forskjellige.
 eksporten må kvalifisere plasseringen av 87/89 og håndtere grunnlagsendringer
 som ikke gir en ny ørepost, uten ny avgiftsberegning eller dobbelt rapportering.
 Denne kildeprøven åpner ikke kvartalsbilag i eksportadapteren.
+
+
+## Påvist kildefakturagap før 0.4.28
+
+Faktura med kvartalsmarkør og kode 0 bokfører leverandørbeløpet uten MVA.
+Eksisterende kode-0-mapping kan allerede gjengi kostnad, leverandør, betaling,
+kreditnota og null avgiftsbeløp. Adapteren avviste likevel markøren ubetinget,
+også når kvartalsgrensen ikke var passert og ingen MVA-bilag var bokført.
+Minste retting er å tillate samme ordinære kode-0-mapping for NOK-kostnadsfakturaer.
+Ingen ny beregning eller klassifisering trengs. Eksport av faktisk kvartalsført
+MVA forblir sperret: TaxInformation skal ligge på grunnlagslinjer, ikke flyttes
+til MVA-kontoen eller få oppdiktede grunnlagsposteringer. Se generell beskrivelse
+side 31 og teknisk beskrivelse side 57–58 i kildene ovenfor.
+
+
+I 0.4.28 bruker ordinære NOK-kostnadsfakturaer med kvartalsmarkør og lagret kode 0
+samme eksportmapping som andre fakturaer uten belastet MVA. Den lagrede koden,
+null MVA og kildebilagsreferansene beholdes; leverandørfakturaen blir ikke gitt
+kode 87/89 ved eksport. Kreditnota, betaling og refusjon følger native flyt.
+
+Prøven omfatter et faktisk tjenestekjøp på 1 500, kreditnota på 500 og native
+betaling/refusjon før grensen er passert. Alle GL-ID-er, bruttobeløp og privat
+XML kontrolleres etter eksportert restore. En ekstra kildefaktura som passerer
+grensen oppretter et faktisk MVA-bilag; da avvises eksporten med bilagsreferanse.
+Bokført kvartals-MVA blir aldri utelatt for å få filen gjennom. Valuta, frakt,
+kapitalisering og selve kvartalsbilagenes mapping åpnes ikke av dette steget.

@@ -713,3 +713,16 @@ MVA-kostnad og utgående MVA. BASE-metadata skal ikke bli fiktive GL-poster.
 Neste mapping må avklare plasseringen av 87/89, sammenhengen med de ordinære
 kildene og ørekorreksjoner uten å fordele eller beregne ny MVA i eksporten.
 Se saft.md. Produktversjon og eksportavgrensning er uendret av kildeprøven.
+
+
+## SAF-T: ordinære kvartalskilder uten belastet MVA, 0.4.28
+
+Den eksisterende kode-0-mappingen gjenbrukes nå for NOK-kostnadsfakturaer med
+kvartalsmarkør. Tidligere ble markøren avvist selv om grensen ikke var passert
+og ingen MVA var bokført. Ingen ny avgiftsberegning, kodeomskriving eller hovedbok.
+Native kjøp 1 500, delkreditnota 500, betaling/refusjon og eksportert restore
+kvalifiseres i runtime-saft-quarterly-source.py. Når et faktisk kvartalsbilag
+oppstår, skal eksporten fortsatt avvises konkret. Det gir ikke skjult bortfall
+av MVA. Neste avklaring gjelder lovlig plassering av 87/89 på grunnlagspostene;
+MVA-kostnaden alene skal ikke gis oppdiktet grunnlag eller brukes til ny MVA-
+fordeling. Resterende SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres.
