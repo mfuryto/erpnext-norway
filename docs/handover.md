@@ -759,3 +759,17 @@ kurstap80 per kode. Eksakte GL-ID-er, NOK-/valutabeløp, koder, null MVA,
 utelatt deklarasjonsgrunnlag og privat XML kvalifiseres før/etter restore.
 Øvrige valutaer, lager/varemottak, frakt, driftsmidler og kvartalsbilag
 åpnes ikke av denne endringen. SAF-T/ENK/SendRegning EHF videreføres.
+
+
+## SAF-T: mottak uten lagerføring, 0.4.31
+
+Eksisterende native Purchase Receipt/make_purchase_invoice gjenbrukes for
+kostnadskodene20/21/22 i NOK/EUR. Mottaket skal ikke ha GL; kostnaden
+føres på fakturaen. Adaptergapet var ubetinget avvisning av mottakslenken.
+Ingen ny mottaks-/lager-/avgiftsmotor eller felt. Faktisk kilde og linje
+leses med ordinær tilgang; lager, driftsmiddel, deklarasjonskode85 og
+andre ukvalifiserte mottak avvises. Direkte og mottakskoblede kjeder,
+kreditnota/betaling/refusjon, native fakturakansellering, avvisning av
+lager/kode85/manglende lesetilgang og eksportert restore kvalifiseres.
+Kvartalsbilag, faktisk lager/LCV, frakt, driftsmidler, årsslutt og2027
+gjenstår før samlet SAF-T-aksept, deretter ENK/årsgrunnlag ogSendRegningEHF.

@@ -34,6 +34,25 @@ def unsupported(doc, reason='Spesialbehandling er ikke kvalifisert.'):
         '{2} Bilaget er beholdt; det blir ikke utelatt fra eksporten.'.format(doc.doctype, doc.name, reason))
 
 
+def receipt_source(doc, item):
+    """Reuse an unposted non-stock cost receipt; never invent receipt GL."""
+    from erpnext_norway.vat_catalog import CODE
+    if not item.get('purchase_receipt'):
+        return
+    if doc.doctype != 'Purchase Invoice' or item.get(CODE) not in {'20', '21', '22'}:
+        unsupported(doc)
+    receipt = frappe.get_doc('Purchase Receipt', item.purchase_receipt)
+    receipt.check_permission('read')
+    source = next((r for r in receipt.items if r.name == item.get('pr_detail')), None)
+    if (receipt.company != doc.company or receipt.docstatus != 1 or not source
+            or source.item_code != item.item_code or source.get('is_fixed_asset') or source.get(CODE) not in {'20', '21', '22'}
+            or frappe.db.exists('GL Entry', {'company': doc.company,
+                'voucher_type': 'Purchase Receipt', 'voucher_no': receipt.name})
+            or frappe.db.exists('Stock Ledger Entry', {'voucher_type': 'Purchase Receipt',
+                'voucher_no': receipt.name})):
+        unsupported(doc, 'Mottakets lager-/deklarasjonsmapping er ikke kvalifisert.')
+
+
 def invoice_taxes(doc, rows):
     """Never calculate VAT. Retain native item details and signed GL directions."""
     from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
@@ -55,8 +74,9 @@ def invoice_taxes(doc, rows):
         expected = SALES if doc.doctype == 'Sales Invoice' else PURCHASES
         if (code not in expected or (item.get(ITEM) and (doc.doctype != 'Purchase Invoice' or code != '0' or doc.currency != 'NOK'))
                 or (code in {'20', '21', '22'} and doc.currency not in {'NOK', 'EUR'})
-                or item.get('is_fixed_asset') or item.get('purchase_receipt') or doc.get('update_stock')):
+                or item.get('is_fixed_asset') or doc.get('update_stock')):
             unsupported(doc)
+        receipt_source(doc, item)
         values = [r for r in details if r.item_row == item.name and r.tax_row in taxes]
         vat = [r for r in values if is_vat_account(taxes[r.tax_row].account_head)]
         if expected[code] == 0 and any(xml._money(r.amount) for r in vat):
