@@ -54,7 +54,7 @@ def invoice_taxes(doc, rows):
         code = item.get(CODE)
         expected = SALES if doc.doctype == 'Sales Invoice' else PURCHASES
         if (code not in expected or (item.get(ITEM) and (doc.doctype != 'Purchase Invoice' or code != '0' or doc.currency != 'NOK'))
-                or (code in {'20', '21', '22'} and doc.currency != 'NOK')
+                or (code in {'20', '21', '22'} and doc.currency not in {'NOK', 'EUR'})
                 or item.get('is_fixed_asset') or item.get('purchase_receipt') or doc.get('update_stock')):
             unsupported(doc)
         values = [r for r in details if r.item_row == item.name and r.tax_row in taxes]
