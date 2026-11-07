@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.28 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.29 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -453,3 +453,21 @@ XML kontrolleres etter eksportert restore. En ekstra kildefaktura som passerer
 grensen oppretter et faktisk MVA-bilag; da avvises eksporten med bilagsreferanse.
 Bokført kvartals-MVA blir aldri utelatt for å få filen gjennom. Valuta, frakt,
 kapitalisering og selve kvartalsbilagenes mapping åpnes ikke av dette steget.
+
+
+## Påvist importfakturagap før 0.4.29
+
+Native Item Tax Template og Purchase Invoice støtter allerede kostnadskodene
+20, 21 og 22 uten belastet MVA. Eksportadapterens liste avviste dem. Minste
+retting er å gjenbruke fakturamappingen for kostnad, leverandør og null MVA.
+Leverandørbeløpet er ikke deklarasjonsgrunnlaget: TaxBase utelates for disse
+kostnadskodene, som i Skatteetatens eksempel med kode 21 på side 33–34.
+Ingen ny beregning, felt eller hovedbok. Kvartalsbilag, lager, varemottak,
+frakt og kapitalisering åpnes ikke av denne rettingen.
+
+Prøven for 0.4.29 omfatter ordinære NOK-kostnadsfakturaer med hver av kodene
+20/21/22: kjøp 1 200, native delkreditnota 400, betaling og refusjon. Alle
+GL-ID-er og brutto beløp beholdes. MVA-beløpet er null, og TaxBase mangler
+uten at fakturabeløpet blir tolket som deklarasjonsverdi. Samme kilder,
+metadata og private XML kontrolleres etter eksportert gjenoppretting.
+Fremmed valuta for disse kostnadskodene kvalifiseres separat.
