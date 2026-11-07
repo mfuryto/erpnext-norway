@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.30 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.31 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -491,3 +491,31 @@ refusjon, i tillegg til tidligere NOK-kjeder. Native netto kurstap er
 NOK240 samlet. GL-ID-er, brutto NOK-beløp, valutaopplysninger, kildekoder,
 null MVA og private XML kontrolleres også etter eksportert restore.
 Andre valutaer for kostnadskodene åpnes ikke av EUR-kvalifiseringen.
+
+
+## Mottakskoblinger uten lagerføring, 0.4.31
+
+Native Purchase Receipt og make_purchase_invoice overfører allerede mottak
+uten lagerføring til vanlig leverandørfaktura. Når mottaket ikke har hovedbok-
+eller lagerposter, bokføres kostnad og leverandørgjeld bare på fakturaen.
+Adaptergapet var ubetinget avvisning av purchase_receipt. Den eksisterende
+fakturamappingen kan gjenbrukes for kostnadskodene 20–22 i NOK og EUR.
+Ingen ny mottaks-, lager- eller avgiftsmotor eller felt er nødvendig.
+
+Eksporten kontrollerer lesetilgang, foretak og den faktiske mottaks-/varelinjen.
+Mottaket må være innsendt og ha kostnadskode 20, 21 eller 22, uten driftsmiddel,
+GL Entry eller Stock Ledger Entry. Dagens lagerflagg på Item brukes ikke til
+å omskrive historikken. Deklarasjonskode 85, faktisk lagerføring og øvrige
+ukvalifiserte mottak forblir sperret. Fakturaens bokførte konto og beløp beholdes;
+det lages ingen erstatningsposter for mottaket.
+
+Prøven beholder direkte NOK/EUR-kjeder og legger til mottakskoblede kjeder for
+hver kode. Native kjøp, delkreditnota, betaling og refusjon gir samlet kurstap
+480 for de direkte og mottakskoblede EUR-kjedene. Native fakturakansellering,
+avvisning av lager og kode 85 samt manglende lesetilgang til mottaket prøves
+også. Vanlige Purchase User- og Accounts User-roller brukes ved bokføring;
+produksjonsbrukernes roller endres ikke.
+
+Eksakte mottaks-/linjelenker, GL-ID-er, bruttobeløp i NOK, valutaopplysninger
+og privat XML kontrolleres etter eksportert gjenoppretting. Historiske
+kansellerte mottak og øvrige koder/behandlinger åpnes ikke av dette steget.
