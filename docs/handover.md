@@ -726,3 +726,23 @@ oppstår, skal eksporten fortsatt avvises konkret. Det gir ikke skjult bortfall
 av MVA. Neste avklaring gjelder lovlig plassering av 87/89 på grunnlagspostene;
 MVA-kostnaden alene skal ikke gis oppdiktet grunnlag eller brukes til ny MVA-
 fordeling. Resterende SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres.
+
+
+## SAF-T: leverandørkostnad ved import, 0.4.29
+
+Eksisterende kjøpsflyt lagrer allerede kodene 20/21/22 uten belastet MVA.
+Adapteren gjenbruker nå fakturamappingen for ordinære NOK-kostnadsfakturaer,
+kreditnota, betaling og refusjon. TaxBase utelates: leverandørkostnaden er
+ikke deklarasjonsgrunnlaget. Ingen nye felt, beregning eller kjerneendring.
+Native kjøp1200/delkredit400 for hver kode, eksakte GL-ID-er/bruttobeløp,
+XML og eksportert restore inngår i kvalifiseringen. Valuta, lager/varemottak,
+frakt, driftsmidler og kvartalsbilag åpnes ikke av endringen.
+
+Kvartalsprototypen er ikke generelt kvalifisert. Native øreendring kan gi
+rapportgrunnlag2000.02 mot lagret bilagsgrunnlag2000.01 uten nytt MVA-bilag.
+Ved terskelreversering viser rapporten gjeldende kode0 mens faktiske
+kvartalsbilag fortsatt har historisk kode87. Kjernefakturareferanser på
+Journal Entry Account kontrollerer reskontro/betaling og skal ikke brukes
+på MVA-kostnadslinjer ved å omgå disse kontrollene. Eksporten må fortsatt
+bevare faktisk hovedbok og unngå rekonstruksjon ved hjelp av tidsstempler.
+Øvrig SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres etter planen.
