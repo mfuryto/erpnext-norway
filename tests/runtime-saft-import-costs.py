@@ -49,8 +49,9 @@ try:
         c.default_bank_account=a['1920'];c.exchange_gain_loss_account=a['8160'];c.save()
         payable=frappe.get_doc({'doctype':'Account','account_name':'Synthetic import EUR payable','parent_account':frappe.db.get_value('Account',a['2400'],'parent_account'),'company':C,'account_type':'Payable','account_currency':'EUR'}).insert()
         payable.append(saft.MAPPING,{'year':2026,'category':'kortsiktigGjeld','code':'2400'});payable.save()
+        created_exchange=None
         if not frappe.db.exists('Currency Exchange',{'date':frappe.utils.nowdate(),'from_currency':'EUR','to_currency':'NOK'}):
-            frappe.get_doc({'doctype':'Currency Exchange','date':frappe.utils.nowdate(),'from_currency':'EUR','to_currency':'NOK','exchange_rate':10,'for_buying':1,'for_selling':1}).insert()
+            created_exchange=frappe.get_doc({'doctype':'Currency Exchange','date':frappe.utils.nowdate(),'from_currency':'EUR','to_currency':'NOK','exchange_rate':10,'for_buying':1,'for_selling':1}).insert().name
         supplier=frappe.get_doc({'doctype':'Supplier','supplier_name':'Synthetic import cost supplier','supplier_type':'Company','supplier_group':frappe.get_all('Supplier Group',filters={'is_group':0},pluck='name')[0],'default_currency':'NOK'}).insert()
         eur_supplier=frappe.get_doc({'doctype':'Supplier','supplier_name':'Synthetic EUR import cost supplier','supplier_type':'Company','supplier_group':supplier.supplier_group,'default_currency':'EUR','accounts':[{'company':C,'account':payable.name}]}).insert()
         item=frappe.get_doc({'doctype':'Item','item_code':'RUNTIME-SAFT-IMPORT-COST','item_name':'Synthetic import cost','item_group':'Services','stock_uom':'Nos','is_stock_item':0}).insert()
@@ -77,6 +78,8 @@ try:
                 for doc in (first,credit):
                     assert all(not r.get(ITEM) and r.get(CODE)==code for r in doc.items)
                     records.append((doc.name,doc.grand_total,code,currency))
+        if created_exchange:
+            frappe.set_user('Administrator');frappe.delete_doc('Currency Exchange',created_exchange);frappe.set_user(OWNER)
         data,root=export();check(root)
         f=save_file('synthetic-saft-import-costs.xml',data,'Company',C,is_private=1)
         e={'file':f.name,'sha256':hashlib.sha256(data).hexdigest(),'invoices':records};frappe.db.set_default('runtime_saft_import_costs',json.dumps(e));frappe.db.commit()
