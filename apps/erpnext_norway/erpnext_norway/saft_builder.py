@@ -88,7 +88,7 @@ class PartyData:
 @dataclass(frozen=True)
 class TaxMapping:
 	code: str
-	percentage: Decimal
+	percentage: Decimal | None
 	standard_tax_code: str
 	base_rates: tuple[Decimal, ...] = (Decimal("100"),)
 
@@ -143,6 +143,7 @@ class SaftExportData:
 	tax_mappings: dict[str, TaxMapping] = field(default_factory=dict)
 	created_date: date = field(default_factory=date.today)
 	analysis_catalog: dict[tuple[str, str], tuple[str, str]] = field(default_factory=dict)
+	tax_catalog: tuple[TaxMapping, ...] = ()
 
 
 def _money(value: Decimal) -> Decimal:
@@ -235,9 +236,13 @@ def _validate_input(data: SaftExportData) -> None:
 			_require(tax_information.code in data.tax_mappings, f"Mangler SAF-T MVA-mapping for {tax_information.code}.")
 			if tax_information.tax_amount is not None:
 				_require(tax_information.tax_amount >= 0, f"MVA-beløp må være null eller positivt for {tax_information.code}.")
-	for mapping in data.tax_mappings.values():
+	for mapping in (*data.tax_mappings.values(), *data.tax_catalog):
 		_require(mapping.code, "En SAF-T MVA-mapping mangler avgiftskode.")
 		_require(mapping.standard_tax_code, f"MVA-mapping {mapping.code} mangler standard avgiftskode.")
+		_require(mapping.percentage is None or (mapping.percentage.is_finite() and mapping.percentage >= 0),
+			f"MVA-mapping {mapping.code} har ugyldig nominell sats.")
+		_require(bool(mapping.base_rates) and all(rate.is_finite() and Decimal(0) <= rate <= Decimal(100) for rate in mapping.base_rates),
+			f"MVA-mapping {mapping.code} må ha registrerte fradragsandeler mellom 0 og 100.")
 	account_ids = [
 		data.account_mappings[account].account_id
 		for account in data.accounts
@@ -331,7 +336,8 @@ def _add_tax_information(line: etree._Element, entry: LedgerEntry, information: 
 	tax = etree.SubElement(line, f"{{{NS}}}TaxInformation")
 	_element(tax, "TaxType", "MVA")
 	_element(tax, "TaxCode", mapping.code)
-	_element(tax, "TaxPercentage", mapping.percentage)
+	if mapping.percentage is not None:
+		_element(tax, "TaxPercentage", mapping.percentage)
 	_element(tax, "Country", "NO")
 	if information.tax_base is not None:
 		_element(tax, "TaxBase", information.tax_base)
@@ -393,18 +399,23 @@ def build_saf_t(data: SaftExportData) -> bytes:
 			for party in sorted(parties, key=lambda item: item.party_id):
 				party_element = etree.SubElement(party_root, f"{{{NS}}}{party_type}")
 				_add_party(party_element, party, data.entries, data)
-	if data.tax_mappings:
+	catalog = {}
+	for mapping in (*data.tax_catalog, *data.tax_mappings.values()):
+		key = (mapping.code, mapping.percentage, mapping.standard_tax_code)
+		catalog.setdefault(key, set()).update(mapping.base_rates)
+	if catalog:
 		tax_table = etree.SubElement(master_files, f"{{{NS}}}TaxTable")
 		tax_table_entry = etree.SubElement(tax_table, f"{{{NS}}}TaxTableEntry")
 		_element(tax_table_entry, "TaxType", "MVA")
 		_element(tax_table_entry, "Description", "Merverdiavgift")
-		for mapping in sorted(data.tax_mappings.values(), key=lambda item: item.code):
+		for (code, percentage, standard), base_rates in sorted(catalog.items(), key=lambda item: (item[0][0], item[0][1] is None, item[0][1] or Decimal(), item[0][2])):
 			details = etree.SubElement(tax_table_entry, f"{{{NS}}}TaxCodeDetails")
-			_element(details, "TaxCode", mapping.code)
-			_element(details, "TaxPercentage", mapping.percentage)
+			_element(details, "TaxCode", code)
+			if percentage is not None:
+				_element(details, "TaxPercentage", percentage)
 			_element(details, "Country", "NO")
-			_element(details, "StandardTaxCode", mapping.standard_tax_code)
-			for base_rate in sorted(set(mapping.base_rates)):
+			_element(details, "StandardTaxCode", standard)
+			for base_rate in sorted(base_rates):
 				_element(details, "BaseRate", base_rate)
 	if data.analysis_catalog:
 		analysis_table = etree.SubElement(master_files, f"{{{NS}}}AnalysisTypeTable")

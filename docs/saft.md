@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.26 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.27 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -352,3 +352,59 @@ avstemmer GL-ID-er/bruttobeløp. Begrenset kontotilgang, manglende brukt kobling
 ugyldig ubrukt kobling og duplikate konto-ID-er avvises. Samme register, saldoer,
 referanser og private XML-bytes kontrolleres etter eksportert gjenoppretting.
 Dette lukker kontoregistergapet; fullstendig TaxTable og øvrige SAF-T-gap gjenstår.
+
+
+## Påvist avgiftsregistergap før 0.4.27
+
+TaxTable ble bygget bare fra periodens kvalifiserte transaksjoner. Native Item
+Tax Template lagrer allerede foretaksavgrensede salgs-/kjøpskoder, nominell sats,
+fradragsandel og deaktivering. Historiske bilagslinjer lagrer klassifiseringen
+som faktisk ble brukt. Ingen ny avgiftskodedokumenttype eller beregningsmotor
+trengs. Uttrekket må omfatte eksisterende maler, også ubrukte/deaktiverte, samt
+bokførte/kansellerte kildebilag frem til utvalgets sluttdato.
+
+[Skatteetatens tekniske beskrivelse, side 9 og 23–24](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---technical-description-1.4.pdf)
+krever alle foretakets avgiftskoder og alle standard fradragsandeler for koden.
+Samme kode kan ha historiske satser; de må beholdes separat, uten at dagens
+mal endrer gamle verdier. StandardTaxCode er NA når en ubrukt egendefinert kode
+ikke har kvalifisert standardkobling. Det åpner ikke denne koden på transaksjoner.
+TaxPercentage er valgfri når nominell sats ikke er registrert; manglende sats
+skal ikke beregnes fra bokførte beløp. BaseRate bruker lagret fradragsandel på
+kjøp/import og formatets standard 100 på salg og direkte MVA-bilagslinjer.
+Kode 82/84/87/89 har ingen fradragsrett. Ukjent andel på eldre 81/83 skal ikke gjøres
+om til null eller 100; nødvendig metadata må avklares før eksport.
+
+Minste formatendring er å gi den gjenbrukte byggeren hele registeruttrekket,
+fortsatt med samme TaxMapping-struktur og samme TaxTable-rendering. Periodens
+strenge transaksjonsmapping og hovedboksavstemming beholdes uendret.
+
+
+## Avgiftsregister fra lagrede kilder, 0.4.27
+
+TaxTable omfatter nå foretakets Item Tax Template-klassifiseringer, inklusive
+ubrukte og deaktiverte maler, og klassifiseringer på bokførte/kansellerte
+salgs-/kjøpsfakturaer, varemottak og bilag frem til sluttdatoen. Native read- og
+foretaksrettigheter kontrolleres før barnetabeller leses. Eksporten avvises hvis
+bare deler av malene eller kildebilagene er tilgjengelige.
+
+Opplysninger fra historiske bilag leses som registerdata, uten å åpne deres
+transaksjonsmapping i en ny periode. En historisk sats på 6 og dagens sats på
+12 for samme kode gjengis separat; dagens mal brukes ikke til å beregne eller
+overskrive gammel sats. Manglende nominell sats utelates når formatet tillater
+det. Fradragsandeler beholdes med lagret presisjon, ikke utledet fra beløpsforhold.
+Salg og direkte MVA-linjer bruker formatets standard 100; uttrykkelige koder
+uten fradrag har null. Import 81/83 trenger dokumentert andel også når bilaget
+bare bidrar til inngående saldo. Eldre ukjent andel må dokumenteres og registreres
+med ordinær metadata-/periodekontroll før komplett register kan eksporteres.
+Oppdateringen endrer ingen historiske bilag eller låser opp perioder.
+
+En ubrukt egendefinert malkode kan gjengis med StandardTaxCode NA. Det tillater
+ikke bruk av koden på periodens transaksjoner; eksisterende avgrensning og
+hovedboksavstemming gjelder fortsatt. Det opprettes ingen ny avgiftskodedatabase,
+postering, satsberegning eller automatisk etterbehandling.
+
+Kvalifiseringen omfatter native dataeksport av eksisterende malfelt, tom periode,
+historiske og aktuelle satser, manglende nominell sats, deaktiverte/ubrukte koder,
+fraksjonelt fradrag, tilgangsavvisning og eksplisitt avvisning av ukjent importandel.
+Register, GL-ID-er/bruttobeløp og private XML-bytes kontrolleres igjen etter
+eksportert gjenoppretting. Øvrige transaksjonsgap i SAF-T består.

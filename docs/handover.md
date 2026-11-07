@@ -682,3 +682,23 @@ historiske koder uten antatte satser/fradragsandeler. Øvrige import-/kvartals-/
 lager-/frakt-/driftsmiddel-/års- og 2027-gap gjenstår før samlet SAF-T-aksept.
 ENK/årsgrunnlag og SendRegning EHF med faktisk levering, status, feil og kvittering
 følger videre etter planen.
+
+
+## SAF-T: lagret avgiftsregister, 0.4.27
+
+Native Item Tax Template og historiske kildebilagslinjer har allerede koder,
+satser og fradragsmetadata. Eksporten leser disse med ordinær foretaks-/read-
+kontroll og gir hele uttrekket til samme gjenbrukte TaxTable-bygger. Ingen ny
+avgiftskodedokumenttype, database, beregning eller hovedbok.
+
+Ubrukte og deaktiverte maler og historiske klassifiseringer beholdes. Samme kode
+kan ha flere lagrede nominelle satser; dagens definisjon erstatter ikke eldre
+verdier. Manglende sats utelates som valgfri opplysning, uten beløpsberegning.
+Ukjent importandel 81/83 avvises også på historiske kilder; den settes ikke til
+100 eller null. Nye registerdata åpner ingen ukvalifiserte transaksjoner.
+Se saft.md og runtime-saft-tax-catalog.py for native prøver, tilgangskontroll,
+fradragspresisjon, hovedboksavstemming og eksportert restore.
+
+Øvrige SAF-T-gap gjelder fortsatt kvartalsbilag, lager/LCV, flere importgrunnlag,
+frakt, driftsmidler, årsslutt og 2027. Deretter følger ENK/årsgrunnlag og faktisk
+SendRegning EHF-levering, status, feil og kvitteringer som avtalt.

@@ -306,6 +306,8 @@ def build(company, from_date, to_date):
             analyses=tuple((kind, row[field]) for kind, _, field, _, _ in dimensions if row.get(field)),
             currency_code=currency,
             currency_amount=abs(Decimal(str(debit_currency or 0)) - Decimal(str(credit_currency or 0))) if currency else None))
+    from erpnext_norway.saft_tax_catalog import read as read_tax_catalog
+    catalog = read_tax_catalog(company, end, tax_mapping, mapping)
     addr = address('Company', company)
     return xml.build_saf_t(xml.SaftExportData(company=xml.CompanyData(org, doc.company_name, doc.phone_no,
         addr.address_line1 if addr else None, addr.pincode if addr else None, addr.city if addr else None,
@@ -315,7 +317,7 @@ def build(company, from_date, to_date):
         vat_registration_date=getdate(doc.get('custom_norway_vat_from')) if doc.get('custom_norway_vat_from') else None),
         period_start=start, period_end=end, software_company_name='ERPNext Norway contributors',
         software_id='ERPNext Norway', software_version=__version__, accounts=accounts,
-        account_mappings=mapping, entries=tuple(converted), parties=parties, tax_mappings=tax_mapping,
+        account_mappings=mapping, entries=tuple(converted), parties=parties, tax_mappings=tax_mapping, tax_catalog=catalog,
         analysis_catalog=analysis_catalog, created_date=now_datetime().date()))
 
 

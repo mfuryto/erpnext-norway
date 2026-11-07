@@ -8,7 +8,8 @@ og innstillingene er utelatt. Lokale endringer støtter null avgiftsbeløp, fler
 BaseRate-verdier, native åpningsposter, valutabeløp, eksakte utvalgsdatoer,
 native dimensjoner og entydige bilagsreferanser. Samlet debet/kredit gjengis
 med samme native RecordID på hver bokført side; avgiftsopplysninger kan bindes
-uttrykkelig til siden. Hele det leverte kontoregisteret gjengis, også uten bevegelser.
+uttrykkelig til siden. TaxTable kan få hele registeruttrekket med flere lagrede
+satser per kode og valgfri nominell sats, uten å legge til transaksjoner. Hele det leverte kontoregisteret gjengis, også uten bevegelser.
 
 Det offisielle XSD 1.40 og næringsspesifikasjonslisten 2025–2026 er hentet uendret
 fra [Skatteetaten/saf-t](https://github.com/Skatteetaten/saf-t/tree/10c8fd82a6ff47e53385bc33c7638c5fde239a4f),
