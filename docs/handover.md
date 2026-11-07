@@ -702,3 +702,14 @@ fradragspresisjon, hovedboksavstemming og eksportert restore.
 Øvrige SAF-T-gap gjelder fortsatt kvartalsbilag, lager/LCV, flere importgrunnlag,
 frakt, driftsmidler, årsslutt og 2027. Deretter følger ENK/årsgrunnlag og faktisk
 SendRegning EHF-levering, status, feil og kvitteringer som avtalt.
+
+
+## Kvartalsbilag: kildeprøve før SAF-T-mapping
+
+Eksisterende kvartalsprøve utvides med kildebilagslinjer og faktisk brutto GL
+på de genererte differansebilagene, og samme kontroll etter eksportert restore.
+Tjenestebeløpet er bokført på leverandørfakturaen; kvartalsbilaget bokfører bare
+MVA-kostnad og utgående MVA. BASE-metadata skal ikke bli fiktive GL-poster.
+Neste mapping må avklare plasseringen av 87/89, sammenhengen med de ordinære
+kildene og ørekorreksjoner uten å fordele eller beregne ny MVA i eksporten.
+Se saft.md. Produktversjon og eksportavgrensning er uendret av kildeprøven.

@@ -22,6 +22,30 @@ def totals(filters):
 def ledger():
     rows=frappe.get_all('GL Entry',filters={'company':C,'is_cancelled':0},fields=['account','debit','credit','voucher_type','voucher_no'])
     return sorted((r.account,float(r.debit),float(r.credit),r.voucher_type,r.voucher_no) for r in rows)
+def quarterly_postings():
+    """Capture actual source rows and gross GL; metadata is not a posting."""
+    from decimal import Decimal
+    def amount(value):return str(Decimal(str(value or 0)).quantize(Decimal('.01')))
+    result=[]
+    for name in frappe.get_all('Journal Entry',filters={'company':C,JOURNAL:1,'docstatus':1},pluck='name',order_by='name'):
+        doc=frappe.get_doc('Journal Entry',name)
+        gl=frappe.get_all('GL Entry',filters={'company':C,'voucher_type':'Journal Entry','voucher_no':name},
+            fields=['name','account','debit','credit','cost_center','posting_date','is_cancelled'])
+        assert gl and not any(r.is_cancelled for r in gl)
+        for side in ('debit','credit'):
+            assert sum(Decimal(amount(r.get(side))) for r in gl)==sum(Decimal(amount(r.get(side))) for r in doc.accounts)
+        for account in {r.account for r in doc.accounts}:
+            assert sum(Decimal(amount(r.debit))-Decimal(amount(r.credit)) for r in gl if r.account==account)==sum(
+                Decimal(amount(r.debit))-Decimal(amount(r.credit)) for r in doc.accounts if r.account==account)
+        rows=[(r.name,r.account,r.cost_center,r.get(CODE),r.get('custom_norway_vat_rate'),
+            amount(r.get(BASE)),amount(r.debit),amount(r.credit)) for r in doc.accounts]
+        # The generated non-VAT rows are VAT cost, without coded basis rows.
+        assert all(not r.get(CODE) and not r.get(BASE) for r in doc.accounts if not vat.is_vat_account(r.account))
+        result.append({'name':name,'period_from':str(doc.get('custom_norway_vat_period_from')),
+            'period_to':str(doc.get('custom_norway_vat_period_to')),'kind':doc.get(RETURN_TYPE),'rows':rows,
+            'gl':sorted((r.name,r.account,amount(r.debit),amount(r.credit),r.cost_center,str(r.posting_date)) for r in gl)})
+    assert result
+    return result
 def rejected(action,text=None):
     frappe.db.savepoint('quarter_reject')
     try:action()
@@ -33,6 +57,7 @@ try:
     if sys.argv[1]=='verify':
         evidence=json.loads(frappe.db.get_default('runtime_quarterly_evidence'))
         assert ledger()==[tuple(row) for row in evidence['ledger']]
+        assert json.loads(json.dumps(quarterly_postings()))==evidence['quarterly_postings']
         assert totals(Q2)==(2050.02,512.5,0)
         assert totals(Q3)==(2100,525,0)
         assert totals({**Q3,'return_type':ORDINARY})==(850.01,212.5,250)
@@ -45,7 +70,7 @@ try:
         for entry in evidence['files']:
             path=Path(frappe.get_doc('File',entry['name']).get_full_path())
             assert hashlib.sha256(path.read_bytes()).hexdigest()==entry['sha256']
-        print('PASS restored quarterly sources, registered/quarterly split, native adjustment/payment GL and private original/basis bytes')
+        print('PASS restored quarterly adjustment source rows and gross GL IDs, quarterly sources, registered/quarterly split, native adjustment/payment GL and private original/basis bytes')
     else:
         c=frappe.get_doc({'doctype':'Company','company_name':C,'abbr':'QVS','country':'Norway','default_currency':'NOK','tax_id':'999999987','enable_perpetual_inventory':0,'create_chart_of_accounts_based_on':'Standard Template',vat.STATUS:'Not registered'}).insert()
         a={r.account_number:r.name for r in frappe.get_all('Account',filters={'company':C},fields=['name','account_number'])}
@@ -230,6 +255,8 @@ try:
         for filters in (Q2,Q3):
             file=frappe.get_doc('File',preserve_basis(**filters)['name'])
             evidence['files'].append({'name':file.name,'sha256':hashlib.sha256(Path(file.get_full_path()).read_bytes()).hexdigest()})
+        evidence['quarterly_postings']=quarterly_postings()
+        print('PASS native quarterly adjustment source rows/gross GL IDs, cost-only VAT posting versus invoice basis, threshold/credit/registration corrections retained')
         evidence['ledger']=ledger();frappe.db.set_default('runtime_quarterly_evidence',json.dumps(evidence));frappe.db.commit()
         print('PASS native quarterly supplier/VAT payments, separate filing evidence and private invoice/credit PDFs')
 finally:frappe.destroy()

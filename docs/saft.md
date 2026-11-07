@@ -408,3 +408,22 @@ historiske og aktuelle satser, manglende nominell sats, deaktiverte/ubrukte kode
 fraksjonelt fradrag, tilgangsavvisning og eksplisitt avvisning av ukjent importandel.
 Register, GL-ID-er/bruttobeløp og private XML-bytes kontrolleres igjen etter
 eksportert gjenoppretting. Øvrige transaksjonsgap i SAF-T består.
+
+
+## Neste kvalifisering: kvartalsbilagets faktiske posteringer
+
+Kvartalsflyten har allerede ordinære Purchase Invoice-kilder og native Journal
+Entry for differanser i utgående MVA. Fakturaen bokfører tjenestebeløpet;
+kvartalsbilaget bokfører MVA-kostnad og utgående MVA. Det lagrede BASE-feltet på
+MVA-linjen er ikke i seg selv en ny grunnlagspostering. Det skal ikke gjøres om
+til konstruerte GL-poster i eksporten.
+
+Før mapping åpnes, utvides eksisterende kvartalsprøve med alle faktiske
+Journal Entry Account-rader og opprinnelige GL-ID-er, bruttobeløp, konti,
+kostnadssted, periode og returtype. Det omfatter grensepassering, kreditering,
+senere rettelser og registrering. De samme opplysningene kontrolleres etter
+eksportert restore. Tjenestebeløpet finnes på fakturaens kildeposter; i valuta kan bokført
+kostnad og dokumentert MVA-grunnlag være forskjellige.
+eksporten må kvalifisere plasseringen av 87/89 og håndtere grunnlagsendringer
+som ikke gir en ny ørepost, uten ny avgiftsberegning eller dobbelt rapportering.
+Denne kildeprøven åpner ikke kvartalsbilag i eksportadapteren.
