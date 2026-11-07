@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.29 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.30 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -471,3 +471,23 @@ GL-ID-er og brutto beløp beholdes. MVA-beløpet er null, og TaxBase mangler
 uten at fakturabeløpet blir tolket som deklarasjonsverdi. Samme kilder,
 metadata og private XML kontrolleres etter eksportert gjenoppretting.
 Fremmed valuta for disse kostnadskodene kvalifiseres separat.
+
+
+## Påvist valutagap for importkostnader før 0.4.30
+
+Kjernen fører allerede leverandørfaktura, kreditnota, betaling og kursdifferanse
+i fremmed valuta. SAF-T gjengir allerede hovedbokens NOK-/valutabeløp. Den
+nye avgrensningen for 20–22 avviser likevel slike kostnadsfakturaer uten MVA.
+Neste kvalifisering bruker samme mapping med EUR-kilder og native betaling
+i NOK til annen kurs. Ingen omregning eller MVA-beregning skal legges til
+i eksporten. Deklarasjonsgrunnlag skal fortsatt utelates for kostnadskodene.
+Lager/varemottak, frakt, driftsmidler og kvartalsbilag åpnes ikke av dette.
+
+I 0.4.30 utvides avgrensningen for disse kostnadskodene til EUR, med NOK som
+hovedvaluta. Kildene bokføres ved kurs 10; betaling og refusjon i NOK bruker
+kjernens kurs 11 og ordinære kursdifferansebilag. Prøven for hver kode
+omfatter EUR120 kjøp, EUR40 delkreditnota, NOK1320 betaling og NOK440
+refusjon, i tillegg til tidligere NOK-kjeder. Native netto kurstap er
+NOK240 samlet. GL-ID-er, brutto NOK-beløp, valutaopplysninger, kildekoder,
+null MVA og private XML kontrolleres også etter eksportert restore.
+Andre valutaer for kostnadskodene åpnes ikke av EUR-kvalifiseringen.

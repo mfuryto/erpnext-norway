@@ -746,3 +746,16 @@ Journal Entry Account kontrollerer reskontro/betaling og skal ikke brukes
 på MVA-kostnadslinjer ved å omgå disse kontrollene. Eksporten må fortsatt
 bevare faktisk hovedbok og unngå rekonstruksjon ved hjelp av tidsstempler.
 Øvrig SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres etter planen.
+
+
+## SAF-T: importkostnader i EUR, 0.4.30
+
+Native valutaføring og eksisterende SAF-T valutagjengivelse gjenbrukes for
+kode20/21/22 i ordinære EUR-kostnadsfakturaer. Ingen ny omregning eller
+MVA-beregning. Dokumentert gap: adapteren avviste allerede støttede
+kostnadskoder bare på grunn av fakturavalutaen. EUR120/40 kjøp/delkredit
+ved kurs10, native NOK1320/440 betaling/refusjon ved kurs11 gir netto
+kurstap80 per kode. Eksakte GL-ID-er, NOK-/valutabeløp, koder, null MVA,
+utelatt deklarasjonsgrunnlag og privat XML kvalifiseres før/etter restore.
+Øvrige valutaer, lager/varemottak, frakt, driftsmidler og kvartalsbilag
+åpnes ikke av denne endringen. SAF-T/ENK/SendRegning EHF videreføres.
