@@ -258,6 +258,23 @@ class TestNorwegianBuilderExtensions(TestCase):
         with self.assertRaisesRegex(SaftExportError,'ubrukte'):
             build_saf_t(replace(data,account_mappings={**data.account_mappings,'Bank':AccountMapping('1920','NA','NA')}))
 
+    def test_complete_tax_catalog_does_not_create_tax_transactions(self):
+        data=self.export_data()
+        data=replace(data,tax_catalog=(TaxMapping('33',Decimal(6),'33',(Decimal(100),)),
+            TaxMapping('33',Decimal(12),'33',(Decimal(60),Decimal(100))),
+            TaxMapping('CUSTOM',None,'NA',(Decimal('37.123456'),))))
+        root=etree.fromstring(build_saf_t(data));ns={'s':NS}
+        self.assertEqual(root.xpath('.//s:TaxCodeDetails[s:TaxCode="33"]/s:TaxPercentage/text()',namespaces=ns),['6.00','12.00'])
+        self.assertEqual(root.xpath('.//s:TaxCodeDetails[s:TaxCode="CUSTOM"]/s:StandardTaxCode/text()',namespaces=ns),['NA'])
+        self.assertFalse(root.xpath('.//s:TaxCodeDetails[s:TaxCode="CUSTOM"]/s:TaxPercentage',namespaces=ns))
+        self.assertFalse(root.xpath('.//s:Line/s:TaxInformation',namespaces=ns))
+        empty=etree.fromstring(build_saf_t(replace(data,entries=(),parties={})))
+        self.assertEqual(len(empty.xpath('.//s:TaxCodeDetails',namespaces=ns)),3)
+        self.assertFalse(empty.xpath('.//s:GeneralLedgerEntries',namespaces=ns))
+        for mapping in (TaxMapping('BAD',Decimal('NaN'),'NA'),TaxMapping('BAD',Decimal(25),'NA',()),
+                        TaxMapping('BAD',Decimal(25),'NA',(Decimal(101),))):
+            with self.assertRaises(SaftExportError):build_saf_t(replace(data,tax_catalog=(mapping,)))
+
 
 if __name__ == '__main__':
     import unittest
