@@ -12,7 +12,7 @@ from erpnext_norway import saft_builder as xml
 
 MAPPING = 'custom_norway_saft_mapping'
 SALES = {'3':25, '31':15, '33':12, '5':0, '6':0, '7':0, '52':0}
-PURCHASES = {'20':0, '21':0, '22':0, '1':25, '11':15, '13':12, '0':0, '86':25, '87':25, '88':12, '89':12}
+PURCHASES = {'20':0, '21':25, '22':15, '1':25, '11':15, '13':12, '0':0, '86':25, '87':25, '88':12, '89':12}
 
 
 def groups(year):
@@ -64,12 +64,22 @@ def invoice_taxes(doc, rows):
         return stock_taxes(doc, rows)
     taxes = {r.name: r for r in doc.taxes}
     legacy_cost = {item.expense_account for item in doc.items if item.get(CODE) == '0'} if doc.doctype == 'Purchase Invoice' else set()
+    # Reuse the native per-item Actual charge amount; never allocate freight.
+    freight = {r.name for r in doc.taxes if doc.doctype == 'Purchase Invoice' and doc.currency == 'NOK'
+        and len(doc.items) == 1 and doc.items[0].get(CODE) in {'0', '1', '11', '13'}
+        and not doc.items[0].get(ITEM) and r.charge_type == 'Actual' and not r.get(COST)
+        and r.category == 'Total' and r.add_deduct_tax == 'Add' and xml._money(r.base_tax_amount)
+        and r.account_head == doc.items[0].expense_account}
     if any(not is_vat_account(r.account_head) and not r.get(COST) and xml._money(r.base_tax_amount)
-            and not (r.charge_type == 'On Net Total' and r.account_head in legacy_cost
+            and r.name not in freight and not (r.charge_type == 'On Net Total' and r.account_head in legacy_cost
                      and all(item.get(CODE) == '0' for item in doc.items)) for r in doc.taxes):
         unsupported(doc)  # Freight mapping must be qualified, not added to an arbitrary cost line.
     details = frappe.get_all('Item Wise Tax Detail', filters={'parenttype': doc.doctype, 'parent': doc.name},
         fields=['item_row', 'tax_row', 'amount', 'taxable_amount', 'rate'])
+    for name in freight:
+        recorded = [r for r in details if r.tax_row == name and r.item_row == doc.items[0].name]
+        if len(recorded) != 1 or xml._money(recorded[0].amount) != xml._money(taxes[name].base_tax_amount):
+            unsupported(doc, 'Lagret tilleggsbeløp per varelinje mangler eller avviker fra bilaget.')
     result, mappings = defaultdict(list), {}
     expected_vat = defaultdict(lambda: [Decimal(), Decimal()])
     for item in doc.items:
@@ -82,8 +92,22 @@ def invoice_taxes(doc, rows):
         receipt_source(doc, item)
         values = [r for r in details if r.item_row == item.name and r.tax_row in taxes]
         vat = [r for r in values if is_vat_account(taxes[r.tax_row].account_head)]
-        if expected[code] == 0 and any(xml._money(r.amount) for r in vat):
+        if (expected[code] == 0 or code in {'20', '21', '22'}) and any(xml._money(r.amount) for r in vat):
             unsupported(doc, 'Bokført MVA mangler en kvalifisert avgiftskode.')
+        if freight and any(len({Decimal(str(r.rate or 0)) for r in group if xml._money(r.amount)}) > 1
+                for group in (vat, [r for r in values if taxes[r.tax_row].get(COST)])):
+            unsupported(doc, 'Tillegg med annen avgiftsbehandling enn varelinjen er ikke kvalifisert.')
+        for name in freight:
+            # The native previous-row link identifies VAT on this charge.
+            # A shared expense account alone does not establish its VAT treatment.
+            for group in (vat, [r for r in values if taxes[r.tax_row].get(COST)]):
+                if not any(xml._money(r.amount) for r in group):
+                    continue
+                linked = [r for r in group if xml._money(r.amount)
+                    and taxes[r.tax_row].charge_type in {'On Previous Row Amount', 'On Previous Row Total'}
+                    and str(taxes[r.tax_row].row_id) == str(taxes[name].idx)]
+                if len(linked) != 1 or xml._money(linked[0].taxable_amount) != xml._money(taxes[name].base_tax_amount):
+                    unsupported(doc, 'Avgiftsgrunnlaget for tillegget mangler eller avviker fra bilaget.')
         foreign_vat = doc.currency != 'NOK' and any(xml._money(r.amount) for r in vat)
         if foreign_vat:
             from erpnext_norway.vat_currency import KIND
@@ -101,6 +125,8 @@ def invoice_taxes(doc, rows):
         if not candidates or len({(r.posting_date, bool(r.debit), bool(r.is_cancelled)) for r in candidates}) != len(candidates):
             unsupported(doc)
         rate = Decimal(str(item.get(RATE) or 0)) if code not in {'0', '20', '21', '22', '5', '6', '7', '52'} else Decimal(0)
+        if code in {'20', '21', '22'}:
+            rate = Decimal(expected[code])  # Nominal import rate, not supplier VAT charged.
         if rate != expected[code]:
             unsupported(doc, 'Avgiftskoden og den bokførte satsen stemmer ikke overens.')
         deduction = Decimal(str(item.get(DEDUCTION) if item.get(DEDUCTION) is not None else 100)) if doc.doctype == 'Purchase Invoice' else Decimal(100)
@@ -112,7 +138,7 @@ def invoice_taxes(doc, rows):
         # No-treatment code0 has no VAT base. With partial deduction use the native
         # expense including non-deductible VAT (Skatteetaten documentation example1).
         basis = abs(xml._money(item.base_net_amount) + sum((xml._money(r.amount) for r in values
-            if taxes[r.tax_row].get(COST)), Decimal())) if code != '0' else Decimal(0)
+            if taxes[r.tax_row].get(COST) or r.tax_row in freight), Decimal())) if code != '0' else Decimal(0)
         if foreign_vat:
             # Native detail values are already NOK. Output and input share the
             # same VAT base; retain the stored output base once, without FX math.

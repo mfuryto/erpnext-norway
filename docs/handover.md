@@ -790,3 +790,28 @@ lagerkontoer og begrenset radtilgang avvises. Eksakte GL-/SLE-kilder, valuta
 og privat XML kontrolleres etter eksportert backup/gjenoppretting. Øvrig
 lager-/mottaks-MVA, kvartalsbilag, frakt, driftsmidler, årsslutt og2027
 gjenstår, deretter ENK/årsgrunnlag og EHF via SendRegning.
+
+## SAF-T: frakt i eksisterende fakturaflyt, 0.4.33
+
+Standard frakt som tjenestelinje med vanlig Item Tax Template fungerer med
+eksisterende eksport, kreditnota, betaling og refusjon. Denne flyten beholdes.
+Det dokumenterte gapet gjelder kjernens bokførte Actual-tillegg: adapteren
+avviste dem selv om beløp og avgiftsgrunnlag allerede finnes per varelinje.
+Eksisterende fakturamapping leser nå disse detaljene for NOK-kjøpsfaktura
+med én vare-/tjenestelinje, samme kostnadskonto og samme avgiftsbehandling.
+Ingen ny avgiftsberegning, fordeling, bokføring, felt eller fraktregistrering.
+Historiske bilag omskrives ikke til tjenestelinjer for å kunne eksporteres.
+
+25/15/12 prosent med fullt/60 prosent/intet fradrag, native delkredit,
+betaling/refusjon, kansellering og eksportert gjenoppretting kvalifiseres.
+Manglende metadata og ukvalifiserte avgifts-/konto-/linjekombinasjoner avvises.
+Øvrig SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres.
+
+Samme levering korrigerer nominell importsats i SAF-T: kode21/22 skal
+vise 25/15 prosent i TaxInformation og TaxTable, også når selve
+leverandørkostnaden har null MVA og ikke har deklarasjonsgrunnlag.
+Tidligere eksport brukte feilaktig null som nominell sats. Korreksjonen
+følger Skatteetatens kodeoversikt og eksempel i generell dokumentasjon
+1.40 side33–34. Native maler, MVA-beregninger, leverandørbeløp og hovedbok
+endres ikke. Eksisterende NOK/EUR-, mottaks- og lagerprøver verifiserer
+den korrekte satsen sammen med fortsatt null MVA og manglende TaxBase.

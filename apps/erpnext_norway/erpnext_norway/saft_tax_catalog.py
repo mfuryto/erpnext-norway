@@ -7,7 +7,7 @@ import frappe
 from erpnext_norway import saft_builder as xml
 from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION, SALES_CODE, PURCHASE_CODE
 
-ZERO = {'0', '5', '6', '7', '20', '21', '22', '52', '85'}
+ZERO = {'0', '5', '6', '7', '20', '52', '85'}
 IMPORT = {'81', '82', '83', '84'}
 
 
@@ -42,7 +42,9 @@ def read(company, end, period_mappings, accounts):
         if code not in known and not source.startswith('Item Tax Template '):
             frappe.throw(f'SAF-T: {source}: avgiftskoden {code} har ingen kvalifisert standardkobling.')
         percentage = decimal(rate, 'Nominell sats', source) if rate is not None else None
-        if code in ZERO:
+        if code in {'21', '22'}:
+            percentage = Decimal(PURCHASES[code])  # Import classification; supplier VAT stays zero.
+        elif code in ZERO:
             percentage = Decimal(0)  # Same no-VAT classification as the transaction adapter.
         elif code in known and percentage == 0:
             percentage = None  # Do not turn missing historical rate metadata into zero-rated VAT.
