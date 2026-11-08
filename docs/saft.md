@@ -581,3 +581,13 @@ med Actual-tillegg og annen kostnadskonto avvises i denne avgrensningen.
 Eksakte GL-ID-er og beløp, lagrede avgiftsdetaljer, koder/grunnlag og privat
 XML kontrolleres etter eksportert SQL-/filbackup, restore og migrering.
 Manglende lagret tilleggsbeløp avvises; eksporten fyller det ikke inn selv.
+
+## Påvist feil i nominell importsats
+
+[Skatteetatens generelle dokumentasjon 1.40](https://www.skatteetaten.no/globalassets/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/august2026/norwegian-saf-t-financial-data---documentation-1.40.pdf),
+side 33–34, viser kode21 med TaxPercentage25, null MVA-beløp og uten TaxBase
+på leverandørkostnaden. Adapteren og avgiftsregisteret brukte feilaktig
+leverandørfakturaens nullsats som nominell importsats. Eksportmetadataen skal
+bruke 25/15 prosent for kode21/22. Kode20 er fortsatt uten MVA-behandling.
+Leverandørbeløp, bokført MVA og native beregninger endres ikke; et nullbeløp
+på leverandørfakturaen skal ikke tolkes som en nullsats ved innførselen.

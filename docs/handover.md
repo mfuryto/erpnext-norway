@@ -806,3 +806,12 @@ Historiske bilag omskrives ikke til tjenestelinjer for å kunne eksporteres.
 betaling/refusjon, kansellering og eksportert gjenoppretting kvalifiseres.
 Manglende metadata og ukvalifiserte avgifts-/konto-/linjekombinasjoner avvises.
 Øvrig SAF-T, ENK/årsgrunnlag og SendRegning EHF videreføres.
+
+Samme levering korrigerer nominell importsats i SAF-T: kode21/22 skal
+vise 25/15 prosent i TaxInformation og TaxTable, også når selve
+leverandørkostnaden har null MVA og ikke har deklarasjonsgrunnlag.
+Tidligere eksport brukte feilaktig null som nominell sats. Korreksjonen
+følger Skatteetatens kodeoversikt og eksempel i generell dokumentasjon
+1.40 side33–34. Native maler, MVA-beregninger, leverandørbeløp og hovedbok
+endres ikke. Eksisterende NOK/EUR-, mottaks- og lagerprøver verifiserer
+den korrekte satsen sammen med fortsatt null MVA og manglende TaxBase.

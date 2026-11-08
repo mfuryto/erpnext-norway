@@ -12,7 +12,7 @@ from erpnext_norway import saft_builder as xml
 
 MAPPING = 'custom_norway_saft_mapping'
 SALES = {'3':25, '31':15, '33':12, '5':0, '6':0, '7':0, '52':0}
-PURCHASES = {'20':0, '21':0, '22':0, '1':25, '11':15, '13':12, '0':0, '86':25, '87':25, '88':12, '89':12}
+PURCHASES = {'20':0, '21':25, '22':15, '1':25, '11':15, '13':12, '0':0, '86':25, '87':25, '88':12, '89':12}
 
 
 def groups(year):
@@ -92,7 +92,7 @@ def invoice_taxes(doc, rows):
         receipt_source(doc, item)
         values = [r for r in details if r.item_row == item.name and r.tax_row in taxes]
         vat = [r for r in values if is_vat_account(taxes[r.tax_row].account_head)]
-        if expected[code] == 0 and any(xml._money(r.amount) for r in vat):
+        if (expected[code] == 0 or code in {'20', '21', '22'}) and any(xml._money(r.amount) for r in vat):
             unsupported(doc, 'Bokført MVA mangler en kvalifisert avgiftskode.')
         if freight and any(len({Decimal(str(r.rate or 0)) for r in group if xml._money(r.amount)}) > 1
                 for group in (vat, [r for r in values if taxes[r.tax_row].get(COST)])):
@@ -125,6 +125,8 @@ def invoice_taxes(doc, rows):
         if not candidates or len({(r.posting_date, bool(r.debit), bool(r.is_cancelled)) for r in candidates}) != len(candidates):
             unsupported(doc)
         rate = Decimal(str(item.get(RATE) or 0)) if code not in {'0', '20', '21', '22', '5', '6', '7', '52'} else Decimal(0)
+        if code in {'20', '21', '22'}:
+            rate = Decimal(expected[code])  # Nominal import rate, not supplier VAT charged.
         if rate != expected[code]:
             unsupported(doc, 'Avgiftskoden og den bokførte satsen stemmer ikke overens.')
         deduction = Decimal(str(item.get(DEDUCTION) if item.get(DEDUCTION) is not None else 100)) if doc.doctype == 'Purchase Invoice' else Decimal(100)

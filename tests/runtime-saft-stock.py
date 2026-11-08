@@ -29,6 +29,9 @@ def export():
         assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=NS))==sum((xml._money(r[side]) for r in gl),Decimal())
     infos=root.xpath('.//s:TaxInformation[s:TaxCode="20" or s:TaxCode="21" or s:TaxCode="22"]',namespaces=NS)
     assert infos and all(not i.xpath('s:TaxBase',namespaces=NS) for i in infos)
+    for info in infos:
+        code=info.xpath('string(s:TaxCode)',namespaces=NS)
+        assert info.xpath('s:TaxPercentage/text()',namespaces=NS)==[{'20':'0.00','21':'25.00','22':'15.00'}[code]]
     assert all(i.xpath('s:DebitTaxAmount/s:Amount/text()|s:CreditTaxAmount/s:Amount/text()',namespaces=NS)==['0.00'] for i in infos)
     return data,gl
 

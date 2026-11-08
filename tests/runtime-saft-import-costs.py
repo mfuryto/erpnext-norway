@@ -28,7 +28,9 @@ def check(root):
     assert Counter(i.xpath('string(s:TaxCode)',namespaces=NS) for i in infos)=={'20':8,'21':8,'22':8}
     for info in infos:
         assert not info.xpath('s:TaxBase',namespaces=NS)
-        assert info.xpath('s:TaxPercentage/text()',namespaces=NS)==['0.00']
+        code=info.xpath('string(s:TaxCode)',namespaces=NS)
+        assert info.xpath('s:TaxPercentage/text()',namespaces=NS)==[{'20':'0.00','21':'25.00','22':'15.00'}[code]]
+        assert root.xpath('.//s:TaxCodeDetails[s:TaxCode="'+code+'"]/s:TaxPercentage/text()',namespaces=NS)==[{'20':'0.00','21':'25.00','22':'15.00'}[code]]
         assert info.xpath('s:DebitTaxAmount/s:Amount/text()|s:CreditTaxAmount/s:Amount/text()',namespaces=NS)==['0.00']
     assert root.xpath('.//s:Line/*[s:CurrencyCode="EUR"]/s:CurrencyAmount',namespaces=NS)
     assert not root.xpath('.//s:TaxInformation/s:DebitNOKTaxAmount|.//s:TaxInformation/s:CreditNOKTaxAmount',namespaces=NS)

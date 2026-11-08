@@ -4,7 +4,7 @@ from decimal import Decimal
 import frappe
 
 from erpnext_norway import saft_builder as xml
-from erpnext_norway.saft import unsupported
+from erpnext_norway.saft import unsupported, PURCHASES
 from erpnext_norway.vat import is_vat_account
 from erpnext_norway.vat_catalog import CODE, DEDUCTION
 
@@ -46,4 +46,4 @@ def invoice_taxes(doc, rows):
     shares = tuple(sorted({Decimal(str(item.get(DEDUCTION) if item.get(DEDUCTION) is not None else 100))
         for item in doc.items}))
     return ({r.name: [xml.TaxInformation(code, tax_amount=Decimal(0))] for r in assets},
-        {code: xml.TaxMapping(code, Decimal(0), code, shares)})
+        {code: xml.TaxMapping(code, Decimal(PURCHASES[code]), code, shares)})
