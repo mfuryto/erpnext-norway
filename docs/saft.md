@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.32 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.33 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -552,3 +552,32 @@ null MVA og utelatt deklarasjonsgrunnlag. Lagerkilder, kildebilag og privat
 XML sammenholdes med den lagrede fasiten etter eksportert SQL-/filrestore
 og migrering. Dette åpner ikke innenlandsk lager-MVA, lagerført mottak,
 driftsmidler eller generell lager-/SAF-T-aksept.
+
+## Frakt som standardlinje og bokført tillegg, 0.4.33
+
+Vanlig frakt som ikke-lagerført tjenestelinje skal bruke ordinær Item Tax
+Template og eksisterende fakturaeksport. Ingen egen fraktregistrering trengs.
+Kjernen støtter også frakt som en ordinær Actual-rad under avgifter og tillegg.
+Disse radene er allerede bokført, men eksportens generelle tilleggssperre
+avviser dem. Historiske bilag skal ikke omskrives til tjenestelinjer.
+
+Det konkrete adaptergapet gjelder NOK-kjøpsfaktura med én vare-/tjenestelinje,
+Actual-tillegg på samme kostnadskonto, og ordinær innenlandsk MVA-behandling.
+Kjernen lagrer tilleggsbeløpet per linje i Item Wise Tax Detail. Minste mulige
+retting er å bruke denne lagrede verdien i den eksisterende grunnlagsmappingen,
+sammen med den allerede lagrede kostnadsførte MVA-en. Ingen nye beregninger,
+fordeling, felt, registreringsside eller bokføring. Ulike avgiftsbehandlinger,
+andre kostnadskontoer, valuta og flere varelinjer med slike tillegg kvalifiseres
+separat. Begge standardflyter er prøvd før publisering.
+
+Prøven bruker vanlig eier med ordinære roller: frakt som tjenestelinje ved
+fullt, 60 prosent og intet fradrag, samt Actual-tillegg med 25/15/12 prosent
+og de samme fradragsvalgene. Native delkreditnota, betaling/refusjon og
+fakturakansellering inngår. Det lagrede tillegget må stemme med fakturaen,
+og de native avgiftsradene må knytte samme behandling til tillegget som til
+varelinjen. Avgiftsfritt tillegg på en avgiftsført varelinje, flere varelinjer
+med Actual-tillegg og annen kostnadskonto avvises i denne avgrensningen.
+
+Eksakte GL-ID-er og beløp, lagrede avgiftsdetaljer, koder/grunnlag og privat
+XML kontrolleres etter eksportert SQL-/filbackup, restore og migrering.
+Manglende lagret tilleggsbeløp avvises; eksporten fyller det ikke inn selv.
