@@ -46,7 +46,7 @@ def check_export(start="2026-01-01",end="2026-12-31"):
         line=lines[row.name]
         assert Decimal(line.find('s:'+('DebitAmount' if row.debit else 'CreditAmount')+'/s:Amount',ns).text)==xml._money(row.debit or row.credit)
     for side in ('debit','credit'):
-        assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=ns))==sum((xml._money(r[side]) for r in gl),Decimal())
+        assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=ns) or '0')==sum((xml._money(r[side]) for r in gl),Decimal())
     for line in root.findall('.//s:Line',ns):
         for info in line.findall('s:TaxInformation',ns):
             if info.find('s:TaxCode',ns).text in {'87','89'}:
