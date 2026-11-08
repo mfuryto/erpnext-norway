@@ -1,6 +1,6 @@
 # SAF-T: nedlasting, gjenbruk og gjenstående omfang
 
-App 0.4.31 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
+App 0.4.32 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
 SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
 uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
 Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
@@ -116,7 +116,7 @@ kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 ## Gjenstår i hovedplanens SAF-T-punkt
 
 Utvid eksportmappingen til øvrig import, kvartalsbilag,
-andre klassifiserte MVA-bilag, øvrig avgiftsført valuta, lager/driftsmidler og frakt.
+andre klassifiserte MVA-bilag, øvrig avgiftsført valuta, øvrig lagerføring, driftsmidler og frakt.
 Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
 De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
 Alternative regnskaps-/avskrivningsbøker og øvrige brukte dimensjoner må også
@@ -519,3 +519,36 @@ produksjonsbrukernes roller endres ikke.
 Eksakte mottaks-/linjelenker, GL-ID-er, bruttobeløp i NOK, valutaopplysninger
 og privat XML kontrolleres etter eksportert gjenoppretting. Historiske
 kansellerte mottak og øvrige koder/behandlinger åpnes ikke av dette steget.
+
+## Lagerførte importkostnader, 0.4.32
+
+Kjernen bokfører allerede varekjøp med Update Stock, native delretur,
+betaling, valutadifferanser og Landed Cost Voucher. Norsk eksport avviser
+likevel Update Stock ubetinget. Gapet er derfor koblingen fra fakturaens
+importkostnadskode til faktisk bokført lagerkonto, ikke verdsettingen.
+
+Avgrensningen er kostnadskodene 20–22, NOK/EUR, uten MVA på
+leverandørfakturaen, med én felles kode og én bokført lagerkonto per faktura.
+Varelinjene må finnes i lesbare Stock Ledger Entry-kilder. Lagerbeløp og
+valuta leses uendret fra GL; ingen beløp fordeles mellom varelinjer, og
+TaxBase utelates som for øvrige importkostnader. Blandede koder, mottaksførte
+varer og øvrig lager-/avgiftsbehandling kvalifiseres separat.
+
+LCV-kansellering kan utløse kjernens ordinære Repost Item Valuation for
+senere lagertransaksjoner. Eksporten skal avvente ferdig standardrepostering,
+ikke fullføre den eller beregne erstatningsverdier. Kjernen kan erstatte GL-ID-er
+ved slik repostering; eksporten skal gjengi de faktiske ferdige postene.
+
+`tests/runtime-saft-stock.py` prøver native EUR300 kjøp ved kurs10,
+NOK1700 tilleggskostnad med LCV, EUR100 delretur, betaling/refusjon ved
+kurs11 og netto kurstap200. Etter kansellering av LCV og kjernens repostering
+er gjenværende lager2000. Alle tre importkostnadskoder prøves deretter i
+NOK/EUR med flere varelinjer på samme bokførte lagerkonto. En ordinær
+lagerfaktura kanselleres også. Eksport avventer uferdig native repostering;
+blandede koder, flere lagerkontoer og manglende radtilgang avvises konkret.
+
+Prøven kontrollerer eksakte GL-ID-er, bruttobeløp, valutabeløp, datoutvalg,
+null MVA og utelatt deklarasjonsgrunnlag. Lagerkilder, kildebilag og privat
+XML sammenholdes med den lagrede fasiten etter eksportert SQL-/filrestore
+og migrering. Dette åpner ikke innenlandsk lager-MVA, lagerført mottak,
+driftsmidler eller generell lager-/SAF-T-aksept.
