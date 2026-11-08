@@ -741,3 +741,10 @@ lagerkontoer kreves fortsatt en entydig kildekobling; dagens lagerinnstillinger
 skal ikke brukes til å gjette historikken. Ikke-lagerførte linjer i samme
 faktura bruker sin faktisk lagrede kostnadskonto. Ordinære tillegg uten
 leverandør-MVA endrer ingen av disse avgiftsbeløpene.
+
+Blandede varemottak kan inneholde både et driftsmiddel med faktiske GL-poster
+og en ikke-lagerført tjeneste uten egen mottakspostering. At mottaket samlet
+har GL, betyr ikke at alle fakturalinjene bruker en avregningskonto. Den
+registrerte driftsmiddelmarkeringen og native Stock Ledger Entry-koblingen
+per mottakslinje må avgjøre dette. En tjenestelinje beholder sin bokførte
+kostnadskonto selv om samme mottak også kapitaliserer et driftsmiddel.

@@ -826,6 +826,7 @@ Tidligere delversjoners gjenstående eksportområder ovenfor er historikk.
 Kvartalsgrunnlag gjenbruker eksisterende MVA-spesifikasjon. Native lager,
 mottak/fakturaavregning, driftsmidler, avskrivninger, salg/retur, frakt,
 primære MVA-bilag og Period Closing Voucher eksporterer sine faktiske GL-poster.
+Blandede driftsmiddel-/tjenestemottak bruker faktisk mottakspostering per linje.
 Separate deklarasjons-/leverandørgrunnlag, dokumentert fradrag, spesifikasjoner,
 lange kildereferanser, native bruker og begge brutto valutabeløpssider bevares.
 Ingen kjernefiler, regnskapsberegninger eller bokførte beløp endres.

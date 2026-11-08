@@ -57,6 +57,16 @@ def receipt_source(doc, item):
     posted = frappe.get_list('GL Entry', filters=filters, fields=['name', 'account'], limit_page_length=0)
     if len(posted) != frappe.db.count('GL Entry', filters):
         frappe.throw('SAF-T krever tilgang til hele hovedboken for mottaket.', frappe.PermissionError)
+    if posted and not source.get('is_fixed_asset'):
+        stock_filters = {'company': doc.company, 'voucher_type': receipt.doctype,
+            'voucher_no': receipt.name, 'voucher_detail_no': source.name}
+        count = frappe.db.count('Stock Ledger Entry', stock_filters)
+        stock = frappe.get_list('Stock Ledger Entry', filters=stock_filters,
+            fields=['name'], limit_page_length=0) if count else []
+        if len(stock) != count:
+            frappe.throw('SAF-T krever tilgang til mottakslinjens lagerposter.', frappe.PermissionError)
+        if not stock:
+            return False  # A non-stock service can share a receipt with a posted asset.
     if posted and (item.expense_account not in {r.account for r in posted}
             or frappe.get_cached_value('Account', item.expense_account, 'account_type') not in
                 {'Stock Received But Not Billed', 'Asset Received But Not Billed'}):
