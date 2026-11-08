@@ -773,3 +773,20 @@ kreditnota/betaling/refusjon, native fakturakansellering, avvisning av
 lager/kode85/manglende lesetilgang og eksportert restore kvalifiseres.
 Kvartalsbilag, faktisk lager/LCV, frakt, driftsmidler, årsslutt og2027
 gjenstår før samlet SAF-T-aksept, deretter ENK/årsgrunnlag ogSendRegningEHF.
+
+## SAF-T: lagerførte importkostnader, 0.4.32
+
+Kjernen håndterer allerede Update Stock, LCV, retur, betaling, valuta og
+lagerrepostering. Eksportgapet var ubetinget avvisning av lagerfakturaer.
+En lesekobling bruker faktiske GL-/lagerkilder for importkostnadskodene20–22
+i NOK/EUR, én felles kode og én bokført lagerkonto per faktura. Ingen ny
+verdsetting, beregning, fordeling, bokføring eller kjerneendring. Uferdig
+native repostering må fullføres av kjernen før eksport; eksporten starter
+ikke jobber. Lesetilgang til lagerkildene kontrolleres med ordinære rettigheter.
+
+Native kjøp, LCV, delretur, betaling/refusjon, valutadifferanse, faktura-/LCV-
+kansellering, flere varelinjer og perioder er prøvd. Blandede koder, flere
+lagerkontoer og begrenset radtilgang avvises. Eksakte GL-/SLE-kilder, valuta
+og privat XML kontrolleres etter eksportert backup/gjenoppretting. Øvrig
+lager-/mottaks-MVA, kvartalsbilag, frakt, driftsmidler, årsslutt og2027
+gjenstår, deretter ENK/årsgrunnlag og EHF via SendRegning.

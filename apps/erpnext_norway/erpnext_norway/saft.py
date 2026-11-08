@@ -59,6 +59,9 @@ def invoice_taxes(doc, rows):
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_valuation import COST
     from erpnext_norway.vat_quarterly import ITEM
+    if doc.get('update_stock'):
+        from erpnext_norway.saft_stock import invoice_taxes as stock_taxes
+        return stock_taxes(doc, rows)
     taxes = {r.name: r for r in doc.taxes}
     legacy_cost = {item.expense_account for item in doc.items if item.get(CODE) == '0'} if doc.doctype == 'Purchase Invoice' else set()
     if any(not is_vat_account(r.account_head) and not r.get(COST) and xml._money(r.base_tax_amount)
