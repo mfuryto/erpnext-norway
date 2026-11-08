@@ -27,8 +27,8 @@ def configure_fields():
          'insert_after': RATE, 'allow_on_submit': 1, 'print_hide': 1},
         {'fieldname': DEDUCTION, 'label': 'Input VAT deduction percent', 'fieldtype': 'Percent',
          'insert_after': BASE, 'allow_on_submit': 1, 'print_hide': 1, 'no_copy': 0,
-         'depends_on': 'eval:["81","82","83","84"].includes(doc.custom_norway_vat_code) && !!doc.custom_norway_vat_base',
-         'description': 'Record the documented deduction percent on the output import VAT line. Journal amounts are not calculated.'},
+         'depends_on': 'eval:["86","88"].includes(doc.custom_norway_vat_code) || (["81","82","83","84"].includes(doc.custom_norway_vat_code) && !!doc.custom_norway_vat_base)',
+         'description': 'Record the documented deduction percent on the output import or reverse-charge service VAT line. Journal amounts are not calculated.'},
         {'fieldname': SPEC, 'label': 'VAT specification', 'fieldtype': 'Select',
          'insert_after': DEDUCTION, 'allow_on_submit': 1, 'print_hide': 1,
          'options': '\nBad debt\nCapital goods adjustment\nCapital goods reversal'},
@@ -77,12 +77,16 @@ def validate(doc, method=None):
         account_number = frappe.get_cached_value('Account', row.account, 'account_number')
         deduction = flt(row.get(DEDUCTION))
         import_output = row.get(CODE) in {'81', '82', '83', '84'} and account_number in {'2705', '2706'}
-        if not 0 <= deduction <= 100 or (deduction and not import_output):
-            frappe.throw(frappe._('Enter an input VAT deduction percent between 0 and 100 on the output import VAT line only.'))
+        service_output = row.get(CODE) in {'86', '88'} and account_number in {'2704', '2709'}
+        if not 0 <= deduction <= 100 or (deduction and not (import_output or service_output)):
+            frappe.throw(frappe._('Enter an input VAT deduction percent between 0 and 100 on the output import or reverse-charge service VAT line only.'))
         if import_output and ((row.get(CODE) in {'82', '84'} and deduction) or
                 (doc.docstatus == 1 and row.get(CODE) in {'81', '83'} and not deduction
                  and row.idx not in legacy_unknown_share)):
             frappe.throw(frappe._('Record the documented deduction percent before submitting import VAT. Use zero for codes 82/84.'))
+        if (service_output and doc.docstatus == 1 and not deduction
+                and row.idx not in legacy_unknown_share):
+            frappe.throw(frappe._('Record the documented deduction percent before submitting reverse-charge service VAT. Use code 87/89 without deduction.'))
         if not is_vat_account(row.account):
             continue
         if previous and previous.docstatus == 1:
@@ -145,9 +149,10 @@ def prepare_reversal(doc):
         in tuple(number for number in ACCOUNTS.get(row.get(CODE), ()) if number.startswith('270')) and
         float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
     unknown = Counter(signature(row, reverse=True) for row in source.accounts
-        if row.get(CODE) in {'81', '83'} and not row.get(DEDUCTION) and row.get(BASE)
-        and frappe.get_cached_value('Account', row.account, 'account_number') in {'2705', '2706'}
-        and float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0)
+        if row.get(CODE) in {'81', '83', '86', '88'} and not row.get(DEDUCTION)
+        and (row.get(BASE) or row.get(CODE) in {'86', '88'})
+        and frappe.get_cached_value('Account', row.account, 'account_number') in {'2705', '2706', '2704', '2709'}
+        and (not row.get(BASE) or float(row.get(BASE)) * (float(row.credit or 0) - float(row.debit or 0)) > 0))
     eligible = set()
     for row in doc.accounts:
         key = signature(row)

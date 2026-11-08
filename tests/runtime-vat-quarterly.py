@@ -16,7 +16,46 @@ from frappe.utils.file_manager import save_file
 C='Runtime Quarterly Services';OWNER='runtime-vat-owner@example.invalid'
 Q2={'company':C,'from_date':'2026-04-01','to_date':'2026-06-30','return_type':QUARTERLY}
 Q3={'company':C,'from_date':'2026-07-01','to_date':'2026-09-30','return_type':QUARTERLY}
+from decimal import Decimal
+from lxml import etree
+from erpnext_norway import saft,saft_builder as xml
+export_count=0
+def check_export(start="2026-01-01",end="2026-12-31"):
+    global export_count
+    export_count+=1
+    user=frappe.session.user
+    frappe.set_user('Administrator')
+    company=frappe.get_doc('Company',C);company.phone_no='90000000';company.save()
+    mapping={'1920':('balanseverdiForOmloepsmiddel','1920'),'2400':('kortsiktigGjeld','2400'),
+        '2704':('kortsiktigGjeld','2740'),'2714':('kortsiktigGjeld','2740'),
+        '2740':('kortsiktigGjeld','2740'),'1640':('balanseverdiForOmloepsmiddel','1570'),
+        '4500':('varekostnad','4500'),'8160':('finanskostnad','8160'),
+        '3020':('salgsinntekt','3000'),'1500':('balanseverdiForOmloepsmiddel','1500'),
+        '2700':('kortsiktigGjeld','2740'),'2710':('kortsiktigGjeld','2740')}
+    for name in set(frappe.get_all('GL Entry',filters={'company':C},pluck='account')):
+        account=frappe.get_doc('Account',name)
+        if account.get(saft.MAPPING):continue
+        category,code=mapping[account.account_number or '2400']
+        account.append(saft.MAPPING,{'year':2026,'category':category,'code':code});account.save()
+    frappe.set_user(user)
+    data=saft.build(C,start,end);xml.validate_saf_t(data);root=etree.fromstring(data);ns={'s':xml.NS}
+    gl=frappe.get_all('GL Entry',filters={'company':C,'posting_date':['between',[start,end]],'is_opening':['!=','Yes']},fields=['*'])
+    lines={r.find('s:RecordID',ns).text:r for r in root.findall('.//s:Line',ns)}
+    assert set(lines)=={r.name for r in gl}
+    for row in gl:
+        line=lines[row.name]
+        assert Decimal(line.find('s:'+('DebitAmount' if row.debit else 'CreditAmount')+'/s:Amount',ns).text)==xml._money(row.debit or row.credit)
+    for side in ('debit','credit'):
+        assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=ns))==sum((xml._money(r[side]) for r in gl),Decimal())
+    for line in root.findall('.//s:Line',ns):
+        for info in line.findall('s:TaxInformation',ns):
+            if info.find('s:TaxCode',ns).text in {'87','89'}:
+                assert not vat.is_vat_account(next(r.account for r in gl if r.name==line.find('s:RecordID',ns).text))
+    print('PASS SAF-T matrix stage',export_count,'actual GL',len(gl),start,end,flush=True)
+    return data
+
 def totals(filters):
+    check_export()
     rows=[row for row in collect(filters) if row['portal']]
     return tuple(round(sum(row[key] for row in rows),2) for key in ('base_amount','output_vat','input_vat'))
 def ledger():
@@ -55,8 +94,9 @@ def rejected(action,text=None):
     else:raise AssertionError('Invalid quarterly treatment accepted')
 try:
     if sys.argv[1]=='verify':
-        evidence=json.loads(frappe.db.get_default('runtime_quarterly_evidence'))
+        evidence=json.loads(frappe.get_doc('File',frappe.db.get_default('runtime_quarterly_evidence')).get_content())
         assert ledger()==[tuple(row) for row in evidence['ledger']]
+        assert json.loads(frappe.as_json(frappe.get_all('GL Entry',filters={'company':C},fields=['name','account','debit','credit','posting_date','voucher_type','voucher_no','is_cancelled'],order_by='name')))==evidence['saft_gl']
         assert json.loads(json.dumps(quarterly_postings()))==evidence['quarterly_postings']
         assert totals(Q2)==(2050.02,512.5,0)
         assert totals(Q3)==(2100,525,0)
@@ -257,6 +297,13 @@ try:
             evidence['files'].append({'name':file.name,'sha256':hashlib.sha256(Path(file.get_full_path()).read_bytes()).hexdigest()})
         evidence['quarterly_postings']=quarterly_postings()
         print('PASS native quarterly adjustment source rows/gross GL IDs, cost-only VAT posting versus invoice basis, threshold/credit/registration corrections retained')
-        evidence['ledger']=ledger();frappe.db.set_default('runtime_quarterly_evidence',json.dumps(evidence));frappe.db.commit()
+        for start,end in [('2026-01-01','2026-12-31'),('2026-05-01','2026-05-31'),('2026-07-01','2026-09-30'),('2026-11-01','2026-11-30')]:
+            data=check_export(start,end)
+            file=save_file('synthetic-quarterly-saft-'+start+'.xml',data,'Company',C,is_private=1)
+            evidence['files'].append({'name':file.name,'sha256':hashlib.sha256(data).hexdigest()})
+        evidence['saft_gl']=frappe.get_all('GL Entry',filters={'company':C},fields=['name','account','debit','credit','posting_date','voucher_type','voucher_no','is_cancelled'],order_by='name')
+        evidence['ledger']=ledger()
+        record=save_file('synthetic-quarterly-evidence.json',frappe.as_json(evidence).encode(),'Company',C,is_private=1)
+        frappe.db.set_default('runtime_quarterly_evidence',record.name);frappe.db.commit()
         print('PASS native quarterly supplier/VAT payments, separate filing evidence and private invoice/credit PDFs')
 finally:frappe.destroy()

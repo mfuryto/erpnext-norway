@@ -51,7 +51,7 @@ def rejected(action,text):
     else:raise AssertionError('Unsupported stock source accepted')
 try:
     if sys.argv[1]=='verify':
-        e=json.loads(frappe.db.get_default('runtime_saft_stock'));frappe.set_user(OWNER);data,gl=export()
+        e=json.loads(frappe.get_doc('File',frappe.db.get_default('runtime_saft_stock')).get_content());frappe.set_user(OWNER);data,gl=export()
         keys=('name','account','debit','credit','transaction_currency','debit_in_transaction_currency','credit_in_transaction_currency','is_cancelled')
         assert sorted(tuple(str(r[k]) for k in keys) for r in gl)==sorted(tuple(str(r[k]) for k in keys) for r in e['gl'])
         stock=frappe.get_list('Stock Ledger Entry',filters={'company':C},fields=['name','voucher_no','voucher_detail_no','actual_qty','stock_value_difference','is_cancelled'],limit_page_length=0)
@@ -137,7 +137,7 @@ try:
         frappe.db.savepoint('mixed_stock')
         mixed=frappe.copy_doc(doc);mixed.bill_no='SYN-MIX';mixed.posting_time=frappe.utils.nowtime();mixed.items[0].item_tax_template=template(titles[1]);mixed.insert();mixed.submit()
         assert {r.get(CODE) for r in mixed.items}=={'21','22'}
-        rejected(export,'lager-/avgiftsbehandling')
+        data,_=export();assert {'21','22'} <= set(etree.fromstring(data).xpath('.//s:Line[s:SourceDocumentID="'+mixed.name+'"]/s:TaxInformation/s:TaxCode/text()',namespaces=NS))
         frappe.db.rollback(save_point='mixed_stock')
         frappe.db.savepoint('two_stock_accounts');frappe.set_user('Administrator')
         extra=frappe.get_doc({'doctype':'Account','company':C,'account_name':'Synthetic second stock','account_number':'1461','account_type':'Stock','parent_account':frappe.db.get_value('Account',a['1460'],'parent_account')}).insert()
@@ -146,7 +146,10 @@ try:
         split=frappe.copy_doc(doc);split.bill_no='SYN-SPLIT';split.posting_date=split.bill_date='2026-09-29';split.posting_time=frappe.utils.nowtime();split.items[0].warehouse=warehouse.name;split.insert();split.submit()
         split_gl=frappe.get_all('GL Entry',filters={'company':C,'voucher_type':'Purchase Invoice','voucher_no':split.name},fields=['*'])
         assert {r.account for r in split_gl if r.account in {a['1460'],extra.name}}=={a['1460'],extra.name}
-        rejected(lambda:saft.invoice_taxes(split,split_gl),'flere bokførte lagerkontoer')
+        mapped,_=saft.invoice_taxes(split,split_gl);assert {r.name for r in split_gl if r.account in {a['1460'],extra.name}} <= set(mapped)
+        mixed_split=frappe.copy_doc(split);mixed_split.bill_no='SYN-MIX-SPLIT';mixed_split.posting_date=mixed_split.bill_date='2026-09-30';mixed_split.posting_time=frappe.utils.nowtime();mixed_split.items[0].item_tax_template=template(titles[1]);mixed_split.insert();mixed_split.submit()
+        mixed_gl=frappe.get_all('GL Entry',filters={'company':C,'voucher_type':'Purchase Invoice','voucher_no':mixed_split.name},fields=['*'])
+        rejected(lambda:saft.invoice_taxes(mixed_split,mixed_gl),'Blandede importkoder')
         frappe.db.rollback(save_point='two_stock_accounts')
         frappe.db.savepoint('stock_permission');frappe.set_user('Administrator')
         frappe.get_doc({'doctype':'User Permission','user':OWNER,'allow':'Item','for_value':'RUNTIME-SAFT-STOCK-FEE-SHORT','apply_to_all_doctypes':0,'applicable_for':'Stock Ledger Entry'}).insert()
@@ -165,6 +168,7 @@ try:
         f=save_file('synthetic-saft-stock.xml',data,'Company',C,is_private=1)
         stock_rows=frappe.get_list('Stock Ledger Entry',filters={'company':C},fields=['name','voucher_no','voucher_detail_no','actual_qty','stock_value_difference','is_cancelled'],limit_page_length=0)
         e={'file':f.name,'sha256':hashlib.sha256(data).hexdigest(),'gl':gl,'stock':stock_rows,'paid':[goods.name,fees.name,credit.name],'lcv':duty.name,'cancelled':cancelled}
-        frappe.db.set_default('runtime_saft_stock',frappe.as_json(e));frappe.db.commit()
-        print('PASS native SAF-T stock costs20/21/22 NOK/EUR: purchases, LCV, partial return, payments/refund, FX200, cancelled LCV and core repost; mixed codes and unread sources rejected; exact GL/SLE and XSD')
+        evidence=save_file('synthetic-saft-stock-evidence.json',frappe.as_json(e).encode(),'Company',C,is_private=1)
+        frappe.db.set_default('runtime_saft_stock',evidence.name);frappe.db.commit()
+        print('PASS native SAF-T stock costs20/21/22 NOK/EUR: purchases, LCV, partial return, payments/refund, FX200, cancelled LCV and core repost; mixed codes on one account and one code across accounts; ambiguous allocation and unread sources rejected; exact GL/SLE and XSD')
 finally:frappe.db.rollback();frappe.destroy()

@@ -102,16 +102,18 @@ try:
         if created_exchange:
             frappe.set_user('Administrator');frappe.delete_doc('Currency Exchange',created_exchange);frappe.set_user(OWNER)
         data,root=export();check(root)
-        # Native references are required; a stock receipt stays outside this mapping.
+        # Native references are required; a periodic stock receipt retains the actual invoice GL.
         frappe.db.savepoint('receipt_stock_stays_blocked')
         frappe.set_user('Administrator')
         stock=frappe.get_doc({'doctype':'Item','item_code':'RUNTIME-SAFT-IMPORT-STOCK','item_name':'Synthetic stock boundary','item_group':'Products','stock_uom':'Nos','is_stock_item':1}).insert()
         frappe.set_user(OWNER)
         bad=purchase(100,'SYNTHETIC-STOCK-BOUNDARY',frappe.db.get_value('Item Tax Template',{'company':C,PURCHASE_CODE:'21'}),'NOK',receipt=True,item_name=stock.name)
         assert frappe.db.count('Stock Ledger Entry',{'voucher_type':'Purchase Receipt','voucher_no':bad.items[0].purchase_receipt})
-        try:export()
-        except frappe.ValidationError as error:assert bad.name in str(error)
-        else:raise AssertionError('Stock receipt was opened without qualification')
+        _,stock_root=export()
+        gl=frappe.get_all('GL Entry',filters={'company':C},fields=['name','debit','credit'])
+        assert set(stock_root.xpath('.//s:Line/s:RecordID/text()',namespaces=NS))=={r.name for r in gl}
+        infos=stock_root.xpath('.//s:Line[s:SourceDocumentID="'+bad.name+'"]/s:TaxInformation',namespaces=NS)
+        assert len(infos)==1 and infos[0].find('s:TaxCode',NS).text=='21' and not infos[0].findall('s:TaxBase',NS)
         frappe.db.rollback(save_point='receipt_stock_stays_blocked')
         # Ordinary cancellation retains both native GL directions and source links.
         frappe.db.savepoint('receipt_cancel')
@@ -120,15 +122,19 @@ try:
         infos=cancel_root.xpath('.//s:Line[s:SourceDocumentID="'+cancelled.name+'"]/s:TaxInformation',namespaces=NS)
         assert len(infos)==2 and all(i.xpath('s:TaxCode/text()',namespaces=NS)==['21'] for i in infos)
         frappe.db.rollback(save_point='receipt_cancel')
-        # A zero-import declaration on a receipt needs its own qualified mapping.
+        # A zero-import declaration on a receipt must not fabricate receipt GL.
         frappe.db.savepoint('receipt_declaration_stays_blocked')
         frappe.set_user('Administrator');registered=frappe.get_doc('Company',C);registered.set(vat.STATUS,'Registered');registered.set(vat.FROM,'2026-01-01');registered.save();frappe.set_user(OWNER)
         declaration=purchase(100,'SYNTHETIC-RECEIPT-DECLARATION',frappe.db.get_value('Item Tax Template',{'company':C,PURCHASE_CODE:'85'}),'NOK',receipt=True,
             receipt_meta={BASE:130,DATE:'2026-05-20',REFERENCE:'SYNTHETIC-DECLARATION'})
         assert declaration.items[0].get(CODE)=='20'
-        try:export()
-        except frappe.ValidationError as error:assert declaration.name in str(error)
-        else:raise AssertionError('Code85 declaration receipt was opened without qualification')
+        _,declaration_root=export()
+        assert set(declaration_root.xpath('.//s:Line/s:RecordID/text()',namespaces=NS))==set(frappe.get_all('GL Entry',filters={'company':C},pluck='name'))
+        # The non-stock receipt has no GL. Retain the supplier's actual code20,
+        # its source link and TaxTable85, without fabricating a receipt posting.
+        infos=declaration_root.xpath('.//s:Line[s:SourceDocumentID="'+declaration.name+'"]/s:TaxInformation',namespaces=NS)
+        assert len(infos)==1 and infos[0].find('s:TaxCode',NS).text=='20' and not infos[0].findall('s:TaxBase',NS)
+        assert declaration_root.xpath('.//s:TaxCodeDetails[s:TaxCode="85"]',namespaces=NS)
         frappe.db.rollback(save_point='receipt_declaration_stays_blocked');frappe.clear_document_cache('Company',C)
         # No read permission for the actual receipt must prevent export.
         frappe.db.savepoint('receipt_read_permission')
@@ -139,7 +145,7 @@ try:
         else:raise AssertionError('Unread receipt was silently accepted')
         frappe.db.rollback(save_point='receipt_read_permission');frappe.clear_cache(user=OWNER);frappe.set_user(OWNER)
         _,root=export();check(root)
-        print('PASS receipt-linked non-stock NOK/EUR invoices and cancellation; stock, code85 declaration and missing receipt read permission explicitly rejected')
+        print('PASS receipt-linked non-stock NOK/EUR invoices and cancellation; periodic stock/code85 receipt links retained; missing receipt read permission rejected')
         f=save_file('synthetic-saft-import-costs.xml',data,'Company',C,is_private=1)
         e={'file':f.name,'sha256':hashlib.sha256(data).hexdigest(),'invoices':records};frappe.db.set_default('runtime_saft_import_costs',json.dumps(e));frappe.db.commit()
         print('PASS native import cost codes20/21/22 NOK and EUR: purchases/credits/payment/refund, native FX loss480 and non-stock receipts without GL/stock entries, no customs basis, exact GL IDs/gross/currency and XSD-valid XML')

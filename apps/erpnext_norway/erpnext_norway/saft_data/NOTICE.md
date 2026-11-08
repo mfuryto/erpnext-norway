@@ -7,8 +7,9 @@ Fornes, MIT. Uendret lisens følger i LICENSE.enk-norge. Den gamle Frappe-adapte
 og innstillingene er utelatt. Lokale endringer støtter null avgiftsbeløp, flere
 BaseRate-verdier, native åpningsposter, valutabeløp, eksakte utvalgsdatoer,
 native dimensjoner og entydige bilagsreferanser. Samlet debet/kredit gjengis
-med samme native RecordID på hver bokført side; avgiftsopplysninger kan bindes
-uttrykkelig til siden. TaxTable kan få hele registeruttrekket med flere lagrede
+med samme native RecordID og faktiske brutto valutabeløp på hver bokført side; avgiftsopplysninger kan bindes
+uttrykkelig til siden. Lagret kildebruker, eksportør, grunnlagsbeskrivelse og
+spesifikasjon kan gjengis i formatets eksisterende felt. TaxTable kan få hele registeruttrekket med flere lagrede
 satser per kode og valgfri nominell sats, uten å legge til transaksjoner. Hele det leverte kontoregisteret gjengis, også uten bevegelser.
 
 Det offisielle XSD 1.40 og næringsspesifikasjonslisten 2025–2026 er hentet uendret

@@ -1,7 +1,7 @@
 """Native primary supplier journal and payment for documented VAT date cases."""
 import os,frappe
 os.chdir('/home/frappe/frappe-bench/sites');frappe.init(site='accounting',sites_path='/home/frappe/frappe-bench/sites');frappe.connect();frappe.set_user('runtime-vat-owner@example.invalid');frappe.conf.host_name='http://frontend:8080'
-from erpnext_norway.vat_catalog import CODE,RATE
+from erpnext_norway.vat_catalog import CODE,RATE,DEDUCTION
 from erpnext_norway.vat_journal import BASE
 from erpnext_norway.erpnext_norway.report.norsk_mva_spesifikasjon.norsk_mva_spesifikasjon import collect
 C='Runtime Asset Freight'
@@ -14,7 +14,7 @@ try:
   'user_remark':'Synthetic remote service: delivery2026-10-10 before registration, invoice2026-10-20 in registration term; documented eligible business use60%, bookEUR10, customsFX11; ordinary native primary journal, no purchase invoice or later VAT correction.',
   'accounts':[{'account':a['4500'],'debit_in_account_currency':1110,'cost_center':c.cost_center},
    {'account':a['2714'],'debit_in_account_currency':165,'cost_center':c.cost_center,CODE:'86',RATE:25},
-   {'account':a['2704'],'credit_in_account_currency':275,'cost_center':c.cost_center,CODE:'86',RATE:25,BASE:1100},
+   {'account':a['2704'],'credit_in_account_currency':275,'cost_center':c.cost_center,CODE:'86',RATE:25,BASE:1100,DEDUCTION:60},
    {'account':payable,'party_type':'Supplier','party':supplier,'account_currency':'EUR','exchange_rate':10,'credit_in_account_currency':100}]}).insert();j.submit()
  rows=[r for r in collect({'company':C,'from_date':'2026-10-15','to_date':'2026-10-31'}) if r['voucher']==j.name]
  assert sum(r['base_amount'] for r in rows)==1100 and sum(r['output_vat'] for r in rows)==275 and sum(r['input_vat'] for r in rows)==165,rows

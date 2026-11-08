@@ -5407,3 +5407,6 @@ Setup,Oppsett
 Record the documented deduction percent on the output import VAT line. Journal amounts are not calculated.,Registrer dokumentert fradragsandel på linjen for utgående innførsels-MVA. Bilagsbeløpene beregnes ikke.
 Enter an input VAT deduction percent between 0 and 100 on the output import VAT line only.,Oppgi fradragsandel mellom 0 og 100 bare på linjen for utgående innførsels-MVA.
 Record the documented deduction percent before submitting import VAT. Use zero for codes 82/84.,Registrer dokumentert fradragsandel før innførsels-MVA bokføres. Bruk null for kode 82/84.
+Record the documented deduction percent on the output import or reverse-charge service VAT line. Journal amounts are not calculated.,Registrer dokumentert fradragsandel på utgående MVA-linje for vareimport eller tjenestekjøp fra utlandet. Bilagsbeløpene beregnes ikke.
+Enter an input VAT deduction percent between 0 and 100 on the output import or reverse-charge service VAT line only.,Oppgi fradragsandel mellom 0 og 100 bare på utgående MVA-linje for vareimport eller tjenestekjøp fra utlandet.
+Record the documented deduction percent before submitting reverse-charge service VAT. Use code 87/89 without deduction.,Registrer dokumentert fradragsandel før MVA på tjenestekjøp fra utlandet bokføres. Bruk kode 87/89 uten fradrag.

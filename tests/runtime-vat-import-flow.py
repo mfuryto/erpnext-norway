@@ -21,6 +21,39 @@ def ledger():
 def portal():
     rows=[r for r in collect(F) if r['portal']]
     return tuple(round(sum(r[key] for r in rows),2) for key in ('base_amount','output_vat','input_vat'))
+def check_saft():
+    from decimal import Decimal
+    from lxml import etree
+    from erpnext_norway import saft,saft_builder as xml
+    user=frappe.session.user;frappe.set_user('Administrator')
+    company=frappe.get_doc('Company',C);company.phone_no='90000000';company.save()
+    groups={'1460':('balanseverdiForOmloepsmiddel','1400'),'1500':('balanseverdiForOmloepsmiddel','1500'),
+        '1640':('balanseverdiForOmloepsmiddel','1570'),'1920':('balanseverdiForOmloepsmiddel','1920'),
+        '2400':('kortsiktigGjeld','2400'),'2705':('kortsiktigGjeld','2740'),'2715':('kortsiktigGjeld','2740'),
+        '2740':('kortsiktigGjeld','2740'),'4300':('varekostnad','4005'),'4500':('varekostnad','4500'),
+        '4998':('varekostnad','4005'),'8160':('finanskostnad','8160'),'2709':('kortsiktigGjeld','2740')}
+    gl=frappe.get_all('GL Entry',filters={'company':C},fields=['name','account','debit','credit','posting_date','voucher_type','voucher_no','is_cancelled'],order_by='name')
+    for name in {r.account for r in gl}:
+        account=frappe.get_doc('Account',name)
+        if account.get(saft.MAPPING):continue
+        category,code=groups[account.account_number or '2400']
+        account.append(saft.MAPPING,{'year':2026,'category':category,'code':code});account.save()
+    frappe.set_user(user)
+    data=saft.build(C,'2026-01-01','2026-12-31');xml.validate_saf_t(data);root=etree.fromstring(data);ns={'s':xml.NS}
+    assert set(root.xpath('.//s:Line/s:RecordID/text()',namespaces=ns))=={r.name for r in gl}
+    for row in gl:
+        for side in ('debit','credit'):
+            values=root.xpath('.//s:Line[s:RecordID="'+row.name+'"]/s:'+side.title()+'Amount/s:Amount/text()',namespaces=ns)
+            assert sum((Decimal(v) for v in values),Decimal())==xml._money(row[side])
+    for side in ('debit','credit'):
+        assert Decimal(root.xpath('string(.//s:Total'+side.title()+')',namespaces=ns))==sum((xml._money(r[side]) for r in gl),Decimal())
+    infos=root.xpath('.//s:TaxInformation[s:TaxCode="81"]',namespaces=ns)
+    assert len(infos)==2 and all(i.find('s:TaxBase',ns).text=='5000.00' for i in infos)
+    assert sorted(root.xpath('.//s:TaxInformation[s:TaxCode="81"]/s:DebitTaxAmount/s:Amount/text()|.//s:TaxInformation[s:TaxCode="81"]/s:CreditTaxAmount/s:Amount/text()',namespaces=ns))==['1250.00','750.00']
+    assert not root.xpath('.//s:Line[s:AccountID="4998"]/s:TaxInformation[s:TaxCode="81"]',namespaces=ns)
+    print('PASS SAF-T complete native import: separate basis4300/cost4998, supplier/stock/LCV, declaration81, source85 without fabricated GL, FX/payment/settlement and exact GL IDs/gross')
+    return data,json.loads(frappe.as_json(gl))
+
 def rejected(action,text=None,kind=None):
     frappe.db.savepoint('import_reject')
     try:action()
@@ -33,6 +66,7 @@ try:
     if sys.argv[1]=='verify':
         evidence=json.loads(frappe.db.get_default('runtime_import_flow'))
         assert ledger()==[tuple(r) for r in evidence['ledger']]
+        _,gl=check_saft();assert gl==evidence['saft_gl']
         assert portal()==(6300,1250,750)
         declaration=frappe.get_doc('Journal Entry',next(r['name'] for r in evidence['documents'] if r['doctype']=='Journal Entry'))
         expense=frappe.db.get_value('Account',{'company':C,'account_number':'4300'},'name')
@@ -178,7 +212,7 @@ try:
             amount=250 if rate==25 else 120
             original=frappe.get_doc({'doctype':'Journal Entry','company':C,'posting_date':'2026-09-22','voucher_type':'Journal Entry',
                 'user_remark':'Synthetic documented VAT basis adjustment',
-                'accounts':[{'account':a[out_account],'credit_in_account_currency':amount,CODE:code,RATE:rate,BASE:1000,'cost_center':c.cost_center},
+                'accounts':[{'account':a[out_account],'credit_in_account_currency':amount,CODE:code,RATE:rate,BASE:1000,DEDUCTION:100 if code in {'86','88'} else 0,'cost_center':c.cost_center},
                     {'account':a[counter],'debit_in_account_currency':amount,'cost_center':c.cost_center,
                         **({CODE:code,RATE:rate} if counter.startswith('271') else {})}]}).insert();original.submit()
             reverse=make_reverse_journal_entry(original.name);reverse.posting_date='2026-10-22';reverse.insert();reverse.submit()
@@ -207,6 +241,10 @@ try:
             file=save_file(name,json.dumps({'company':C,**content}).encode(),doc.doctype,doc.name,is_private=1)
             evidence['files'].append({'name':file.name,'sha256':hashlib.sha256(Path(file.get_full_path()).read_bytes()).hexdigest()})
         basis=frappe.get_doc('File',preserve_basis(**F)['name']);evidence['files'].append({'name':basis.name,'sha256':hashlib.sha256(Path(basis.get_full_path()).read_bytes()).hexdigest()})
+        data,gl=check_saft()
+        file=save_file('synthetic-saft-import-flow.xml',data,'Company',C,is_private=1)
+        evidence['files'].append({'name':file.name,'sha256':hashlib.sha256(data).hexdigest()})
+        evidence['saft_gl']=gl
         evidence['ledger']=ledger();frappe.db.set_default('runtime_import_flow',json.dumps(evidence));frappe.db.commit()
         print('PASS native supplier FX payment,500 VAT settlement/payment,6300/1250/750 unchanged portal basis and private declaration/correction evidence')
 finally:frappe.destroy()

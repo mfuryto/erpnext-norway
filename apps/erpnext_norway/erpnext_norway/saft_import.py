@@ -44,7 +44,8 @@ def journal_taxes(doc, rows):
     vat_rows = [output] + ([input_] if input_ else [])
     for item in vat_rows:
         if (item.get(CODE) != code or Decimal(str(item.get(RATE) or 0)) != rate or
-                item.account_currency != 'NOK' or item.get(SPEC) or
+                item.account_currency != 'NOK' or (item.get(SPEC) and (code != '81' or item.get(SPEC) not in
+                    frappe.get_meta('Journal Entry Account').get_field(SPEC).options.splitlines())) or
                 (item is not output and (item.get(DEDUCTION) or xml._money(item.get(BASE) or 0) not in (Decimal(), base))) or
                 bool(item.debit) == bool(item.credit)):
             reject()
@@ -54,7 +55,7 @@ def journal_taxes(doc, rows):
         reject()
     costs = [r for r in doc.accounts if not is_vat_account(r.account)]
     bases = [r for r in costs if r.get(CODE) == code]
-    if len(bases) != 2 or len({r.account for r in costs}) != 1:
+    if len(bases) != 2 or len({r.account for r in bases}) != 1:
         reject('Bruk dokumenterte, balanserende grunnlagsføringer på én kostnadskonto.')
     account = bases[0].account
     if frappe.get_cached_value('Account', account, 'root_type') != 'Expense':
@@ -63,6 +64,7 @@ def journal_taxes(doc, rows):
     for item in costs:
         if (item.account_currency != 'NOK' or item.party or item.get(SPEC) or item.get(BASE) or
                 item.get(DEDUCTION) or (item.cost_center, item.project) != dimension or
+                frappe.get_cached_value('Account', item.account, 'root_type') != 'Expense' or
                 bool(item.debit) == bool(item.credit)):
             reject()
         if item in bases:
@@ -104,27 +106,31 @@ def journal_taxes(doc, rows):
             if (xml._money(native.debit), xml._money(native.credit)) != (debit, credit):
                 reject('Importbilagets MVA-linjer stemmer ikke med hovedboken.')
         actual_costs = [r for r in entries if not is_vat_account(r.account)]
-        if any(r.account != account or (r.cost_center, r.project) != dimension for r in actual_costs):
+        if any(r.account not in {item.account for item in costs} or (r.cost_center, r.project) != dimension for r in actual_costs):
             reject()
-        expected = tuple(sum((xml._money(r.get(side)) for r in costs), Decimal()) for side in ('debit', 'credit'))
-        if cancelled:
-            expected = expected[::-1]
-        actual = tuple(sum((xml._money(r.get(side)) for r in actual_costs), Decimal()) for side in ('debit', 'credit'))
-        if actual != expected:
-            reject('Bokførte brutto grunnlagsføringer mangler, for eksempel etter nettet kansellering. Eksporten lager ikke erstatningsposteringer.')
+        for cost_account in {item.account for item in costs}:
+            expected = tuple(sum((xml._money(r.get(side)) for r in costs if r.account == cost_account), Decimal()) for side in ('debit', 'credit'))
+            if cancelled:
+                expected = expected[::-1]
+            actual = tuple(sum((xml._money(r.get(side)) for r in actual_costs if r.account == cost_account), Decimal()) for side in ('debit', 'credit'))
+            if actual != expected:
+                reject('Bokførte brutto grunnlagsføringer mangler, for eksempel etter nettet kansellering. Eksporten lager ikke erstatningsposteringer.')
         # Input and output VAT are on their respective booked basis sides.
         # The zero-input case retains an explicit zero on the opposite side.
         out_credit = out * sign < 0
+        booked_basis = [r for r in actual_costs if r.account == account]
         for line_credit, amount in ((out_credit, abs(out)), (not out_credit, abs(inc))):
             side = 'credit' if line_credit else 'debit'
-            candidates = [r for r in actual_costs if xml._money(r.get(side)) == abs(base)]
-            combined = [r for r in actual_costs if r.debit and r.credit]
+            candidates = [r for r in booked_basis if xml._money(r.get(side)) == abs(base)]
+            combined = [r for r in booked_basis if r.debit and r.credit]
             if combined:
-                if len(actual_costs) != 1:
+                if len(booked_basis) != 1:
                     reject()
                 candidates = combined
             if len(candidates) != 1:
                 reject('Entydig bokført grunnlagslinje mangler for innførsels-MVA.')
             result[candidates[0].name].append(xml.TaxInformation(code, abs(base), amount,
-                tax_credit=line_credit, line_credit=line_credit))
+                tax_credit=line_credit, line_credit=line_credit,
+                tax_exemption_reason=(output if line_credit == out_credit else input_).get(SPEC)
+                    if line_credit == out_credit or input_ else None))
     return result, {code: xml.TaxMapping(code, Decimal(rate), code, (share,))}
