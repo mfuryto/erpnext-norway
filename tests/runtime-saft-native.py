@@ -100,6 +100,27 @@ try:
  # All sales/return amounts remain exactly those posted by ERPNext.
  goods=purchase('STOCK');export('domestic stock input VAT')
  for share in (60,0):purchase('STOCK',share);export('domestic stock deduction'+str(share))
+ # Native multi-warehouse posting preserves the source row/account relation.
+ second=frappe.get_doc({'doctype':'Account','company':C,'account_name':'Synthetic second stock','account_number':'1461','account_type':'Stock','parent_account':frappe.db.get_value('Account',a['1460'],'parent_account')}).insert()
+ second.append(saft.MAPPING,{'year':2026,'category':'balanseverdiForOmloepsmiddel','code':'1400'});second.save()
+ frappe.set_user('Administrator')
+ second_center=frappe.get_doc({'doctype':'Cost Center','company':C,'cost_center_name':'Synthetic second stock center','parent_cost_center':frappe.db.get_value('Cost Center',{'company':C,'is_group':1}),'is_group':0}).insert()
+ warehouse=frappe.get_doc({'doctype':'Warehouse','warehouse_name':'Synthetic second stores','company':C,'account':second.name}).insert()
+ frappe.set_user(OWNER)
+ mixed=frappe.get_doc({'doctype':'Purchase Invoice','company':C,'supplier':supplier.name,'currency':'NOK','conversion_rate':1,'posting_date':'2026-07-01','bill_date':'2026-07-01','set_posting_time':1,'bill_no':'SYN-MULTI-STOCK','due_date':'2026-10-31','disable_rounded_total':1,'update_stock':1,'items':[
+  {'item_code':'RUNTIME-SAFT-NATIVE-STOCK','qty':3,'rate':100,'warehouse':wh,'expense_account':a['4300'],'cost_center':center,'item_tax_template':template} for wh,center in (('Stores - SNC',c.cost_center),(warehouse.name,second_center.name))]}).insert();mixed.submit()
+ root=export('native multiple posted stock accounts')
+ assert {r.account for r in frappe.get_all('GL Entry',filters={'voucher_type':mixed.doctype,'voucher_no':mixed.name},fields=['account'])} >= {a['1460'],second.name}
+ for number in ('1460','1461'):
+  assert root.xpath('.//s:Line[s:SourceDocumentID="'+mixed.name+'" and s:AccountID="'+number+'"]/s:TaxInformation[s:TaxCode="1"]',namespaces=NS)
+ mixed.cancel()
+ # Finish this company's native queued repost before requesting another export.
+ from erpnext.stock.doctype.repost_item_valuation.repost_item_valuation import repost
+ frappe.db.commit();frappe.set_user('Administrator')
+ for name in frappe.get_all('Repost Item Valuation',filters={'company':C,'docstatus':1,'status':'Queued'},order_by='posting_date, posting_time, creation',pluck='name'):
+  job=frappe.get_doc('Repost Item Valuation',name)
+  if job.status=='Queued':repost(job);frappe.db.commit();job.reload();assert job.status=='Completed'
+ frappe.set_user(OWNER);export('native multiple stock accounts cancellation')
  # Same fixed asset: core sale without gain and with loss, followed by regain.
  from erpnext.assets.doctype.asset.depreciation import get_value_after_depreciation_on_disposal_date
  asset_name=asset.name;customer_name=customer.name
@@ -163,6 +184,14 @@ try:
  infos=root.xpath('.//s:Line[s:SourceDocumentID="'+journal.name+'"]/s:TaxInformation',namespaces=NS)
  assert len(infos)==1 and infos[0].find('s:TaxCode',NS).text=='86' and infos[0].find('s:TaxBase',NS).text=='1100.00'
  assert infos[0].find('s:CreditTaxAmount/s:Amount',NS).text=='110.00'
+ # Native period lock also covers metadata on the ordinary expense row.
+ frappe.db.savepoint('native_basis_metadata_lock');frappe.set_user('Administrator')
+ frappe.get_doc({'doctype':'Accounting Period','company':C,'period_name':'Synthetic source metadata lock','start_date':'2026-10-01','end_date':'2026-10-31','closed_documents':[{'document_type':'Journal Entry','closed':1}]}).insert();frappe.set_user(OWNER)
+ closed=frappe.get_doc('Journal Entry',journal.name);closed.accounts[0].set(RATE,15)
+ try:closed.save()
+ except frappe.ValidationError as error:assert type(error).__name__=='ClosedAccountingPeriod',type(error).__name__
+ else:raise AssertionError('Closed source basis metadata changed')
+ frappe.db.rollback(save_point='native_basis_metadata_lock')
  from erpnext.accounts.doctype.journal_entry.journal_entry import make_reverse_journal_entry
  frappe.db.savepoint('service_reverse')
  reverse=make_reverse_journal_entry(journal.name);reverse.posting_date=reverse.bill_date='2026-10-21';reverse.insert();reverse.submit()

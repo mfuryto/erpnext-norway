@@ -852,3 +852,33 @@ med native periodestenging og tydelig skille mot norske skattemessige regler.
 Deretter punkt 8: EHF via SendRegning med faktisk faktura-/kreditnotalevering,
 feil, status og kvitteringer. Driftsserveren oppdateres fortsatt bare av
 brukeren fra én blokk mot gjeldende origin/main.
+
+## SAF-T-gjennomgang og forenkling, 0.4.35
+
+Påviste gap er manglende bank-/kontaktopplysninger i eksporten, feilaktig
+obligatorisk telefon, ubetinget 2026-sperre, unødvendig årlig manuell
+kontokobling og for snevre kildekoblinger ved flere grunnlags-/lagerlinjer.
+Eksporten leser nå native Bank Account/Bank/Contact med ordinære rettigheter.
+Den eksporterer ikke passord eller integrasjonsfelter. Header.Contact beholdes.
+
+357 gjenbrukte koblingsdata for eksakte standardkonti gir standardvalg uten
+å skrive til kontoplanen. Egne og omdøpte konti uten entydig standard krever
+fortsatt valg. Eksplisitte valg gjelder fra angitt år til neste endring og har
+forrang; fremtidige endringer påvirker ikke tidligere års kobling. Ubrukte
+konti uten eksplisitt valg beholder NA/NA. Publiserte grupperingskoder valideres.
+Den tidligere påstanden om at 2027 må vente på en egen årstallsfil var ikke et
+dokumentert formatkrav og er korrigert. Native 2027-kilder kvalifiseres separat.
+
+Flere uttrykkelig klassifiserte grunnlagslinjer kan følge samme MVA-bilag uten
+å fordele et samlet MVA-beløp eller gjette linjegrunnlag. Flere lagerkontoer
+bruker entydige bokførte kildelenker/dimensjoner; tvetydig historikk avvises.
+Periodelås gjelder også endring av MVA-metadata på ikke-MVA-kontolinjer.
+
+Ingen kjernefiler eller regnskapsberegninger endres. Appens eksisterende,
+avgrensede klasse-/API-utvidelser er dokumentert presist i saft.md; de er ikke
+fjernet der den prøvde kjernen fortsatt har et konkret gap. Ingen nye ENK-
+eller EHF-funksjoner innføres før denne korrigeringsleveransen er overført.
+
+Gjennomgangen korrigerer også NA/NA: uttrykkelig valg for interimskontoer som
+ikke kan grupperes tillates etter generell dokumentasjon 1.40 side 17, også
+med posteringer. Brukte kontoer uten kobling får fortsatt ingen automatisk NA.

@@ -16,17 +16,15 @@ PURCHASES = {'20':0, '21':25, '22':15, '1':25, '11':15, '13':12, '0':0, '86':25,
 
 
 def groups(year):
-    if year != 2026:
-        frappe.throw('SAF-T-eksporten er foreløpig kvalifisert for regnskapsåret 2026.')
     with (Path(__file__).with_name('saft_data') / 'naeringsspesifikasjon-2025-2026.csv').open(encoding='utf-8-sig') as f:
-        return {(r['GroupingCategory'], r['GroupingCode']) for r in csv.DictReader(f, delimiter=';')}
+        return {(r['GroupingCategory'], r['GroupingCode']) for r in csv.DictReader(f, delimiter=';')} | {('NA', 'NA')}
 
 
 def configure():
     from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
     create_custom_fields({'Account': [{'fieldname': MAPPING, 'label': 'Norwegian SAF-T mapping',
         'fieldtype': 'Table', 'options': 'Norwegian SAF-T Mapping', 'insert_after': 'account_number',
-        'description': 'Year-specific grouping from the official income statement code list.'}]})
+        'description': 'Grouping applies from the selected fiscal year until a later mapping replaces it.'}]})
 
 
 def unsupported(doc, reason='Spesialbehandling er ikke kvalifisert.'):
@@ -286,7 +284,7 @@ def journal_taxes(doc, rows):
 
 
 def journal_adjustment(doc, rows):
-    """Read one recorded basis/correction line and its native VAT amounts."""
+    """Read recorded basis/correction lines and native VAT amounts without allocation."""
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_catalog import CODE, RATE, DEDUCTION
     from erpnext_norway.vat_journal import ACCOUNTS, BASE, SPEC
@@ -294,16 +292,17 @@ def journal_adjustment(doc, rows):
     costs = [r for r in doc.accounts if not is_vat_account(r.account) and not r.party
         and frappe.get_cached_value('Account', r.account, 'root_type') in {'Expense', 'Income', 'Asset'}
         and frappe.get_cached_value('Account', r.account, 'account_type') not in {'Bank', 'Cash', 'Receivable'}]
-    if not 1 <= len(taxes) <= 2 or len(costs) != 1 or len({r.get(CODE) for r in taxes}) != 1:
+    if not 1 <= len(taxes) <= 2 or not costs or len({r.get(CODE) for r in taxes}) != 1:
         unsupported(doc, 'MVA-bilaget krever en entydig bokført grunnlags-/rettingslinje.')
-    cost, code = costs[0], taxes[0].get(CODE)
+    code = taxes[0].get(CODE)
     rate = Decimal(str(taxes[0].get(RATE) or 0))
     nominal = {'1':25, '3':25, '11':15, '31':15, '13':12, '33':12,
         '86':25, '87':25, '88':12, '89':12}.get(code)
     if (nominal is None or rate != nominal or len({r.account for r in taxes}) != len(taxes)
-            or cost.get(CODE) not in (None, '', '0', code) or cost.get(BASE) or cost.get(SPEC) or cost.get(DEDUCTION)
-            or (cost.get(CODE) == code and Decimal(str(cost.get(RATE) or 0)) != rate)
-            or cost.account_currency != 'NOK'):
+            or any(c.get(CODE) not in ((code,) if len(costs) > 1 else (None, '', '0', code))
+                or c.get(BASE) or c.get(SPEC) or c.get(DEDUCTION)
+                or (c.get(CODE) == code and Decimal(str(c.get(RATE) or 0)) != rate)
+                or c.account_currency != 'NOK' for c in costs)):
         unsupported(doc, 'MVA-bilagets kode, sats eller bokførte grunnlag er ikke kvalifisert.')
     for item in taxes:
         if (frappe.get_cached_value('Account', item.account, 'account_number') not in ACCOUNTS[code]
@@ -340,14 +339,16 @@ def journal_adjustment(doc, rows):
                 for side in ('debit', 'credit'))
             if actual != expected:
                 unsupported(doc, 'MVA-bilaget stemmer ikke med hovedboken.')
-        basis = [r for r in entries if r.account == cost.account]
-        if len(basis) != 1:
+        basis = [r for r in entries if r.account in {c.account for c in costs}]
+        if not basis or (len(costs) == 1 and len(basis) != 1):
             unsupported(doc, 'Entydig bokført grunnlags-/rettingslinje mangler.')
         amount = sum((xml._money(r.debit) - xml._money(r.credit) for r in entries if is_vat_account(r.account)), Decimal())
         # Input and output share this actual basis, as on a native invoice.
         # An adjustment may have no new base; never derive one from VAT/rate.
-        result[basis[0].name] = [xml.TaxInformation(code, base, abs(amount),
-            tax_credit=amount < 0 if amount else None, tax_exemption_reason=taxes[0].get(SPEC))]
+        for row in basis:
+            result[row.name] = [xml.TaxInformation(code, base if len(costs) == 1 else None,
+                abs(amount) if len(costs) == 1 else Decimal(0),
+                tax_credit=amount < 0 if amount else None, tax_exemption_reason=taxes[0].get(SPEC))]
     return result, {code: xml.TaxMapping(code, rate, code, (share,))}
 
 
@@ -363,11 +364,59 @@ def address(doctype, name):
     return frappe.get_doc('Address', permitted[0].name)
 
 
+def standard_account_mappings():
+    """Exact shipped-chart identities; no prefix guessing or writes during export."""
+    directory = Path(__file__).with_name('saft_data')
+    with (directory / 'account-mapping.csv').open(encoding='utf-8-sig') as f:
+        return {(r['account_number'], r['label'], r['root_type']):
+            (r['GroupingCategory'], r['GroupingCode']) for r in csv.DictReader(f, delimiter=';')}
+
+
+def bank_accounts(doctype, name, mapping):
+    filters = ({'is_company_account': 1, 'company': name} if doctype == 'Company' else
+        {'is_company_account': 0, 'party_type': doctype, 'party': name})
+    # Disabled records can still describe historical transactions. Select only
+    # public account details: never statement_password or integration fields.
+    rows = frappe.get_list('Bank Account', filters=filters, fields=['name', 'iban',
+        'bank_account_no', 'account_name', 'branch_code', 'bank', 'account'],
+        order_by='name', limit_page_length=0) if frappe.db.count('Bank Account', filters) else []
+    if len(rows) != frappe.db.count('Bank Account', filters):
+        frappe.throw('SAF-T krever lesetilgang til de tilknyttede bankkontoene.', frappe.PermissionError)
+    result = []
+    for row in rows:
+        bic = None
+        if row.bank:
+            bank = frappe.get_doc('Bank', row.bank)
+            bank.check_permission('select')  # Native Bank grants Accounts Manager link/select, not full read.
+            bic = bank.swift_number
+        ledger = row.account if doctype == 'Company' else None
+        if ledger and ledger not in mapping:
+            frappe.throw('SAF-T: Bankkontoens hovedbokskonto mangler i kontoplanen.')
+        result.append(xml.BankAccountData(row.bank_account_no, row.iban, row.account_name,
+            row.branch_code, bic, frappe.get_cached_value('Account', ledger, 'account_currency') if ledger else None,
+            mapping[ledger].account_id if ledger else None))
+    return tuple(result)
+
+
+def contacts(doctype, name):
+    names = frappe.get_all('Dynamic Link', filters={'parenttype': 'Contact',
+        'link_doctype': doctype, 'link_name': name}, pluck='parent')
+    if not names:
+        return ()
+    rows = frappe.get_list('Contact', filters={'name': ['in', names]}, fields=['name',
+        'first_name', 'last_name', 'full_name', 'phone', 'mobile_no', 'email_id'],
+        order_by='name', limit_page_length=0)
+    if {r.name for r in rows} != set(names):
+        frappe.throw('SAF-T krever lesetilgang til de tilknyttede kontaktene.', frappe.PermissionError)
+    return tuple(xml.ContactData(r.first_name if r.last_name else 'NotUsed',
+        r.last_name or r.full_name or r.first_name, r.phone, r.email_id, r.mobile_no) for r in rows)
+
+
 def account_catalog(company, year, used, valid):
     """Read the complete permitted native chart, including groups/disabled accounts."""
     filters = {'company': company}
     rows = frappe.get_list('Account', filters=filters,
-        fields=['name', 'account_name', 'account_number', 'creation'], limit_page_length=0)
+        fields=['name', 'account_name', 'account_number', 'creation', 'root_type', 'is_group'], limit_page_length=0)
     if len(rows) != frappe.db.count('Account', filters) or not used <= {r.name for r in rows}:
         frappe.throw('SAF-T krever tilgang til hele kontoplanen for det valgte foretaket.', frappe.PermissionError)
     names = [r.name for r in rows]
@@ -375,14 +424,20 @@ def account_catalog(company, year, used, valid):
     # Child rows are scoped to the complete, permission-checked parent selection.
     if names:
         for row in frappe.get_all('Norwegian SAF-T Mapping',
-                filters={'parent': ['in', names], 'parenttype': 'Account', 'parentfield': MAPPING, 'year': year},
-                fields=['parent', 'category', 'code'], limit_page_length=0):
+                filters={'parent': ['in', names], 'parenttype': 'Account', 'parentfield': MAPPING, 'year': ['<=', year]},
+                fields=['parent', 'year', 'category', 'code'], limit_page_length=0):
             selected[row.parent].append(row)
+    defaults = standard_account_mappings()
     accounts, mapping = {}, {}
     for row in rows:
-        choices = selected[row.name]
+        history = selected[row.name]
+        latest = max((r.year for r in history), default=None)
+        choices = [r for r in history if r.year == latest]
+        default = defaults.get((row.account_number, row.account_name, row.root_type)) if not row.is_group else None
         if not choices and row.name not in used:
             category, code = 'NA', 'NA'
+        elif not choices and default in valid:
+            category, code = default
         elif len(choices) == 1 and (choices[0].category, choices[0].code) in valid:
             category, code = choices[0].category, choices[0].code
         else:
@@ -408,8 +463,8 @@ def build(company, from_date, to_date):
     if doc.country != 'Norway' or doc.default_currency != 'NOK':
         frappe.throw('SAF-T-eksporten krever norsk foretak og NOK som hovedvaluta.')
     org = re.sub(r'[^0-9]', '', doc.tax_id or '')
-    if len(org) != 9 or not doc.phone_no:
-        frappe.throw('Oppgi foretakets organisasjonsnummer og telefonnummer før SAF-T-eksport.')
+    if len(org) != 9:
+        frappe.throw('Oppgi foretakets organisasjonsnummer før SAF-T-eksport.')
     pending_closing = {'company': company, 'docstatus': 1, 'period_end_date': ['<=', end],
         'gle_processing_status': ['!=', 'Completed']}
     if frappe.db.count('Period Closing Voucher', pending_closing):
@@ -452,7 +507,8 @@ def build(company, from_date, to_date):
                 country = (frappe.get_cached_value('Country', addr.country, 'code') or '').upper() if addr else None
                 parties[key] = xml.PartyData(*key, party.get('customer_name') or party.get('supplier_name'), party.tax_id,
                     country, addr.address_line1 if addr else None, addr.pincode if addr else None,
-                    addr.city if addr else None, addr.address_line2 if addr else None)
+                    addr.city if addr else None, addr.address_line2 if addr else None,
+                    bank_accounts=bank_accounts(*key, mapping), contacts=contacts(*key))
     tax_info, tax_mapping, sources, quarter_cache = {}, {}, {}, {}
     from erpnext_norway.vat import is_vat_account
     from erpnext_norway.vat_journal import SETTLEMENT
@@ -533,6 +589,7 @@ def build(company, from_date, to_date):
         addr.address_line1 if addr else None, addr.pincode if addr else None, addr.city if addr else None,
         country=(frappe.get_cached_value('Country', addr.country, 'code') or '').upper() if addr else 'NO',
         address_line2=addr.address_line2 if addr else None,
+        bank_accounts=bank_accounts('Company', company, mapping), contacts=contacts('Company', company),
         vat_registration_number=org if doc.get('custom_norway_vat_status') == 'Registered' else None,
         vat_registration_date=getdate(doc.get('custom_norway_vat_from')) if doc.get('custom_norway_vat_from') else None),
         period_start=start, period_end=end, software_company_name='ERPNext Norway contributors',

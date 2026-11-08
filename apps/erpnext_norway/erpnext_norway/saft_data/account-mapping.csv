@@ -1,0 +1,358 @@
+account_number;label;GroupingCategory;GroupingCode;root_type
+1000;Utvikling, ervervet;balanseverdiForAnleggsmiddel;1000;Asset
+1005;Utvikling, egenutviklet;balanseverdiForAnleggsmiddel;1000;Asset
+1020;Konsesjoner, ervervet;balanseverdiForAnleggsmiddel;1020;Asset
+1025;Konsesjoner, egenutviklet;balanseverdiForAnleggsmiddel;1020;Asset
+1030;Patenter, ervervet;balanseverdiForAnleggsmiddel;1020;Asset
+1035;Patenter, egenutviklet;balanseverdiForAnleggsmiddel;1020;Asset
+1040;Lisenser, ervervet;balanseverdiForAnleggsmiddel;1020;Asset
+1045;Lisenser, egenutviklet;balanseverdiForAnleggsmiddel;1020;Asset
+1050;Varemerker, ervervet;balanseverdiForAnleggsmiddel;1020;Asset
+1055;Varemerker, egenutviklet;balanseverdiForAnleggsmiddel;1020;Asset
+1060;Andre rettigheter, ervervet;balanseverdiForAnleggsmiddel;1020;Asset
+1065;Andre rettigheter, egenutviklet;balanseverdiForAnleggsmiddel;1020;Asset
+1070;Utsatt skattefordel, brutto;balanseverdiForAnleggsmiddel;1070;Asset
+1075;Reduksjon utsatt skattefordel pga manglende realiserbarhet;balanseverdiForAnleggsmiddel;1070;Asset
+1079;Utlignbar utsatt skattefordel;balanseverdiForAnleggsmiddel;1070;Asset
+1080;Goodwill;balanseverdiForAnleggsmiddel;1080;Asset
+1117;Elektronisk utrustning i kraftforetak;balanseverdiForAnleggsmiddel;1117;Asset
+1140;Jordbrukseiendommer;balanseverdiForAnleggsmiddel;1140;Asset
+1145;Skogbrukseiendommer;balanseverdiForAnleggsmiddel;1140;Asset
+1150;Tomter;balanseverdiForAnleggsmiddel;1150;Asset
+1155;Andre grunnarealer;balanseverdiForAnleggsmiddel;1150;Asset
+1160;Boliger inklusive tomter;balanseverdiForAnleggsmiddel;1160;Asset
+1180;Investeringseiendommer;balanseverdiForAnleggsmiddel;1180;Asset
+1200;Maskiner og anlegg;balanseverdiForAnleggsmiddel;1205;Asset
+1210;Maskiner og anlegg under utførelse;balanseverdiForAnleggsmiddel;1130;Asset
+1220;Skip;balanseverdiForAnleggsmiddel;1221;Asset
+1224;Rigger;balanseverdiForAnleggsmiddel;1221;Asset
+1225;Fly;balanseverdiForAnleggsmiddel;1225;Asset
+1230;Personbiler/stasjonsvogner;balanseverdiForAnleggsmiddel;1205;Asset
+1236;Varebiler, klasse 2;balanseverdiForAnleggsmiddel;1238;Asset
+1237;Lastebiler;balanseverdiForAnleggsmiddel;1238;Asset
+1238;Busser;balanseverdiForAnleggsmiddel;1238;Asset
+1239;Varebiler med nullutslipp;balanseverdiForAnleggsmiddel;1238;Asset
+1240;Traktorer;balanseverdiForAnleggsmiddel;1205;Asset
+1242;Trucker;balanseverdiForAnleggsmiddel;1205;Asset
+1249;Andre transportmidler;balanseverdiForAnleggsmiddel;1205;Asset
+1250;Inventar;balanseverdiForAnleggsmiddel;1205;Asset
+1270;Verktøy o.l.;balanseverdiForAnleggsmiddel;1205;Asset
+1280;Kontormaskiner;balanseverdiForAnleggsmiddel;1280;Asset
+1320;Lån til datterselskaper;balanseverdiForAnleggsmiddel;1320;Asset
+1340;Lån til tilknyttet selskap;balanseverdiForAnleggsmiddel;1340;Asset
+1350;Andre aksjer, norske;balanseverdiForAnleggsmiddel;1350;Asset
+1355;Andre andeler, norske;balanseverdiForAnleggsmiddel;1350;Asset
+1356;Andre aksjer/andeler, utenlandske, innenfor fritaksmetoden;balanseverdiForAnleggsmiddel;1350;Asset
+1357;Andre aksjer/andeler, utenlandske, utenfor fritaksmetoden;balanseverdiForAnleggsmiddel;1350;Asset
+1358;Verdipapirfondsandeler;balanseverdiForAnleggsmiddel;1350;Asset
+1360;Obligasjoner;balanseverdiForAnleggsmiddel;1360;Asset
+1370;Fordringer på eiere;balanseverdiForAnleggsmiddel;1370;Asset
+1380;Fordringer på ansatte;balanseverdiForAnleggsmiddel;1380;Asset
+1400;Direkte materialer/råvarer;balanseverdiForOmloepsmiddel;1400;Asset
+1405;Hjelpematerialer;balanseverdiForOmloepsmiddel;1400;Asset
+1408;Driftsmaterialer og reservedeler;balanseverdiForOmloepsmiddel;1400;Asset
+1409;Beholdningsendring råvarer og innkjøpte halvfabrikater;balanseverdiForOmloepsmiddel;1400;Asset
+1420;Varer under tilvirkning;balanseverdiForOmloepsmiddel;1400;Asset
+1429;Beholdningsendring varer under tilvirkning;balanseverdiForOmloepsmiddel;1400;Asset
+1440;Ferdige egentilvirkede varer;balanseverdiForOmloepsmiddel;1400;Asset
+1449;Beholdningsendring ferdige egentilvirkede varer;balanseverdiForOmloepsmiddel;1400;Asset
+1460;Innkjøpte varer for videresalg;balanseverdiForOmloepsmiddel;1400;Asset
+1465;Demonstrasjonsvarer;balanseverdiForOmloepsmiddel;1400;Asset
+1469;Beholdningsendring innkjøpte varer for videresalg;balanseverdiForOmloepsmiddel;1400;Asset
+1500;Kundefordringer;balanseverdiForOmloepsmiddel;1500;Asset
+1530;Opptjent, ikke fakturert driftsinntekt;balanseverdiForOmloepsmiddel;1530;Asset
+1560;Andre fordringer på selskap i samme konsern;balanseverdiForOmloepsmiddel;1560;Asset
+1570;Reiseforskudd;balanseverdiForOmloepsmiddel;1570;Asset
+1572;Lønnsforskudd (som trekkes i lønn senere);balanseverdiForOmloepsmiddel;1570;Asset
+1573;Andre kortsiktige lån til ansatte (ikke forskudd lønn);balanseverdiForOmloepsmiddel;1570;Asset
+1574;Kortsiktig lån aksjonær/deltaker;balanseverdiForOmloepsmiddel;1565;Asset
+1575;Mellomregning aksjonær/deltaker;balanseverdiForOmloepsmiddel;1565;Asset
+1576;Kortsiktig lån daglig leder;balanseverdiForOmloepsmiddel;1565;Asset
+1579;Andre kortsiktige fordringer;balanseverdiForOmloepsmiddel;1570;Asset
+1580;Avsetning tap på kundefordringer;balanseverdiForOmloepsmiddel;1500;Asset
+1700;Forskuddsbetalt leiekostnad;balanseverdiForOmloepsmiddel;1570;Asset
+1710;Forskuddsbetalt rentekostnad;balanseverdiForOmloepsmiddel;1570;Asset
+1740;Forskuddsbetalt, ikke påløpt lønn;balanseverdiForOmloepsmiddel;1570;Asset
+1742;Forskuddsbetalt strøm, varme mv.;balanseverdiForOmloepsmiddel;1570;Asset
+1743;Forskuddsbetalt forsikring;balanseverdiForOmloepsmiddel;1570;Asset
+1744;Forskuddsbetalt leasingleie;balanseverdiForOmloepsmiddel;1570;Asset
+1749;Andre forskuddsbetalte driftskostnader;balanseverdiForOmloepsmiddel;1570;Asset
+1750;Påløpt leieinntekt;balanseverdiForOmloepsmiddel;1570;Asset
+1760;Påløpt renteinntekt;balanseverdiForOmloepsmiddel;1570;Asset
+1780;Krav på innbetaling av selskapskapital;balanseverdiForOmloepsmiddel;1780;Asset
+1810;Børsnoterte aksjer, norske;balanseverdiForOmloepsmiddel;1810;Asset
+1815;Børsnoterte aksjer, utenlandske, innenfor fritaksmetoden;balanseverdiForOmloepsmiddel;1810;Asset
+1816;Børsnoterte aksjer, utenlandske, utenfor fritaksmetoden;balanseverdiForOmloepsmiddel;1810;Asset
+1830;Markedsbaserte obligasjoner, norske;balanseverdiForOmloepsmiddel;1830;Asset
+1835;Markedsbaserte obligasjoner, utenlandske;balanseverdiForOmloepsmiddel;1830;Asset
+1840;Ikke markedsbaserte obligasjoner, norske;balanseverdiForOmloepsmiddel;1840;Asset
+1845;Ikke markedsbaserte obligasjoner, utenlandske;balanseverdiForOmloepsmiddel;1840;Asset
+1880;Ikke markedsbaserte opsjoner, norske;balanseverdiForOmloepsmiddel;1880;Asset
+1900;Kontanter, NOK;balanseverdiForOmloepsmiddel;1900;Asset
+1905;Kontanter, EUR;balanseverdiForOmloepsmiddel;1900;Asset
+1908;Kontanter, annen valuta;balanseverdiForOmloepsmiddel;1900;Asset
+1920;Bankinnskudd;balanseverdiForOmloepsmiddel;1920;Asset
+1950;Bankinnskudd for skattetrekk;balanseverdiForOmloepsmiddel;1950;Asset
+2000;Aksjekapital / Egenkapital, bundet;egenkapital;2000;Equity
+2020;Overkurs;egenkapital;2020;Equity
+2030;Ikke registrert kapitalforhøyelse;egenkapital;2030;Equity
+2045;Fond for urealiserte gevinster;egenkapital;2045;Equity
+2050;Annen egenkapital;egenkapital;2050;Equity
+2100;Pensjonsforpliktelser;langsiktigGjeld;2100;Liability
+2120;Utsatt skatt, brutto;langsiktigGjeld;2120;Liability
+2180;Andre avsetninger for forpliktelser;langsiktigGjeld;2180;Liability
+2200;Konvertible lån;langsiktigGjeld;2200;Liability
+2210;Obligasjonslån;langsiktigGjeld;2210;Liability
+2220;Gjeld til kredittinstitusjoner;langsiktigGjeld;2220;Liability
+2250;Gjeld til ansatte;langsiktigGjeld;2250;Liability
+2260;Gjeld til selskap i samme konsern;langsiktigGjeld;2260;Liability
+2280;Stille interessentinnskudd;langsiktigGjeld;2280;Liability
+2290;Gjeld til andre personer enn ansatte og eiere;langsiktigGjeld;2290;Liability
+2299;Annen langsiktig gjeld;langsiktigGjeld;2290;Liability
+2320;Obligasjonslån;kortsiktigGjeld;2320;Liability
+2330;Derivater;kortsiktigGjeld;2330;Liability
+2380;Kassakreditt;kortsiktigGjeld;2380;Liability
+2400;Leverandørgjeld;kortsiktigGjeld;2400;Liability
+2460;Leverandørgjeld til selskap i samme konsern;kortsiktigGjeld;2460;Liability
+2500;Betalbar skatt, ikke fastsatt;kortsiktigGjeld;2500;Liability
+2510;Betalbar skatt, fastsatt;kortsiktigGjeld;2510;Liability
+2600;Forskuddstrekk;kortsiktigGjeld;2600;Liability
+2610;Utleggstrekk;kortsiktigGjeld;2600;Liability
+2620;Bidragstrekk;kortsiktigGjeld;2600;Liability
+2630;Trygdetrekk;kortsiktigGjeld;2600;Liability
+2640;Forsikringstrekk;kortsiktigGjeld;2600;Liability
+2650;Trukket fagforeningskontingent;kortsiktigGjeld;2600;Liability
+2690;Andre trekk;kortsiktigGjeld;2600;Liability
+2700;Utgående merverdiavgift, høy sats;kortsiktigGjeld;2740;Liability
+2701;Utgående merverdiavgift, middels sats;kortsiktigGjeld;2740;Liability
+2702;Utgående merverdiavgift, middels sats, råfisk mv;kortsiktigGjeld;2740;Liability
+2703;Utgående merverdiavgift, lav sats;kortsiktigGjeld;2740;Liability
+2704;Utgående merverdiavgift ved kjøp av tjenester fra utlandet, høy sats;kortsiktigGjeld;2740;Liability
+2705;Utgående merverdiavgift - innførsel av varer, høy sats;kortsiktigGjeld;2740;Liability
+2706;Utgående merverdiavgift - innførsel av varer, middels sats;kortsiktigGjeld;2740;Liability
+2707;Utgående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats;kortsiktigGjeld;2740;Liability
+2709;Utgående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats;kortsiktigGjeld;2740;Liability
+2710;Inngående merverdiavgift, høy sats;kortsiktigGjeld;2740;Liability
+2711;Inngående merverdiavgift, middels sats;kortsiktigGjeld;2740;Liability
+2712;Inngående merverdiavgift, middels sats, råfisk mv;kortsiktigGjeld;2740;Liability
+2713;Inngående merverdiavgift, lav sats;kortsiktigGjeld;2740;Liability
+2714;Inngående merverdiavgift ved kjøp tjenester fra utlandet, høy sats;kortsiktigGjeld;2740;Liability
+2715;Inngående merverdiavgift - innførsel av varer, høy sats;kortsiktigGjeld;2740;Liability
+2716;Inngående merverdiavgift - innførsel av varer, middels sats;kortsiktigGjeld;2740;Liability
+2717;Inngående merverdiavgift - innenlands kjøp av varer og tjenester med omvendt avgiftsplikt, høy sats;kortsiktigGjeld;2740;Liability
+2718;Inngående merverdiavgift ved kjøp av tjenester fra utlandet, lav sats;kortsiktigGjeld;2740;Liability
+2740;Oppgjørskonto merverdiavgift;kortsiktigGjeld;2740;Liability
+2770;Skyldig arbeidsgiveravgift;kortsiktigGjeld;2770;Liability
+2771;Betalt arbeidsgiveravgift;kortsiktigGjeld;2770;Liability
+2772;Skyldig finansskatt av lønn;kortsiktigGjeld;2770;Liability
+2773;Betalt finansskatt av lønn;kortsiktigGjeld;2770;Liability
+2780;Påløpt arbeidsgiveravgift påløpt lønn;kortsiktigGjeld;2770;Liability
+2781;Påløpt arbeidsgiveravgift ferielønn;kortsiktigGjeld;2770;Liability
+2782;Påløpt arbeidsgiveravgift andre honorarer;kortsiktigGjeld;2770;Liability
+2783;Påløpt finansskatt påløpt lønn;kortsiktigGjeld;2770;Liability
+2784;Påløpt finansskatt ferielønn;kortsiktigGjeld;2770;Liability
+2785;Påløpt finansskatt andre honorarer;kortsiktigGjeld;2770;Liability
+2790;Andre offentlige avgifter;kortsiktigGjeld;2790;Liability
+2800;Avsatt utbytte;kortsiktigGjeld;2800;Liability
+2900;Forskudd fra kunder;kortsiktigGjeld;2900;Liability
+2910;Gjeld til ansatte;kortsiktigGjeld;2910;Liability
+2915;Gjeld til eiere;kortsiktigGjeld;2910;Liability
+2920;Gjeld til selskap i samme konsern;kortsiktigGjeld;2920;Liability
+2930;Skyldig lønn;kortsiktigGjeld;2949;Liability
+2940;Skyldige feriepenger;kortsiktigGjeld;2949;Liability
+2945;Utbetalte feriepenger;kortsiktigGjeld;2949;Liability
+2950;Påløpt rente;kortsiktigGjeld;2950;Liability
+2960;Annen påløpt kostnad;kortsiktigGjeld;2990;Liability
+2980;Avsetning styrehonorar;kortsiktigGjeld;2980;Liability
+2990;Gjeld til andre personer enn ansatte og eiere;kortsiktigGjeld;2990;Liability
+2999;Annen kortsiktig gjeld;kortsiktigGjeld;2990;Liability
+3000;Salgsinntekt handelsvarer, avgiftspliktig, høy sats;salgsinntekt;3000;Income
+3005;Salgsinntekt handelsvarer, omvendt avgiftsplikt;salgsinntekt;3000;Income
+3009;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3010;Salgsinntekt egentilvirkede varer, avgiftspliktig, høy sats;salgsinntekt;3000;Income
+3015;Salgsinntekt egentilvirkede varer, omvendt avgiftsplikt;salgsinntekt;3000;Income
+3019;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3020;Salgsinntekt tjenester, avgiftspliktig, høy sats;salgsinntekt;3000;Income
+3025;Salgsinntekt tjenester, omvendt avgiftsplikt;salgsinntekt;3000;Income
+3029;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3030;Salgsinntekt handelsvarer, avgiftspliktig, middels sats;salgsinntekt;3000;Income
+3035;Salgsinntekt råfisk og andre marine viltlevende ressurser, avgiftspliktig, middels sats;salgsinntekt;3000;Income
+3039;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3040;Salgsinntekt egentilvirkede varer, avgiftspliktig, middels sats;salgsinntekt;3000;Income
+3049;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3050;Salgsinntekt tjenester, avgiftspliktig, lav sats;salgsinntekt;3000;Income
+3059;Opptjent, ikke fakturert inntekt;salgsinntekt;3000;Income
+3060;Uttak av varer, avgiftspliktig, høy sats;salgsinntekt;3000;Income
+3063;Uttak av varer, avgiftspliktig, middels sats;salgsinntekt;3000;Income
+3070;Uttak av tjenester, avgiftspliktig, høy sats;salgsinntekt;3000;Income
+3074;Uttak av tjenester, avgiftspliktig, lav sats;salgsinntekt;3000;Income
+3081;Kontantrabatt, avgiftspliktig salg, høy sats;salgsinntekt;3000;Income
+3082;Kontantrabatt, avgiftspliktig salg, middel sats;salgsinntekt;3000;Income
+3083;Kontantrabatt, avgiftspliktig salg, lav sats;salgsinntekt;3000;Income
+3084;Kvantumsrabatt, avgiftspliktig salg, høy sats;salgsinntekt;3000;Income
+3085;Kvantumsrabatt, avgiftspliktig salg, middels sats;salgsinntekt;3000;Income
+3086;Kvantumsrabatt, avgiftspliktig salg, lav sats;salgsinntekt;3000;Income
+3087;Annen salgsinntektsreduksjon, avgiftspliktig salg, høy sats;salgsinntekt;3000;Income
+3088;Annen salgsinntektsreduksjon, avgiftspliktig salg, middels sats;salgsinntekt;3000;Income
+3089;Annen salgsinntektsreduksjon, avgiftspliktig salg, lav sats;salgsinntekt;3000;Income
+3090;Viderefakturering av omkostninger ved salg, høy sats;salgsinntekt;3000;Income
+3091;Viderefakturering av omkostninger ved salg, middels sats;salgsinntekt;3000;Income
+3092;Viderefakturering av omkostninger ved salg, lav sats;salgsinntekt;3000;Income
+3100;Salgsinntekt handelsvarer, innenlands, avgiftsfri;salgsinntekt;3100;Income
+3105;Salgsinntekt handelsvarer, utførsel, avgiftsfri;salgsinntekt;3100;Income
+3109;Opptjent, ikke fakturert inntekt;salgsinntekt;3100;Income
+3110;Salgsinntekt egentilvirkede varer, innenlands, avgiftsfri;salgsinntekt;3100;Income
+3115;Salgsinntekt egentilvirkede varer, utførsel, avgiftsfri;salgsinntekt;3100;Income
+3119;Opptjent, ikke fakturert inntekt;salgsinntekt;3100;Income
+3120;Salgsinntekt tjenester, innenlands, avgiftsfri;salgsinntekt;3100;Income
+3125;Salgsinntekt tjenester, utførsel, avgiftsfri;salgsinntekt;3100;Income
+3129;Opptjent, ikke fakturert inntekt;salgsinntekt;3100;Income
+3160;Uttak av varer, avgiftsfritt;salgsinntekt;3100;Income
+3170;Uttak av tjenester, avgiftsfritt;salgsinntekt;3100;Income
+3181;Kontantrabatt, innenlands, avgiftsfritt;salgsinntekt;3100;Income
+3182;Kontantrabatt, utførsel, avgiftsfritt;salgsinntekt;3100;Income
+3185;Kvantumsrabatt, innenlands, avgiftsfritt;salgsinntekt;3100;Income
+3186;Kvantumsrabatt, utførsel, avgiftsfritt;salgsinntekt;3100;Income
+3188;Annen salgsinntektsreduksjon, innenlands, avgiftsfritt;salgsinntekt;3100;Income
+3189;Annen salgsinntektsreduksjon, utførsel, avgiftsfritt;salgsinntekt;3100;Income
+3190;Viderefakturering av omkostninger ved salg, innenlands, avgiftsfritt;salgsinntekt;3100;Income
+3191;Viderefakturering av omkostninger ved salg, utførsel, avgiftsfritt;salgsinntekt;3100;Income
+3200;Salgsinntekt handelsvarer, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3209;Opptjent, ikke fakturert inntekt;salgsinntekt;3200;Income
+3210;Salgsinntekt egentilvirkede varer, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3219;Opptjent, ikke fakturert inntekt;salgsinntekt;3200;Income
+3220;Salgsinntekt tjenester, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3229;Opptjent, ikke fakturert inntekt;salgsinntekt;3200;Income
+3260;Uttak av varer, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3281;Kontantrabatt, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3285;Kvantumsrabatt, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3289;Annen salgsinntektsreduksjon, unntatt avgiftsplikt;salgsinntekt;3200;Income
+3290;Viderefakturering av omkostninger ved salg, unntatt avgiftsplikt;salgsinntekt;3200;Income
+4000;Innkjøp av råvarer og halvfabrikata, høy sats;varekostnad;4005;Expense
+4030;Innkjøp av råvarer og halvfabrikata, middels sats;varekostnad;4005;Expense
+4035;Innkjøp av råvarer og halvfabrikata, uten MVA;varekostnad;4005;Expense
+4040;Utenlandsk innkjøp av råvarer og halvfabrikata, høy sats;varekostnad;4005;Expense
+4041;Utenlandsk innkjøp av råvarer og halvfabrikata, middels sats;varekostnad;4005;Expense
+4042;Utenlandsk innkjøp av råvarer og halvfabrikata, fritatt for avgift;varekostnad;4005;Expense
+4060;Frakt, toll og spedisjon;varekostnad;4005;Expense
+4071;Kontantrabatt, råvarer og halvfabrikata, høy sats;varekostnad;4005;Expense
+4072;Kontantrabatt, råvarer og halvfabrikata, middels sats;varekostnad;4005;Expense
+4075;Kvantumsrabatt, råvarer og halvfabrikata, høy sats;varekostnad;4005;Expense
+4076;Kvantumsrabatt, råvarer og halvfabrikata, middels sats;varekostnad;4005;Expense
+4078;Annen innkjøpsprisreduksjon, høy sats;varekostnad;4005;Expense
+4079;Annen innkjøpsprisreduksjon, middels sats;varekostnad;4005;Expense
+4086;Innenlands kjøp av varer, omvendt avgiftsplikt;varekostnad;4005;Expense
+4087;Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto;varekostnad;4005;Expense
+4090;Beholdningsendring;varekostnad;4005;Expense
+4100;Innkjøp varer under tilvirkning, høy sats;varekostnad;4005;Expense
+4130;Innkjøp varer under tilvirkning, middels sats;varekostnad;4005;Expense
+4140;Innkjøp av råvarer under tilvirkning, uten MVA;varekostnad;4005;Expense
+4160;Frakt, toll og spedisjon;varekostnad;4005;Expense
+4171;Kontantrabatt, varer under tilvirkning, høy sats;varekostnad;4005;Expense
+4172;Kontantrabatt, varer under tilvirkning, middels sats;varekostnad;4005;Expense
+4175;Kvantumsrabatt, varer under tilvirkning, høy sats;varekostnad;4005;Expense
+4176;Kvantumsrabatt, varer under tilvirkning, middels sats;varekostnad;4005;Expense
+4178;Annen innkjøpsprisreduksjon, varer under tilvirkning, høy sats;varekostnad;4005;Expense
+4179;Annen innkjøpsprisreduksjon, varer under tilvirkning, middels sats;varekostnad;4005;Expense
+4190;Beholdningsendring;varekostnad;4005;Expense
+4200;Innkjøp ferdig egentilvirkede varer, høy sats;varekostnad;4005;Expense
+4230;Innkjøp ferdig egentilvirkede varer, middels sats;varekostnad;4005;Expense
+4240;Innkjøp ferdig egentilvirkede varer, uten MVA;varekostnad;4005;Expense
+4260;Frakt, toll og spedisjon;varekostnad;4005;Expense
+4270;Innkjøpsprisreduksjon, egentilvirkede varer, høy sats;varekostnad;4005;Expense
+4271;Innkjøpsprisreduksjon, egentilvirkede varer, middels sats;varekostnad;4005;Expense
+4290;Beholdningsendring;varekostnad;4005;Expense
+4300;Innkjøp av varer for videresalg, høy sats;varekostnad;4005;Expense
+4330;Innkjøp av varer for videresalg, middels sats;varekostnad;4005;Expense
+4335;Innkjøp av varer for videresalg, uten MVA;varekostnad;4005;Expense
+4340;Utenlands innkjøp av varer for videresalg, høy sats;varekostnad;4005;Expense
+4341;Utenlands innkjøp av varer for videresalg, middels sats;varekostnad;4005;Expense
+4342;Utenlands innkjøp av varer for videresalg, fritatt for avgift;varekostnad;4005;Expense
+4350;Svinn og tap;varekostnad;4005;Expense
+4360;Frakt, toll og spedisjon;varekostnad;4005;Expense
+4371;Kontantrabatt, varer for videresalg, høy sats;varekostnad;4005;Expense
+4372;Kontantrabatt, varer for videresalg, middels sats;varekostnad;4005;Expense
+4375;Kvantumsrabatt, varer for videresalg, høy sats;varekostnad;4005;Expense
+4376;Kvantumsrabatt, varer for videresalg, middels sats;varekostnad;4005;Expense
+4378;Annen innkjøpsprisreduksjon, høy sats;varekostnad;4005;Expense
+4379;Annen innkjøpsprisreduksjon, middels sats;varekostnad;4005;Expense
+4386;Innenlands kjøp av varer, omvendt avgiftsplikt;varekostnad;4005;Expense
+4387;Innenlands kjøp av varer, omvendt avgiftsplikt, motkonto;varekostnad;4005;Expense
+4390;Beholdningsendring;varekostnad;4005;Expense
+4500;Fremmedytelse og underentreprise;varekostnad;4500;Expense
+6000;Avskrivning på bygninger og annen fast eiendom;annenDriftskostnad;6000;Expense
+6005;Avskrivning på påkostninger, leid driftsmiddel;annenDriftskostnad;6000;Expense
+6010;Avskrivning på transportmidler;annenDriftskostnad;6000;Expense
+6015;Avskrivning på maskiner;annenDriftskostnad;6000;Expense
+6017;Avskrivning på inventar;annenDriftskostnad;6000;Expense
+6020;Avskrivning på ervervet goodwill;annenDriftskostnad;6004;Expense
+6029;Avskrivning på andre immaterielle eiendeler;annenDriftskostnad;6004;Expense
+6030;Avskrivning annet;annenDriftskostnad;6004;Expense
+6050;Nedskrivning av varige driftsmidler;annenDriftskostnad;6050;Expense
+6055;Nedskrivning av immaterielle eiendeler;annenDriftskostnad;6050;Expense
+6059;Reversering av nedskrivning varige driftsmidler og immaterielle eiendeler;annenDriftskostnad;6050;Expense
+6100;Frakt, transportkostnad og forsikring ved vareforsendelse;annenDriftskostnad;6100;Expense
+6110;Toll og spedisjonskostnad ved vareforsendelse;annenDriftskostnad;6100;Expense
+6190;Annen frakt- og transportkostnad ved salg;annenDriftskostnad;6100;Expense
+6200;Elektrisitet;annenDriftskostnad;6200;Expense
+6210;Gass;annenDriftskostnad;6200;Expense
+6220;Fyringsolje;annenDriftskostnad;6200;Expense
+6230;Kull, koks;annenDriftskostnad;6200;Expense
+6240;Ved;annenDriftskostnad;6200;Expense
+6250;Bensin, dieselolje;annenDriftskostnad;6200;Expense
+6260;Vann;annenDriftskostnad;6200;Expense
+6290;Annet brensel;annenDriftskostnad;6200;Expense
+6300;Leie lokale;annenDriftskostnad;6300;Expense
+6320;Renovasjon, vann, avløp o.l.;annenDriftskostnad;6395;Expense
+6340;Lys;annenDriftskostnad;6340;Expense
+6345;Varme;annenDriftskostnad;6340;Expense
+6400;Leie maskiner;annenDriftskostnad;6400;Expense
+6410;Leie inventar;annenDriftskostnad;6400;Expense
+6420;Leie datasystemer;annenDriftskostnad;6350;Expense
+6430;Leie andre kontormaskiner;annenDriftskostnad;6400;Expense
+6500;Motordrevet verktøy;annenDriftskostnad;6500;Expense
+6510;Håndverktøy;annenDriftskostnad;6500;Expense
+6520;Hjelpeverktøy;annenDriftskostnad;6500;Expense
+6530;Spesialverktøy;annenDriftskostnad;6500;Expense
+6540;Inventar;annenDriftskostnad;6500;Expense
+6551;Datautstyr;annenDriftskostnad;6350;Expense
+6552;Programvare anskaffelse;annenDriftskostnad;6350;Expense
+6600;Reparasjon og vedlikehold bygninger;annenDriftskostnad;6600;Expense
+6620;Reparasjon og vedlikehold utstyr;annenDriftskostnad;6695;Expense
+6690;Reparasjon og vedlikehold annet;annenDriftskostnad;6695;Expense
+6700;Revisjonshonorar;annenDriftskostnad;6700;Expense
+6705;Regnskapshonorar;annenDriftskostnad;6700;Expense
+6800;Kontorrekvisita;annenDriftskostnad;6995;Expense
+6820;Trykksak;annenDriftskostnad;6995;Expense
+6840;Aviser, tidsskrifter, bøker o.l.;annenDriftskostnad;6995;Expense
+6860;Møte, kurs, oppdatering o.l.;annenDriftskostnad;6995;Expense
+6890;Annen kontorkostnad;annenDriftskostnad;6995;Expense
+6900;Telefon;annenDriftskostnad;6995;Expense
+6903;Mobiltelefon;annenDriftskostnad;6995;Expense
+6907;Datakommunikasjon;annenDriftskostnad;6995;Expense
+6909;Annen telekommunikasjon;annenDriftskostnad;6995;Expense
+6940;Porto;annenDriftskostnad;6995;Expense
+7710;Styremøter;annenDriftskostnad;7700;Expense
+7715;Bedriftsforsamlingsmøter;annenDriftskostnad;7700;Expense
+7720;Generalforsamling;annenDriftskostnad;7700;Expense
+7730;Kostnad ved egne aksjer;annenDriftskostnad;7700;Expense
+7740;Øresavrunding;annenDriftskostnad;7700;Expense
+7750;Eiendoms- og festeavgift;annenDriftskostnad;7700;Expense
+7770;Bank- og kortgebyr;annenDriftskostnad;7700;Expense
+7775;Kredittkortprovisjoner;annenDriftskostnad;7700;Expense
+7788;Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt;annenDriftskostnad;7700;Expense
+7789;Innenlands kjøp av varer og tjenester, omvendt avgiftsplikt, motkonto;annenDriftskostnad;7700;Expense
+7798;Annen kostnad, fradragsberettiget;annenDriftskostnad;7700;Expense
+7799;Annen kostnad, ikke fradragsberettiget;annenDriftskostnad;7700;Expense
+8030;Renteinntekt fra foretak i samme konsern;finansinntekt;8030;Income
+8050;Renteinntekt bankinnskudd;finansinntekt;8050;Income
+8060;Valutagevinst (agio);finansinntekt;8060;Income
+8079;Annen finansinntekt;finansinntekt;8079;Income
+8090;Inntekt på andre investeringer;finansinntekt;8090;Income
+8100;Verdireduksjon av finansielle instrumenter vurdert til virkelig verdi, urealisert;finanskostnad;8100;Expense
+8110;Nedskrivning av andre finansielle omløpsmidler;finanskostnad;8115;Expense
+8130;Rentekostnad til foretak i samme konsern;finanskostnad;8130;Expense
+8150;Rentekostnad banklån;finanskostnad;8150;Expense
+8160;Valutatap (disagio);finanskostnad;8160;Expense
+8179;Annen finanskostnad;finanskostnad;8179;Expense
+8300;Betalbar skatt;skattekostnad;8300;Expense

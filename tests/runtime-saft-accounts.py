@@ -72,6 +72,11 @@ try:
         group=frappe.db.get_value('Account',{'company':C,'is_group':1,'account_number':['is','not set']},'name')
         e={'unused':'6500','disabled':'6551','group':group,'no_number':unnamed.name}
         data,root=export();check(root,e)
+        frappe.db.savepoint('explicit_interim_mapping')
+        interim=frappe.get_doc('Account',history.name);interim.get(saft.MAPPING)[0].category='NA';interim.get(saft.MAPPING)[0].code='NA';interim.save()
+        _,interim_root=export()
+        assert interim_root.xpath('.//s:Account[s:AccountID="9871"]/s:GroupingCategory/text()',namespaces=NS)==['NA']
+        frappe.db.rollback(save_point='explicit_interim_mapping')
         def duplicate_id():frappe.db.set_value('Account',unnamed.name,'account_number','1920');export()
         rejected(duplicate_id,'unik',xml.SaftExportError)
         def missing_used_mapping():frappe.db.delete('Norwegian SAF-T Mapping',{'parent':history.name});export()
