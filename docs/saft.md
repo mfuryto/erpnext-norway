@@ -1,9 +1,47 @@
-# SAF-T: nedlasting, gjenbruk og gjenstående omfang
+# SAF-T: nedlasting og kvalifisert omfang
 
-App 0.4.33 viderefører første SAF-T 1.40-nedlasting fra **Foretak → Last ned
-SAF-T**. Den bruker den bokførte hovedboken og eksisterende bilags-/partregistre,
-uten en egen hovedbok. Omfanget under er teknisk kvalifisert mot ERPNext 16.52.1 /
-Frappe 16.53.0; hele SAF-T-punktet er fortsatt ikke ferdig.
+App 0.4.34 sluttfører den tekniske eksporten for det avtalte første omfanget:
+ett norsk ENK uten ansatte, NOK og kalenderåret 2026, med de kvalifiserte
+utenlandstransaksjonene under. **Foretak → Last ned SAF-T** leverer SAF-T 1.40
+fra ERPNexts bokførte hovedbok, bilag og masterregistre. Ingen egen hovedbok,
+MVA-beregning, lagerverdi eller årsavslutningsmotor opprettes.
+
+Eksporten er kvalifisert mot ERPNext 16.52.1 / Frappe 16.53.0. Teknisk
+kvalifisering og regnskapsmessig aksept av det faktiske foretakets oppsett er
+forskjellige oppgaver. Korrekte foretaksopplysninger og årsspesifikke
+kontokoblinger må være registrert før nedlasting.
+
+## Samlet støtteomfang i 0.4.34
+
+- Hovedbok med alle native poster, inngående/sluttsaldo, originaler og motposter,
+  reskontro, flere betalings-/valutakontoer, kildereferanser og native dimensjoner
+  for kostnadssted/prosjekt. Hele kontoregisteret og lagret avgiftsregister følger med.
+- Salg/kjøp, kreditnota, kansellering, betaling/refusjon, kursdifferanser og MVA-oppgjør.
+  Innenlandsk 25/15/12 prosent og fullt/delvis/intet fradrag bruker lagrede varelinjer
+  og Item Wise Tax Detail. Ingen grunnlag beregnes baklengs fra MVA-beløpet.
+- Omvendt avgiftsplikt i NOK/EUR, dokumenterte leveringskurser, kvartalsgrensen for
+  ikke-registrerte, terskelendringer, senere kreditering, registrering midt i kvartalet
+  og retrospektivt fradrag. Eksisterende MVA-spesifikasjon gir kvartalsklassifiseringen;
+  kildens grunnlag beholdes og kvartalsbilagets MVA telles ikke på nytt.
+- Vareimport 20–22, innførsels-MVA 81–84, direkteført inngående MVA 14/15 og
+  faktisk bokført mottak med deklarasjon 85. Leverandørkostnad og deklarasjonsgrunnlag
+  holdes atskilt. Et mottak uten hovedbokspostering får ingen oppdiktet post i filen.
+- Lagerkjøp/-salg, native varekost, varemottak/fakturaavregning, returer,
+  Landed Cost Voucher, fullført lagerrepostering, Stock Entry og Stock Reconciliation.
+- Driftsmiddelkjøp, native avskrivning, salg med gevinst/nullgevinst/tap og kreditnota.
+  Dette er bokførte regnskapsverdier; norsk skattemessig saldo er hovedplanens punkt 7.
+- Frakt som ordinær varelinje eller native Actual-tillegg, også flere kildevarer,
+  ulike kostnads-/aktivakontoer, lagret rabatt og dokumenterte valutagrunnlag.
+- Entydige manuelt førte MVA-bilag med faktisk grunnlags-/rettingslinje, lagret
+  fradragsandel og native spesifikasjon for tap/justering/tilbakeføring.
+- Native Period Closing Voucher med faktiske avslutningsposter. Pågående
+  periodestenging eller lagerrepostering må fullføres før eksport.
+
+Prøvene sammenligner eksportens native GL-ID-er, hver debet-/kreditside, brutto
+valutabeløp og summer med databasen, og validerer XSD 1.40. Kildedokumenter,
+lagerposter, private XML-filer og kryptert verdi kontrolleres etter eksportert
+backup, faktisk gjenoppretting og migrering. Eksportrettigheter, foretaksavgrensning
+og manglende kildeopplysninger prøves også negativt.
 
 ## Format og årsversjon
 
@@ -113,24 +151,29 @@ prøver også nullbeløp, flere BaseRate-verdier, åpning og valutapresisjon.
 Den norske adapteren kontrollerer fullstendig radtilgang, årsliste,
 kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 
-## Gjenstår i hovedplanens SAF-T-punkt
+## Avgrensninger og neste år
 
-Utvid eksportmappingen til øvrig import, kvartalsbilag,
-andre klassifiserte MVA-bilag, øvrig avgiftsført valuta, øvrig lagerføring, driftsmidler og frakt.
-Disse velprøvde bokføringsfunksjonene i MVA-modulen endres ikke av eksporten.
-De trenger egne SAF-T-fasiter og eksportprøver før de kan tas med i denne filen.
-Alternative regnskaps-/avskrivningsbøker og øvrige brukte dimensjoner må også
-kvalifiseres, sammen med flere åpne reskontrokontoer og periodestenging.
-Eksport for 2027 krever kvalifisering av riktig årsliste; 2026-listen brukes
-ikke automatisk videre. Deretter følger samlet regnskapsaksept av filene.
+2027 krever publisert og kvalifisert årsliste. Skatteetatens kodelister som er
+kontrollert 8. november 2026 inneholder fortsatt grupperingen for 2025–2026;
+2026-listen videreføres ikke automatisk til 2027. Formatet er allerede 1.40.
 
-Historiske poster før fra-dato beholdes i inngående saldo; periodens
-avgiftsklassifisering brukes på periodens bevegelser. En ukvalifisert
-post **innenfor den valgte perioden** avvises med bilagsreferanse. Den
-utelates aldri stille for at eksporten skal se komplett ut.
+Alternative regnskaps-/avskrivningsbøker, egendefinerte regnskapsdimensjoner,
+andre foretaksformer, lønn og særbransjer ligger utenfor det avtalte første
+omfanget. Tvetydige historiske kildekoblinger eller manglende dokumentert
+fradragsandel gir en konkret feil; eksporten finner ikke på en fordeling.
+Et rent MVA-bilag uten faktisk grunnlags-/rettingslinje får heller ingen
+kunstig hovedbokslinje for å få en gyldig fil.
 
-Deretter følger [ENK og årsavslutning](handover.md#hovedplan-avtalt-søndag-18-oktober-kl-1844)
-og [EHF med faktisk levering og kvitteringer](ehf.md).
+Historiske poster før fra-dato beholdes i inngående saldo. En ukvalifisert
+post innenfor perioden avvises med bilagsreferanse og utelates aldri stille.
+Teknisk fullført eksport er ingen generell påstand om norsk etterlevelse eller
+om regnskapsmessig aksept av alle mulige oppsett.
+
+Neste produktarbeid er [ENK og årsavslutning](handover.md#hovedplan-avtalt-søndag-18-oktober-kl-1844),
+deretter [EHF med faktisk levering og kvitteringer via SendRegning](ehf.md).
+
+Nedenfor beholdes implementasjonshistorikken og kildebegrunnelsene. Eldre
+versjoners gjenstående omfang må leses mot den samlede statusen øverst.
 
 ## Implementasjonsgap før første nedlasting
 
@@ -591,3 +634,117 @@ leverandørfakturaens nullsats som nominell importsats. Eksportmetadataen skal
 bruke 25/15 prosent for kode21/22. Kode20 er fortsatt uten MVA-behandling.
 Leverandørbeløp, bokført MVA og native beregninger endres ikke; et nullbeløp
 på leverandørfakturaen skal ikke tolkes som en nullsats ved innførselen.
+
+## Påvist kvartals- og referansegap før neste levering
+
+Den eksisterende MVA-spesifikasjonen knytter allerede kode 87/89 og dokumentert
+NOK-grunnlag til kvartalsfakturaenes varelinjer. Fakturaen belaster ingen MVA;
+det faktiske MVA-beløpet føres med native Journal Entry. SAF-T-adapteren avviser
+fortsatt kvartalsbilagene. Det trengs bare eksportmapping fra de eksisterende
+rapportkildene, ingen ny beregning, postering eller historikkdatabase.
+Skatteetatens generelle beskrivelse 1.40 side 31 tillater null i det obligatoriske
+avgiftsbeløpet når beløpet ikke er lagret per grunnlagspost. Kvartalsbilaget skal
+beholde alle faktiske GL-poster, men ikke få et nytt grunnlag eller gjenta
+TaxInformation på MVA-kontoen. Endringer uten nytt ørebeløp skal følge rapportens
+eksisterende kildegrunnlag, ikke utledes fra MVA-beløpet i et tidligere bilag.
+
+Leverandørens fakturanummer kan være lengre enn ReferenceNumber-formatets
+35 tegn. Det skal bevares i sin helhet i Description, mens bilagets uendrede interne
+nummer fortsatt ligger i SourceDocumentID. Korte
+referanser kan i tillegg beholdes i ReferenceNumber. Ingen kildefelt forkortes
+eller endres for å få XML gjennom validering.
+
+Native driftsmiddelkjøp bruker bokførte aktivakontoer i stedet for en ordinær
+kostnadskonto. Ved salg fører kjernen utrangering, avskrivning og gevinst/tap;
+salgsgrunnlaget kan derfor avvike fra bokført verdi. Adapteren må lese den
+faktiske aktivalinjen og varelinjens avgiftsdetaljer, uten å regne gevinst eller
+avskrivning selv eller bruke dagens konto fra Asset Category. Native bilag uten
+MVA, også Period Closing Voucher og avskrivningsbilag, har allerede komplette
+GL-poster og skal bruke samme ordinære eksport av disse postene. Eventuell MVA
+krever fortsatt uttrykkelig kildekobling; en ukjent bilagstype skal ikke gi
+adgang til uklassifisert MVA.
+
+Mottakskjeden har også en eksisterende kildekobling: native Purchase Invoice
+Item lagrer Stock Received But Not Billed / Asset Received But Not Billed som
+expense_account. Eksporten skal bruke denne uendrede kontoen når den også
+finnes i mottakets faktiske GL. Mottakets lagerbevegelse og fakturaens avgift
+skal ikke gjøres om til én ny postering. Ikke-perpetuelt lager og ikke-lagerførte
+mottak uten GL skal fortsatt bare gi de faktiske fakturapostene.
+
+Deklarasjon med kode85 har sitt eget dokumenterte grunnlag på mottaket. Når
+mottaket har en entydig bokført aktivakonto, kan dette grunnlaget gjengis der
+med null MVA. Varetilbakelevering reverserer ikke importdeklarasjonen og skal
+ikke få et nytt negativt deklarasjonsgrunnlag. Et mottak uten GL får ingen
+oppdiktet grunnlagspost; denne filen eksporterer hovedbok, ikke valgfrie
+SourceDocuments. Kilden finnes fortsatt i ERPNext og avgiftsregisteret.
+
+I importbilag81–84 kan ikke-fradragsført MVA være bokført på egen
+verdsettingskonto 4998, mens de balanserende grunnlagsføringene ligger på 4300.
+Begge er ordinære, allerede bokførte native linjer. Kontosperren i adapteren
+må skilles mellom grunnlagskonto og faktisk MVA-kostnad: bare de uttrykkelig
+kodede grunnlagsføringene skal få TaxInformation. Alle øvrige bokførte
+kostnadssider og dimensjoner avstemmes per konto, uten fordeling eller
+rekonstruksjon av manglende bruttoposter.
+
+Primære tjenestebilag med omvendt avgiftsplikt kan allerede føres som native
+Journal Entry, også med EUR-leverandørgjeld. Kjøpsgrunnlag, utgående og faktisk
+fradragsført MVA er lagret. En dokumentert fradragsprosent for kode86/88 ble
+imidlertid ikke bevart i det eksisterende prosentfeltet, som bare var åpnet
+for vareimport81/83. SAF-Ts BaseRate kan ikke gis en antatt 100 eller beregnes
+fra beløpsforhold. Det eksisterende feltet må derfor gjenbrukes på utgående
+86/88-linje; nye bilag angir dokumentert andel før bokføring. Eldre ukjent
+andel kan dokumenteres med samme metadata-/periodelås som 81/83. Ordinær
+reversering må fortsatt kunne bevare ukjent historisk andel, uten å finne på
+et fradrag. Ingen ny avgiftsberegning eller registreringsflate er nødvendig.
+
+## Årskvalifisering og avgrensning mot 2027
+
+Formatet er allerede 1.40. Skatteetaten krever dette formatet fra 2027, men
+formatversjon og årsspesifikk grupperingsliste er to forskjellige avklaringer.
+Ved kildekontroll 8. november 2026 inneholder det offisielle SAF-T-registeret
+bare listen for 2025–2026 som siste grupperingsliste. Eksporten for 2027 skal
+fortsatt avvises inntil årets offisielle liste er publisert, låst og prøvd.
+Den skal ikke få 2026-koder automatisk eller godkjennes bare fordi XML er gyldig.
+
+Kilder: [Skatteetatens formatdokumentasjon](https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/dokumentasjon/)
+og [offisielt skjema-/koderegister](https://github.com/Skatteetaten/saf-t).
+
+Kildens registrerte bruker og eksportør finnes allerede som native owner og
+session.user. Headerens UserID og transaksjonens SourceID skal bruke disse
+opplysningene. SourceID har en grense på 35 tegn; en lengre bruker-ID skal
+bevares som tekst i Description, uten en ny konstruert ID. Samme fritekstfelt
+kan bevare en for lang bilagsreferanse. VoucherDescription skal beskrive
+bilagstypen. Native remarks skal ikke kuttes til 256 tegn; hele teksten brukes
+og den ordinære formatvalideringen stopper verdier som ikke får plass.
+
+Native GL kan ha både debet og kredit på samme post. Også valutabeløpene må
+gjengis per bokført side; et netto valutabeløp kan ikke kopieres til begge
+XML-linjene. Adapteren skal lese de allerede lagrede debet-/kreditbeløpene i
+konto-/transaksjonsvaluta, uten ny omregning. Samme opprinnelige GL-ID beholdes.
+
+For frakt og andre Actual-tillegg er den eksisterende koblingen i
+Item Wise Tax Detail fortsatt varelinjens item_row. Den bevarer også
+fordelingen mellom flere varelinjer, andre kostnadskontoer, rabatt og
+valutagrunnlag. Eksporten skal gjenbruke denne koblingen på varelinjens
+bokførte grunnlagskonto. Tilleggets separate GL-post beholdes, men samme
+avgiftsgrunnlag skal ikke gjentas der. Det skal ikke lages en ny fordeling.
+On Previous Row Total må dekke det lagrede nettobeløpet og de tidligere
+tilleggene; den eksisterende valutavalideringen kontrollerer tilsvarende
+kobling for On Norwegian VAT Base. Tomme varelinjer uten beløp eller avgift
+får ingen oppdiktet GL-post bare for å kunne vise en kode.
+
+For importkostnad 20–22 har TaxInformation ingen TaxBase og null avgiftsbeløp.
+Når alle lagerførte varelinjer har samme kode, kan denne lagrede koden gjengis
+på flere faktiske lagerkontoer uten beløpsfordeling. Flere koder kan også
+bevares på én felles bokført lagerkonto. Ved både blandede koder og flere
+lagerkontoer kreves fortsatt en entydig kildekobling; dagens lagerinnstillinger
+skal ikke brukes til å gjette historikken. Ikke-lagerførte linjer i samme
+faktura bruker sin faktisk lagrede kostnadskonto. Ordinære tillegg uten
+leverandør-MVA endrer ingen av disse avgiftsbeløpene.
+
+Blandede varemottak kan inneholde både et driftsmiddel med faktiske GL-poster
+og en ikke-lagerført tjeneste uten egen mottakspostering. At mottaket samlet
+har GL, betyr ikke at alle fakturalinjene bruker en avregningskonto. Den
+registrerte driftsmiddelmarkeringen og native Stock Ledger Entry-koblingen
+per mottakslinje må avgjøre dette. En tjenestelinje beholder sin bokførte
+kostnadskonto selv om samme mottak også kapitaliserer et driftsmiddel.

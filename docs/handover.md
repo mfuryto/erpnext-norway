@@ -815,3 +815,40 @@ følger Skatteetatens kodeoversikt og eksempel i generell dokumentasjon
 1.40 side33–34. Native maler, MVA-beregninger, leverandørbeløp og hovedbok
 endres ikke. Eksisterende NOK/EUR-, mottaks- og lagerprøver verifiserer
 den korrekte satsen sammen med fortsatt null MVA og manglende TaxBase.
+
+## SAF-T: samlet eksport for første omfang, 0.4.34
+
+Se samlet støtteomfang og avgrensninger i [SAF-T-beskrivelsen](saft.md).
+Denne leveransen lukker hovedplanens punkt 6 for det avtalte første omfanget:
+norsk ENK uten ansatte, NOK og kalenderåret 2026 med kvalifiserte utenlandsforhold.
+Tidligere delversjoners gjenstående eksportområder ovenfor er historikk.
+
+Kvartalsgrunnlag gjenbruker eksisterende MVA-spesifikasjon. Native lager,
+mottak/fakturaavregning, driftsmidler, avskrivninger, salg/retur, frakt,
+primære MVA-bilag og Period Closing Voucher eksporterer sine faktiske GL-poster.
+Blandede driftsmiddel-/tjenestemottak bruker faktisk mottakspostering per linje.
+Separate deklarasjons-/leverandørgrunnlag, dokumentert fradrag, spesifikasjoner,
+lange kildereferanser, native bruker og begge brutto valutabeløpssider bevares.
+Ingen kjernefiler, regnskapsberegninger eller bokførte beløp endres.
+
+Det eksisterende fradragsfeltet på bilagslinjer gjenbrukes også for utgående
+omvendt tjeneste-MVA 86/88. Nye slike bilag krever dokumentert prosent;
+eksakt reversering av eldre ukjent prosent bevarer den ukjente verdien.
+Eksporten gjetter ingen prosent og oppretter ingen manglende grunnlagspost.
+
+Teknisk kvalifisering omfatter XSD, alle GL-ID-er og hver bokført beløpsside,
+native kilde-/lagerdata, rettigheter, private XML-filer og eksportert
+backup/gjenoppretting med migrering. Dette er fortsatt atskilt fra
+regnskapsmessig aksept av brukerens faktiske oppsett og kontokoblinger.
+
+Ekstern avhengighet: offisiell grupperingsliste for 2027 er ikke publisert i
+det kontrollerte registeret 8. november. Format 1.40 er allerede brukt, men
+2026-koder overføres ikke automatisk til et nytt år. Andre foretaksformer,
+lønn, særbransjer, alternative regnskapsbøker og egendefinerte dimensjoner
+ligger utenfor første omfang og skal ikke erklæres kvalifisert av denne prøven.
+
+Neste produktpunkt er 7: ENK/eiertransaksjoner, forskuddsskatt og årsgrunnlag,
+med native periodestenging og tydelig skille mot norske skattemessige regler.
+Deretter punkt 8: EHF via SendRegning med faktisk faktura-/kreditnotalevering,
+feil, status og kvitteringer. Driftsserveren oppdateres fortsatt bare av
+brukeren fra én blokk mot gjeldende origin/main.

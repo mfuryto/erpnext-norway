@@ -60,7 +60,7 @@ try:
             frappe.get_doc({'doctype':'Item','item_code':'RUNTIME-SAFT-FREIGHT-'+code,'item_name':'Synthetic freight '+code,'item_group':'Services','stock_uom':'Nos','is_stock_item':0}).insert()
         a={r.account_number:r.name for r in frappe.get_all('Account',filters={'company':C},fields=['name','account_number'])}
         supplier=frappe.get_doc({'doctype':'Supplier','supplier_name':'Synthetic SAF-T freight supplier','supplier_type':'Company','supplier_group':frappe.get_all('Supplier Group',filters={'is_group':0},pluck='name')[0],'default_currency':'NOK'}).insert()
-        for number,category,group in [('1920','balanseverdiForOmloepsmiddel','1920'),('2400','kortsiktigGjeld','2400'),('4300','varekostnad','4005'),('2710','kortsiktigGjeld','2740'),('2711','kortsiktigGjeld','2740'),('2713','kortsiktigGjeld','2740')]:
+        for number,category,group in [('1920','balanseverdiForOmloepsmiddel','1920'),('2400','kortsiktigGjeld','2400'),('4300','varekostnad','4005'),('6100','annenDriftskostnad','6100'),('2710','kortsiktigGjeld','2740'),('2711','kortsiktigGjeld','2740'),('2713','kortsiktigGjeld','2740')]:
             account=frappe.get_doc('Account',a[number]);account.append(saft.MAPPING,{'year':2026,'category':category,'code':group});account.save()
         c.default_bank_account=a['1920'];c.save();frappe.set_user(OWNER)
         def draft(mode,rate,share,reference):
@@ -102,12 +102,19 @@ try:
             if shape=='untaxed':doc.set('taxes',[doc.taxes[0]])
             if shape=='other_account':doc.taxes[0].account_head=a['6100']
             if shape=='multiple_items':doc.append('items',doc.items[0].as_dict() | {'name':None,'rate':10})
-            doc.insert();doc.submit();rejected(doc,'Eksportmappingen');frappe.db.rollback(save_point='unsupported_freight')
+            doc.insert();doc.submit()
+            if shape=='untaxed':rejected(doc,'Eksportmappingen')
+            else:
+                rows=frappe.get_all('GL Entry',filters={'company':C,'voucher_type':'Purchase Invoice','voucher_no':doc.name},fields=['*'])
+                mapped,_=saft.invoice_taxes(doc,rows)
+                assert sum((i.tax_base for values in mapped.values() for i in values),Decimal())==doc.base_net_total+100
+                data,_=export(records,cancelled.name);xml.validate_saf_t(data)
+            frappe.db.rollback(save_point='unsupported_freight')
         data,gl=export(records,cancelled.name)
         f=save_file('synthetic-saft-freight.xml',data,'Company',C,is_private=1)
         detail=frappe.get_all('Item Wise Tax Detail',filters={'parent':['in',parents]},fields=['name','parent','item_row','tax_row','amount','taxable_amount','rate'])
         e={'records':records,'cancelled':cancelled.name,'parents':parents,'gl':gl,'detail':detail,'file':f.name,'sha256':hashlib.sha256(data).hexdigest()}
         evidence=save_file('synthetic-saft-freight-evidence.json',frappe.as_json(e).encode(),'Company',C,is_private=1)
         frappe.db.set_default('runtime_saft_freight',evidence.name);frappe.db.commit()
-        print('PASS native SAF-T freight: existing standard item route; Actual charges 25/15/12%, full/60%/no deduction, credits/pay/refund/cancellation; missing details, untaxed charge and unsupported shapes rejected; exact GL and XSD')
+        print('PASS native SAF-T freight: existing standard item route; Actual charges 25/15/12%, full/60%/no deduction, credits/pay/refund/cancellation; missing details, untaxed charge rejected, native multi-item and separate freight account accepted; exact GL and XSD')
 finally:frappe.db.rollback();frappe.destroy()

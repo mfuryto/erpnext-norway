@@ -100,6 +100,8 @@ class TaxInformation:
 	tax_amount: Decimal | None = None
 	tax_credit: bool | None = None
 	line_credit: bool | None = None
+	tax_base_description: str | None = None
+	tax_exemption_reason: str | None = None
 
 
 @dataclass(frozen=True)
@@ -119,6 +121,7 @@ class LedgerEntry:
 	party: str | None = None
 	due_date: date | None = None
 	reference_number: str | None = None
+	source_id: str | None = None
 	tax_code: str | None = None
 	tax_base: Decimal | None = None
 	tax_information: tuple[TaxInformation, ...] = ()
@@ -126,6 +129,8 @@ class LedgerEntry:
 	currency_code: str | None = None
 	currency_amount: Decimal | None = None
 	analyses: tuple[tuple[str, str], ...] = ()
+	debit_currency_amount: Decimal | None = None
+	credit_currency_amount: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -144,6 +149,7 @@ class SaftExportData:
 	created_date: date = field(default_factory=date.today)
 	analysis_catalog: dict[tuple[str, str], tuple[str, str]] = field(default_factory=dict)
 	tax_catalog: tuple[TaxMapping, ...] = ()
+	user_id: str | None = None
 
 
 def _money(value: Decimal) -> Decimal:
@@ -213,8 +219,15 @@ def _validate_input(data: SaftExportData) -> None:
 		_require(entry.debit == debit and entry.credit == credit, "SAF-T krever hovedboksbeløp i hele øre; kildedata blir ikke avrundet ved eksport.")
 		_require(debit >= 0 and credit >= 0 and bool(debit or credit), f"Bilagslinje {entry.record_id} må ha et positivt debet-/kreditbeløp.")
 		if debit and credit:
-			_require(not entry.currency_code and entry.currency_amount is None and not entry.tax_code,
-				f"Bilagslinje {entry.record_id}: Samlet debet/kredit er foreløpig kvalifisert bare i NOK med uttrykkelig avgiftsside.")
+			_require(not entry.tax_code,
+				f"Bilagslinje {entry.record_id}: Samlet debet/kredit krever uttrykkelig avgiftsside.")
+			if entry.currency_code:
+				_require(all(value is not None and value.is_finite() and value >= 0
+					for value in (entry.debit_currency_amount, entry.credit_currency_amount)),
+					f"Bilagslinje {entry.record_id}: Bokført valutabeløp kreves for begge sider; eksporten fordeler ikke et nettobeløp.")
+			else:
+				_require(entry.currency_amount is None,
+					f"Bilagslinje {entry.record_id}: Valutakode mangler.")
 			_require(all(isinstance(info.line_credit, bool) for info in entry.tax_information),
 				f"Bilagslinje {entry.record_id}: Velg bokført side for hver avgiftsopplysning på samlet debet/kredit.")
 		if entry.party_type or entry.party:
@@ -269,9 +282,11 @@ def _transaction_lines(entries: Iterable[LedgerEntry]) -> Iterable[LedgerEntry]:
 	"""Represent both booked amounts; retain the native posting reference on each side."""
 	for entry in entries:
 		if entry.debit and entry.credit:
-			yield replace(entry, credit=Decimal(), tax_information=tuple(
+			yield replace(entry, credit=Decimal(), currency_amount=entry.debit_currency_amount
+				if entry.debit_currency_amount is not None else entry.currency_amount, tax_information=tuple(
 				info for info in entry.tax_information if info.line_credit is False))
-			yield replace(entry, debit=Decimal(), tax_information=tuple(
+			yield replace(entry, debit=Decimal(), currency_amount=entry.credit_currency_amount
+				if entry.credit_currency_amount is not None else entry.currency_amount, tax_information=tuple(
 				info for info in entry.tax_information if info.line_credit is True))
 		else:
 			yield entry
@@ -341,10 +356,14 @@ def _add_tax_information(line: etree._Element, entry: LedgerEntry, information: 
 	_element(tax, "Country", "NO")
 	if information.tax_base is not None:
 		_element(tax, "TaxBase", information.tax_base)
+	if information.tax_base_description:
+		_element(tax, "TaxBaseDescription", information.tax_base_description)
 	amount = information.tax_amount if information.tax_amount is not None else (_money(entry.debit) if _money(entry.debit) else _money(entry.credit))
 	credit = information.tax_credit if information.tax_credit is not None else not bool(_money(entry.debit))
 	amount_element = etree.SubElement(tax, f"{{{NS}}}{'CreditTaxAmount' if credit else 'DebitTaxAmount'}")
 	_element(amount_element, "Amount", amount)
+	if information.tax_exemption_reason:
+		_element(tax, "TaxExemptionReason", information.tax_exemption_reason)
 
 
 def build_saf_t(data: SaftExportData) -> bytes:
@@ -372,6 +391,8 @@ def build_saf_t(data: SaftExportData) -> bytes:
 	_element(criteria, "SelectionStartDate", data.period_start)
 	_element(criteria, "SelectionEndDate", data.period_end)
 	_element(header, "TaxAccountingBasis", "A")
+	if data.user_id:
+		_element(header, "UserID", data.user_id)
 
 	master_files = etree.SubElement(root, f"{{{NS}}}MasterFiles")
 	if catalog_accounts:
@@ -448,6 +469,8 @@ def build_saf_t(data: SaftExportData) -> bytes:
 		_element(transaction, "Period", posting_date.month)
 		_element(transaction, "PeriodYear", posting_date.year)
 		_element(transaction, "TransactionDate", voucher_entries[0].transaction_date or posting_date)
+		if voucher_entries[0].source_id:
+			_element(transaction, "SourceID", voucher_entries[0].source_id)
 		_element(transaction, "VoucherType", voucher_type)
 		_element(transaction, "VoucherDescription", voucher_type)
 		_element(transaction, "Description", voucher_entries[0].remarks or voucher_no)

@@ -115,6 +115,20 @@ class TestSaftBuilder(TestCase):
 
 class TestNorwegianBuilderExtensions(TestCase):
     export_data = TestSaftBuilder.export_data
+    def test_both_booked_currency_sides_preserve_actual_gross_amounts(self):
+        data=self.export_data()
+        entries=(LedgerEntry('GL-FX-BOTH','Bank',Decimal(100),Decimal(40),date(2026,1,15),'Journal Entry','FX-BOTH',
+                    currency_code='EUR',currency_amount=Decimal(6),
+                    debit_currency_amount=Decimal(10),credit_currency_amount=Decimal(4)),
+                 LedgerEntry('GL-FX-OTHER','Revenue',Decimal(),Decimal(60),date(2026,1,15),'Journal Entry','FX-BOTH',
+                    currency_code='EUR',currency_amount=Decimal(6)))
+        root=etree.fromstring(build_saf_t(replace(data,entries=entries)));ns={'s':NS}
+        lines=root.xpath('.//s:Line[s:RecordID="GL-FX-BOTH"]',namespaces=ns)
+        self.assertEqual(len(lines),2)
+        self.assertEqual(lines[0].xpath('s:DebitAmount/s:CurrencyAmount/text()',namespaces=ns),['10'])
+        self.assertEqual(lines[1].xpath('s:CreditAmount/s:CurrencyAmount/text()',namespaces=ns),['4'])
+        self.assertEqual(root.xpath('string(.//s:TotalDebit)',namespaces=ns),'100.00')
+        self.assertEqual(root.xpath('string(.//s:TotalCredit)',namespaces=ns),'100.00')
     def test_both_booked_sides_keep_source_id_totals_and_dimensions(self):
         data=self.export_data()
         entries=(LedgerEntry('GL-BOTH','Bank',Decimal(100),Decimal(40),date(2026,1,15),'Journal Entry','BOTH',

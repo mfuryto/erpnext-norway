@@ -74,6 +74,9 @@ def read(company, end, period_mappings, accounts):
             else [DEDUCTION] if doctype != 'Sales Invoice' else [])
         rows = frappe.get_all(child, filters={'parent': ['in', [r.name for r in parents]],
             'parenttype': doctype, 'parentfield': field}, fields=fields, limit_page_length=0)
+        services = {(row.parent, row.get(CODE)) for row in rows
+            if doctype == 'Journal Entry' and row.get(CODE) in {'86', '88'}
+            and frappe.get_cached_value('Account', row.account, 'account_number') in {'2704', '2709'}}
         imports, outputs = defaultdict(set), defaultdict(set)
         for row in rows:
             code = row.get(CODE)
@@ -81,7 +84,13 @@ def read(company, end, period_mappings, accounts):
                 continue
             source = doctype + ' ' + row.parent
             if doctype == 'Journal Entry':
-                if code in IMPORT:
+                if (row.parent, code) in services:
+                    if frappe.get_cached_value('Account', row.account, 'account_number') not in {'2704', '2709'}:
+                        continue
+                    share = row.get(DEDUCTION)
+                    if not share:
+                        frappe.throw(f'SAF-T: {source}: registrer dokumentert fradragsandel; ukjent tjenestefradrag blir ikke antatt.')
+                elif code in IMPORT:
                     imports[row.parent].add(code)
                     if row.account not in accounts or accounts[row.account].account_id not in {'2705', '2706'}:
                         continue
