@@ -87,12 +87,12 @@ def validate(doc, method=None):
         if (service_output and doc.docstatus == 1 and not deduction
                 and row.idx not in legacy_unknown_share):
             frappe.throw(frappe._('Record the documented deduction percent before submitting reverse-charge service VAT. Use code 87/89 without deduction.'))
-        if not is_vat_account(row.account):
-            continue
         if previous and previous.docstatus == 1:
             from erpnext_norway.vat_catalog import check_metadata_period
             check_metadata_period(frappe._dict(doctype=doc.doctype, company=doc.company,
                 posting_date=tax_date, is_opening=doc.is_opening))
+        if not is_vat_account(row.account):
+            continue
         if not row.get(CODE):
             if doc.docstatus == 1:
                 frappe.throw(frappe._('Select a Norwegian VAT code on each journal VAT line before submission.'))

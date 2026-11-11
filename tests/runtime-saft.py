@@ -96,11 +96,14 @@ try:
         assert partial.xpath('string(.//s:SelectionStartDate)',namespaces=NS)=='2026-10-19'
         assert Decimal(partial.xpath("string(.//s:Account[s:AccountID='1920']/s:OpeningDebitBalance)", namespaces=NS)) == 275
         rejected(lambda: saft.build('Runtime Recovery Example', '2026-01-01', '2026-12-31'), '', permission=True)
-        rejected(lambda: saft.build(C, '2027-01-01', '2027-12-31'), '2026')
+        _, following = exported(start='2027-01-01', end='2027-12-31')
+        assert not following.xpath('.//s:GeneralLedgerEntries', namespaces=NS)
         account = frappe.get_doc('Account', frappe.db.get_value('Account', {'company': C, 'account_number': '1920'}))
         before = list(account.get(saft.MAPPING))
         frappe.db.savepoint('saft_mapping')
         account.set(saft.MAPPING, []);account.save()
+        exported()  # Exact shipped identity uses the standard mapping without writes.
+        account.account_name = 'Synthetic renamed bank account'; account.save()
         rejected(lambda: exported(), 'kontokobling')
         frappe.db.rollback(save_point='saft_mapping')
         # Opening and native cancellation stay in the ledger; only opening is

@@ -1,15 +1,15 @@
 # SAF-T: nedlasting og kvalifisert omfang
 
-App 0.4.34 sluttfører den tekniske eksporten for det avtalte første omfanget:
-ett norsk ENK uten ansatte, NOK og kalenderåret 2026, med de kvalifiserte
+App 0.4.35 korrigerer og forenkler den tekniske eksporten for det avtalte første omfanget:
+ett norsk ENK uten ansatte, NOK og kalenderår, med de kvalifiserte
 utenlandstransaksjonene under. **Foretak → Last ned SAF-T** leverer SAF-T 1.40
 fra ERPNexts bokførte hovedbok, bilag og masterregistre. Ingen egen hovedbok,
 MVA-beregning, lagerverdi eller årsavslutningsmotor opprettes.
 
 Eksporten er kvalifisert mot ERPNext 16.52.1 / Frappe 16.53.0. Teknisk
 kvalifisering og regnskapsmessig aksept av det faktiske foretakets oppsett er
-forskjellige oppgaver. Korrekte foretaksopplysninger og årsspesifikke
-kontokoblinger må være registrert før nedlasting.
+forskjellige oppgaver. Korrekte foretaksopplysninger og kontokoblinger må være gyldige før nedlasting. Standardkoblinger brukes for
+uendrede standardkontoer; egne valg beholdes fra angitt år.
 
 ## Samlet støtteomfang i 0.4.34
 
@@ -55,7 +55,9 @@ er undersøkt ved revisjon `10c8fd82a6ff47e53385bc33c7638c5fde239a4f`.
 Kontogruppering må i tillegg følge offisiell liste for aktuelt inntektsår og
 foretaksform. En norsk kontokode er ikke alene bevis på gyldig gruppering.
 Gjeldende kilder inkluderer egne [gruppelister for 2025–2026](https://github.com/Skatteetaten/saf-t/tree/10c8fd82a6ff47e53385bc33c7638c5fde239a4f/Grouping%20Category%20Code%202025-2026).
-2027-listene skal kontrolleres før støtte for det året erklæres ferdig.
+Publiserte endringer i grupperingskodene skal kontrolleres når de kommer.
+Dokumentasjonen oppgir ikke at en separat fil med årstallet 2027 må finnes
+før 1.40 kan brukes for 2027.
 
 ## Prøvd kjerne før tilpasning
 
@@ -105,17 +107,16 @@ ENK Norge er ikke installert og er ikke en appavhengighet.
 
 ## Oppsett og bruk
 
-1. Bruk eksisterende foretaksfelt for organisasjonsnummer, telefon og adresse.
-2. På hver brukt **Konto**, fyll **Norsk SAF-T-kontokobling** med år 2026,
-   grupperingskategori og grupperingskode fra den offisielle listen. Brukte
-   kontoer og kontoer med inngående saldo må ha én gyldig kobling for året.
-   Dette er engangs konfigurasjon av kontoplanen, ikke etterbehandling av bilag.
-   Ingen kontogruppering gjettes fra et firesifret nummer alene.
-   Kontonummer brukes som ID når det finnes; ellers beholdes kjernens
-   entydige kontonøkkel. Ekstra valutakontoer trenger ikke et påfunnet nummer.
+1. Bruk eksisterende foretaksfelt for organisasjonsnummer og registrerte
+   kontakt-/adresse-/bankopplysninger. Telefonnummer er valgfritt i skjemaet.
+2. Uendrede standardkontoer får en kontrollert standardkobling når de er brukt.
+   Egne eller omdøpte kontoer uten entydig standardkobling krever et valg i
+   **Norsk SAF-T-kontokobling** på kontokortet. Angi første regnskapsår valget
+   gjelder fra. Det beholdes senere år til en ny kobling registreres.
+   Eksplisitte valg går foran standarden; ingen kobling gjettes ut fra nummer alene.
 3. Åpne foretaket som regnskapsansvarlig (**Accounts Manager**), velg
-   **Last ned SAF-T** og angi datoer innenfor 2026. Feil ved kontokobling
-   lenker direkte til det aktuelle kontokortet.
+   **Last ned SAF-T** og datoer innenfor samme kalenderår. Manglende eller
+   ugyldig kontokobling lenker direkte til kontokortet.
 4. Filen XSD-valideres før nedlasting. Native Access Log registrerer eksporten.
    Eksporten endrer ikke bilag, betaling, nummerserier eller hovedbok. Den
    oppretter ikke et eget eksportarkiv eller en ny hovedbok.
@@ -153,9 +154,9 @@ kontokobling, bilagsbalanse og avgiftsopplysninger før en fil leveres.
 
 ## Avgrensninger og neste år
 
-2027 krever publisert og kvalifisert årsliste. Skatteetatens kodelister som er
-kontrollert 8. november 2026 inneholder fortsatt grupperingen for 2025–2026;
-2026-listen videreføres ikke automatisk til 2027. Formatet er allerede 1.40.
+Formatet er 1.40. Eksporten bruker publiserte, låste grupperingskoder og
+bevarer historiske kontovalg. Den tidligere ubetingede 2026-sperren er fjernet.
+Native 2027-posteringer og inngående saldo etter 2026-stenging prøves separat.
 
 Alternative regnskaps-/avskrivningsbøker, egendefinerte regnskapsdimensjoner,
 andre foretaksformer, lønn og særbransjer ligger utenfor det avtalte første
@@ -702,9 +703,9 @@ et fradrag. Ingen ny avgiftsberegning eller registreringsflate er nødvendig.
 Formatet er allerede 1.40. Skatteetaten krever dette formatet fra 2027, men
 formatversjon og årsspesifikk grupperingsliste er to forskjellige avklaringer.
 Ved kildekontroll 8. november 2026 inneholder det offisielle SAF-T-registeret
-bare listen for 2025–2026 som siste grupperingsliste. Eksporten for 2027 skal
-fortsatt avvises inntil årets offisielle liste er publisert, låst og prøvd.
-Den skal ikke få 2026-koder automatisk eller godkjennes bare fordi XML er gyldig.
+bare listen for 2025–2026 som siste grupperingsliste. Det tidligere kravet om å avvise 2027 var vår egen kvalifiseringsgrense,
+ikke et dokumentert pålegg fra Skatteetaten. I 0.4.35 erstattes den med prøvd
+native årsbehandling og validering mot publiserte koder; historiske valg bevares.
 
 Kilder: [Skatteetatens formatdokumentasjon](https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/rutiner-regnskap-og-kassasystem/saf-t-regnskap/dokumentasjon/)
 og [offisielt skjema-/koderegister](https://github.com/Skatteetaten/saf-t).
@@ -748,3 +749,44 @@ har GL, betyr ikke at alle fakturalinjene bruker en avregningskonto. Den
 registrerte driftsmiddelmarkeringen og native Stock Ledger Entry-koblingen
 per mottakslinje må avgjøre dette. En tjenestelinje beholder sin bokførte
 kostnadskonto selv om samme mottak også kapitaliserer et driftsmiddel.
+
+## Korrigering og forenkling etter gjennomgang
+
+Kjernen har allerede Bank Account, Bank, Contact, kontoplan og hovedbok.
+Gapet er lesingen til SAF-T, ikke registrering eller bokføring. Eksporten skal
+lese de eksisterende registrene med ordinære rettigheter, uten passord eller
+integrasjonsnøkler. Header.Contact beholdes; Telephone er valgfritt i XSD 1.40.
+
+Uendrede standardkontoer kan bruke gjenbrukt, versjonert koblingsdata. Eksplisitte
+kontokoblinger har forrang og gjelder fra angitt år til neste registrerte endring.
+Nye koblinger skal ikke endre eldre års valg. Egne eller omdøpte kontoer uten
+entydig standardkobling krever fortsatt et uttrykkelig valg. Eksporten skriver
+ikke koblingsrader eller endrer kontoplanen. En ny årstallsfil er ikke i seg selv
+et dokumentert formatkrav; publiserte grupperingskoder valideres fortsatt.
+
+Flere grunnlagslinjer i et MVA-bilag kan bruke samme uttrykkelig registrerte kode.
+Uten lagret MVA/grunnlag per linje skal eksporten ikke fordele bilagets sum.
+Lagerlinjer kan bruke flere konti når kjernens bokførte kildelenker identifiserer
+dem entydig. Historiske konti skal ikke utledes fra dagens lageroppsett.
+
+
+### Avgrensede eksisterende klasseutvidelser
+
+Appen endrer ingen kjernefiler, men bruker kooperative klasseutvidelser og to
+avgrensede API-overstyringer. Dette er ikke det samme som «ingen overstyringer».
+Norsk kontoplan bruker native create_charts/importformat fordi den ordinære
+malveien endrer gjentatte kontonavn. File-/dokumentutvidelsene lukker prøvde hull
+ved overskriving, frakobling og sletting etter kansellering; native filvern brukes
+først. Item Tax Template tillater native varekostkonto uten å endre kontotypen.
+LCV-utvidelsen avgrenser unntaket for norsk MVA som allerede er kapitalisert
+av kjernen. Ordinære maler, dokumenter og valideringer kaller kjernen videre.
+Gap/prøver er beskrevet i native-controls.md, norwegian-chart.md og
+vat-valuation.md. Ingen ny betalings-, MVA- eller hovedboksmotor innføres her.
+
+
+En eksplisitt NA/NA-kobling er tillatt for interimskontoer som ikke kan
+kobles til næringsspesifikasjonen (generell dokumentasjon 1.40 side 17).
+Den tidligere sperren for alle brukte NA-kontoer var for streng. Eksporten
+setter ikke NA automatisk på brukte kontoer som mangler kobling. Skatteetaten
+angir årlig vedlikehold av kontokoblingene innen fristen for næringsspesifikasjonen;
+publiserte endringer må derfor følges opp selv om uendrede valg videreføres.

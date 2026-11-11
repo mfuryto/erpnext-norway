@@ -61,13 +61,14 @@ try:
         except frappe.ValidationError as error:assert 'periodestenging' in str(error)
         else:raise AssertionError('Unfinished native closing was exported')
         frappe.db.rollback(save_point='pending_year_closing')
-        # No future year borrows the current year's grouping list.
-        try:saft.build(C,'2027-01-01','2027-12-31')
-        except frappe.ValidationError as error:assert '2026' in str(error)
-        else:raise AssertionError('Unqualified future-year grouping was accepted')
+        # Native year closing becomes opening balances in the following year.
+        following=saft.build(C,'2027-01-01','2027-12-31');xml.validate_saf_t(following)
+        future=etree.fromstring(following)
+        assert not future.xpath('.//s:GeneralLedgerEntries',namespaces=NS)
+        assert future.xpath('.//s:Account[s:AccountID="2050"]/s:OpeningCreditBalance/text()',namespaces=NS)==['400.00']
         file=save_file('synthetic-saft-year-end.xml',data,'Company',C,is_private=1)
         e={'pcv':pcv.name,'gl':ledger(),'file':file.name,'sha256':hashlib.sha256(data).hexdigest()}
         record=save_file('synthetic-saft-year-end-evidence.json',frappe.as_json(e).encode(),'Company',C,is_private=1)
         frappe.db.set_default('runtime_saft_year_end',record.name);frappe.db.commit()
-        print('PASS native SAF-T year closing, actual PCV and GL IDs/gross, source versus posting dates, equity400/P&L0, unfinished closing and unqualified2027 rejected')
+        print('PASS native SAF-T year closing, actual PCV and GL IDs/gross, source versus posting dates, equity400/P&L0, unfinished closing rejected and2027 native opening balances')
 finally:frappe.db.rollback();frappe.destroy()

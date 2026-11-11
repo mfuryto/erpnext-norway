@@ -10,7 +10,7 @@ from erpnext_norway.vat_catalog import CODE, DEDUCTION
 
 
 def invoice_accounts(doc, rows):
-    """Resolve stock items to the one account actually posted by this invoice."""
+    """Resolve stock items from posted GL source links, or one unambiguous account."""
     filters = {'company': doc.company, 'voucher_type': doc.doctype, 'voucher_no': doc.name}
     stock = frappe.get_list('Stock Ledger Entry', filters=filters,
         fields=['name', 'voucher_detail_no', 'item_code'], limit_page_length=0) if frappe.db.count('Stock Ledger Entry', filters) else []
@@ -30,11 +30,24 @@ def invoice_accounts(doc, rows):
         unsupported(doc, 'Fullfør kjernens lagerrepostering før SAF-T eksporteres.')
     accounts = {r.account for r in rows if not r.party
         and frappe.get_cached_value('Account', r.account, 'account_type') == 'Stock'}
-    if stock and doc.doctype == 'Purchase Invoice' and len(accounts) != 1:
-        unsupported(doc, 'Lagerkjøp med flere bokførte lagerkontoer er ikke kvalifisert.')
     if doc.doctype == 'Sales Invoice':
         return {}  # Sales VAT belongs to the recorded income, not stock/COGS.
-    return {r.voucher_detail_no: next(iter(accounts)) for r in stock}
+    result = {}
+    for source in stock:
+        exact = {r.account for r in rows if r.account in accounts
+            and r.voucher_detail_no == source.voucher_detail_no}
+        item = next(r for r in doc.items if r.name == source.voucher_detail_no)
+        dimension_accounts = {r.account for r in rows if r.account in accounts
+            and (r.cost_center or '') == (item.cost_center or '')
+            and (r.project or '') == (item.get('project') or '')}
+        candidates = exact or (dimension_accounts if len(accounts) > 1 else accounts)
+        if (not accounts and any(r.account == item.expense_account for r in rows)
+                and frappe.get_cached_value('Account', item.expense_account, 'root_type') == 'Expense'):
+            candidates = {item.expense_account}  # Native periodic inventory expense, as stored on the invoice.
+        if len(candidates) != 1:
+            unsupported(doc, 'Lagerlinjen mangler en entydig bokført kontokobling.')
+        result[source.voucher_detail_no] = next(iter(candidates))
+    return result
 
 
 def receipt_taxes(doc, rows):

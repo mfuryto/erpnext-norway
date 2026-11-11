@@ -269,8 +269,7 @@ class TestNorwegianBuilderExtensions(TestCase):
             with self.assertRaises(SaftExportError):
                 build_saf_t(replace(data,accounts={**data.accounts,'Unused':AccountData('Unused','Ubrukt')},
                     account_mappings={**data.account_mappings,'Unused':mapping}))
-        with self.assertRaisesRegex(SaftExportError,'ubrukte'):
-            build_saf_t(replace(data,account_mappings={**data.account_mappings,'Bank':AccountMapping('1920','NA','NA')}))
+        build_saf_t(replace(data,account_mappings={**data.account_mappings,'Bank':AccountMapping('1920','NA','NA')}))
 
     def test_complete_tax_catalog_does_not_create_tax_transactions(self):
         data=self.export_data()
@@ -288,6 +287,24 @@ class TestNorwegianBuilderExtensions(TestCase):
         for mapping in (TaxMapping('BAD',Decimal('NaN'),'NA'),TaxMapping('BAD',Decimal(25),'NA',()),
                         TaxMapping('BAD',Decimal(25),'NA',(Decimal(101),))):
             with self.assertRaises(SaftExportError):build_saf_t(replace(data,tax_catalog=(mapping,)))
+
+    def test_optional_phone_and_native_bank_contact_fields(self):
+        from erpnext_norway.saft_builder import BankAccountData, ContactData
+        data=self.export_data()
+        bank=BankAccountData('12345678901',None,'Example account','1234','DNBANOKK','NOK','1920')
+        iban=BankAccountData('ignored when IBAN exists','NO9386011117947',bic='DNBANOKK')
+        contact=ContactData('Test','Person',email='contact@example.invalid')
+        data=replace(data,company=replace(data.company,telephone='',bank_accounts=(bank,iban),contacts=(contact,)),
+            parties={key:replace(party,bank_accounts=(iban,),contacts=(contact,)) for key,party in data.parties.items()})
+        root=etree.fromstring(build_saf_t(data));ns={'s':NS}
+        self.assertFalse(root.xpath('.//s:Telephone',namespaces=ns))
+        self.assertEqual(root.xpath('.//s:Header/s:Company/s:BankAccount/s:BankAccountNumber/text()',namespaces=ns),['12345678901'])
+        self.assertEqual(root.xpath('.//s:Header/s:Company/s:BankAccount/s:IBANNumber/text()',namespaces=ns),['NO9386011117947'])
+        self.assertEqual(root.xpath('.//s:Customer/s:Contact/s:Email/text()',namespaces=ns),['contact@example.invalid'])
+        self.assertEqual(root.xpath('.//s:Customer/s:BankAccount/s:IBANNumber/text()',namespaces=ns),['NO9386011117947'])
+        build_saf_t(replace(data,company=replace(data.company,contacts=())))
+        company_phone=etree.fromstring(build_saf_t(replace(data,company=replace(data.company,telephone='90000000'))))
+        self.assertEqual(company_phone.xpath('.//s:Header/s:Company/s:Contact/s:Telephone/text()',namespaces=ns),['90000000'])
 
 
 if __name__ == '__main__':

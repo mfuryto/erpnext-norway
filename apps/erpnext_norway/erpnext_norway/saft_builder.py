@@ -43,6 +43,26 @@ class SaftExportError(ValueError):
 
 
 @dataclass(frozen=True)
+class BankAccountData:
+	account_number: str | None = None
+	iban: str | None = None
+	account_name: str | None = None
+	sort_code: str | None = None
+	bic: str | None = None
+	currency: str | None = None
+	ledger_account: str | None = None
+
+
+@dataclass(frozen=True)
+class ContactData:
+	first_name: str
+	last_name: str
+	telephone: str | None = None
+	email: str | None = None
+	mobile: str | None = None
+
+
+@dataclass(frozen=True)
 class CompanyData:
 	registration_number: str
 	name: str
@@ -56,6 +76,8 @@ class CompanyData:
 	vat_registration_date: date | None = None
 	bank_account_number: str | None = None
 	address_line2: str | None = None
+	bank_accounts: tuple[BankAccountData, ...] = ()
+	contacts: tuple[ContactData, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -83,6 +105,8 @@ class PartyData:
 	postal_code: str | None = None
 	city: str | None = None
 	address_line2: str | None = None
+	bank_accounts: tuple[BankAccountData, ...] = ()
+	contacts: tuple[ContactData, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -200,10 +224,8 @@ def _validate_input(data: SaftExportData) -> None:
 	_require(data.period_start <= data.period_end, "Fra-dato kan ikke være etter til-dato.")
 	_require(data.company.registration_number, "SAF-T krever organisasjonsnummer.")
 	_require(data.company.name, "SAF-T krever foretaksnavn.")
-	_require(data.company.telephone, "SAF-T 1.40 krever telefonnummer for foretaket.")
 	_require(data.company.currency == "NOK", "Denne eksporten støtter foreløpig bare NOK som hovedvaluta.")
 
-	used = {entry.account for entry in data.entries}
 	for account in data.accounts:
 		mapping = data.account_mappings.get(account)
 		_require(mapping is not None, f"Mangler SAF-T-mapping for konto {account}.")
@@ -211,8 +233,8 @@ def _validate_input(data: SaftExportData) -> None:
 		_require(mapping.grouping_category, f"Mangler SAF-T grouping category for {account}.")
 		_require(mapping.grouping_code, f"Mangler SAF-T grouping code for {account}.")
 		if 'NA' in (mapping.grouping_category, mapping.grouping_code):
-			_require(account not in used and (mapping.grouping_category, mapping.grouping_code) == ('NA', 'NA'),
-				f"Konto {account}: NA-gruppering er bare kvalifisert for ubrukte kontoer.")
+			_require((mapping.grouping_category, mapping.grouping_code) == ('NA', 'NA'),
+				f"Konto {account}: NA må angis som både kategori og kode.")
 	for entry in data.entries:
 		_require(entry.account in data.accounts, f"Mangler kontodata for {entry.account}.")
 		debit, credit = _money(entry.debit), _money(entry.credit)
@@ -306,20 +328,46 @@ def _add_company(parent: etree._Element, company: CompanyData) -> None:
 		if company.postal_code:
 			_element(address, "PostalCode", company.postal_code)
 		_element(address, "Country", company.country)
-	contact = etree.SubElement(parent, f"{{{NS}}}Contact")
-	contact_person = etree.SubElement(contact, f"{{{NS}}}ContactPerson")
-	_element(contact_person, "FirstName", "NotUsed")
-	_element(contact_person, "LastName", company.name)
-	_element(contact, "Telephone", company.telephone)
+	contacts = company.contacts
+	if not contacts or (company.telephone and company.telephone not in {c.telephone for c in contacts}):
+		contacts += (ContactData("NotUsed", company.name, company.telephone),)
+	for contact in contacts:
+		_add_contact(parent, contact)
 	if company.vat_registration_number:
 		registration = etree.SubElement(parent, f"{{{NS}}}TaxRegistration")
 		_element(registration, "TaxRegistrationNumber", company.vat_registration_number)
 		_element(registration, "TaxAuthority", "Skatteetaten")
 		if company.vat_registration_date:
 			_element(registration, "TaxVerificationDate", company.vat_registration_date)
-	if company.bank_account_number:
+	_add_bank_accounts(parent, company.bank_accounts or (
+		(BankAccountData(account_number=company.bank_account_number),) if company.bank_account_number else ()))
+
+
+def _add_contact(parent, data):
+	contact = etree.SubElement(parent, f"{{{NS}}}Contact")
+	person = etree.SubElement(contact, f"{{{NS}}}ContactPerson")
+	_element(person, "FirstName", data.first_name)
+	_element(person, "LastName", data.last_name)
+	for tag, value in (("Telephone", data.telephone), ("Email", data.email), ("MobilePhone", data.mobile)):
+		if value:
+			_element(contact, tag, value)
+
+
+def _add_bank_accounts(parent, accounts):
+	for data in accounts:
+		_require(data.iban or data.account_number, "SAF-T: Bankkonto mangler kontonummer/IBAN.")
 		account = etree.SubElement(parent, f"{{{NS}}}BankAccount")
-		_element(account, "BankAccountNumber", company.bank_account_number)
+		if data.iban:
+			_element(account, "IBANNumber", data.iban)
+		else:
+			_element(account, "BankAccountNumber", data.account_number)
+			for tag, value in (("BankAccountName", data.account_name), ("SortCode", data.sort_code)):
+				if value:
+					_element(account, tag, value)
+		for tag, value in (("BIC", data.bic), ("CurrencyCode", data.currency),
+				("GeneralLedgerAccountID", data.ledger_account)):
+			if value:
+				_element(account, tag, value)
 
 
 def _add_party(parent: etree._Element, party: PartyData, entries: Iterable[LedgerEntry], data: SaftExportData) -> None:
@@ -332,6 +380,9 @@ def _add_party(parent: etree._Element, party: PartyData, entries: Iterable[Ledge
 				("City", party.city), ("PostalCode", party.postal_code), ("Country", party.country)):
 			if value:
 				_element(address, tag, value)
+	for contact in party.contacts:
+		_add_contact(parent, contact)
+	_add_bank_accounts(parent, party.bank_accounts)
 	_element(parent, "CustomerID" if party.party_type == "Customer" else "SupplierID", party.party_id)
 
 	by_account: dict[str, list[LedgerEntry]] = defaultdict(list)

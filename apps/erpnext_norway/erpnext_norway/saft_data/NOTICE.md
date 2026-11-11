@@ -22,3 +22,13 @@ SHA-256 for de uendrede kildene følger i source.json.
 
 Skjemaets opprinnelige whitespace er bevart. Git-attributtet unntar bare
 denne uendrede normfilen fra kontroll av etterfølgende blanktegn.
+
+
+account-mapping.csv er gjenbrukt koblingsdata (357 kontoer), ikke en offisiell
+kontokodeliste, fra mfuryto/dolibarr-norway, GPL-3.0, revisjon
+cc5cb151c1bca9eb4c6b84dd69305191e2e3ef29:
+https://github.com/mfuryto/dolibarr-norway/blob/cc5cb151c1bca9eb4c6b84dd69305191e2e3ef29/htdocs/custom/norway/data/saft/account-mapping.csv
+Original SHA-256: e25ff8e8dd9eadda2a21e61cd94fc2f615cf5333a6fc1302b00ffb46e9f93532.
+Lokal endring: kolonnen root_type er lagt til fra den leverte norske kontoplanen. Kontonavn/proveniens følger også
+resources/norway-chart/NOTICE. Bare data gjenbrukes, ingen Dolibarr-kode.
+Standardvalget gjelder bare eksakt opprinnelig nummer, navn og hovedgruppe.

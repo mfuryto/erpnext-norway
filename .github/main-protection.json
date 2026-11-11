@@ -9,6 +9,10 @@
       {
         "context": "ERPNext runtime integration",
         "app_id": 15368
+      },
+      {
+        "context": "Norwegian app integration",
+        "app_id": 15368
       }
     ]
   },
