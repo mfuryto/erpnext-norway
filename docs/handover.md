@@ -882,3 +882,19 @@ eller EHF-funksjoner innføres før denne korrigeringsleveransen er overført.
 Gjennomgangen korrigerer også NA/NA: uttrykkelig valg for interimskontoer som
 ikke kan grupperes tillates etter generell dokumentasjon 1.40 side 17, også
 med posteringer. Brukte kontoer uten kobling får fortsatt ingen automatisk NA.
+
+## ENK: native eierflyt og bokført årsgrunnlag
+
+Neste del av punkt 7 kvalifiserer eksisterende bokføringsbilag,
+leverandørfaktura/oppgjørsreferanse, resultatregnskap, balanse, saldobalanse,
+hovedbok og periodeavslutningsbilag. Se [ENK-arbeidsflyten](enk-year-end.md).
+Det innføres ingen ny appmodell, rapportberegning, eierside eller skattekalkulator.
+Vanlig bruker skal kunne føre innskudd, uttak, privat betalte næringskjøp og
+personlig skatt på eksisterende egenkapitalkonti, og avslutte overskudd/tap
+uten å miste årsresultatet i de native rapportene. Native lås og rapporttilgang
+prøves sammen med SAF-T og eksportert backup/gjenoppretting.
+
+Skattemessige avskrivninger/samlesaldoer, forskjeller og øvrig norsk
+næringsgrunnlag er fortsatt et eget gap som må prøves mot kjernen. Denne
+delleveransen erklærer ikke hele punkt 7 eller skatteinnsending ferdig.
+EHF via SendRegning står fortsatt etter ENK i planen.
