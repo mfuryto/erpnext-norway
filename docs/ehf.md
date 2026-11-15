@@ -1,8 +1,8 @@
 # EHF: videreføring og aksept
 
 EHF er uttrykkelig videreført i bestillingen 28. oktober 2026. Det følger etter
-SAF-T og ENK/årsgrunnlag, før samlet sluttkontroll. **EHF er ikke levert eller
-kvalifisert i ERPNext Norway ennå.** Bevar eksisterende faktura, kreditnota,
+SAF-T og ENK/årsgrunnlag, før samlet sluttkontroll. **0.4.38 klargjør EHF-XML på den ordinære fakturaen; transport og faktisk
+levering via SendRegning er fortsatt ikke kvalifisert.** Bevar eksisterende faktura, kreditnota,
 nummer, regnskap og private dokumentoriginaler som kilder.
 
 ## Gjeldende format og eksisterende løsninger
@@ -27,7 +27,8 @@ Disse eksisterende tilleggene undersøkes før eventuell ny adapter:
 | [European e-Invoice Peppol-fork](https://github.com/prilk-consulting/eu_einvoice_peppol/tree/eff09ff5e4b4cb80b026a093cf42f03bfaa40276) | Oppgir UBL 2.1 for Peppol, og har UBL-skjemaer; appmetadata tillater Frappe/ERPNext 15–16. | Faktisk v16-/Python 3.14-installasjon, vedlikehold, låste avhengigheter, kreditnota og norske valideringer må prøves. Dette er en konkret gjenbrukskandidat før en ny UBL-bygger vurderes. |
 
 Dette er kildeundersøkelse, ikke full installasjons-/nettverksprøve av tilleggene.
-Ingen er innført som produktavhengighet, og det er ikke laget en ny UBL-motor.
+Kandidatene i denne tabellen er ikke innført som produktavhengigheter.
+Nyere EDocument gjenbrukes som Python-bibliotek i 0.4.38, se nedenfor.
 
 ## SendRegning og transport av ferdig EHF
 
@@ -59,7 +60,8 @@ og [EDocument Integration](https://github.com/prilk-consulting/edocument_integra
 er nyere GPL-3.0-kandidater fra samme utvikler som Peppol-forken. Metadata og
 README omfatter ERPNext 16/Python 3.14. Det er ikke ferdig installasjonsaksept.
 Integration har leverandørgrensesnitt; SendRegning-støtte er ikke funnet i den
-undersøkte revisjonen. Ingen av appene er innført som produktavhengighet.
+undersøkte revisjonen. I 0.4.38 brukes en nyere låst EDocument-revisjon som Python-bibliotek;
+Frappe-appene og deres leverandørintegrasjoner aktiveres ikke.
 
 Den nyere eksisterende generatoren er faktisk prøvd direkte mot native,
 syntetisk faktura på 1 250, native betaling og native kreditnota. Den gjengir
@@ -71,8 +73,7 @@ Peppol-kontrollen gir bare varselet om Foretaksregisteret. Det varselet skal
 vurderes etter foretaksform, ikke legges blindt til alle ENK.
 
 Påvist norsk adaptergap: registrert `company_tax_id` for skjerm/PDF inneholder
-organisasjonsnummer og MVA-merking, mens EHF trenger identifikator med norsk
-landprefiks. Native kreditnotakopiering bevarer heller ikke automatisk `po_no`;
+organisasjonsnummer og MVA-merking, mens EHF trenger identifikator på formen `NO<organisasjonsnummer>MVA`. Native kreditnotakopiering bevarer heller ikke automatisk `po_no`;
 den nyere kandidaten bruker dette feltet som referanse. Normal mottakerreferanse,
 norsk avgiftsmapping og betalingskonto må derfor kvalifiseres før integrasjon.
 Alle beløp og bokføring i prøven kom fra ERPNext; ingen faktisk nettverkssending.
@@ -107,3 +108,61 @@ profil og mottakers kapasitet må faktisk avklares og prøves.
 
 Produksjonsaktivering og faktiske serverhandlinger utføres av brukeren gjennom
 leverte blokker. En testkonto eller grønn CI alene betyr ikke at EHF er ferdig.
+
+## Arbeid 15. november: minst mulig gjenbrukstilpasning
+
+Kjernen er kontrollert i den låste versjonen: den har Code List/Common Code,
+vanlige faktura-/ordre-/betalingsfelt, File og Integration Request, men ingen
+norsk UBL-generator/SendRegning-transport. De funksjonene skal beholdes.
+EDocument ved `7e198be741eefd0b63f949e8494bf4c3496b744f` har en gjenbrukbar
+Peppol-generator og XML-verktøy. Disse prøves som Python-bibliotek uten
+`bench install-app edocument`: appens egne arbeidsflater, automatisk sletting/
+regenerering av XML og integrasjonshistorikk innføres ikke.
+
+Konkrete adaptergap før implementasjon: norsk endpoint/organisasjons- og
+MVA-identifikasjon, selvstendig mottakerreferanse adskilt fra ekte ordrenummer,
+betaling til den native valgte firmabankkontoen og kobling fra de eksisterende
+norske MVA-valgene. Den leverte bibliotekvalidatoren har eldre regler og kan
+behandle hoppet-over-validering som et varsel. Norsk sending må bruke
+obligatorisk XSD/CEN/Peppol-validering mot låste gjeldende artefakter, uten slik
+fallback. Generator/format gjenbrukes; ingen ny faktura- eller avgiftsmotor.
+
+Tilgang til transport av ferdig XML må avklares separat. Vanlig SendRegning-API
+utsteder egne fakturaer og er ikke en erstatning for denne transporten.
+Klargjort XML er ikke sendt eller levert EHF. Faktisk nettverkstest krever
+bekreftet aksesspunktkonto og avtalt testmottaker.
+
+## Klargjøring i ordinær faktura (0.4.38)
+
+På kunden kan **Leveringsmåte for faktura** settes til EHF og kjøperens
+**EHF-mottakerreferanse** oppgis. Valget følger en ny faktura; Standard kan
+fortsatt velges på kladden. Det faktiske bestillingsnummeret beholdes i ERPNexts
+ordinære bestillingsfelt. Kreditnotaen følger den opprinnelige fakturaen.
+
+Ved bokføring genereres Invoice/CreditNote fra en lesekopi av ERPNext-bilaget.
+Den lagres privat i det låste, ordinære vedleggsfeltet **EHF-fil**, sammen med
+et privat valideringsresultat. Kontrollene omfatter standard UBL 2.1 XSD og de
+uendrede offisielle CEN-/Peppol-reglene for produksjonsutgave 3.0.21.
+Manglende regler, ugyldig XML eller feilbeløp blokkerer bokføringen med EHF valgt.
+Vanlig PDF-original og XML beholdes etter betaling, masterdataendring og
+backup/gjenoppretting. Ingen historiske XML-originaler etterlages ved migrering.
+
+Kvalifikasjonsomfanget er norsk avsender og mottaker, NOK/EUR, ordinær
+25/15/12 %, nullsats, unntatt og ikke MVA-registrert, rabatter, kreditnota og
+native betaling. ERPNext fordeler allerede rabatt i `net_amount`/`net_rate`;
+generatoren leser disse verdiene og innfører ingen ny rabatt-/MVA-beregning.
+Norske unntatte linjer får fritakstekst uten feil henvisning til EUs artikkel 132.
+Utenlandske mottakere/eksport, andre valutaer og tillegg/frakt i avgiftstabellen
+er foreløpig utenfor EHF-kvalifikasjonen. Frakt som ordinær tjenestevarelinje
+følger den samme linje-/MVA-behandlingen som øvrige varer og tjenester.
+
+**Klargjort er ikke sendt.** Ingen sendeknapp, nettverkssending eller
+leveringskvittering er innført. SREST-konto, faktisk gjeldende tjeneste/endepunkt
+og testmottaker må bekreftes for å fullføre SendRegning-transporten. Bruk ikke
+SendRegnings ordinære utstedelses-API som erstatning for ERPNexts fakturaer.
+
+Måleenheter bruker kjernens **Code List/Common Code**, knyttet til aktuell UOM
+med den eksisterende UNECE Rec20-listen (`urn:peppol:id:codelist:UNECERec20`).
+Uten kobling aksepteres bare den entydige native telleenheten `Nos` som `C62`.
+Andre/uklare enheter avvises; kilo og timer blir aldri stilletiende sendt som antall.
+Ingen ny kodeliste- eller enhetstabell er innført.

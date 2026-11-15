@@ -64,10 +64,10 @@ doc_events = {
     "Sales Invoice": {
         "validate": "erpnext_norway.vat.validate_invoice",
         "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes"],
-        "on_submit": "erpnext_norway.printing.preserve_submission",
+        "on_submit": ["erpnext_norway.printing.preserve_submission", "erpnext_norway.ehf.preserve"],
         "on_update_after_submit": "erpnext_norway.vat_catalog.validate_code_changes",
         "before_naming": "erpnext_norway.numbering.guard_import_name",
-        "before_validate": ["erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice", "erpnext_norway.vat_returns.prepare", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes"],
+        "before_validate": ["erpnext_norway.ehf.prepare", "erpnext_norway.numbering.guard_invoice_identity", "erpnext_norway.vat.stamp_invoice", "erpnext_norway.vat_returns.prepare", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes"],
         "before_rename": "erpnext_norway.numbering.prevent_rename",
     },
     "Quotation": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
@@ -89,7 +89,7 @@ override_whitelisted_methods = {
 }
 doctype_js = {"Company": "public/js/company.js",
     "Bank Reconciliation Tool": "public/js/bank_language.js",
-    "Sales Invoice": "public/js/vat.js", "Purchase Invoice": "public/js/vat.js",
+    "Sales Invoice": ["public/js/vat.js", "public/js/ehf.js"], "Purchase Invoice": "public/js/vat.js",
     "Quotation": "public/js/vat.js", "Sales Order": "public/js/vat.js", "Delivery Note": "public/js/vat.js",
     "Purchase Order": "public/js/vat.js", "Purchase Receipt": "public/js/vat.js",
     "Journal Entry": "public/js/vat_journal.js"}

@@ -981,3 +981,36 @@ Se [sluttføring og kjernevalg](enk-completion.md),
 [native eieroppgjør/årsavslutning](enk-year-end.md).
 Neste produktpunkt er EHF via SendRegning med faktisk levering av faktura og
 kreditnota, status, feil og kvitteringer. Ingen EHF-integrasjon er lagt til i denne leveransen.
+
+## EHF: ordinær XML-klargjøring, 0.4.38
+
+EHF via SendRegning er påbegynt etter punkt 7. ERPNext beholder bilag,
+fakturanummer, MVA, betaling, hovedbok og private filer. Kjernen har ikke en
+norsk UBL-generator eller SendRegning-transport. Eksisterende EDocument-generator
+prøves/gjenbrukes som et hash-låst Python-bibliotek; appens egne registre,
+arbeidsflater og leverandørintegratorer aktiveres ikke. Ingen kjernefiler eller
+eksisterende Pythonpakker erstattes. Se [EHF-valg og avgrensning](ehf.md).
+
+Kunde/faktura får ordinært leveringsvalg og mottakerreferanse. Med EHF valgt
+lagres validert XML privat ved bokføring, i et låst standard Attach-felt,
+sammen med det faktiske kontrollresultatet. PDF og XML følger native filvern.
+Invoice/CreditNote, norsk org-/MVA-identitet, opprinnelig referanse, native
+bankkonto, MVA 25/15/12/nullsats/unntatt/ikke-registrert, rabatt, betaling og
+NOK/EUR følger eksisterende bilag. Kilo/enheter bruker kjernens EDI-kodeliste;
+ukjent enhet gis ingen vilkårlig reservekode. Ingen ny avgifts-/rabattmotor.
+
+UBL XSD og uendrede offisielle CEN-/Peppol 3.0.21-regler brukes strengt; feil
+eller manglende regler stopper klargjøringen. `runtime-ehf.py` er koblet inn før
+og etter eksportert backup/restore/migrering. `runtime-ehf-browser.cjs` prøver
+native felter på bokmål, ordinære roller og privat XML-nedlasting med gjest403.
+Det nye native feltskjemaet migreres gjennom eksisterende backup-/oppdateringsrutine.
+
+**EHF er ikke sluttført.** Skjermen viser klargjort, aldri sendt/levert.
+SendRegnings ordinære faktura-API utsteder egne fakturaer/numre og er ikke
+kvalifisert som ren XML-transport. Offentlig SREST-dokumentasjon beskriver en
+mulig transport, men aktuelt tjenestetilbud, endepunkt, tilgang og testmottaker
+må bekreftes. Brukeren er spurt om eksisterende aksesspunkttilgang; ingen nøkler
+skal sendes i chat/Git. Ingen nettverkssending, leveringsstatus eller kvittering
+er kvalifisert. Ikke merk planen som ferdig før denne kjeden er prøvd.
+Utenlandske EHF-mottakere, andre valutaer enn NOK/EUR og tillegg i avgiftstabellen
+er heller ikke erklært kvalifisert. Serveren oppdateres fortsatt bare av brukeren.

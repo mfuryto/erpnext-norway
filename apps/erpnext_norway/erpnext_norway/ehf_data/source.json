@@ -1,0 +1,19 @@
+{
+  "release": "Peppol BIS Billing 3.0.21, May 2026",
+  "mandatory_from": "2026-08-17",
+  "generator": {
+    "repository": "https://github.com/prilk-consulting/edocument",
+    "revision": "7e198be741eefd0b63f949e8494bf4c3496b744f",
+    "archive_sha256": "37b386e3e0b315af75ef8242c603eced2c7d9d817ee7dd80c2ccdb38ed02075d"
+  },
+  "files": {
+    "PEPPOL-EN16931-UBL.sch": {
+      "url": "https://docs.peppol.eu/poacc/billing/3.0/files/PEPPOL-EN16931-UBL.sch",
+      "sha256": "62e5b67892f12755352d78b06f63229a02cc2eccc748677c56efbc8dbcb336e3"
+    },
+    "CEN-EN16931-UBL.sch": {
+      "url": "https://docs.peppol.eu/poacc/billing/3.0/files/CEN-EN16931-UBL.sch",
+      "sha256": "268d4f7a2688676695e6c69cba6fba69a6802604fee12cb544a6b30ff09555a3"
+    }
+  }
+}

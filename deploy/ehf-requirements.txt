@@ -1,0 +1,3 @@
+# Reuse generator/standard XML tools only; no EDocument Frappe app installation.
+edocument @ https://github.com/prilk-consulting/edocument/archive/7e198be741eefd0b63f949e8494bf4c3496b744f.tar.gz --hash=sha256:37b386e3e0b315af75ef8242c603eced2c7d9d817ee7dd80c2ccdb38ed02075d
+saxonche==13.1.1 --hash=sha256:a424520ec53d0f3b4714c26f44432f8ede7ab17fc89b73e2301640159657b2e9 --hash=sha256:3c25f51ae65dfe6cf3f71f5b7440db4826f7f1bd15d969d4f3d903f32e517dcf

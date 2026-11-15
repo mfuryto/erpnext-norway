@@ -9,3 +9,5 @@ __pycache__/
 
 /deploy/.runtime-update-*
 /tests/browser/node_modules/
+
+apps/erpnext_norway/erpnext_norway/ehf_data/compiled/

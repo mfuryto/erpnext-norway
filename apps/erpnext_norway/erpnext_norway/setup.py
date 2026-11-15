@@ -6,6 +6,8 @@ from erpnext_norway.preservation import RETAINED
 
 
 def configure():
+    from erpnext_norway.ehf import configure as configure_ehf
+    configure_ehf()
     from erpnext_norway.saft import configure as configure_saft
     configure_saft()
     from erpnext_norway.enk_catalog import configure as configure_enk
