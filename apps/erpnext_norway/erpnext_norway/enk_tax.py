@@ -274,14 +274,15 @@ def collect(company, fiscal_year):
     book_disposal = ZERO
     # Inspect actual invoice sources, including zero-net-book-value sales,
     # instead of inferring proceeds from the net movement in fixed assets.
-    for name in sorted({r.voucher_no for r in rows if r.voucher_type == 'Sales Invoice'}):
-        source = frappe.get_doc('Sales Invoice', name)
-        source.check_permission('read')
-        if any(item.is_fixed_asset and item.asset for item in source.items):
-            get_source('Sales Invoice', name)
-            value = disposal(source, rows, selected, accounts, doc.pools, get_source, outside_saldo)
-            if value is not None:
-                disposals[('Sales Invoice', name)] = value
+    invoice_names = {r.voucher_no for r in rows if r.voucher_type == 'Sales Invoice'}
+    asset_invoices = set(frappe.get_all('Sales Invoice Item', filters={
+        'parenttype': 'Sales Invoice', 'parent': ['in', sorted(invoice_names)],
+        'is_fixed_asset': 1, 'asset': ['is', 'set']}, pluck='parent')) if invoice_names else set()
+    for name in sorted(asset_invoices):
+        source = get_source('Sales Invoice', name)  # Parent permission is mandatory.
+        value = disposal(source, rows, selected, accounts, doc.pools, get_source, outside_saldo)
+        if value is not None:
+            disposals[('Sales Invoice', name)] = value
     for pool in doc.pools:
         key = pool_key(pool)
         adds = sum((a.get(key, ZERO) for a in acquisitions.values()), ZERO)

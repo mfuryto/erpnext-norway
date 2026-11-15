@@ -27,6 +27,26 @@ def rejected(action,phrase):
     finally:frappe.db.rollback(save_point='annual_negative')
 
 
+def exported_csv():
+    import csv,io
+    from frappe.desk.query_report import export_query
+    previous_form,previous_response=frappe.local.form_dict,frappe.local.response
+    try:
+        frappe.local.form_dict=frappe._dict(report_name='Norsk ENK-grunnlag',file_format_type='CSV',
+            filters=frappe.as_json({'company':C,'fiscal_year':'2026','show_accounts':1}))
+        frappe.local.response=frappe._dict()
+        export_query()
+        content=frappe.local.response.filecontent
+        text=content.decode('utf-8-sig') if isinstance(content,bytes) else content.lstrip('\ufeff')
+        rows=list(csv.reader(io.StringIO(text)))
+        header=rows[0];account=header.index('Konto');tax_value=header.index('Skatteverdi UB')
+        fixed=next(r for r in rows[1:] if len(r)>account and r[account].startswith('1230 '))
+        assert fixed[tax_value]=='',fixed
+        assert any('Beregnet næringsresultat' in r for r in rows)
+        return hashlib.sha256(content if isinstance(content,bytes) else content.encode()).hexdigest()
+    finally:frappe.local.form_dict,frappe.local.response=previous_form,previous_response
+
+
 def edge_cases():
     """Actual source effects, zero book value sale, and no duplicate difference."""
     frappe.set_user(OWNER)
@@ -84,6 +104,19 @@ def edge_cases():
         assert zero_book['tax_profit']==b['tax_profit']-2000
         assert next(r for r in zero_book['annual_accounts'] if r['account']==tax_only.name)['tax_closing']==8000
         b=zero_book
+        # ENK and SAF-T use separate year histories even though the native child
+        # schema is reused. Future ENK choices cannot replace this year's post.
+        from erpnext_norway.enk_catalog import MAPPING
+        from erpnext_norway.saft import MAPPING as SAFT_MAPPING
+        account=frappe.get_doc('Account',tax_only.name)
+        account.append(SAFT_MAPPING,dict(year=2026,category='balanseverdiForOmloepsmiddel',code='1530'))
+        for year,code in [(2025,'1570'),(2026,'1500'),(2027,'1570')]:
+            account.append(MAPPING,dict(year=year,category='balanseverdiForOmloepsmiddel',code=code))
+        account.save()
+        mapped=tax.collect(C,'2026')
+        assert next(r for r in mapped['annual_accounts'] if r['account']==tax_only.name)['code']=='1500'
+        account.reload();assert account.get(SAFT_MAPPING)[0].code=='1530'
+        assert mapped['tax_profit']==b['tax_profit']
         def land_pool():
             d=frappe.get_doc(tax.FACTS,facts_name);d.append('pools',dict(saldo_group='d',asset_account=a['1150'],
                 opening_reference='Invalid land depreciation',use_maximum=1));d.save()
@@ -198,6 +231,7 @@ try:
         e=json.loads(frappe.get_doc('File',frappe.db.get_default('runtime_enk_annual')).get_content())
         frappe.set_user(OWNER)
         assert snapshot()==e['basis']
+        assert exported_csv()==e['csv_sha256']
         report=frappe.get_doc('File',e['proof']);assert report.is_private
         assert hashlib.sha256(Path(report.get_full_path()).read_bytes()).hexdigest()==e['sha256']
         print('PASS restored annual catalogue, native manual/asset source links, tax/formue/person-income facts and report bytes')
@@ -303,8 +337,9 @@ try:
         assert result['report_summary'][1]['value']==85000
         assert frappe.db.count('GL Entry',{'company':C})==before_gl
         edge_cases()
+        csv_sha256=exported_csv()
         proof=save_file('synthetic-enk-annual-report.json',frappe.as_json(result),tax.FACTS,facts.name,is_private=1)
-        evidence=save_file('synthetic-enk-annual-evidence.json',frappe.as_json({'basis':snapshot(),'proof':proof.name,
+        evidence=save_file('synthetic-enk-annual-evidence.json',frappe.as_json({'basis':snapshot(),'proof':proof.name,'csv_sha256':csv_sha256,
             'sha256':hashlib.sha256(Path(proof.get_full_path()).read_bytes()).hexdigest()}),tax.FACTS,facts.name,is_private=1)
         frappe.set_user('Administrator');frappe.db.set_default('runtime_enk_annual',evidence.name);frappe.db.commit()
         print('PASS native b/c/e-j acquisitions, ordinary journal metadata, sale/scrap/restore, gain/loss, account statement, wealth before discounts, person income, disabled account and no report GL writes')
