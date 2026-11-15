@@ -8,6 +8,10 @@ from erpnext_norway.preservation import RETAINED
 def configure():
     from erpnext_norway.saft import configure as configure_saft
     configure_saft()
+    from erpnext_norway.enk_catalog import configure as configure_enk
+    configure_enk()
+    from erpnext_norway.enk_journal import configure as configure_enk_journal
+    configure_enk_journal()
     from erpnext_norway.vat import configure as configure_vat
     configure_vat()
     from erpnext_norway.tax_names import configure as configure_tax_names

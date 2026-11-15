@@ -37,3 +37,11 @@ Saldoberegningen i `../enk_tax_rules.py` gjenbruker bare de uavhengige a/d-
 reglene fra samme ENK Norge-revisjons `norway_rules.py`, med samme MIT-lisens.
 Frappe-koblinger, bokføringsgeneratorer, egne årsrapporter og historikklagring
 er ikke overtatt. Lokal tilpasning er en avgrenset dato-/omfangsfeilmelding.
+
+Utvidelsen til øvrige saldogrupper og gevinst-/tapskonto følger de navngitte
+Skatte-ABC-kildene i docs/enk-completion.md. `../enk_person_income.py` gjenbruker
+bare immutable inndata/resultat og aritmetikk fra samme MIT-revisjons
+`enk_norge/year_end.py`. Rentesatsgrenen er fjernet: dokumentert skjerming
+holdes adskilt fra brutto kapitalgrunnlag ved renteavgrensningen.
+Ingen av prosjektets årsrapport-, status-, historikk- eller bokføringskontrollere
+er overtatt. Kildedata for offisielle ENK-poster har egen NOTICE i enk_data.

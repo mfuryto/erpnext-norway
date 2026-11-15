@@ -1,0 +1,46 @@
+{
+ "doctype": "DocType",
+ "name": "Norwegian Person Income Item",
+ "module": "ERPNext Norway",
+ "engine": "InnoDB",
+ "istable": 1,
+ "editable_grid": 1,
+ "field_order": [
+  "role",
+  "account",
+  "amount",
+  "reference"
+ ],
+ "fields": [
+  {
+   "fieldname": "role",
+   "label": "Person-income adjustment",
+   "fieldtype": "Select",
+   "options": "Capital income\nFinancial gains\nCapital costs\nFinancial losses\nPrivate debt interest\nSpecial deductions\nQualifying business debt interest",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "account",
+   "label": "Account",
+   "fieldtype": "Link",
+   "options": "Account",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "amount",
+   "label": "Documented annual amount",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:!doc.account",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "reference",
+   "label": "Person-income documentation",
+   "fieldtype": "Small Text",
+   "reqd": 1
+  }
+ ],
+ "permissions": []
+}

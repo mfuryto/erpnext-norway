@@ -105,11 +105,8 @@ opplysninger og næringsopplysninger, og det må ikke rapporteres dobbelt.
 ENK med regnskaps-/revisjonsplikt må bruke et system som støtter innsending;
 andre kan ha adgang til portalen. Denne appen har ingen skatteinnsending.
 
-[Skattesaldo og næringsgrunnlag](enk-tax-basis.md) beskriver neste leveranse:
-prøvd native manuell avskrivning og regnskapsbok, gjenbrukt a/d-saldoberegning,
-årlige skattefakta og en rapport som avstemmer mot native resultatregnskap og
-saldobalanse. Bokføringen håndteres fortsatt av kjernen. Gruppe a/d for 2026
-er et avgrenset omfang; øvrige saldogrupper og personlige skatteopplysninger
-skal ikke utgis for å være ferdig automatisert. Se veiledningens konkrete
-arbeidsflyt og begrensninger. Hovedplanens punkt 7 er fortsatt åpent.
-EHF via SendRegning følger etter ENK-arbeidet.
+[Skattesaldo og næringsgrunnlag](enk-tax-basis.md) beskriver skattefakta,
+saldoer a–j, gevinst-/tapskonto, dokumenterte forskjeller, personinntektsgrunnlag
+og formuesverdier før rabatt. Kjernen beholder alle bokføringsfunksjonene.
+[Sluttføringen av punkt 7](enk-completion.md) angir omfang, kjerneprøver og
+faglige forutsetninger. EHF via SendRegning følger etter dette arbeidet.

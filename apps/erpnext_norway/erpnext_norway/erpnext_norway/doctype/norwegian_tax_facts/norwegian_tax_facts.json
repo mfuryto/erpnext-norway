@@ -8,7 +8,26 @@
   "fiscal_year",
   "pools",
   "adjustments",
-  "notes"
+  "notes",
+  "gain_loss_section",
+  "gain_loss_opening",
+  "gain_loss_reference",
+  "gain_loss_extra_income",
+  "gain_loss_choose_deduction",
+  "gain_loss_deduction",
+  "gain_loss_small",
+  "values_section",
+  "tax_values",
+  "person_section",
+  "person_enabled",
+  "person_items",
+  "shielding_choice",
+  "shielding_amount",
+  "person_negative_carry",
+  "person_reference",
+  "capital_return_base_gross",
+  "shielding_base_net",
+  "qualifying_business_debt"
  ],
  "fields": [
   {
@@ -44,6 +63,126 @@
    "fieldname": "notes",
    "label": "Notes",
    "fieldtype": "Text"
+  },
+  {
+   "fieldname": "gain_loss_section",
+   "label": "Gain and loss account",
+   "fieldtype": "Section Break",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "gain_loss_opening",
+   "label": "Opening gain/loss balance (gain positive)",
+   "fieldtype": "Currency",
+   "options": "NOK"
+  },
+  {
+   "fieldname": "gain_loss_reference",
+   "label": "Gain/loss opening documentation",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "gain_loss_extra_income",
+   "label": "Additional gain-account income",
+   "fieldtype": "Currency",
+   "options": "NOK"
+  },
+  {
+   "fieldname": "gain_loss_choose_deduction",
+   "label": "Choose a lower loss deduction",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "gain_loss_deduction",
+   "label": "Chosen gain-account loss deduction",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.gain_loss_choose_deduction"
+  },
+  {
+   "fieldname": "gain_loss_small",
+   "label": "Allow full deduction of loss balance below NOK 30000",
+   "fieldtype": "Check"
+  },
+  {
+   "fieldname": "values_section",
+   "label": "Tax and wealth values",
+   "fieldtype": "Section Break",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "tax_values",
+   "label": "Tax and wealth values",
+   "fieldtype": "Table",
+   "options": "Norwegian Tax Value"
+  },
+  {
+   "fieldname": "person_section",
+   "label": "Person-income basis",
+   "fieldtype": "Section Break",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "person_enabled",
+   "label": "Prepare person-income basis",
+   "fieldtype": "Check"
+  },
+  {
+   "fieldname": "person_items",
+   "label": "Person-income items",
+   "fieldtype": "Table",
+   "options": "Norwegian Person Income Item",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "shielding_choice",
+   "label": "Shielding deduction",
+   "fieldtype": "Select",
+   "options": "Not assessed\nNo deduction claimed\nDocumented amount",
+   "default": "Not assessed",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "shielding_amount",
+   "label": "Documented shielding deduction",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.person_enabled && doc.shielding_choice==='Documented amount'"
+  },
+  {
+   "fieldname": "person_negative_carry",
+   "label": "Negative person income brought forward",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "person_reference",
+   "label": "Person-income annual documentation",
+   "fieldtype": "Small Text",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "capital_return_base_gross",
+   "label": "Documented capital base before all debt",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "shielding_base_net",
+   "label": "Documented net shielding base",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.person_enabled"
+  },
+  {
+   "fieldname": "qualifying_business_debt",
+   "label": "Documented qualifying business debt",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:doc.person_enabled"
   }
  ],
  "permissions": [

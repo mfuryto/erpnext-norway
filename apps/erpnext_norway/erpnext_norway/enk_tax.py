@@ -8,7 +8,8 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import frappe
 from frappe.utils import getdate
 from frappe.desk.query_report import run as run_report
-from erpnext_norway.enk_tax_rules import SaldoGroup, calculate_saldo_pool, RuleValidationError
+from erpnext_norway.enk_tax_rules import SaldoGroup, calculate_saldo_pool, calculate_gain_loss, RuleValidationError
+from erpnext_norway.enk_assets import pool_key, INDIVIDUAL, native_asset, acquisition_allocations, sale_allocations
 
 FACTS = 'Norwegian Tax Facts'
 ZERO = Decimal(0)
@@ -47,8 +48,11 @@ def accounts_for_pool(row, company):
         frappe.throw('Saldogruppen må bruke en eiendelskonto i samme foretak.')
     accounts = frappe.get_list('Account', filters={'company': company, 'is_group': 0,
         'lft': ['>=', account.lft], 'rgt': ['<=', account.rgt]},
-        fields=['name', 'account_type'], limit_page_length=0)
-    if not accounts or any(a.account_type != 'Fixed Asset' for a in accounts):
+        fields=['name', 'account_type', 'account_number', 'account_name'], limit_page_length=0)
+    if any((a.account_number, a.account_name) == ('1150', 'Tomter') for a in accounts):
+        frappe.throw('Tomter inngår ikke i skattemessig saldoavskrivning. Dokumenter behandling utenfor saldo.')
+    allowed = {'Fixed Asset', '', None} if row.saldo_group == 'b' else {'Fixed Asset'}
+    if not accounts or any(a.account_type not in allowed for a in accounts):
         frappe.throw('Velg en konto eller kontogruppe som bare inneholder anleggsmiddelkontoer (typen Anleggsmiddel).')
     return {a.name for a in accounts}
 
@@ -58,21 +62,48 @@ def validate(doc):
     old = doc.get_doc_before_save()
     if old and (old.company != doc.company or old.fiscal_year != doc.fiscal_year):
         frappe.throw('Foretak og inntektsår kan ikke endres på lagrede skatteopplysninger.')
-    groups, accounts, adjustments = set(), set(), set()
+    keys, selections, adjustments = set(), [], set()
     for row in doc.pools:
-        if row.saldo_group not in {'a', 'd'} or row.saldo_group in groups:
-            frappe.throw('Bruk én samlesaldo for hver av saldogruppene a og d.')
-        groups.add(row.saldo_group)
+        if row.saldo_group not in set('abcdefghij'):
+            frappe.throw('Velg en gyldig skattemessig saldogruppe a–j.')
+        key = pool_key(row)
+        if key in keys:
+            frappe.throw('Bruk én samlesaldo for hver gruppe a–d og én saldo per driftsmiddel/bygg for e–j.')
+        keys.add(key)
+        if row.saldo_group in INDIVIDUAL and not row.get('asset'):
+            frappe.throw('Individuell skattesaldo krever lenke til det native driftsmiddelet.')
+        if row.get('asset'):
+            asset = native_asset(row.asset, doc.company)
+            if getdate(asset.purchase_date).year > 2026:
+                frappe.throw('Driftsmiddelet er anskaffet etter inntektsåret.')
+        if row.saldo_group in INDIVIDUAL | {'j'} and not (row.get('unit_reference') or '').strip():
+            frappe.throw('Dokumenter driftsmiddelet eller bygget som saldoen gjelder.')
+        if row.get('tax_rate') and (row.saldo_group != 'h' or not (row.get('rate_reference') or '').strip()):
+            frappe.throw('Særskilt sats krever gruppe h og dokumenterte lovvilkår.')
         selected = accounts_for_pool(row, doc.company)
-        if selected & accounts:
-            frappe.throw('En anleggsmiddelkonto kan ikke inngå i flere saldogrupper.')
-        accounts |= selected
+        for old_row, old_accounts in selections:
+            if selected & old_accounts and not (row.get('asset') and old_row.get('asset') and row.asset != old_row.asset):
+                frappe.throw('Overlappende kontoer krever ulike uttrykkelig valgte native driftsmidler.')
+        selections.append((row, selected))
         if not (row.opening_reference or '').strip():
             frappe.throw('Dokumenter inngående skattesaldo, også når saldoen er null.')
         number(row.opening_balance)
         for field in ('depreciation', 'direct_income', 'additional_income'):
             if number(row.get(field)) < 0:
                 frappe.throw('Valgt avskrivning og inntektsføring kan ikke være negativ.')
+    for field in ('gain_loss_extra_income', 'gain_loss_deduction', 'person_negative_carry',
+            'capital_return_base_gross', 'shielding_base_net', 'qualifying_business_debt', 'shielding_amount'):
+        if number(doc.get(field)) < 0:
+            frappe.throw('Årets fradrag, grunnlag og fremførte negative personinntekt må oppgis med positivt beløp.')
+    if number(doc.get('gain_loss_opening')) and not (doc.get('gain_loss_reference') or '').strip():
+        frappe.throw('Dokumenter inngående gevinst- og tapskonto.')
+    if doc.get('person_enabled'):
+        if not (doc.get('person_reference') or '').strip():
+            frappe.throw('Dokumenter personinntektsgrunnlag og fremførte beløp, også for nytt foretak med null fremføring.')
+        if number(doc.get('shielding_base_net')) > number(doc.get('capital_return_base_gross')):
+            frappe.throw('Netto skjermingsgrunnlag kan ikke overstige grunnlaget før gjeld.')
+    from erpnext_norway.enk_annual import validate_facts
+    validate_facts(doc)
     for row in doc.adjustments:
         if not (row.reason or '').strip() or not (row.reference or '').strip():
             frappe.throw('Skattekorreksjoner krever begrunnelse og dokumentasjon.')
@@ -90,13 +121,13 @@ def validate(doc):
             frappe.throw('Prosent brukes bare når en kostnadskonto er valgt.')
 
 
-def native_report(name, doc, start, end):
+def native_report(name, doc, start, end, include_closing=False):
     filters = {'company': doc.company, 'fiscal_year': doc.fiscal_year,
         'filter_based_on': 'Date Range', 'period_start_date': str(start), 'period_end_date': str(end),
         'from_date': str(start), 'to_date': str(end), 'periodicity': 'Yearly',
         'accumulated_values': 1, 'include_default_book_entries': 1, 'show_zero_values': 1,
         'show_net_values': 1, 'with_period_closing_entry_for_opening': 1,
-        'with_period_closing_entry_for_current_period': 0}
+        'with_period_closing_entry_for_current_period': int(include_closing)}
     return run_report(name, filters=frappe.as_json(filters), ignore_prepared_report=True,
         js_filters=[{'fieldname': 'company', 'fieldtype': 'Link', 'options': 'Company'}])
 
@@ -121,34 +152,34 @@ def check_direct_asset_cost(source, rows, accounts):
             frappe.utils.escape_html(source.name)))
 
 
-def disposal(source, rows, selected, accounts):
+def disposal(source, rows, selected, accounts, pools, get_source, outside_saldo=None):
     """Use actual native sale GL, not today's Asset Category/default accounts.
 
     The pinned core merges away voucher_detail_no on ordinary asset sales.
     A single tax pool needs no invented per-asset book-value allocation.
     """
     gl = [r for r in rows if r.voucher_type == 'Sales Invoice' and r.voucher_no == source.name]
-    items = [item for item in source.items if item.is_fixed_asset and item.asset]
-    asset_rows = [r for r in gl if r.account in accounts and accounts[r.account].account_type == 'Fixed Asset']
+    all_items = [item for item in source.items if item.is_fixed_asset and item.asset]
+    excluded = []
+    if outside_saldo:
+        from erpnext_norway.enk_assets import source_account
+        for item in all_items:
+            asset = frappe.get_doc('Asset', item.asset)
+            asset.check_permission('read')
+            if source_account(asset, get_source) in outside_saldo:
+                excluded.append(item)
+    items = [item for item in all_items if item not in excluded]
+    if not items and excluded:
+        return None
+    asset_rows = [r for r in gl if r.account in accounts and accounts[r.account].account_type == 'Fixed Asset' and r.account not in (outside_saldo or set())]
     group_by_account = {name: group for group, names in selected.items() for name in names}
-    if (source.docstatus != 1 or not items or not asset_rows
+    if (source.docstatus != 1 or not items
             or any(r.account not in group_by_account for r in asset_rows)):
         frappe.throw('Driftsmiddelsalget mangler kvalifisert skattesaldo.')
     company_book = frappe.get_cached_value('Company', source.company, 'default_finance_book')
     if any(item.finance_book not in {None, '', company_book} for item in items):
         frappe.throw('Driftsmiddelsalg i andre regnskapsbøker er ikke kvalifisert i næringsgrunnlaget.')
-    groups = {group_by_account[r.account] for r in asset_rows}
-    proceeds = {}
-    for item in items:
-        if len(groups) == 1:
-            group = next(iter(groups))
-        else:
-            bound = {group_by_account[r.account] for r in asset_rows
-                if r.voucher_detail_no in {item.name, item.asset}}
-            if len(bound) != 1:
-                frappe.throw('Salg fra flere skattesaldoer på samme faktura mangler entydige native kildelinjer.')
-            group = next(iter(bound))
-        proceeds[group] = proceeds.get(group, ZERO) + number(item.base_net_amount)
+    proceeds, quantities = sale_allocations(source, asset_rows, pools, selected, number, get_source, {item.name for item in items})
     gain_accounts = {item.income_account for item in items}
     ordinary_accounts = {item.income_account for item in source.items if item not in items}
     ordinary_accounts |= {r.account_head for r in source.taxes if number(r.base_tax_amount)}
@@ -159,7 +190,7 @@ def disposal(source, rows, selected, accounts):
             or accounts[name].root_type not in {'Income', 'Expense'} for name in gain_accounts):
         frappe.throw('Gevinst/tap ved driftsmiddelsalg må kunne skilles fra andre fakturalinjer og gebyrer i hovedboken.')
     book_result = sum((number(r.credit) - number(r.debit) for r in gl if r.account in gain_accounts), ZERO)
-    return dict(proceeds=proceeds, book_result=book_result, accounts=gain_accounts)
+    return dict(proceeds=proceeds, quantities=quantities, book_result=book_result, accounts=gain_accounts)
 
 
 def collect(company, fiscal_year):
@@ -176,7 +207,7 @@ def collect(company, fiscal_year):
     pnl = native_report('Profit and Loss Statement', doc, start, end)
     trial = native_report('Trial Balance', doc, start, end)
     accounts = {a.name: a for a in frappe.get_list('Account', filters={'company': company.name,
-        'is_group': 0}, fields=['name', 'root_type', 'account_type'], limit_page_length=0)}
+        'is_group': 0}, fields=['name', 'account_number', 'account_name', 'root_type', 'account_type'], limit_page_length=0)}
     if len(accounts) != frappe.db.count('Account', {'company': company.name, 'is_group': 0}):
         frappe.throw('Næringsgrunnlaget krever tilgang til hele kontoplanen for foretaket.', frappe.PermissionError)
     pnl_amounts = {r['account']: money(r.get('total')) for r in pnl['result']
@@ -197,52 +228,80 @@ def collect(company, fiscal_year):
         frappe.throw('Næringsgrunnlaget krever tilgang til hele årets hovedbok for foretaket.', frappe.PermissionError)
     rows = [r for r in rows if r.finance_book in {None, '', company.default_finance_book}
         and r.voucher_type != 'Period Closing Voucher' and r.is_opening != 'Yes']
-    selected = {r.saldo_group: accounts_for_pool(r, company.name) for r in doc.pools}
+    selected = {pool_key(r): accounts_for_pool(r, company.name) for r in doc.pools}
     assigned = set().union(*selected.values()) if selected else set()
     used_fixed = {r.account for r in rows if r.account in accounts
         and accounts[r.account].account_type == 'Fixed Asset'}
     used_fixed |= {a.name for a in accounts.values() if a.account_type == 'Fixed Asset'
         and any(money(trial_amounts.get(a.name, {}).get(k)) for k in ('opening_debit', 'opening_credit'))}
-    if used_fixed - assigned or (book_depreciation and not selected):
-        frappe.throw('Anleggsmidler eller avskrivninger mangler kvalifisert skattesaldo. Bare gruppe a og d er dekket.')
-    sources, pools, disposals = {}, [], {}
-    book_disposal = ZERO
-    for row in rows:
-        if row.account in assigned and row.voucher_type == 'Sales Invoice' and row.voucher_no not in disposals:
-            source = frappe.get_doc('Sales Invoice', row.voucher_no)
+    outside_saldo = {r.account for r in doc.get('tax_values') or [] if r.get('outside_saldo')}
+    if outside_saldo & assigned:
+        frappe.throw('En konto kan ikke både inngå i skattesaldo og behandles utenfor saldo.')
+    if used_fixed - assigned - outside_saldo or (book_depreciation and not selected and not outside_saldo):
+        frappe.throw('Anleggsmidler eller avskrivninger mangler dokumentert skattesaldo.')
+    sources, pools, disposals, acquisitions = {}, [], {}, {}
+    def get_source(doctype, name):
+        key = (doctype, name)
+        if key not in sources:
+            source = frappe.get_doc(doctype, name)
             source.check_permission('read')
-            disposals[source.name] = disposal(source, rows, selected, accounts)
-    for pool in doc.pools:
-        adds, proceeds = ZERO, ZERO
-        for row in rows:
-            if row.account not in selected[pool.saldo_group]:
-                continue
-            key = (row.voucher_type, row.voucher_no)
-            if key not in sources:
-                source = frappe.get_doc(*key)
-                source.check_permission('read')
-                if source.docstatus != 1 or source.get('company') != company.name:
-                    frappe.throw('Skattesaldoens kilde må være bokført i samme foretak.')
-                sources[key] = source
-            source = sources[key]
-            if row.voucher_type in {'Purchase Invoice', 'Purchase Receipt', 'Landed Cost Voucher'}:
+            if source.docstatus != 1 or source.get('company') != company.name:
+                frappe.throw('Skattesaldoens kilde må være bokført i samme foretak.')
+            sources[key] = source
+        return sources[key]
+    for row in rows:
+        if row.account not in assigned:
+            continue
+        key = (row.voucher_type, row.voucher_no)
+        source = get_source(*key)
+        if row.voucher_type in {'Purchase Invoice', 'Purchase Receipt', 'Landed Cost Voucher'}:
+            if key not in acquisitions:
                 check_direct_asset_cost(source, rows, accounts)
-                adds += number(row.debit) - number(row.credit)
-            elif row.voucher_type != 'Sales Invoice':
-                frappe.throw('Skattesaldoen har en kilde som ikke er kvalifisert: {0} {1}.'.format(*key))
-        for name in selected[pool.saldo_group]:
+                related = [r for r in rows if r.voucher_type == key[0] and r.voucher_no == key[1] and r.account in assigned]
+                acquisitions[key] = acquisition_allocations(source, related, doc.pools, selected, number, money, get_source)
+        elif row.voucher_type == 'Journal Entry':
+            if key not in acquisitions:
+                from erpnext_norway.enk_journal import allocations
+                related = [r for r in rows if (r.voucher_type, r.voucher_no) == key]
+                from erpnext_norway.enk_assets import native_scrap
+                movement = native_scrap(source, related, doc.pools, selected, accounts, number)
+                if movement is None:
+                    movement = allocations(source, related, doc.pools, selected, number, money)
+                acquisitions[key] = movement['adds']
+                disposals[key] = movement
+        elif row.voucher_type != 'Sales Invoice':
+            frappe.throw('Skattesaldoen har en kilde som ikke er kvalifisert: {0} {1}.'.format(*key))
+    book_disposal = ZERO
+    # Inspect actual invoice sources, including zero-net-book-value sales,
+    # instead of inferring proceeds from the net movement in fixed assets.
+    for name in sorted({r.voucher_no for r in rows if r.voucher_type == 'Sales Invoice'}):
+        source = frappe.get_doc('Sales Invoice', name)
+        source.check_permission('read')
+        if any(item.is_fixed_asset and item.asset for item in source.items):
+            get_source('Sales Invoice', name)
+            value = disposal(source, rows, selected, accounts, doc.pools, get_source, outside_saldo)
+            if value is not None:
+                disposals[('Sales Invoice', name)] = value
+    for pool in doc.pools:
+        key = pool_key(pool)
+        adds = sum((a.get(key, ZERO) for a in acquisitions.values()), ZERO)
+        proceeds = sum((d['proceeds'].get(key, ZERO) for d in disposals.values()), ZERO)
+        quantity = sum((d['quantities'].get(key, ZERO) for d in disposals.values()), ZERO)
+        for name in selected[key]:
             expected = money(trial_amounts.get(name, {}).get('debit')) - money(trial_amounts.get(name, {}).get('credit'))
             actual = sum((money(r.debit) - money(r.credit) for r in rows if r.account == name), ZERO)
             if money(expected) != money(actual):
                 frappe.throw('Kildene til skattesaldoen stemmer ikke med kjernens saldobalanse.')
-        proceeds = sum((d['proceeds'].get(pool.saldo_group, ZERO) for d in disposals.values()), ZERO)
         try:
             result = calculate_saldo_pool(group=SaldoGroup(pool.saldo_group), year_end=end,
                 opening_balance=number(pool.opening_balance), acquisitions=adds, disposal_proceeds=proceeds,
                 disposal_proceeds_taken_to_income=number(pool.direct_income),
                 requested_depreciation=None if pool.use_maximum else number(pool.depreciation),
                 write_off_small_positive_balance=bool(pool.write_off_small_balance),
-                additional_negative_balance_income=number(pool.additional_income))
+                additional_negative_balance_income=number(pool.additional_income),
+                disposed=bool(pool.saldo_group in INDIVIDUAL and quantity > 0),
+                rate=number(pool.tax_rate) / 100 if pool.get('tax_rate') else None,
+                unit=pool.get('asset') or pool.get('unit_reference') or '')
         except RuleValidationError as error:
             frappe.throw(str(error))
         pools.append(result)
@@ -251,8 +310,8 @@ def collect(company, fiscal_year):
     # A native disposal account can itself be classified as Depreciation.
     # Remove that result from the depreciation add-back to avoid counting it twice.
     book_depreciation += sum((number(r.credit) - number(r.debit) for r in rows
-        if r.voucher_type == 'Sales Invoice' and r.voucher_no in disposals
-        and r.account in disposals[r.voucher_no]['accounts'] and r.account in accounts
+        if (r.voucher_type, r.voucher_no) in disposals
+        and r.account in disposals[(r.voucher_type, r.voucher_no)]['accounts'] and r.account in accounts
         and accounts[r.account].account_type == 'Depreciation'), ZERO)
     corrections = []
     for row in doc.adjustments:
@@ -262,15 +321,25 @@ def collect(company, fiscal_year):
             if row.account else number(row.amount))
         corrections.append({'account': row.account, 'amount': money(amount), 'reason': row.reason,
             'reference': row.reference})
+    try:
+        gain_loss = calculate_gain_loss(number(doc.get('gain_loss_opening')),
+            sum((p.gain_loss_transfer for p in pools), ZERO),
+            extra_income=number(doc.get('gain_loss_extra_income')),
+            requested_deduction=number(doc.get('gain_loss_deduction')) if doc.get('gain_loss_choose_deduction') else None,
+            write_off_small=bool(doc.get('gain_loss_small')))
+    except RuleValidationError as error:
+        frappe.throw(str(error))
     tax_depreciation = sum((r.depreciation_deduction for r in pools), ZERO)
     tax_income = sum((r.negative_balance_income + r.disposal_proceeds_taken_to_income for r in pools), ZERO)
     tax_profit = book_profit + book_depreciation - tax_depreciation - book_disposal + tax_income
-    tax_profit += sum((r['amount'] for r in corrections), ZERO)
+    tax_profit += sum((r['amount'] for r in corrections), ZERO) + gain_loss.income - gain_loss.deduction
     book_assets = sum((money(trial_amounts.get(a.name, {}).get('closing_debit'))
         - money(trial_amounts.get(a.name, {}).get('closing_credit')) for a in accounts.values()
         if a.account_type in {'Fixed Asset', 'Accumulated Depreciation'}), ZERO)
-    return dict(document=doc.name, book_income=money(summary[0]['value']), book_expenses=money(summary[1]['value']),
+    basis = dict(document=doc.name, book_income=money(summary[0]['value']), book_expenses=money(summary[1]['value']),
         book_profit=book_profit, book_depreciation=money(book_depreciation), book_disposal=money(book_disposal),
         tax_depreciation=money(tax_depreciation), tax_income=money(tax_income), tax_profit=money(tax_profit),
         book_assets=book_assets, pools=pools, corrections=corrections,
-        sources=[dict(doctype=dt, name=name) for dt, name in sorted(sources)])
+        sources=[dict(doctype=dt, name=name) for dt, name in sorted(sources)], gain_loss=gain_loss)
+    from erpnext_norway.enk_annual import complete_basis
+    return complete_basis(doc, basis, accounts, pnl_amounts, trial_amounts, rows, start, end)

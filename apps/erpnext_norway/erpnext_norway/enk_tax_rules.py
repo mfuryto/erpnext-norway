@@ -1,8 +1,9 @@
-"""Pure a/d tax pool arithmetic reused from ENK Norge; no posting or ledger.
+"""Norwegian tax balance arithmetic; a/d foundation reused from ENK Norge.
 
 Copyright (c) 2026 Haakon Fornes. MIT; see saft_data/LICENSE.enk-norge.
 Source: Medpus/enk_norge@94406e542ed991a8de237b9de44b8d1dd576b566,
-enk_norge/norway_rules.py. Only the independent saldo subset is retained.
+enk_norge/norway_rules.py. The independent saldo subset is retained. Extensions implement documented
+b/c/e-j and gain/loss-account rules; no posting or ledger is added.
 """
 from dataclasses import dataclass
 from datetime import date
@@ -16,7 +17,15 @@ class RuleValidationError(ValueError):
 
 class SaldoGroup(StrEnum):
     A = "a"
+    B = "b"
+    C = "c"
     D = "d"
+    E = "e"
+    F = "f"
+    G = "g"
+    H = "h"
+    I = "i"
+    J = "j"
 
 @dataclass(frozen=True, slots=True)
 class SaldoPoolResult:
@@ -31,6 +40,8 @@ class SaldoPoolResult:
     depreciation_deduction: Decimal
     negative_balance_income: Decimal
     closing_balance: Decimal
+    gain_loss_transfer: Decimal = Decimal("0")
+    unit: str = ""
 
 def calculate_saldo_pool(
     *,
@@ -43,8 +54,11 @@ def calculate_saldo_pool(
     requested_depreciation: Decimal | None = None,
     write_off_small_positive_balance: bool = False,
     additional_negative_balance_income: Decimal = Decimal("0"),
+    disposed: bool = False,
+    rate: Decimal | None = None,
+    unit: str = "",
 ) -> SaldoPoolResult:
-    """Beregner saldogruppe a eller d for ett fullt 2026-inntektsår.
+    """Beregner en dokumentert saldoskatteposisjon for ett fullt 2026-inntektsår.
 
     Realisasjonsvederlag som ikke er valgt tatt direkte til inntekt nedskrives på
     saldoen. Positiv restsaldo under 30 000 kroner kan velges fullt fradragsført.
@@ -54,12 +68,17 @@ def calculate_saldo_pool(
 
     _require_year_end(year_end)
     if not isinstance(group, SaldoGroup):
-        raise RuleValidationError("Kun saldogruppe a og d er støttet.")
+        raise RuleValidationError("Velg en gyldig saldogruppe a–j.")
     if not isinstance(write_off_small_positive_balance, bool):
         raise RuleValidationError("write_off_small_positive_balance må være bool.")
-    rate = {SaldoGroup.A: Decimal("0.30"), SaldoGroup.D: Decimal("0.20")}[group]
+    rates = dict(zip(SaldoGroup, map(Decimal, ('0.30','0.20','0.24','0.20','0.14','0.12','0.05','0.04','0.02','0.10'))))
+    standard_rate = rates[group]
+    rate = standard_rate if rate is None else _decimal_amount(rate, 'Avskrivningssats')
+    allowed = {Decimal('0.04'), Decimal('0.06'), Decimal('0.10'), Decimal('0.20')} if group == SaldoGroup.H else {standard_rate}
+    if rate not in allowed:
+        raise RuleValidationError('Satsen er ikke kvalifisert for denne saldogruppen.')
     opening = _decimal_amount(opening_balance, "Inngående saldo", allow_negative=True)
-    adds = _decimal_amount(acquisitions, "Anskaffelser")
+    adds = _decimal_amount(acquisitions, "Netto tilgang og dokumenterte kostkorreksjoner", allow_negative=True)
     proceeds = _decimal_amount(disposal_proceeds, "Realisasjonsvederlag")
     direct_income = _decimal_amount(
         disposal_proceeds_taken_to_income, "Direkte inntektsført realisasjonsvederlag"
@@ -77,7 +96,18 @@ def calculate_saldo_pool(
     balance = opening + adds - (proceeds - direct_income)
     depreciation = Decimal("0")
     negative_income = Decimal("0")
-    if balance > 0:
+    transfer = Decimal('0')
+    individual = group in {SaldoGroup.E, SaldoGroup.F, SaldoGroup.G, SaldoGroup.H, SaldoGroup.I}
+    if (individual and disposed) or (group == SaldoGroup.B and balance < 0):
+        if requested is not None or write_off_small_positive_balance or additional_income:
+            raise RuleValidationError('Realisert individuell saldo eller negativ b-saldo overføres til gevinst- og tapskonto uten saldoavskrivning.')
+        transfer = -balance
+        closing = Decimal('0')
+    elif balance < 0 and individual:
+        if requested is not None or write_off_small_positive_balance or additional_income:
+            raise RuleValidationError('Negativ inngangsverdi uten realisasjon gir ikke årets avskrivning eller inntektsføring.')
+        closing = balance
+    elif balance > 0:
         if additional_income:
             raise RuleValidationError("Ekstra negativ-saldo-inntekt krever negativ saldo.")
         if write_off_small_positive_balance:
@@ -116,6 +146,8 @@ def calculate_saldo_pool(
         depreciation_deduction=depreciation,
         negative_balance_income=negative_income,
         closing_balance=closing,
+        gain_loss_transfer=transfer,
+        unit=unit,
     )
 
 def _require_year_end(value):
@@ -130,3 +162,41 @@ def _decimal_amount(value: Decimal, field_name: str, *, allow_negative: bool = F
     if not allow_negative and value < 0:
         raise RuleValidationError(f"{field_name} kan ikke være negativt.")
     return value
+
+
+@dataclass(frozen=True, slots=True)
+class GainLossResult:
+    opening: Decimal
+    transfers: Decimal
+    basis: Decimal
+    income: Decimal
+    deduction: Decimal
+    closing: Decimal
+
+
+def calculate_gain_loss(opening, transfers, *, extra_income=Decimal('0'), requested_deduction=None, write_off_small=False):
+    """Sktl. §§14-45,14-47: positive gains min20%; losses max20%, small-balance option."""
+    opening = _decimal_amount(opening, 'Inngående gevinst-/tapskonto', allow_negative=True)
+    transfers = _decimal_amount(transfers, 'Årets overføringer', allow_negative=True)
+    extra = _decimal_amount(extra_income, 'Ekstra inntektsføring fra gevinst-/tapskonto')
+    basis = opening + transfers
+    income = deduction = Decimal('0')
+    if basis > 0:
+        if requested_deduction is not None or write_off_small:
+            raise RuleValidationError('Gevinstsaldo gir inntektsføring, ikke tapsfradrag.')
+        income = (basis if basis < SMALL_SALDO_THRESHOLD else basis * Decimal('0.20')) + extra
+        if income > basis:
+            raise RuleValidationError('Inntektsføringen overstiger gevinstsaldoen.')
+    elif basis < 0:
+        if extra:
+            raise RuleValidationError('Ekstra inntektsføring krever gevinstsaldo.')
+        loss = -basis
+        if write_off_small and loss >= SMALL_SALDO_THRESHOLD:
+            raise RuleValidationError('Fullt tapsfradrag krever saldo under 30 000 kroner.')
+        maximum = loss if write_off_small else loss * Decimal('0.20')
+        deduction = maximum if requested_deduction is None else _decimal_amount(requested_deduction, 'Valgt tapsfradrag')
+        if deduction > maximum:
+            raise RuleValidationError('Tapsfradraget overstiger årets maksimum.')
+    elif extra or write_off_small or requested_deduction not in (None, Decimal('0')):
+        raise RuleValidationError('Null saldo gir ingen årsjustering.')
+    return GainLossResult(opening, transfers, basis, income, deduction, basis - income + deduction)

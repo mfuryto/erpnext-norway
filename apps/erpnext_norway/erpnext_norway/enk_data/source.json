@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/Skatteetaten/skattemeldingen",
+  "revision": "f1bc4cdf9f5b5c52d4a289026dd972e57985355f",
+  "source_path": "src/resources/kodeliste/2026/2026_resultatregnskapOgBalanse.xml",
+  "files": {
+    "fields-2026.csv": "7c69ad9dbfd6f213556212c21ec77bb3aba92de9c34e31fa4b7159943339feca",
+    "resultatregnskap-og-balanse-2026.xml": "9202c5349e7771beeb9cddd6cd3268f9900abe4630462c7a7f4404f70853762c",
+    "account-overrides.csv": "36975f61ca82087c9822e7697e9f0d0dbd2fc938d27cee24ddf4ca74ffd0a7e8"
+  }
+}
