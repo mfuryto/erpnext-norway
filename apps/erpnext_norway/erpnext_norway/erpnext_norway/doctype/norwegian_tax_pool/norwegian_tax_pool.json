@@ -1,0 +1,81 @@
+{
+ "doctype": "DocType",
+ "name": "Norwegian Tax Pool",
+ "module": "ERPNext Norway",
+ "engine": "InnoDB",
+ "field_order": [
+  "saldo_group",
+  "asset_account",
+  "opening_balance",
+  "opening_reference",
+  "use_maximum",
+  "depreciation",
+  "write_off_small_balance",
+  "direct_income",
+  "additional_income"
+ ],
+ "fields": [
+  {
+   "fieldname": "saldo_group",
+   "label": "Tax saldo group",
+   "fieldtype": "Select",
+   "options": "a\nd",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "asset_account",
+   "label": "Fixed asset account or group",
+   "fieldtype": "Link",
+   "options": "Account",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "opening_balance",
+   "label": "Opening tax balance",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "opening_reference",
+   "label": "Opening tax balance documentation",
+   "fieldtype": "Small Text",
+   "reqd": 1
+  },
+  {
+   "fieldname": "use_maximum",
+   "label": "Use maximum tax depreciation",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "depreciation",
+   "label": "Requested tax depreciation",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:!doc.use_maximum"
+  },
+  {
+   "fieldname": "write_off_small_balance",
+   "label": "Deduct positive balance below NOK 30000 in full",
+   "fieldtype": "Check"
+  },
+  {
+   "fieldname": "direct_income",
+   "label": "Disposal proceeds taken directly to income",
+   "fieldtype": "Currency",
+   "options": "NOK"
+  },
+  {
+   "fieldname": "additional_income",
+   "label": "Additional negative balance income",
+   "fieldtype": "Currency",
+   "options": "NOK"
+  }
+ ],
+ "permissions": [],
+ "istable": 1,
+ "editable_grid": 1
+}

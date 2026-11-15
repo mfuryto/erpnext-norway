@@ -105,11 +105,11 @@ opplysninger og næringsopplysninger, og det må ikke rapporteres dobbelt.
 ENK med regnskaps-/revisjonsplikt må bruke et system som støtter innsending;
 andre kan ha adgang til portalen. Denne appen har ingen skatteinnsending.
 
-Neste faglige gap er skattemessige avskrivninger og forskjeller mellom
-regnskapsverdier og skatteverdier, samt opplysninger rapportene ikke kan
-utlede fra hovedboken. Native Asset, Finance Book, Written Down Value og Manual
-skal prøves før tilpasning vurderes. Per-eiendel-planer skal ikke utgis for å
-løse norske samlesaldoer, salg/uttak eller årets saldoregler uten bevis.
-[Altinn om forskjellen på skattemessig og regnskapsmessig avskrivning](https://info.altinn.no/starte-og-drive/regnskap-og-revisjon/regnskap/avskrivning).
-Hovedplanens punkt 7 er derfor ikke erklært ferdig med denne kjernetesten.
+[Skattesaldo og næringsgrunnlag](enk-tax-basis.md) beskriver neste leveranse:
+prøvd native manuell avskrivning og regnskapsbok, gjenbrukt a/d-saldoberegning,
+årlige skattefakta og en rapport som avstemmer mot native resultatregnskap og
+saldobalanse. Bokføringen håndteres fortsatt av kjernen. Gruppe a/d for 2026
+er et avgrenset omfang; øvrige saldogrupper og personlige skatteopplysninger
+skal ikke utgis for å være ferdig automatisert. Se veiledningens konkrete
+arbeidsflyt og begrensninger. Hovedplanens punkt 7 er fortsatt åpent.
 EHF via SendRegning følger etter ENK-arbeidet.

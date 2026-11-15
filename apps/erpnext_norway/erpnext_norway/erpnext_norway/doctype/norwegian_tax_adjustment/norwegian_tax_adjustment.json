@@ -1,0 +1,53 @@
+{
+ "doctype": "DocType",
+ "name": "Norwegian Tax Adjustment",
+ "module": "ERPNext Norway",
+ "engine": "InnoDB",
+ "field_order": [
+  "account",
+  "disallowed_percent",
+  "amount",
+  "reason",
+  "reference"
+ ],
+ "fields": [
+  {
+   "fieldname": "account",
+   "label": "Non-deductible expense account",
+   "fieldtype": "Link",
+   "options": "Account",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "disallowed_percent",
+   "label": "Non-deductible percentage",
+   "fieldtype": "Percent",
+   "default": "100",
+   "depends_on": "eval:doc.account"
+  },
+  {
+   "fieldname": "amount",
+   "label": "Other tax adjustment (increase positive)",
+   "fieldtype": "Currency",
+   "options": "NOK",
+   "depends_on": "eval:!doc.account",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "reason",
+   "label": "Tax adjustment reason",
+   "fieldtype": "Small Text",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "reference",
+   "label": "Tax adjustment documentation",
+   "fieldtype": "Small Text",
+   "reqd": 1
+  }
+ ],
+ "permissions": [],
+ "istable": 1,
+ "editable_grid": 1
+}

@@ -26,6 +26,7 @@ extend_doctype_class = {
 }
 doc_events = {
     "Landed Cost Voucher": {
+        "before_submit": "erpnext_norway.vat_valuation.guard_asset_capitalization",
         "on_submit": "erpnext_norway.vat_landed_cost.refresh_zero_asset_values",
         "on_cancel": "erpnext_norway.vat_landed_cost.refresh_zero_asset_values"},
     "Sales Order": {"before_validate": ["erpnext_norway.vat.stamp_commercial_document",
@@ -40,7 +41,7 @@ doc_events = {
         "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes",
         "erpnext_norway.vat_valuation.guard_configuration"],
         "validate": "erpnext_norway.vat_import.validate_receipt",
-        "before_submit": "erpnext_norway.vat_import.validate_receipt",
+        "before_submit": ["erpnext_norway.vat_import.validate_receipt", "erpnext_norway.vat_valuation.guard_asset_capitalization"],
         "on_update_after_submit": ["erpnext_norway.vat_catalog.validate_code_changes", "erpnext_norway.vat_import.validate_receipt"],
         "on_submit": "erpnext_norway.vat_valuation.allocate_direct",
         "before_cancel": "erpnext_norway.vat_valuation.cancel_adjustments"},
@@ -55,7 +56,7 @@ doc_events = {
     "File": {"before_validate": "erpnext_norway.preservation.guard_file_change"},
     "Purchase Invoice": {"before_validate": ["erpnext_norway.vat_returns.prepare", "erpnext_norway.vat_valuation.link_credit_receipts", "erpnext_norway.vat_catalog.prepare_items", "erpnext_norway.vat_catalog.stamp_codes", "erpnext_norway.vat_valuation.guard_configuration"],
         "validate": "erpnext_norway.vat.validate_invoice",
-        "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes", "erpnext_norway.vat_valuation.lock_receipts"],
+        "before_submit": ["erpnext_norway.vat.validate_invoice", "erpnext_norway.vat_catalog.validate_invoice_codes", "erpnext_norway.vat_valuation.guard_asset_capitalization", "erpnext_norway.vat_valuation.lock_receipts"],
         "on_submit": ["erpnext_norway.vat_valuation.adjust_receipts", "erpnext_norway.vat_quarterly.update"],
         "on_cancel": "erpnext_norway.vat_quarterly.update",
         "before_cancel": "erpnext_norway.vat_valuation.cancel_adjustments",

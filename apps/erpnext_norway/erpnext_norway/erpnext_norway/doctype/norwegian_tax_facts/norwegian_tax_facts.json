@@ -1,0 +1,79 @@
+{
+ "doctype": "DocType",
+ "name": "Norwegian Tax Facts",
+ "module": "ERPNext Norway",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "fiscal_year",
+  "pools",
+  "adjustments",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "label": "Fiscal Year",
+   "fieldtype": "Link",
+   "options": "Fiscal Year",
+   "reqd": 1,
+   "default": "2026",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "pools",
+   "label": "Norwegian tax balances",
+   "fieldtype": "Table",
+   "options": "Norwegian Tax Pool"
+  },
+  {
+   "fieldname": "adjustments",
+   "label": "Other tax adjustments",
+   "fieldtype": "Table",
+   "options": "Norwegian Tax Adjustment"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Notes",
+   "fieldtype": "Text"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "Accounts Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1
+  },
+  {
+   "role": "Accounts User",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1
+  },
+  {
+   "role": "Auditor",
+   "read": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1
+  }
+ ],
+ "autoname": "format:ENK-{company}-{fiscal_year}",
+ "track_changes": 1,
+ "title_field": "company",
+ "allow_rename": 0
+}
