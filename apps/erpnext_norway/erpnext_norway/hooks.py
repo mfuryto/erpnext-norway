@@ -45,8 +45,8 @@ doc_events = {
         "on_update_after_submit": ["erpnext_norway.vat_catalog.validate_code_changes", "erpnext_norway.vat_import.validate_receipt"],
         "on_submit": "erpnext_norway.vat_valuation.allocate_direct",
         "before_cancel": "erpnext_norway.vat_valuation.cancel_adjustments"},
-    "Journal Entry": {"validate": "erpnext_norway.vat_journal.validate",
-        "before_submit": "erpnext_norway.vat_journal.validate",
+    "Journal Entry": {"validate": ["erpnext_norway.vat_journal.validate", "erpnext_norway.enk_journal.validate"],
+        "before_submit": ["erpnext_norway.vat_journal.validate", "erpnext_norway.enk_journal.validate"],
         "on_update_after_submit": "erpnext_norway.vat_journal.validate",
         "before_cancel": "erpnext_norway.vat_quarterly.guard_cancel"},
     "Company": {

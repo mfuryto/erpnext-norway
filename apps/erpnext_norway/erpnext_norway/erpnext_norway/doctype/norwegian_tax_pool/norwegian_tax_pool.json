@@ -12,14 +12,18 @@
   "depreciation",
   "write_off_small_balance",
   "direct_income",
-  "additional_income"
+  "additional_income",
+  "asset",
+  "unit_reference",
+  "tax_rate",
+  "rate_reference"
  ],
  "fields": [
   {
    "fieldname": "saldo_group",
    "label": "Tax saldo group",
    "fieldtype": "Select",
-   "options": "a\nd",
+   "options": "a\nb\nc\nd\ne\nf\ng\nh\ni\nj",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -73,6 +77,31 @@
    "label": "Additional negative balance income",
    "fieldtype": "Currency",
    "options": "NOK"
+  },
+  {
+   "fieldname": "asset",
+   "label": "Individual native asset",
+   "fieldtype": "Link",
+   "options": "Asset",
+   "depends_on": "eval:['e','f','g','h','i','j'].includes(doc.saldo_group)"
+  },
+  {
+   "fieldname": "unit_reference",
+   "label": "Tax unit documentation",
+   "fieldtype": "Small Text",
+   "depends_on": "eval:['e','f','g','h','i','j'].includes(doc.saldo_group)"
+  },
+  {
+   "fieldname": "tax_rate",
+   "label": "Documented special depreciation rate",
+   "fieldtype": "Percent",
+   "depends_on": "eval:doc.saldo_group==='h'"
+  },
+  {
+   "fieldname": "rate_reference",
+   "label": "Special rate documentation",
+   "fieldtype": "Small Text",
+   "depends_on": "eval:doc.saldo_group==='h'"
   }
  ],
  "permissions": [],

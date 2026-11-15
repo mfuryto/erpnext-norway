@@ -1,0 +1,132 @@
+category;code;label;polarity
+balanseverdiForAnleggsmiddel;1000;Utvikling;positiv
+balanseverdiForAnleggsmiddel;1020;Varige konsesjoner, patenter, lisenser, rettigheter med mer;positiv
+balanseverdiForAnleggsmiddel;1080;Goodwill;positiv
+balanseverdiForAnleggsmiddel;1105;Forretningsbygg;positiv
+balanseverdiForAnleggsmiddel;1115;Bygg, anlegg, hotell o.l.;positiv
+balanseverdiForAnleggsmiddel;1117;Elektroteknisk utrustning i kraftforetak mv.;positiv
+balanseverdiForAnleggsmiddel;1120;Fast teknisk installasjon i bygninger;positiv
+balanseverdiForAnleggsmiddel;1130;Anlegg og maskiner under bygging;positiv
+balanseverdiForAnleggsmiddel;1140;Jord- og skogbrukseiendommer;positiv
+balanseverdiForAnleggsmiddel;1150;Tomter og andre grunnarealer;positiv
+balanseverdiForAnleggsmiddel;1160;Bolig inkl. boligtomter, hytter mv.;positiv
+balanseverdiForAnleggsmiddel;1205;Personbiler, maskiner, inventar;positiv
+balanseverdiForAnleggsmiddel;1221;Skip, rigger mv.;positiv
+balanseverdiForAnleggsmiddel;1225;Fly, helikopter mv.;positiv
+balanseverdiForAnleggsmiddel;1238;Vare- og lastebiler, busser, inkludert varebiler med nullutslipp mv.;positiv
+balanseverdiForAnleggsmiddel;1280;Kontormaskiner o.l.;positiv
+balanseverdiForAnleggsmiddel;1290;Andre driftsmidler;positiv
+balanseverdiForAnleggsmiddel;1295;Driftsmidler som avskrives lineært;positiv
+balanseverdiForAnleggsmiddel;1296;Negativ gevinst- og tapskonto;positiv
+balanseverdiForAnleggsmiddel;1298;Negativ tømmerkonto;positiv
+balanseverdiForAnleggsmiddel;1299;Negativ jordbrukskonto;positiv
+balanseverdiForAnleggsmiddel;1350;Investeringer i aksjer, andeler og verdipapirfondsandeler;positiv
+balanseverdiForAnleggsmiddel;1360;Obligasjoner;positiv
+balanseverdiForAnleggsmiddel;1380;Krav/fordringer mot ansatte;positiv
+balanseverdiForAnleggsmiddel;1390;Andre langsiktige fordringer;positiv
+balanseverdiForOmloepsmiddel;1400;Varelager;positiv
+balanseverdiForOmloepsmiddel;1401;Beholdning av egenproduserte varer for bruk i egen jordbruksvirksomhet;positiv
+balanseverdiForOmloepsmiddel;1500;Kundefordringer;positiv
+balanseverdiForOmloepsmiddel;1570;Andre kortsiktige krav/fordringer;positiv
+balanseverdiForOmloepsmiddel;1800;Ikke-markedsbaserte aksjer og verdipapirfondsandeler;positiv
+balanseverdiForOmloepsmiddel;1810;Markedsbaserte aksjer og verdipapirfondsandeler;positiv
+balanseverdiForOmloepsmiddel;1830;Markedsbaserte obligasjoner, sertifikater mv.;positiv
+balanseverdiForOmloepsmiddel;1880;Andre finansielle instrumenter;positiv
+balanseverdiForOmloepsmiddel;1900;Kontanter;positiv
+balanseverdiForOmloepsmiddel;1920;Bankinnskudd;positiv
+balanseverdiForOmloepsmiddel;1950;Innskudd på skattetrekkskonto;positiv
+langsiktigGjeld;2220;Langsiktig gjeld til banker og andre kredittinstitusjoner;positiv
+langsiktigGjeld;2290;Annen langsiktig gjeld;positiv
+kortsiktigGjeld;2380;Kortsiktig gjeld til banker og andre kredittinstitusjoner;positiv
+kortsiktigGjeld;2400;Gjeld til leverandører;positiv
+kortsiktigGjeld;2600;Skattetrekk og andre trekk;positiv
+kortsiktigGjeld;2740;Skyldig merverdiavgift;positiv
+kortsiktigGjeld;2770;Skyldig arbeidsgiveravgift;positiv
+kortsiktigGjeld;2790;Andre offentlige avgifter;positiv
+kortsiktigGjeld;2900;Forskudd fra kunder;positiv
+kortsiktigGjeld;2910;Gjeld til ansatte og personlige eiere;positiv
+kortsiktigGjeld;2949;Skyldig lønn og feriepenger med mer;positiv
+kortsiktigGjeld;2950;Skyldige gjeldsrenter;positiv
+kortsiktigGjeld;2990;Annen kortsiktig gjeld;positiv
+egenkapital;2050;Positiv egenkapital;positiv
+egenkapital;2080;Negativ egenkapital;negativ
+egenkapital;2095;Negativ saldo;positiv
+egenkapital;2096;Positiv gevinst og tapskonto;positiv
+egenkapital;2097;Betinget avsatt gevinst;positiv
+egenkapital;2098;Positiv tømmerkonto;positiv
+egenkapital;2099;Positiv jordbrukskonto;positiv
+salgsinntekt;3000;Salg og uttak med mva-plikt;positiv
+salgsinntekt;3100;Salg og uttak med 0 prosent mva.;positiv
+salgsinntekt;3200;Salg og uttak utenfor mva-loven;positiv
+salgsinntekt;3300;Offentlige særavgifter ved salg;negativ
+annenDriftsinntekt;3400;Offentlige tilskudd og refusjoner;positiv
+annenDriftsinntekt;3600;Inntekt fra utleie av eiendom;positiv
+annenDriftsinntekt;3650;Utleie av rettigheter til jakt og fiske med mer;positiv
+annenDriftsinntekt;3695;Andre leieinntekter;positiv
+annenDriftsinntekt;3700;Provisjon;positiv
+annenDriftsinntekt;3710;Lisens-, patent- og royalty-inntekter;positiv
+annenDriftsinntekt;3890;Inntekt fra gevinst-/tapskonto;positiv
+annenDriftsinntekt;3895;Inntekt fra saldo;positiv
+annenDriftsinntekt;3900;Andre driftsinntekter;positiv
+annenDriftsinntekt;3910;Inntekt fra tømmerkonto;positiv
+annenDriftsinntekt;3911;Inntekt fra jordbrukskonto;positiv
+varekostnad;4005;Varekostnader inklusiv endring i beholdningen;positiv
+varekostnad;4295;Endring i beholdningen av ferdige og uferdige egenproduserte varer;positiv
+varekostnad;4500;Innleid arbeidskraft;positiv
+varekostnad;4995;Endring i beholdningen av egenproduserte driftsmidler;negativ
+loennskostnad;5000;Lønn og feriepenger med mer;positiv
+loennskostnad;5300;Andre opplysningspliktige godtgjørelser;positiv
+loennskostnad;5400;Arbeidsgiveravgift;positiv
+loennskostnad;5420;Opplysningspliktige pensjonskostnader;positiv
+loennskostnad;5900;Andre personalkostnader;positiv
+loennskostnad;5950;Egen pensjonsordning;positiv
+annenDriftskostnad;6000;Avskrivning på varige driftsmidler;positiv
+annenDriftskostnad;6100;Frakt- og transportkostnader ved salg;positiv
+annenDriftskostnad;6200;Energi og brensel med mer til produksjon;positiv
+annenDriftskostnad;6300;Leie av lokaler;positiv
+annenDriftskostnad;6340;Strøm og oppvarming;positiv
+annenDriftskostnad;6395;Renovasjon, vann, avløp, renhold med mer;positiv
+annenDriftskostnad;6400;Leie av maskiner, inventar og utstyr med mer;positiv
+annenDriftskostnad;6440;Langtidsleie/leasing av bil;positiv
+annenDriftskostnad;6500;Verktøy, inventar med mer som skal kostnadsføres direkte;positiv
+annenDriftskostnad;6600;Reparasjoner og vedlikehold av bygninger;positiv
+annenDriftskostnad;6695;Reparasjoner og vedlikehold av utstyr med mer;positiv
+annenDriftskostnad;6700;Regnskapstjenester, rådgivning med mer;positiv
+annenDriftskostnad;6995;Kontorrekvisita, elektronisk kommunikasjon, porto med mer;positiv
+annenDriftskostnad;6998;Privat bruk av elektronisk kommunikasjon;negativ
+annenDriftskostnad;7000;Drivstoff;positiv
+annenDriftskostnad;7020;Vedlikehold;positiv
+annenDriftskostnad;7040;Forsikring og avgifter;positiv
+annenDriftskostnad;7080;Fradrag for bruk av privat bil i næringsvirksomheten;positiv
+annenDriftskostnad;7099;Privat bruk av næringsbil;negativ
+annenDriftskostnad;7155;Reise-, diett- og bilgodtgjørelser, med opplysningsplikt;positiv
+annenDriftskostnad;7165;Reise- og diettkostnader, uten opplysningsplikt;positiv
+annenDriftskostnad;7295;Provisjonskostnader;positiv
+annenDriftskostnad;7330;Salgs- og reklamekostnader;positiv
+annenDriftskostnad;7350;Representasjonskostnader med fradragsrett;positiv
+annenDriftskostnad;7400;Kontingenter med fradragsrett;positiv
+annenDriftskostnad;7420;Gaver med fradragsrett;positiv
+annenDriftskostnad;7500;Forsikringspremier;positiv
+annenDriftskostnad;7565;Garanti- og servicekostnader;positiv
+annenDriftskostnad;7600;Lisenser, patenter og royalties;positiv
+annenDriftskostnad;7700;Andre kostnader;positiv
+annenDriftskostnad;7830;Tap på fordringer;positiv
+annenDriftskostnad;7860;Tap på kontrakter;positiv
+annenDriftskostnad;7890;Fradrag fra gevinst- og tapskonto;positiv
+annenDriftskostnad;7897;Endring i skattemessig tap på fordringer;positiv
+annenDriftskostnad;7910;Overført til tømmerkonto av årets overskudd/underskudd;positiv
+annenDriftskostnad;7911;Kostnadsføring tømmerkonto;positiv
+annenDriftskostnad;7912;Overført til jordbrukskonto av årets overskudd/underskudd;positiv
+annenDriftskostnad;7913;Kostnadsføring fra jordbrukskonto;positiv
+finansinntekt;8005;Netto positiv resultatandel vedrørende investering i DS, TS og FKV;positiv
+finansinntekt;8050;Annen renteinntekt;positiv
+finansinntekt;8060;Gevinst ved kursendring på valuta;positiv
+finansinntekt;8074;Gevinst ved realisasjon av aksjer, egenkapitalbevis og fondsandeler;positiv
+finansinntekt;8079;Andre finansinntekter;positiv
+finansinntekt;8090;Inntekt av andre investeringer/utbytte;positiv
+finanskostnad;8105;Netto negativ resultatandel vedrørende investering i DS, TS og FKV;positiv
+finanskostnad;8150;Annen rentekostnad;positiv
+finanskostnad;8160;Tap ved kursendring på valuta;positiv
+finanskostnad;8174;Tap ved realisasjon av aksjer, egenkapitalbevis og fondsandeler;positiv
+finanskostnad;8179;Andre finanskostnader;positiv
+skjoennsfastsattInntektEllerKostnad;999999;Inntekt fastsatt ved skjønn;positiv

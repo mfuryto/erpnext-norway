@@ -286,7 +286,14 @@ try:
             'period_start_date':'2026-01-01','period_end_date':'2026-12-31','closing_account_head':a['2050'],
             'remarks':'Synthetic tax basis native closing'}).insert();closing.submit()
         closing.reload();assert closing.gle_processing_status=='Completed'
-        assert snapshot()==current
+        after_closing = snapshot()
+        assert after_closing['tax_profit'] == current['tax_profit']
+        assert after_closing['pools'] == current['pools']
+        assert after_closing['corrections'] == current['corrections']
+        # Annual balance follows the actual native closing, including transferred
+        # equity. Tax/P&L bridge remains independent of the native PCV clearing.
+        assert sum(row['closing'] for row in after_closing['annual_accounts']) == 0
+        assert next(r for r in after_closing['annual_accounts'] if r['account']==a['2050'])['closing'] == -204500
         extra=additional()
         proof=save_file('synthetic-enk-tax-report.json',frappe.as_json(result),tax.FACTS,facts.name,is_private=1)
         data=Path(proof.get_full_path()).read_bytes()

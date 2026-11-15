@@ -23,12 +23,14 @@ leses fra de aktuelle kildene ved rapportkjøring, ikke lagres som kopier.
 Fakturaer, kreditnotaer, betalinger, avskrivningsbilag og avslutningsbilag
 skal fortsatt registreres på ERPNexts vanlige arbeidssteder.
 
-Første kvalifisering gjelder ENK uten ansatte, NOK, kalenderåret 2026 og
-samlesaldoene a (30 prosent) og d (20 prosent). Øvrige saldogrupper,
-gevinst- og tapskonto, særregler for bil, bygninger, immaterielle rettigheter,
-flere virksomheter og skatteinnsending skal ikke fremstilles som dekket.
-Regnskapsmessig bruk av en programvarelisens er ikke i seg selv grunnlag
-for å plassere den i saldogruppe a.
+Omfanget er ett ENK uten ansatte, NOK og kalenderåret 2026. Rapporten gir
+årsgrunnlag til utfylling i Skatteetatens portal. Den omfatter samlesaldo a–d,
+individuelle saldoer e–i og tekniske installasjoner j per bygg, gevinst-/tapskonto,
+dokumenterte øvrige forskjeller, personinntektsgrunnlag og skatte-/formuesverdier.
+Ingen full personlig skatteberegning eller innsending er innført. Særnæringer,
+flere virksomheter og omdanninger er ikke generelt automatisert. En programvarelisens
+er ikke automatisk saldogruppe a; tidsbegrensede rettigheter kan behandles utenfor saldo.
+Se [sluttføring og faglige forutsetninger](enk-completion.md).
 
 ## Kilder og gjenbruk
 
@@ -40,7 +42,7 @@ for å plassere den i saldogruppe a.
 
 Den rene a/d-saldoberegningen gjenbrukes fra
 [ENK Norge, revisjon 94406e5](https://github.com/Medpus/enk_norge/blob/94406e542ed991a8de237b9de44b8d1dd576b566/enk_norge/norway_rules.py)
-med MIT-lisens og navngitt opphav. Prosjektets egne årsrapporter,
+med MIT-lisens og navngitt opphav. Øvrige grupper og gevinst-/tapskonto følger de dokumenterte norske reglene. Personinntektens uavhengige aritmetikk gjenbrukes fra samme revisjon; brutto renteavgrensning og dokumentert nettoskjerming holdes adskilt. Prosjektets egne årsrapporter,
 historikkregistre, bokføringsgeneratorer og kontrollflater overtas ikke.
 
 ## Arbeidsflyt
@@ -48,7 +50,7 @@ historikkregistre, bokføringsgeneratorer og kontrollflater overtas ikke.
 1. Bruk **Driftsmiddelkategori**, vanlige **Vare**-innstillinger og
    **Leverandørfaktura/Varemottak** for kjøpet. Velg riktig balansekonto for
    driftsmiddelet. Utstyr som skal inngå i ulike skattesaldoer må kunne skilles
-   i de bokførte kontoene. Ikke endre historiske vare-/kategoridata for å
+   med lagrede driftsmiddel-/innkjøpsreferanser eller bokførte kontoer. Ikke endre historiske vare-/kategoridata for å
    omskrive allerede bokførte kilder.
 2. Bruk **Driftsmiddel → Avskrivningsplan** for bokføringen. Den manuelle
    planen kan redigeres med dato og beløp før aktivering. Behold faktiske
@@ -56,10 +58,15 @@ historikkregistre, bokføringsgeneratorer og kontrollflater overtas ikke.
    bilagene og håndterer kansellering. Skatteavskrivningen skal ikke bokføres
    en gang til bare fordi rapporten viser en forskjell.
 3. Åpne **Norske skatteopplysninger** (`Norwegian Tax Facts`) i vanlig søk.
-   Opprett ett dokument for foretak/år. Legg inn én samlesaldo per gruppe a/d,
+   Opprett ett dokument for foretak/år. Legg inn én samlesaldo per gruppe a–d,
    med en balansekonto eller en kontogruppe som bare inneholder aktuelle
    anleggsmiddelkontoer. Flere konti i samme saldo håndteres med kjernens
-   kontotre. Kontiene skal ikke overlappe mellom saldogruppene.
+   kontotre. For e–i velges ett nativt driftsmiddel (antall én) per saldo.
+   Flere individuelle saldoer kan bruke samme konto når de har ulike entydige
+   driftsmiddelreferanser. For j brukes én saldo per bygg, med dokumentert
+   byggidentifikasjon og egne kontoer/kontogrupper for byggets installasjoner.
+   En valgfri driftsmiddelreferanse i j må representere hele den aktuelle enheten,
+   ikke opprette flere saldoer for enkeltkomponenter i samme bygg.
 4. Oppgi faktisk inngående **skatteverdi** fra forrige skatteoppgjør med
    dokumentasjon; ikke kopier automatisk bokført nettoverdi. Nytt foretak
    uten tidligere saldo bruker null med forklaring. Dokumenter også negativ
@@ -67,8 +74,13 @@ historikkregistre, bokføringsgeneratorer og kontrollflater overtas ikke.
 5. Maksimal avskrivning er standardvalg. Et lavere beløp kan velges.
    Positiv restsaldo under 30 000 før årets avskrivning kan velges
    fradragsført helt eller delvis; dette gjelder ikke ved nøyaktig 30 000.
-   Negativ saldo under 30 000 skal inntektsføres helt; ellers minst gruppens
-   sats, med adgang til større inntektsføring. Direkte inntektsført
+   Negativ a/c/d/j-saldo under 30 000 skal inntektsføres helt; ellers minst gruppens
+   sats, med adgang til større inntektsføring. Ved realisasjon av e–i overføres
+   gevinst/tap uten årets saldoavskrivning. Negativ b ved årsslutt overføres
+   også til gevinst-/tapskonto. Gevinstkonto gir minst 20 prosent inntekt, tapskonto
+   høyst 20 prosent fradrag. Under 30 000 er gevinst pliktig helt inntektsført,
+   mens tap kan velges helt fradragsført. Inngående gevinst-/tapskonto og valgene
+   dokumenteres i samme årsopplysninger. Direkte inntektsført
    salgsvederlag er et uttrykkelig årsvalg, ikke en ny salgsfaktura.
 6. **Øvrige skattekorreksjoner** kan bruke en faktisk kostnadskonto og andel
    uten skattefradrag. Beløpet følger da kjernens resultatrapport, inkludert
@@ -107,22 +119,75 @@ ikke en egen «godkjent/levert»-status som kan skjule endringer i grunnlaget.
 [Skatteetatens næringsspesifikasjon og leveringsmåter](https://www.skatteetaten.no/bedrift-og-organisasjon/skatt/skattemelding-naringsdrivende/enk/)
 og [foretaksmodellen](https://www.skatteetaten.no/rettskilder/type/handboker/skatte-abc/2025/e-5-enkeltpersonforetak--beregnet-personinntekt-foretaksmodellen/)
 er kildene for skillet mellom næringsresultat og personlige opplysninger.
-Denne leveransen gjør ikke hele hovedplanens punkt 7 ferdig.
+Årsrapporten bruker offisiell ENK-postliste for 2026, adskilt fra SAF-T.
+Standardkoblinger gjelder bare eksakt opprinnelig kontonummer/navn/hovedgruppe.
+Egne koblinger settes i **Konto → Næringspost for norsk ENK**, med inntektsår.
+Brukte ukoblede kontoer vises med faktisk beløp og beskjed om vurdering; de utelates ikke.
+Offisielle poster vises med postens fortegn. Kontodetaljene beholder debet minus kredit.
+Næringspostene er bokførte beløp; skattekorreksjonene står separat i resultatavstemmingen.
+De er ikke en ferdig XML-/API-innsending av næringsspesifikasjonen.
+
+### Andre balanseposter, personinntekt og formue
+
+- I **Skatte- og formuesverdier** velges vurderte bokverdier eller dokumenterte
+  skatteverdier for IB/UB. Beløp følger kontodetaljenes debet minus kredit.
+  For andre eiendeler/gjeld, eksempelvis dokumentert varelager-/fordringsforskjell,
+  kan **Ta med endring i skatte-/bokført verdiforskjell i næringsresultatet** velges.
+  Rapporten bruker årets endring i forskjellen, ikke hele utgående forskjell.
+  Skattesaldoer/akkumulerte avskrivninger kan ikke få samme resultatkorreksjon igjen.
+- Tomter og andre eiendeler utenfor saldogruppene velges uttrykkelig som
+  **Driftsmiddel utenfor skattemessige saldogrupper**, med vurdert skatteverdi,
+  dokumentasjon og årets dokumenterte skattefradrag (null for ikke-avskrivbar tomt).
+  Bruk native manuell avskrivningsplan/ordinære bilag til den faktiske bokføringen;
+  ikke opprett en parallell plan i appen. Dokumentert fradrag trekkes i skattebroen.
+- Formuesverdi velges som vurdert skatteverdi, dokumentert verdi eller uttrykkelig
+  ikke formuesskattepliktig. Verdier er **før rabatt**. Appen bruker ingen ny
+  personlig formuesskatte-/gjeldsreduksjonsmotor. Tomt/formuesverdi følger sine
+  faktiske verdsettingsregler og er ikke automatisk lik anskaffelseskost.
+- **Utarbeid personinntektsgrunnlag** krever dokumentert brutto kapitalgrunnlag
+  før all gjeld, netto skjermingsgrunnlag, kvalifiserende foretaksgjeld, kapitalposter
+  og fremført negativ personinntekt. Kontovalg henter årets native resultat etter
+  allerede utførte kontokorreksjoner. Dokumenterte årsbeløp brukes for forhold som
+  ikke har en entydig konto. Tap på kundefordringer skal ikke tilbakeføres som
+  kapitalkostnad. Renteavgrensningen gjelder bare kvalifiserende foretaksgjeld til
+  finansinstitusjon/mengdegjeldsbrev, ikke automatisk all leverandørgjeld.
+- Skjermingen er dokumentert årsbeløp eller et uttrykkelig valg om ikke å kreve
+  fradrag. Uvurdert skjerming med positivt nettogrunnlag gir ingen ferdig
+  personinntektsberegning. Ingen 2025-/aksjonærrente brukes som antatt 2026-rente.
+  Negativ personinntekt og brukt/gjenstående fremføring vises separat.
+- Standardkontoene 7799, 7835 og 7825 får sin uttrykkelige skattebehandling ved
+  eksakt opprinnelig identitet. En egen prosentkorreksjon på kontoen har forrang.
+  Privatandel som allerede reduserer bokført kostnad, legges ikke tilbake igjen.
+  Native 2068 mot telefonkostnad vises som brutto 6995 og privatpost 6998 når
+  årets faktiske bilagslinjer avstemmes entydig. Appen beregner ikke privatbruk
+  eller rett til andre fradrag ut fra en faktura.
+
+Rapporten viser uavklarte koblinger, skatteverdier, formuesverdier og personinntekt.
+Årets faktiske opplysninger og privat underlag må fylles ut før innlevering.
+Manglende fakta er ikke null. Rapporten oppretter ingen egen godkjenningsstatus.
+Bruk standard rapporteksport/utskrift og vanlige private vedlegg på årsopplysningene.
 
 ## Kvalifiseringsgrense for kilder
 
 Det nye grunnlaget leser årets faktiske standardbok. Kjøp/mottak og
 landed-cost-kilder kan bare brukes når de faktisk har postert på valgte
 anleggsmiddelkontoer. Fakturering av et tidligere mottak skal ikke legge til
-kostnaden på nytt. Manuelle anleggsmiddelbilag, verdireguleringer, skraping,
-privatuttak, grensekryssende omdanning og retting av tidligere års anskaffelser
-må kvalifiseres særskilt. Rapporten skal stoppe ved ukjent kilde; den skal ikke
+kostnaden på nytt. Native salg og utrangering bruker kjernens faktiske kilder, også ved null
+bokført nettoverdi. Ordinære manuelle driftsmiddelbilag bruker feltet
+**Skattemessig driftsmiddelbevegelse** på bilagslinjen før bokføring: ny tilgang,
+kostkorreksjon, skattenøytral overføring, avgang eller bokført gevinst/tap.
+Angi dokumentert realisasjonsverdi uten MVA ved avgang og native driftsmiddelreferanse
+for individuelle saldoer. Ingen ekstra bokføringsknapp eller bilagsgenerator innføres.
+Umerkede manuelle kilder avvises i skattesaldoen. Rett gjennom ordinær native
+kansellering/amendering; bokførte skattefelt er ikke redigerbare.
+Grensekryssende omdanning, generelle virksomhetsoverdragelser og spesialregimer
+må fortsatt vurderes særskilt. Rapporten skal stoppe ved ukjent kilde; den skal ikke
 anta at enhver debet på en balansekonto er et skattemessig kjøp.
 
 Den låste kjernen kan slå sammen salgets hovedboksposter og fjerne
 fakturalinjereferansen. Flere driftsmidler i **samme skattesaldo** kan fortsatt
 behandles samlet fra den faktiske kilden. Salg fra flere skattesaldoer på én
-faktura krever entydige lagrede linjereferanser. Vanlig salg og driftsmiddelsalg
+faktura knyttes gjennom valgte driftsmidler eller lagrede innkjøps-/kontoreferanser; dagens kategoristandard er ikke historisk bevis. Vanlig salg og driftsmiddelsalg
 kan stå på samme faktura når de bokførte gevinst-/tapskontoene er entydig skilt
 fra øvrige salgslinjer og gebyrer. Det skal ikke gjettes en gevinstfordeling.
 
@@ -156,3 +221,14 @@ skatterapporten. Nye driftsmiddelkjøp/-mottak og landed-cost med slike
 aktiveringsbeløp skal avvises før bokføring i den ukvalifiserte kombinasjonen.
 Tidligere direkte kilder med avvik mellom lagret verdsetting og faktisk
 anleggsmiddelpostering må avstemmes gjennom vanlig rettingsflyt.
+
+For eiendeler utenfor saldo må eventuell forskjell mellom bokført og skattepliktig
+gevinst/tap dokumenteres i de ordinære årsjusteringene. Native salg med samme
+bokførte og skattemessige kost beholder kjernens resultat. En bokført nullverdi
+utelukker ikke en gjenværende dokumentert skatte-/formuesverdi; slike årsverdier
+vises også uten årets hovedboksbevegelse. Kjent standardkonto for tomt kan ikke
+velges som en saldoavskrivbar konto.
+
+Sammenligningen «bokført nettoverdi minus skattesaldo» omfatter også andre
+verdiforskjeller, blant annet eiendeler utenfor saldo. Den er ikke alene
+avstemmingen av alle skatte-/formuesverdier; bruk de separate kontokolonnene.

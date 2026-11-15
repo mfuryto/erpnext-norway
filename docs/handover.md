@@ -1,5 +1,9 @@
 # Overgang til ERPNext Norway
 
+Gjeldende ENK-status er samlet i avsnittet **ENK punkt 7: samlet årsgrunnlag,
+0.4.37** nederst. Eldre delleveranser nedenfor er historikk. EHF følger etter
+det avtalte årsgrunnlaget.
+
 Beslutning 2026-10-18: ERPNext blir prosjektets videre grunnlag. Dolibarr Norway
 settes på vent; repo, historikk, installasjonsfiler beholdes. Ingen ny backup av Dolibarr eller tilbakeføringsfunksjon skal lages. Dolibarr er
 oppgitt ikke tatt i ordinær bruk, så ingen produksjonshistorikk skal migreres som standard.
@@ -929,3 +933,51 @@ ordinære appoppdateringen. Dette gjelder ENK uten ansatte, NOK og 2026 med
 a/d; øvrige saldogrupper, personinntekt/formue og skatteinnsending er ikke
 erklært ferdig automatisert. Punkt 7 er fortsatt åpent; EHF via SendRegning
 følger etter ENK, med faktisk levering/status/kvittering.
+
+
+## ENK punkt 7: samlet årsgrunnlag, 0.4.37
+
+Punkt 7 er teknisk sluttført for avtalt omfang: ett norsk ENK uten ansatte,
+NOK og kalenderåret 2026, med grunnlag til utfylling i Skatteetatens portal.
+Full personlig skatteberegning og skatteinnsending er ikke bestilt og er ikke
+innført. Årets faktiske underlag og regnskapsmessige aksept er fortsatt egne
+oppgaver; grønn CI er ingen generell erklæring om norsk etterlevelse.
+
+**Norsk ENK-grunnlag** samler native resultat/saldobalanse, bokført IB/bevegelse/UB,
+131 offisielle årsposter, resultatkorreksjoner, saldo a–j, gevinst-/tapskonto,
+eierbevegelser, dokumentert personinntekt og skatte-/formuesverdier før rabatt.
+Standard rapporteksport og ordinære private vedlegg brukes. Ukoblede kontoer og
+uvurderte årsverdier vises tydelig med de faktiske bokbeløpene; de skjules ikke.
+Kontolinjene følger debet minus kredit, mens næringsposter bruker offisielt fortegn.
+
+Kjernen beholder fakturaer, kreditnotaer, betaling, Asset/Manual, hovedbok, PCV,
+periodelås og databevaring. Financial Report Template ble prøvd, men utelater
+brukte deaktiverte kontoer. Derfor brukes native resultat/saldobalanse som
+beløpskilder, med årsspesifikk norsk klassifisering i den eksisterende rapporten.
+Den uavhengige personinntektsaritmetikken gjenbrukes fra MIT-lisensiert ENK Norge;
+årskontrollere, bokføringsgeneratorer og historikkflater overtas ikke.
+Brutto renteavgrensningsgrunnlag holdes adskilt fra netto skjermingsgrunnlag.
+2026-skjerming må dokumenteres; appen låner ingen annen års-/aksjonærrente.
+
+Normal native kjøp/salg/retur, utrangering og tilbakeføring er prøvd. For
+manuelle driftsmiddelbilag velges skattemessig betydning på de ordinære linjene
+før bokføring; faktiske GL-beløp avstemmes uten ekstra bilag. Tomt og
+immaterielle rettigheter utenfor saldo bruker native bokføring og dokumentert
+årsfradrag. Kontoer som inngår i saldo kan ikke resultatkorrigeres en gang til
+som annen balanseforskjell. Dokumenterte lager-/fordringsforskjeller følger
+årets endring i verdiforskjellen. Allerede bokført privatandel tilbakeføres ikke dobbelt.
+
+`runtime-enk-core.py`, `runtime-enk-tax.py` og `runtime-enk-annual.py` inngår før
+og etter eksportert backup/gjenoppretting/migrering. Testrekken omfatter native
+årsavslutning, vanlige roller og kildetilgang, flere individuelle saldoer på samme
+konto, null bokverdi ved salg, dokumenterte ikke-saldo-eiendeler, skatteverdi uten
+bokverdi/bevegelse, personinntekt, standard CSV og private rapportbytes. Ny native
+nettleserprøve viser årsopplysninger/rapport på bokmål uten System Manager.
+35 vertstester omfatter satser, grenser, overføringer, fremføring og alle
+131 navn/fortegn mot den låste offisielle 2026-kilden.
+
+Se [sluttføring og kjernevalg](enk-completion.md),
+[arbeidsflyt og faglige kilder](enk-tax-basis.md) og
+[native eieroppgjør/årsavslutning](enk-year-end.md).
+Neste produktpunkt er EHF via SendRegning med faktisk levering av faktura og
+kreditnota, status, feil og kvitteringer. Ingen EHF-integrasjon er lagt til i denne leveransen.
