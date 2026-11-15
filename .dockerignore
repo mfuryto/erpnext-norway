@@ -3,6 +3,7 @@
 deploy/*
 !deploy/Dockerfile.app
 !deploy/app-build-requirements.txt
+!deploy/ehf-requirements.txt
 !apps/
 !apps/erpnext_norway/
 !apps/erpnext_norway/**

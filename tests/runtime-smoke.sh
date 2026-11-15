@@ -114,6 +114,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-enk-core.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-enk-tax.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-enk-annual.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-ehf.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-saft.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-saft-accounts.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - seed < "$root/tests/runtime-saft-tax-catalog.py"
@@ -177,6 +178,7 @@ if [[ "${ERP_TEST_BROWSER:-0}" == 1 ]]; then
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-vat-asset-currency-browser.cjs"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - desktop < "$root/tests/runtime-language-surfaces.py"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-enk-annual-browser.cjs"
+  ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-ehf-browser.cjs"
   ERP_LANGUAGE_TEST_URL="http://127.0.0.1:$port" node "$root/tests/runtime-language-surfaces-browser.cjs"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - restore-desktop < "$root/tests/runtime-language-surfaces.py"
 fi
@@ -223,6 +225,7 @@ if [[ "${ERP_TEST_APP:-0}" == 1 ]]; then
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-enk-core.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-enk-tax.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-enk-annual.py"
+  "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-ehf.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-saft.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-saft-accounts.py"
   "${compose[@]}" run --rm --no-deps -T backend env/bin/python - verify < "$root/tests/runtime-saft-tax-catalog.py"
