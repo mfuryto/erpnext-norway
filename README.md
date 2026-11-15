@@ -18,7 +18,7 @@ fortsatt kjernen; appen aktiveres gjennom den særskilte oppdateringsrutinen.
 - [MVA-registrering og senere overgang](docs/vat-registration.md), native satser og
   linjefradrag, rapportgrunnlag og oppgjør. [Samlet MVA-plan](docs/vat-plan.md)
   viser prøvd omfang og åpne gap.
-- [ENK: eiertransaksjoner og årsgrunnlag](docs/enk-year-end.md) med eksisterende
+- [ENK: eiertransaksjoner og årsgrunnlag](docs/enk-year-end.md) og [skattesaldo og næringsgrunnlag](docs/enk-tax-basis.md) med eksisterende
   bilag, årsrapporter og periodestenging. Norsk skattemessig årsgrunnlag videreføres separat.
 - Klargjøring før portbytte og stopp av tidligere installasjon uten sletting.
 - Plan for norsk kontoplan, MVA, dokumentkrav, SAF-T, EHF og årsgrunnlag.

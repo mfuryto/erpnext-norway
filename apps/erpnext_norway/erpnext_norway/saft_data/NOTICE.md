@@ -1,4 +1,4 @@
-# SAF-T-kilder og endringer
+# SAF-T- og saldokilder og endringer
 
 XML-byggeren i `../saft_builder.py` gjenbruker den databasefrie delen av
 [ENK Norge saft.py](https://github.com/Medpus/enk_norge/blob/94406e542ed991a8de237b9de44b8d1dd576b566/enk_norge/saft.py),
@@ -32,3 +32,8 @@ Original SHA-256: e25ff8e8dd9eadda2a21e61cd94fc2f615cf5333a6fc1302b00ffb46e9f935
 Lokal endring: kolonnen root_type er lagt til fra den leverte norske kontoplanen. Kontonavn/proveniens følger også
 resources/norway-chart/NOTICE. Bare data gjenbrukes, ingen Dolibarr-kode.
 Standardvalget gjelder bare eksakt opprinnelig nummer, navn og hovedgruppe.
+
+Saldoberegningen i `../enk_tax_rules.py` gjenbruker bare de uavhengige a/d-
+reglene fra samme ENK Norge-revisjons `norway_rules.py`, med samme MIT-lisens.
+Frappe-koblinger, bokføringsgeneratorer, egne årsrapporter og historikklagring
+er ikke overtatt. Lokal tilpasning er en avgrenset dato-/omfangsfeilmelding.

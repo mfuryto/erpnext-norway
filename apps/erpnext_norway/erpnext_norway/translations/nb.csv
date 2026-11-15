@@ -5411,3 +5411,23 @@ Record the documented deduction percent on the output import or reverse-charge s
 Enter an input VAT deduction percent between 0 and 100 on the output import or reverse-charge service VAT line only.,Oppgi fradragsandel mellom 0 og 100 bare på utgående MVA-linje for vareimport eller tjenestekjøp fra utlandet.
 Record the documented deduction percent before submitting reverse-charge service VAT. Use code 87/89 without deduction.,Registrer dokumentert fradragsandel før MVA på tjenestekjøp fra utlandet bokføres. Bruk kode 87/89 uten fradrag.
 "Grouping applies from the selected fiscal year until a later mapping replaces it.","Grupperingen gjelder fra valgt regnskapsår til en nyere kobling erstatter den."
+Norwegian Tax Facts,Norske skatteopplysninger
+Norwegian Tax Pool,Norsk skattesaldo
+Norwegian Tax Adjustment,Norsk skattekorreksjon
+Norwegian tax balances,Norske skattesaldoer
+Tax saldo group,Skattemessig saldogruppe
+Fixed asset account or group,Anleggsmiddelkonto eller kontogruppe
+Opening tax balance,Inngående skattesaldo
+Opening tax balance documentation,Dokumentasjon av inngående skattesaldo
+Use maximum tax depreciation,Bruk maksimal skattemessig avskrivning
+Requested tax depreciation,Valgt skattemessig avskrivning
+Deduct positive balance below NOK 30000 in full,Fradragsfør positiv saldo under 30 000 kroner fullt ut
+Disposal proceeds taken directly to income,Salgsvederlag som inntektsføres direkte
+Additional negative balance income,Ekstra inntektsføring av negativ saldo
+Other tax adjustments,Øvrige skattekorreksjoner
+Non-deductible expense account,Kostnadskonto med begrenset skattefradrag
+Non-deductible percentage,Andel uten skattefradrag
+Other tax adjustment (increase positive),Annen skattekorreksjon (tillegg positivt)
+Tax adjustment reason,Begrunnelse for skattekorreksjon
+Tax adjustment documentation,Dokumentasjon av skattekorreksjon
+This ERPNext version requires Enable Perpetual Inventory to capitalize additional costs on fixed assets consistently in the asset register and general ledger. Configure the native company accounts and inventory method before posting.,Denne ERPNext-versjonen krever løpende lagerregnskap for å aktivere tilleggskostnader på driftsmidler likt i driftsmiddelregisteret og hovedboken. Konfigurer foretakets vanlige kontoer og lagermetode før bokføring.

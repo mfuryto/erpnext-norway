@@ -898,3 +898,34 @@ Skattemessige avskrivninger/samlesaldoer, forskjeller og øvrig norsk
 næringsgrunnlag er fortsatt et eget gap som må prøves mot kjernen. Denne
 delleveransen erklærer ikke hele punkt 7 eller skatteinnsending ferdig.
 EHF via SendRegning står fortsatt etter ENK i planen.
+
+## ENK: skattesaldo a/d og næringsgrunnlag, 0.4.36
+
+Native Written Down Value, redigerbar Manual-plan, faktisk avskrivningsbilag,
+kansellering og separat Finance Book er prøvd. Bokføringen beholdes i kjernen.
+Det dokumenterte norske gapet er samlesaldo og skattefakta som hovedboken ikke
+inneholder. Bare den uavhengige a/d-saldoberegningen fra ENK Norge gjenbrukes
+med MIT-lisens; prosjektets bokføringsgeneratorer og historikkflater overtas ikke.
+
+**Norske skatteopplysninger** lagrer årets inngående skattesaldo, kontovalg,
+fradragsvalg og dokumenterte øvrige forskjeller. **Norsk ENK-grunnlag** leser
+native resultatregnskap/saldobalanse og faktiske, daterte GL-/fakturakilder.
+Kjøp, kreditnota, salg/retur, native avskrivninger og PCV følger de opprinnelige
+arbeidsstedene. Rapporten oppretter ingen posteringer eller lagrede beregningskopier.
+Veiledning, faglige kilder, prøvd omfang og avgrensninger finnes i
+[skattesaldo og næringsgrunnlag](enk-tax-basis.md).
+
+Den faktiske MVA-prøven avdekket et native avvik med aktivering av tilleggskostnad
+på driftsmiddel når løpende lagerregnskap er av. Eksisterende native innstilling
+og kontoer løser bokføringen. Appen endrer ikke lagermetoden automatisk, men
+hindrer den påviste feilkonfigurasjonen før bokføring og avviser tidligere
+direkte kilder der lagret verdsetting ikke stemmer med hovedboken.
+
+`tests/runtime-enk-tax.py` inngår før og etter eksportert backup/gjenoppretting.
+Den prøver ordinær regnskapsbruker/lesebruker, kildetilgang, faktisk native
+avskrivning/salg/retur, delvis MVA-fradrag, skattesaldo, resultat-/verdiavstemming
+og samme resultat etter native årsstenging. Skjemaet migreres gjennom den
+ordinære appoppdateringen. Dette gjelder ENK uten ansatte, NOK og 2026 med
+a/d; øvrige saldogrupper, personinntekt/formue og skatteinnsending er ikke
+erklært ferdig automatisert. Punkt 7 er fortsatt åpent; EHF via SendRegning
+følger etter ENK, med faktisk levering/status/kvittering.

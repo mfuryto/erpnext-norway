@@ -351,3 +351,26 @@ def link_credit_receipts(doc, method=None):
             frappe.throw(frappe._('Select a matching submitted Purchase Receipt return before crediting received goods.'))
         item.purchase_receipt = selected.parent
         item.pr_detail = selected.name
+
+
+def guard_asset_capitalization(doc, method=None):
+    """The pinned core capitalizes asset valuation charges through stock accounting.
+
+    With periodic inventory it can raise Asset cost while expensing the same
+    charge in GL. Use the existing native company setting; never invent a JE.
+    Runs after native calculation and before posting.
+    """
+    from erpnext import is_perpetual_inventory_enabled
+    if not configured(doc) or doc.docstatus == 2 or is_perpetual_inventory_enabled(doc.company):
+        return
+    fixed = {row.name for row in doc.items if row.get('is_fixed_asset')}
+    if not fixed:
+        return
+    if doc.doctype == 'Landed Cost Voucher':
+        affected = any(flt(row.applicable_charges) for row in doc.items if row.name in fixed)
+    else:
+        affected = any(flt(row.item_tax_amount) or flt(row.get('landed_cost_voucher_amount'))
+            for row in doc.items if row.name in fixed)
+        affected = affected or any(flt(amount) for (name, account), amount in costs(doc).items() if name in fixed)
+    if affected:
+        frappe.throw(frappe._('This ERPNext version requires Enable Perpetual Inventory to capitalize additional costs on fixed assets consistently in the asset register and general ledger. Configure the native company accounts and inventory method before posting.'))
