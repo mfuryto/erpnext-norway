@@ -166,3 +166,17 @@ med den eksisterende UNECE Rec20-listen (`urn:peppol:id:codelist:UNECERec20`).
 Uten kobling aksepteres bare den entydige native telleenheten `Nos` som `C62`.
 Andre/uklare enheter avvises; kilo og timer blir aldri stilletiende sendt som antall.
 Ingen ny kodeliste- eller enhetstabell er innført.
+
+Påvist valutagap i kandidaten: native EUR-faktura 1 250 med norsk kundekonto
+har `outstanding_amount=15000` i NOK ved kurs 12. Generatoren merket dette
+som 15 000 EUR og balanserte med et kunstig avrundingsbeløp; XSD/Schematron
+avviste ikke beløpet. Adapteren må derfor lese restbeløpet i fakturavaluta
+med bilagets native konverteringskurs før serialisering. Regnskap og betalings-
+beregning blir liggende i ERPNext. Foretakets regnskapsvaluta må være NOK.
+Testen krever faktisk 1 250 EUR til betaling uten en oppdiktet avrunding.
+
+Påvist avrundingsgap på kreditnota: native faktura 416,66 avrundes til 417,00;
+kreditnotaen bokfører -417,00, mens kandidaten sendte kreditbeløp 416,66.
+Lesekopien gir derfor generatoren det native avrundede kreditbeløpet når det
+finnes. Generatoren beholder sin eksisterende beregning av UBL-avrundingsfeltet;
+ERPNexts bokføring endres ikke. Native kredittotal og EHF-beløp prøves mot hverandre.

@@ -64,6 +64,14 @@ try:
         bank=frappe.get_doc({'doctype':'Bank','bank_name':'Synthetic EHF Bank'}).insert()
         bank_account=frappe.get_doc({'doctype':'Bank Account','account_name':'Synthetic EHF settlement','bank':bank.name,
             'is_company_account':1,'is_default':1,'company':C,'account':a['1920'],'bank_account_no':'12345678903'}).insert()
+        eur_account=frappe.get_doc({'doctype':'Account','account_name':'Synthetic EHF EUR receivable',
+            'parent_account':frappe.db.get_value('Account',a['1500'],'parent_account'),'company':C,
+            'account_type':'Receivable','account_currency':'EUR'}).insert()
+        eur_customer=frappe.get_doc({'doctype':'Customer','customer_name':'Synthetic EHF EUR buyer','customer_type':'Company',
+            'customer_group':frappe.db.get_value('Customer Group',{'is_group':0}),'territory':frappe.db.get_value('Territory',{'is_group':0}),
+            'tax_id':'999999980','default_currency':'EUR',ehf.CHANNEL:'EHF',ehf.REFERENCE:'Buyer routing reference',
+            'accounts':[{'company':C,'account':eur_account.name}]}).insert()
+        address=frappe.get_doc('Address',addresses[1]);address.append('links',{'link_doctype':'Customer','link_name':eur_customer.name});address.save()
         item=frappe.get_doc({'doctype':'Item','item_code':'RUNTIME-EHF-SERVICE','item_name':'Synthetic EHF service',
             'item_group':'Services','stock_uom':'Nos','is_stock_item':0,'item_defaults':[{'company':C,'income_account':a['3020']}]}).insert()
         user=frappe.get_doc({'doctype':'User','email':OWNER,'first_name':'Synthetic EHF owner','language':'nb','send_welcome_email':0,
@@ -76,8 +84,10 @@ try:
         if not frappe.db.exists('Code List',uri):
             frappe.get_doc({'doctype':'Code List','name':uri,'title':'UNECE Recommendation 20','canonical_uri':uri}).insert()
         if not frappe.db.exists('UOM','Kg'):frappe.get_doc({'doctype':'UOM','uom_name':'Kg'}).insert()
-        frappe.get_doc({'doctype':'Common Code','code_list':uri,'title':'Kilogram','common_code':'KGM',
-            'applies_to':[{'link_doctype':'UOM','link_name':'Kg'}]}).insert()
+        from erpnext.edi.doctype.code_list.code_list import get_codes_for
+        if not get_codes_for(uri,'UOM','Kg'):
+            frappe.get_doc({'doctype':'Common Code','code_list':uri,'title':'Kilogram','common_code':'KGM',
+                'applies_to':[{'link_doctype':'UOM','link_name':'Kg'}]}).insert()
         frappe.set_user(OWNER);assert 'System Manager' not in frappe.get_roles()
         evidence=[]
         def invoice(titles=(None,),**extra):
@@ -103,6 +113,11 @@ try:
         company.reload();company.set(vat.STATUS,'Registered');company.set(vat.FROM,'2026-10-21');company.save()
         # Historical nonregistered XML is retained across registration.
         assert hashlib.sha256(parsed(nonregistered)[2]).hexdigest()==evidence[0]['sha256']
+        nonregistered_credit=make_return_doc('Sales Invoice',nonregistered.name)
+        nonregistered_credit.posting_date='2026-10-23';nonregistered_credit.set_posting_time=1
+        nonregistered_credit.insert();nonregistered_credit.submit();nr_root,nr_file,nr_content=parsed(nonregistered_credit)
+        assert value(nr_root,'cac:TaxTotal/cac:TaxSubtotal/cac:TaxCategory/cbc:ID')=='O'
+        evidence.append({'name':nonregistered_credit.name,'sha256':hashlib.sha256(nr_content).hexdigest()})
         single=submit(invoice(('MVA 25 % – varelinjer',),posting_date='2026-10-22'))
         weighted=submit(invoice(('MVA 25 % – varelinjer',),posting_date='2026-10-22',items=[{
             'item_code':item.name,'qty':2,'uom':'Kg','conversion_factor':1,'rate':500,'cost_center':company.cost_center,
@@ -116,9 +131,27 @@ try:
             items=[{'item_code':item.name,'qty':1,'rate':333.33,'cost_center':company.cost_center,
                 'item_tax_template':frappe.db.get_value('Item Tax Template',{'company':C,'title':'MVA 25 % – varelinjer'})}]))
         assert Decimal(value(parsed(rounded)[0],'cac:LegalMonetaryTotal/cbc:PayableAmount'))==ehf.money(rounded.rounded_total or rounded.grand_total)
+        rounded_credit=make_return_doc('Sales Invoice',rounded.name);rounded_credit.posting_date='2026-10-23';rounded_credit.set_posting_time=1
+        submit(rounded_credit)
+        assert Decimal(value(parsed(rounded_credit)[0],'cac:LegalMonetaryTotal/cbc:PayableAmount'))==abs(ehf.money(rounded_credit.rounded_total or rounded_credit.grand_total))
+        if rounded_credit.rounding_adjustment:
+            assert Decimal(value(parsed(rounded_credit)[0],'cac:LegalMonetaryTotal/cbc:PayableRoundingAmount'))==abs(ehf.money(rounded_credit.rounding_adjustment))
         eur=submit(invoice(('MVA 25 % – varelinjer',),posting_date='2026-10-22',currency='EUR',conversion_rate=12))
+        assert value(parsed(eur)[0],'cac:LegalMonetaryTotal/cbc:PayableAmount')=='1250.00'
+        assert not value(parsed(eur)[0],'cac:LegalMonetaryTotal/cbc:PayableRoundingAmount')
         assert value(parsed(eur)[0],'cbc:TaxCurrencyCode')=='NOK'
         assert Decimal(parsed(eur)[0].xpath('cac:TaxTotal/cbc:TaxAmount[@currencyID="NOK"]/text()',namespaces=NS)[0])==3000
+        euro_party=submit(invoice(('MVA 25 % – varelinjer',),posting_date='2026-10-22',currency='EUR',conversion_rate=12,
+            customer=eur_customer.name,debit_to=eur_account.name))
+        assert euro_party.party_account_currency=='EUR' and euro_party.outstanding_amount==1250
+        assert value(parsed(euro_party)[0],'cac:LegalMonetaryTotal/cbc:PayableAmount')=='1250.00'
+        partial=get_payment_entry('Sales Invoice',eur.name,bank_account=a['1920'],party_amount=7500)
+        partial.reference_no='SYNTHETIC-EHF-EUR-PARTIAL';partial.reference_date=partial.posting_date='2026-10-24'
+        partial.insert();partial.submit();eur.reload();assert eur.outstanding_amount==7500
+        before=ledger();part=ET.fromstring(ehf.xml(eur)[0]);assert ledger()==before
+        assert value(part,'cac:LegalMonetaryTotal/cbc:PayableAmount')=='625.00'
+        assert value(part,'cac:LegalMonetaryTotal/cbc:PrepaidAmount')=='625.00'
+        assert hashlib.sha256(parsed(eur)[2]).hexdigest()==next(r['sha256'] for r in evidence if r['name']==eur.name)
         credit=make_return_doc('Sales Invoice',mixed.name);credit.posting_date='2026-10-23';credit.set_posting_time=1
         credit.insert();credit.submit();root,file,content=parsed(credit)
         assert root.tag.endswith('CreditNote')
@@ -131,7 +164,7 @@ try:
         before=ledger();paid=ET.fromstring(ehf.xml(single)[0]);assert ledger()==before
         assert value(paid,'cac:LegalMonetaryTotal/cbc:PrepaidAmount')=='1250.00'
         assert value(paid,'cac:LegalMonetaryTotal/cbc:PayableAmount')=='0.00'
-        assert hashlib.sha256(parsed(single)[2]).hexdigest()==evidence[1]['sha256']
+        assert hashlib.sha256(parsed(single)[2]).hexdigest()==next(r['sha256'] for r in evidence if r['name']==single.name)
         # Keep PDF, XML and its real validation result byte-for-byte as ordinary Files.
         all_files=frappe.get_all('File',filters={'attached_to_doctype':'Sales Invoice',
             'attached_to_name':['in',[r['name'] for r in evidence]],'is_private':1},pluck='name')
@@ -160,5 +193,5 @@ try:
         else:raise AssertionError('Guest read the native EHF invoice')
         frappe.set_user(OWNER);assert ledger()==before
         frappe.db.set_default('runtime_ehf_evidence',frappe.as_json(evidence));frappe.db.commit()
-        print('PASS native nonregistered/registered 25/15/12/zero/exempt, mixed discount, EUR/NOK, credit, payment, original XML, invalid source/total, ordinary owner and guest denial')
+        print('PASS native nonregistered/registered 25/15/12/zero/exempt, mixed discount, EUR/NOK party/base currency and partial payment, rounded credit, pre-registration credit, original XML, invalid source/total, ordinary owner and guest denial')
 finally:frappe.db.rollback();frappe.destroy()

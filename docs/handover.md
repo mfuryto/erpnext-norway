@@ -1014,3 +1014,10 @@ skal sendes i chat/Git. Ingen nettverkssending, leveringsstatus eller kvittering
 er kvalifisert. Ikke merk planen som ferdig før denne kjeden er prøvd.
 Utenlandske EHF-mottakere, andre valutaer enn NOK/EUR og tillegg i avgiftstabellen
 er heller ikke erklært kvalifisert. Serveren oppdateres fortsatt bare av brukeren.
+
+Valuta-/avrundingsprøvene påviste to formatteringsgap i kandidaten som
+standardreglene alene ikke avviste: restbeløp i native kundekontovaluta og
+registrert avrunding på kreditnota. Lesekopien gir generatoren fakturavaluta
+ved bilagets eksisterende kurs og native avrundet kreditbeløp. Ingen
+regnskapsbeløp endres. Testen sammenholder NOK-/EUR-kundekonto, delbetaling
+og avrundet faktura/kreditnota med de faktiske native bilagsbeløpene.

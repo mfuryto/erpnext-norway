@@ -68,8 +68,10 @@ def source(doc):
         frappe.throw('EHF klargjøres fra en bokført faktura eller kreditnota med EHF valgt som leveringsmåte.')
     company = frappe.get_doc('Company', doc.company); company.check_permission('read')
     customer = frappe.get_doc('Customer', doc.customer); customer.check_permission('read')
-    if company.country != 'Norway' or doc.currency not in {'NOK','EUR'}:
-        frappe.throw('EHF er kvalifisert for norsk avsender og NOK/EUR.')
+    if company.country != 'Norway' or company.default_currency != 'NOK' or doc.currency not in {'NOK','EUR'}:
+        frappe.throw('EHF er kvalifisert for norsk avsender med NOK som regnskapsvaluta og NOK/EUR på fakturaen.')
+    if doc.party_account_currency not in {company.default_currency, doc.currency}:
+        frappe.throw('EHF krever kundekonto i regnskapsvaluta eller fakturavaluta.')
     seller = organisation_number(doc.company_tax_id)
     buyer = organisation_number(doc.tax_id or customer.tax_id)
     if not seller or not buyer:
@@ -196,6 +198,12 @@ def xml(doc):
     # net_rate. Serialize those native line values; do not allocate it again.
     for item in adapted.items:
         item.amount=item.net_amount; item.rate=item.net_rate
+    if doc.party_account_currency != doc.currency:
+        # Native outstanding is in the party account currency, not invoice currency.
+        # Only the native base/invoice currency pair is qualified above.
+        adapted.outstanding_amount = float(Decimal(str(doc.outstanding_amount)) / Decimal(str(doc.conversion_rate)))
+    if doc.is_return and doc.rounded_total:
+        adapted.grand_total = doc.rounded_total
     adapted.total=doc.net_total
     adapted.discount_amount=0; adapted.additional_discount_percentage=0
     adapted.company_tax_id=('NO'+seller+'MVA') if 'MVA' in (doc.company_tax_id or '').upper() else ''
